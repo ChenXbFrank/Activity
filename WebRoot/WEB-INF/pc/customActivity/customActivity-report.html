@@ -1,0 +1,54 @@
+<!--[arg _res,user,basePath,staticPath,activityList;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css"/>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/index/my-all-activity.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+	</head>
+	<body style="background-image: url('${staticPath}/img/bg0.png')">
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心 </div>
+			<p class="currentLocation">您的当前位置：<a href="${basePath}/goHomePage">首页></a><a href="javascript:void(0);">活动报表</a></p>
+			<ul class="title-pic">
+				<li><a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+				<li><a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a></li>
+			</ul>
+		</div>
+		<!--页面遮罩-->
+	<!-- 	<div class="popUp" style="display: none;">
+			<div class="mask"></div>
+			<div class="popUp-window">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" />
+				<div class="infos">
+				确定要发起【<span id="applayActivityName"></span>】申请吗？
+				</div>
+				<div class="btns">
+					<input type="button" value="取消" class="btn-left" />
+					<a href="javascript:void(0);" id="skip">
+						<input type="button" value="确定" class="btn-right" />
+					</a>
+				</div>
+			</div>
+		</div> -->
+		<div class="activities">
+				<ul>
+				<!--[ loop(activity:activityList){  ]-->
+			<li><a href="${basePath}${activity.getReportHref()}">
+					<div class="img">
+						<div></div>
+						<img src="${staticPath}${activity.getImg()}" alt="" />
+					</div>
+					<p class="activity-name">${activity.getActivityName()}</p>
+			</a></li>
+			<!--[ } ]-->
+				</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="${staticPath}/js/activityApply/active-application1.js"></script>
+</html>

@@ -1,0 +1,282 @@
+<!--[arg basePath,staticPath,user,result;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> 
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css"/>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/index/home.css"/>
+	</head>
+	<body style="background-image:url('${staticPath}/img/newVersionImg/bg-home.png')"  >
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+			<ul class="title-pic">
+				<li><a href="javascript:void(0);"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+				<li><a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a></li>
+			</ul>
+		</div>
+		<div class="section">
+		<input type="hidden" value="${result}" id="result" />
+			<div class="container clearfloat">
+				<div class="left-module">
+					<ul>
+						<li style="background-image: url('${staticPath}/img/newVersionImg/xinxi.png');">
+							<p id='userName'>${user.getUserName()}</p>
+							<p class="number">账号：<span>${user.getUserCode()}</span></p>
+						</li>
+						<!-- <li style="background-image: url('${staticPath}/img/newVersionImg/dinwei.png');display:none">
+							<span>您当前所在城市：</span><br>
+							<span id="city"></span>
+						</li> -->
+						<li>
+							
+						</li>
+						<li style="background-image: url('${staticPath}/img/newVersionImg/time.png');">
+							<p id="date"></p>
+							<p id="week"></p>
+							<p id="time"></p>
+						</li>
+					</ul>
+				</div>
+				<div class="right-module">
+					<div class="module-box">
+						<ul class="outerUl">
+						</ul>
+					</div>
+					<div class="promo-ft">
+						<div id="J_PromoOpt" class="promo-opt">
+							<a href="javascript:;" class="J_Prev prev">
+								<i>
+                				</i>
+							</a>
+							<a href="javascript:;" class="J_Next next">
+								<i>
+                				</i>
+							</a>
+						</div>
+						<ul class="promo-nav">
+						</ul>
+					</div>
+				
+				</div>
+			</div>
+		</div>
+		</div>
+		<!--页面遮罩-->
+		<div class="popUp" style="display:none">
+			<div class="mask"></div>
+			<div class="popUp-window">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" />
+				<div class="infos">
+				请前往【公众号配置】填写资料！
+				</div>
+				<div class="btns">
+					<input type="button" value="取消" class="btn-left" />
+					<a href="${basePath}/publicNumber/index" id="skip">
+						<input type="button" value="确定" class="btn-right" />
+					</a>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="${staticPath}/js/index/home.js"></script>
+	<script type="text/javascript" >
+	$(function(){
+		/* 获取地理位置 */
+	function findWeather() {
+    /*   var cityUrl = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js';
+      $.getScript(cityUrl, function (script, textStatus, jqXHR) {
+        var citytq = remote_ip_info.city; // 获取城市
+        //alert(citytq);
+        $("#city").html(citytq)
+      }); */
+    }
+    findWeather();
+    /* 模块轮播 */
+    $("#loadingInfo").show();
+		$.ajax({
+			type: 'POST',
+			url: '${basePath}/homePage',
+			data: "",
+			success: function(data) {
+				$("#loadingInfo").hide();
+				var moduleData=new Array();
+				var menuList=data.menuList;
+				//console.log(menuList);
+				var menuListLen=menuList.length;
+				for(var i=0;i<menuListLen;i++){
+					var obj={};
+					obj.name=menuList[i].NAME;
+					obj.icon=menuList[i].IMG;
+					obj.href=menuList[i].HREF;
+					moduleData.push(obj);
+				}
+				
+				//console.log(moduleData);
+				var lastData = []; //转化后的数据
+				var len = moduleData.length; //之前数据的长度
+				var mol = len % 8;
+				var sliderNumber;
+				if(mol == 0) {
+					sliderNumber = parseInt(len / 8);
+				} else {
+					sliderNumber = parseInt(len / 8) + 1;
+				};
+				var num = 0;
+				for(var i = 0; i < sliderNumber; i++) {
+					var arr = [];
+					if(i == (sliderNumber - 1)) {
+						var residue = len - (sliderNumber - 1) * 8;
+						for(var m = 0; m < residue; m++) {
+							var dataObj = new Object();
+							num = (8 * i) + m;
+							dataObj.name = moduleData[num].name;
+							dataObj.icon = moduleData[num].icon;
+							dataObj.href = moduleData[num].href;
+							arr.push(dataObj);
+						};
+					} else {
+						for(var n = 0; n < 8; n++) {
+							num = (8 * i) + n;
+							var dataObj = new Object();
+							dataObj.name = moduleData[num].name;
+							dataObj.icon = moduleData[num].icon;
+							dataObj.href = moduleData[num].href;
+							arr.push(dataObj);
+						};
+					};
+					lastData.push(arr);
+
+				}
+				//console.log(lastData);
+				//创建功能模块ul li
+				for(var i = 0; i < sliderNumber; i++) {
+					var li = $("<li></li>");
+					var ul = $("<ul class='innerUl'></ul>");
+					li.append(ul);
+					for(var j = 0; j < lastData[i].length; j++) {
+						ul.append("<li>" +
+							"<a href="+"${basePath}"+lastData[i][j].href + ">" +
+							"<img src="+"${staticPath}"+lastData[i][j].icon + " alt=\"\" />" +
+							"<p>" + lastData[i][j].name + "</p>" +
+							"</a>" +
+							"</li>")
+					}
+					$(".outerUl").append(li);
+				};
+				
+				
+				
+				if(sliderNumber>1){
+					$(".module-box").css("margin-left","-43.2vw");
+					//动态创建索引圆点
+				for(var i=0;i<sliderNumber; i++){
+					var li=$("<li></li>");
+					li.append(" <a href=\"javascript:void(0);\">"+i+"</a>");
+					$(".promo-nav").append(li);
+				}
+				$(".promo-nav li").eq(0).addClass("selected");
+				//获取单个div图片的宽度
+				var $imgWidth = $('.right-module').width();
+				var index = 1; //表示图片的索引
+				var timer = "";
+
+				//克隆首尾图片各一张分别放置尾部和起始
+				var $firstPipeItem = $('.right-module .module-box>ul>li');
+				var $lastPipeItem = $('.right-module .module-box>ul>li');
+				$firstPipeItem.first().clone(true).appendTo($('.right-module .module-box>ul'));
+				$lastPipeItem.last().clone(true).prependTo($('.right-module .module-box>ul'));
+
+				//div中img的个数
+				var len = sliderNumber + 2;
+				//设置盒子的宽度
+				$(".module-box").width($imgWidth * len);
+
+				//获取所有圆点
+				var $nav = $('.promo-nav li');
+				var $pipe = $(".right-module .module-box");
+				//封装动画方法,i为图片索引值
+				function slide(i) {
+					if(i == 0) {
+						setNavFocus($nav.eq(sliderNumber-1));
+					} else if(i == len - 1) {
+						setNavFocus($nav.eq(0));
+					} else {
+						setNavFocus($nav.eq(i - 1));
+					}
+
+					setNavFocus($nav.eq(i - 1));
+					$pipe.animate({
+						'margin-left': -i * $imgWidth,
+					}, 3000, function() {
+						if(i == 0) {
+							$pipe.css('margin-left', -$imgWidth * (len - 2));
+							index = len - 2;
+						} else if(i == len - 1) {
+							$pipe.css('margin-left', -$imgWidth);
+							index = 1;
+						}
+					})
+				}
+				//给索引圆点添加高亮显示
+				function setNavFocus($obj) {
+					$obj.addClass("selected").siblings().removeClass("selected")
+				};
+
+				//给每个索引原点添加动画效果
+				$('.promo-nav li').on('click', function() {
+					var i = $(this).index() + 1;
+					slide(i);
+					index = i;
+
+				});
+
+				//给图片添加鼠标移动效果
+				$('.right-module').mouseover(function() {
+						$('.promo-opt').show();
+						clearInterval(timer);
+					})
+					.mouseout(function() {
+						$('.promo-opt').hide();
+						auto();
+					});
+
+				//给前一张和下一张添加点击事件
+				$('.prev').click(function() {
+					if(!$pipe.is(":animated")) { //判断动画没有时才能调用这个方法
+						slide(--index);
+					}
+
+				});
+				$('.next').click(function() {
+					if(!$pipe.is(":animated")) {
+						slide(++index);
+					}
+				});
+				//自动轮播方法
+				function auto() {
+					timer = setInterval(function() {
+						$('.next').trigger('click'); //trigger模拟某个事件
+					}, 4000)
+				}
+				auto();
+					
+				}
+			}
+		})
+	})
+	</script>
+</html>

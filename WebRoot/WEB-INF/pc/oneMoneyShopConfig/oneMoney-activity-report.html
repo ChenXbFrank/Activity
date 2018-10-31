@@ -1,0 +1,278 @@
+<!--[arg _res,user,basePath,staticPath,activityName,activityId,shareBargain,shareBargainWxuserList,goodsState,state,nickName,startTime,endTime;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css"/>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/oneMoneyShopConfig/oneMoneyShop-activity-report.css"/>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+	</head>
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：<a href="${basePath}/goHomePage">首页></a><a
+						href="${basePath}/activityForm">活动报表></a><a href="${basePath}/oneMoneyShopConfig/oneMoneyReport">一元购报表></a><a href="${basePath}/oneMoneyShopConfig/oneMoneyMoreInfoReport?activityId=${activityId}&activityName=${activityName}">${activityName}活动报表></a>
+				</p>
+				<ul class="title-pic">
+					<li><a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+					<li><a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a></li>
+				</ul>
+			</div>
+		<div class="container">
+			<label for='name'>昵称：</label>
+			<input type="text" id='name' value="${nickName}" />
+			<input type="button" value="查询" class="search" id="search"/>
+			<input type="button" value="导出" class="export" id="export"/>
+			<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>序号</td>
+							<td>名称</td>
+							<td>头像</td>
+							<td>参与时间</td>
+							<td>中奖情况</td>
+							<td>操作</td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+					</table>
+				</div>
+
+			</div>
+			<div class="page-break">
+			<div class="page-btn">
+				<span class="manager-first-but">上一页</span>
+				<span id="admin-page">1</span>
+				<span class="manager-second-but">下一页</span>
+			</div>
+			<div class="skip">
+				<span>跳转至</span>
+				<input type="text" id="input-page" />&nbsp;页&nbsp;
+				<span class="skip-btn">跳转</span>
+			</div>
+			<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+		</div>
+			<div style="display: none;">
+			<table>			
+				<tr class="admin-obj">
+					<td class="index"></td>
+					<td class="iddata"><span></span><input type="hidden" class="actvityuserid" value="" /></td>
+					<td><div class="headPic"><img src="" /></div></td>
+					<td class="jionTime"></td>
+					<td class='bargain-status'><span></span><img src="${staticPath}/img/more03.png" class="smallImg" />
+								<div class="box-outer" style="display: none;">
+									<div class="box">
+										<div class="box-inner">
+										<ul>
+										</ul>
+										</div>
+									</div>
+								</div>
+							</td>
+					<td class="more_href"><a>查看明细</a></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+	<script type="text/javascript" src="${staticPath}/js/oneMoneyShopConfig/oneMoneyShop-activity-report.js"></script>
+<script type="text/javascript">
+	$(document).on("click",function(){
+		$(".box-outer").hide();
+		$(".smallImg").attr("src","${staticPath}/img/more03.png");
+	});
+		var boolen=false;
+		$(".smallImg").on("click",function(event){
+				event.stopPropagation();
+				$(this).attr("src","${staticPath}/img/more02.png");
+				$(this).parent().parent().siblings().find(".smallImg").attr("src","${staticPath}/img/more03.png");
+				$(this).parent().find(".box-outer").show();
+				$(this).parent().parent().siblings().find(".box-outer").hide();
+				boolen=true;
+				$(this).on("click",function(){
+					if(boolen){
+						$(this).attr("src","${staticPath}/img/more03.png");
+						$(this).parent().find(".box-outer").hide();
+						boolen=false;
+					}else{
+						$(this).attr("src","${staticPath}/img/more02.png");
+						$(this).parent().find(".box-outer").show();
+						boolen=true;
+					}
+				});
+				var actvityuserid=$(this).parent().parent().find(".iddata").find(".actvityuserid").val();
+				$(".box-inner ul").html("");
+				$("#loadingInfo").show();
+				 $.ajax({
+					type: 'POST',
+					url: '${basePath}/oneMoneyShopConfig/lookWinInfo',
+					data:{
+						"oneMoneyWxUserId": actvityuserid
+					},
+					success: function(data){ 
+						//console.log(data);
+						$("#loadingInfo").hide();
+						if(data!=null){
+							$(".box-inner ul").html("");
+							 $(".box-inner ul").append("<li>" +
+								"<span class='circle'></span>"+
+								"<span class='userName'>"+data.NICKNAME+"</span>"+
+								"<span class='cutMoney'>中奖</span>"+
+							"</li>") 
+						}
+					},
+					error:function(data){
+						$("#loadingInfo").hide();
+						alert("网络连接异常，请稍后再试");
+					}
+				});
+		});
+		$(".box-outer").on("click",function(event){
+			event.stopPropagation();
+		});
+		//点击查看明细传给后台的值
+		var actvityuserid;
+		$(".more_href a").on("click",function(){
+			actvityuserid=$(this).parent().parent().find(".iddata").find(".actvityuserid").val();
+			$(this).attr("href",'${basePath}/oneMoneyShopConfig/sendWinInfo?oneMoneyWxUserId='+actvityuserid);
+		})	
+		
+		
+		/* 分页查询 */
+		$(function(){
+			adminAjax( 1 );
+			$(".manager-second-but").click(function(){//点击下一页
+				var total = Number( $("#admin-total").text() );
+				var page = Number( $("#admin-page").text() );
+				if( total > page ){
+					adminAjax( page + 1 );
+				}
+			});
+			
+			$(".manager-first-but").click(function(){//点击上一页
+				var page = Number( $("#admin-page").text() );
+				if( page > 1 ){
+					adminAjax( page - 1 );
+				}
+			});
+			$("#input-page").on("keyup",function(e){
+				if(e.keyCode==13){
+					$(".skip-btn").click();
+				}
+			});
+			
+			$(".skip-btn").click(function(){
+				var page = Number( $("#input-page").val() );
+				if(page==0){
+					page=page+1;
+				}
+				adminAjax( page );
+			})
+			$("#search").click(function(){
+				var name=$("#name").val();
+				var activityId='${activityId}';
+				var state=$("#bargaining-situations").val();
+				var goodsState=$("#delivery-situations").val();
+				$("#loadingInfo").show();
+				$.ajax({
+					data : { 
+						nickName : name,
+						activityId:activityId,
+						currentPage : 1
+						},
+					
+					type:"GET",
+					dataType : "JSON",
+					url:"${basePath}/oneMoneyShopConfig/getOneMoneyWxUserInfoPage",
+					success : function(data){
+						$("#loadingInfo").hide();
+						if( data != false ){
+							checkLoad( data );
+							$("#input-page").val("");
+						} else {
+							$(".table-tbody table").html("");
+							$("#admin-curent").text( "1/1" );
+							$("#admin-total").text( '1' );
+							$("#admin-page").text( '1' );
+						}
+					},
+					error : function(){
+						$("#loadingInfo").hide();
+						alert("网络连接异常，请稍后再试");
+					}
+				});
+			});
+		})
+		
+		/* 分页查询 */
+		function checkLoad( data ){
+				$(".table-tbody table").html("");
+				$("#admin-curent").text( data.currentPage + "/" + data.totalPages );
+				$("#admin-total").text( data.totalPages );
+				$("#admin-page").text( data.currentPage );
+				for( var i = 0; i < data.allAdmins.length; i++ ){
+					var adminObj = $(".admin-obj:eq(0)").clone(true);
+					var adminArray = data.allAdmins[i];
+					adminObj.find(".index").text(i+1);
+					adminObj.find(".iddata span").text( decodeURI(adminArray.nickName));
+					adminObj.find(".iddata .actvityuserid").val( adminArray.id );
+					adminObj.find(".headPic img").attr( "src",adminArray.headimgurl);
+					adminObj.find(".jionTime").text( adminArray.create_time);
+					/* 中奖情况 */
+					if(adminArray.state=="0"){
+						adminObj.find(".bargain-status span").text( "未中奖");
+						adminObj.find(".bargain-status img").show();
+					}else{
+						adminObj.find(".bargain-status span").text( "中奖");
+						adminObj.find(".bargain-status img").hide();
+					}
+					adminObj.find(".more_href a").text("查看明细");
+					$(".table-tbody table").append( adminObj );
+				}
+			}
+			 
+		function adminAjax( page ){
+			var name=$("#name").val();
+			var activityId='${activityId}';
+			$("#loadingInfo").show();
+			$.ajax({
+				data : { 
+					nickName : name,
+					activityId:activityId,
+					currentPage : page
+				},
+				type:"GET",
+				dataType : "JSON",
+				url:"${basePath}/oneMoneyShopConfig/getOneMoneyWxUserInfoPage",
+				success : function(data){
+					$("#loadingInfo").hide();
+					checkLoad( data );
+				},
+				error : function(){
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+			
+			$("#export").click(function(){
+				location.href="${basePath}/oneMoneyShopConfig/exportOneMoneyInfoExcel?activityId=${activityId}";
+			});
+		}
+	</script>
+
+	
+</html>

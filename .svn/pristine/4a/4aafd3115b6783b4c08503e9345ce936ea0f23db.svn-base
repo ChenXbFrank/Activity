@@ -1,0 +1,64 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+.main{
+	margin-top: 60px;
+	margin-left: 80px;
+}
+.OperationLog{
+	width: 9.15vw;
+	height: 12.07vw;
+	background-color: #e87352;
+	float:left;
+	text-align: center;
+	color: white;
+}
+.OperationLog img{
+	width: 6.51vw;
+	height: 5.19vw;
+	margin-left: 1.17vw;
+	padding-top: 1.46vw;
+}
+.OperationLog p{
+	margin-top: 2.92vw;
+	font-size: 1vw;
+}
+.PublicSignal{
+	width: 9.15vw;
+	height: 12.07vw;
+	background-color: #e87352;
+	float:left;
+	margin-left: 2.92vw;
+	text-align: center;
+	color: white;
+}
+.PublicSignal img{
+	width: 6.51vw;
+	height: 5.19vw;
+	margin-left: 1.17vw;
+	padding-top: 1.46vw;
+}
+.PublicSignal p{
+	margin-top: 2.92vw;
+	font-size: 1vw;
+}
+.ProductCenter{
+	width: 9.15vw;
+	height: 12.07vw;
+	background-color: #e87352;
+	float:left;
+	margin-left: 2.92vw;
+	text-align: center;
+	color: white;
+}
+.ProductCenter img{
+	width: 3.66vw;
+	height: 5.19vw;
+	margin-left: 0.73vw;
+	padding-top: 1.46vw;
+}
+.ProductCenter p{
+	margin-top: 2.92vw;
+	font-size: 1vw;
+}

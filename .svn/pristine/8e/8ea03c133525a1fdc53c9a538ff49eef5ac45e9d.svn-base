@@ -1,0 +1,242 @@
+<!--[arg basePath,staticPath,integralProductList,openid,PublicNumberId,wxUser,integralId,moblecBackgroundImg,sellerPublicNumber;]-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>积分商城</title>
+<meta content="yes" name="apple-touch-fullscreen">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta content="telephone=no" name="format-detection">
+<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+<script src="${staticPath}/js/common/flexible.debug.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="${staticPath}/css/integral/style.css" />
+	<link rel="stylesheet" href="${staticPath}/css/common/loading.css" />
+<link rel="stylesheet" type="text/css"
+	href="${staticPath}/css/integral/exchange-product.css" />
+<script type="text/javascript"
+	src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+<script type="text/javascript"
+	src="${staticPath}/js/common/jquery-ui.js"></script>
+</head>
+<body>
+	<div class="bg"
+		style="background-image: url('/activityUploadPath${moblecBackgroundImg}')">
+			<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+			<div class="title1">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+		<div class="frist-main">
+			<img src="${staticPath}/New_img/index/saixuan.png" alt="" />
+			<p>我的积分：${wxUser.getSurplusTotalIntegral()}分</p>
+		</div>
+		<div class="main-sceond">
+			<!--[loop(integralProduct:integralProductList){]-->
+			<div class="duihuan_bg"
+				style="background-image: url('${staticPath}/New_img/index/duihuan_bg.png')">
+				<div class="product-pic">
+					<!--[if(integralProduct.getAgent() == '1'){]-->
+					<img src="/activityUploadPath${integralProduct.getProductImg()}" alt="" />
+					<!--[}else{]-->
+					<img src="/activityUploadPath${integralProduct.getProductImg()}" alt="" />
+					<!--[}]-->
+				</div>
+				<div class="aaa">
+					<p>${integralProduct.getProductName()}</p>
+				</div>
+				<div class="duihuan_kuang"
+					style="background-image: url('${staticPath}/New_img/index/duihuan_kuang.png')">
+					<p>兑换积分：<span>${integralProduct.getNeedIntegral()}</span>分</p>
+				</div>
+				<div class="woyao_duihuan_kuang need-exchange"
+					onclick="aa('${integralProduct.getId()}');">
+					<img src="${staticPath}/New_img/index/woduihuan.png" alt="" />
+				</div>
+				<input type="hidden" value="${wxUser.getId()}" id="getid"> <input
+					type="hidden" value="${openid}" id="openid"> <input
+					type="hidden" value="${integralId}" id="integralId">
+			</div>
+			<!--[}]-->
+		</div>
+		<div class="beijingxia">
+		<!-- 	<img src="${staticPath}/New_img/index/jifenduihuan.png" alt="" /> -->
+		</div>
+
+	</div>
+
+	<div class="suspend topPic"
+		style="background: url('${staticPath}/img/integral/-button.png') no-repeat center;">
+		<div class='scrollInfos' style="display: none;">
+			<span class="num"></span>
+			<div class="line"></div>
+			<span class="allNum"></span>
+		</div>
+		<img src="${staticPath}/img/integral/top.png" alt="" class="topIcon"
+			id="aaa" />
+	</div>
+	<div class="screen">
+		<p class="section">积分兑换区间(分)</p>
+		<input type="" name="" id="" placeholder="最小值" value="" class="min" /><span>——</span><input
+			type="" name="" id="" placeholder="最大值" value="" class="max" />
+		<hr class="xian1" />
+		<p class="sort">商品积分排序</p>
+		<div id="yy">
+			<div class="all qu">
+				<p>全部</p>
+				<img src="${staticPath}/img/integral/ok.png" alt="" class="ok" />
+			</div>
+			<div class="low qu">
+				<p>积分由低到高</p>
+				<img src="${staticPath}/img/integral/ok.png" alt="" class="ok"
+					style="display: none;" />
+			</div>
+			<div class="height qu">
+				<p>积分由高到低</p>
+				<img src="${staticPath}/img/integral/ok.png" alt="" class="ok"
+					style="display: none;" />
+			</div>
+		</div>
+		<div class="cancel">取消</div>
+		<div class="success">完成</div>
+	</div>
+	<div class="contain">
+	
+	</div>
+	<script type="text/javascript">
+		/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			/* $(".title img").css({"width":'9.5rem',"height":"7rem"})
+			$(".rule-name p").css({"bottom":"3%"}) */
+			$(".rule").css({"margin-top":"0.6rem"})
+			//alert("huaweishouji")
+		}
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".frist-main").css({"margin-top":"6rem"})
+			$(".main-sceond").css({"margin-top":"1rem"})
+			/* $(".section").css({"height":"12.9rem"}) */
+			
+			//alert("pingguo6666")
+		}
+			$(".frist-main img").click(function() {
+				$(".screen").css({
+					"transform": "translateX(10.15rem)",
+					"transition": "all 0.5s linear",
+					"position": "fixed"
+				})
+			});
+			$(".cancel").click(function() {
+				$(".screen").css({
+					"transform": "translateX(-10.15rem)",
+					"transition": "all 0.5s linear",
+					"position": "fixed"
+				})
+			});
+			var sort = 0;
+			$("#yy .qu").click(function() {
+				$(this).index();
+				sort = $(this).index();
+			})
+			$(".success").click(function() {
+				$(".load").show();
+				$(".screen").css({
+					"transform": "translateX(-10.15rem)",
+					"transition": "all 0.5s linear",
+					"position": "fixed"
+				})
+				var min = $(".min").val();
+				var max = $(".max").val();
+				var all = $(".all input").val();
+				var height = $(".height input").val();
+				var low = $(".low input").val();
+				$.ajax({
+					type: "GET",
+					url: "${basePath}/integral/queryExchangeProduct",
+					async: false,
+					dataType: "json",
+					data: {
+						"min": min,
+						"max": max,
+						"activityId": '${integralId}',
+						"sort": sort
+					},
+					success: function(data) {
+						$(".load").hide();
+						$(".main-sceond").html("");
+						for(var i = 0; i < data.integralProductList.length; i++) {
+							var imgurl = '/activityUploadPath'+data.integralProductList[i].PRODUCT_IMG;
+							var productName = data.integralProductList[i].PRODUCT_NAME;
+							var needIntegral = data.integralProductList[i].NEED_INTEGRAL;
+							//alert(needIntegral);
+							var id = data.integralProductList[i].ID;
+							var li = `<div class="duihuan_bg" style="background-image: url('${staticPath}/New_img/index/duihuan_bg.png')">
+								<div class='product-pic'>
+									<img src="" alt="" />
+								</div>
+								<div class="aaa">
+								<p> 
+								
+								</p>
+							    </div>
+							    <div class="duihuan_kuang" style="background-image: url('${staticPath}/New_img/index/duihuan_kuang.png')">
+								<p>
+								兑换积分：
+								<span>
+									
+								</span>
+								分
+								</p>
+								</div>
+								<div class="woyao_duihuan_kuang need-exchange" onclick="aa('${integralProduct.getId()}');">
+								<img src="${staticPath}/New_img/index/woduihuan.png" alt="" />
+								</div>
+								</div>`
+								$(".main-sceond").append(li);
+							$(".product-pic img").eq(i).attr("src", imgurl);
+							$(".aaa p").eq(i).html(productName);
+							$(".duihuan_kuang span").eq(i).html(needIntegral);
+							$(".need-exchange").eq(i).attr("id", id);
+						}
+					}
+				});
+			})
+			$(".all").click(function() {
+				$(".all img").show();
+				$(".low img").hide();
+				$(".height img").hide()
+			})
+			$(".low").click(function() {
+				$(".all img").hide();
+				$(".low img").show();
+				$(".height img").hide()
+			})
+			$(".height").click(function() {
+				$(".all img").hide();
+				$(".low img").hide();
+				$(".height img").show()
+			})
+			/* 返回顶部 */
+				$('.topPic').click(function() {
+				$('.main-sceond').animate({
+					scrollTop: 0
+				}, 1000);
+			});  
+			function aa(integralProductId) {
+				var openid = $("#openid").val();
+				var integralId = $("#integralId").val();
+				var publicNumberId = '${PublicNumberId}';
+				location.href = "${basePath}/integral/JoinProduct?wxUserId=" + $("#getid").val() + "&exchangeProductId=" + integralProductId + "&openid=" + openid + "&integralId=" + integralId + "&publicNumberId=" + publicNumberId;
+			}
+		</script>
+	<script type="text/javascript"
+		src="${staticPath}/js/integral/scrollStop.js"></script>
+	<script type="text/javascript"
+		src="${staticPath}/js/integral/exchange-product.js"></script>
+</body>
+
+</html>

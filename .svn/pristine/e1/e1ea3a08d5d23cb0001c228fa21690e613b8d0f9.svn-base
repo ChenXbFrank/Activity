@@ -1,0 +1,128 @@
+<!--[arg basePath,staticPath,openid,SPNId,rrwuwList,robRed,follow,sellerPublicNumber;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<title>零钱罐</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/robRed/robRed-record.css" />
+	</head>
+	<body >
+		<div class="bg" style="background-image: url('${staticPath}/New_img/red/lingqian-red-bg.png');">
+		<div class="title">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+		<div class="bg-mask " id="end" style="display: none;background-image: url('/activityUploadPath${robRed.getMoblecBackGroundImg()}');">
+			
+			<div class=erweima>
+				<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+			</div>
+			<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+		</div>
+	
+		<div>
+			<!-- <div class="bigbonus">
+				<div><span class="bonus"></span></div>
+			</div> -->
+			<img src="${staticPath}/New_img/red/lingqian-small-bg.png" alt="" class="red" />
+		</div>
+		<div class="notes">
+			<span class="prizeName">奖品名称</span>
+			<span class="prizeToall">奖品</span>
+			<span class="prizeTime">中奖时间</span><br />
+			<hr />
+			<div class="bigbill">
+				<!--[loop(qcg:rrwuwList){]-->
+				<!--[if(qcg.getPrizeProject() == '谢谢惠顾'){]-->
+				<div class="bill">
+					<div class="prizeName1">${qcg.getPrizeProject()}</div>
+					<div class="prizeToall1">0元</div>
+					<div class="prizeTime1">${qcg.getCreateTime()}</div>
+				</div>
+				<!--[}else if(qcg.getPrizeProject() == '积分'){]-->
+				 <input type="hidden" value="${qcg.getPrizeProject()}" id="tttt">  
+
+				<div class="bill">
+					<span class="prizeName1">${qcg.getPrizeProject()}</span>
+					<span class="prizeToall1">${qcg.getWinningMoney()}分</span>
+					<div class="prizeTime1">${qcg.getCreateTime()}</div>
+				</div>
+				<!--[}else{]-->
+
+				<div class="bill">
+					<div class="prizeName1">${qcg.getPrizeProject()}</div>
+					<div class="prizeToall1">${qcg.getWinningMoney()}元</div>
+					<div class="prizeTime1">${qcg.getCreateTime()}</div>
+				</div>
+				<!--[ }  ]-->
+				<!--[}]-->
+
+			</div>
+
+		</div>
+		<div class="personalCenter">
+			<img src="${staticPath}/New_img/red/gerenzhongxin.png" alt="" />
+		</div>
+		<div class="prompt">
+			<p>温馨提示：您的红包已经抢完，请前往个人中心提现领取。</p>
+		</div>
+		
+		
+		</div>
+		<input type="hidden" value="${openid}" id="openid"/>
+		<input type="hidden" value="${sellerPublicNumber.getId()}" id="sellerPublicNumberId"/> 
+		<input type="hidden" value="${follow}" id="subscribe"/>
+		<script>
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".prompt").css({"margin-top":"15rem"})
+			$(".erweima").css({"margin-top":"1rem"})
+		}
+		/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			/* $(".title img").css({"width":'9.5rem',"height":"7rem"})
+			$(".rule-name p").css({"bottom":"3%"}) */
+			$(".prompt").css({"margin-top":"13rem"});
+			$(".bigbonus").css({"top":"14%"});
+			$(".erweima img").css({"margin-top":"5rem"});
+			//alert("huaweishouji")
+		}
+			var openid = $("#openid").val();
+			var sellerPublicNumberId = $("#sellerPublicNumberId").val();
+			var tt=$("#tttt").val();
+			$(function() {
+				var subscribe=$("#subscribe").val();
+				//alert(subscribe)
+				/*计算总金额 */
+				var sum = 0;
+				$(".prizeToall1").each(function() {
+					sum += parseFloat(parseFloat($(this).html()).toFixed(2));
+				})
+					if(tt=='积分'){
+						$(".bonus").html( sum.toFixed(2)+'分' );
+					}else{
+						$(".bonus").html( sum.toFixed(2)+'元' );
+					}
+				
+				/*点击个人中心*/
+				$(".personalCenter").click(function() {
+					//alert(subscribe)
+					
+					if(subscribe==1){
+						$("#end").css({"display":"none"});
+						location.href = "${basePath}/personalCenter/ActivityPresonalCenter?openid="+openid+"&BPN="+sellerPublicNumberId;
+					}else if(subscribe==0){
+						$("#end").css({"display":"block"})	
+					}
+					
+				});
+			})
+		</script>
+	</body>
+
+</html>

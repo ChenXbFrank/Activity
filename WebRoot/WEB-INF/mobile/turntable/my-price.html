@@ -1,0 +1,285 @@
+<!--[arg basePath,staticPath,ttwwList,appId,SPNId,openid,turnTablewxUserId,follow,sellerPublicNumber,turnTable,turnTablewWinningId;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<title>我的奖品</title>
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntable/style.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntable/my-price.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/loading.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.js"></script>
+	</head>
+	<body>
+		<div class="bg" style="background-image: url(${staticPath}/New_img/turntable/wojiangp.png);">
+		<div class="title">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+			<div class="price-bg" >
+				<div class="record">
+					<!--[loop(turnTableWxUserWinning:ttwwList){]-->
+					<!--[if(turnTableWxUserWinning.getPrizeType() == '2'){]-->
+					<div class="record1">
+						<div class="awardsPictures">
+							<img src="${staticPath}/img/turntable/home/jinbi-img.png" alt="" />
+						</div>
+						<div class="awardstext">
+							<p>中奖时间:<span class="winningTime">${turnTableWxUserWinning.getCreateTime()}</span></p>
+							<p>奖品:${turnTableWxUserWinning.getPrizeProject()}<span class="integralValue">${turnTableWxUserWinning.getWinningMoney()}</span>分</p>
+							<p><img class="receiptStatus" src="${staticPath}/New_img/turntable/yilingqu.png" alt="" /></p>
+						</div>
+					</div>
+					<!--[}else if(turnTableWxUserWinning.getPrizeType() == '1'){]-->
+
+					<!--[if(turnTableWxUserWinning.getState() == '1'){]-->
+					<!-- 已领取 -->
+					<div class="record1">
+						<input type="hidden" value="${turnTableWxUserWinning.getTurntableWxuserWinningId()}" class="prizeId" />
+						<div class="awardsPictures">
+							<img src="/activityUploadPath${turnTableWxUserWinning.getPrizeProjectImg()}" alt="" />
+						</div>
+
+						
+						<div class="awardstext">
+							<p>中奖时间:<span class="winningTime">${turnTableWxUserWinning.getCreateTime()}</span></p>
+							<p>奖品:${turnTableWxUserWinning.getPrizeProject()}<span class="integralValue">1</span>个</p>
+							<p><img class="receiptStatus" src="${staticPath}/New_img/turntable/yilingqu.png" alt="" /></p>
+						</div>
+					</div>
+					<!--[}else if(turnTableWxUserWinning.getState() == '2'){]-->
+					<!-- 未填写地址 -->
+					<div class="record1">
+						<input type="hidden" value="${turnTableWxUserWinning.getTurntableWxuserWinningId()}" class="prizeId" />
+						<div class="awardsPictures">
+							<img src="/activityUploadPath${turnTableWxUserWinning.getPrizeProjectImg()}" alt="" />
+						</div>
+
+						
+						<div class="awardstext">
+							<p>中奖时间:<span class="winningTime">${turnTableWxUserWinning.getCreateTime()}</span></p>
+							<p>奖品:${turnTableWxUserWinning.getPrizeProject()}<span class="integralValue">1</span>个</p>
+							<p><img class="receiptStatus addAddress" src="${staticPath}/New_img/turntable/tianxie.png" alt="" /></p>
+						</div>
+					</div>
+					<!--[}else if(turnTableWxUserWinning.getState() == '3'){]-->
+					<!-- 已填写地址 -->
+					<div class="record1">
+						<div class="awardsPictures">
+							<img src="/activityUploadPath${turnTableWxUserWinning.getPrizeProjectImg()}" alt="" />
+						</div>
+						<div class="awardstext">
+							<p>中奖时间:<span class="winningTime">${turnTableWxUserWinning.getCreateTime()}</span></p>
+							<p>奖品:${turnTableWxUserWinning.getPrizeProject()}<span class="integralValue">1</span>个</p>
+							<p><img class="receiptStatus " src="${staticPath}/New_img/turntable/daifahuo.png" alt="" /></p>
+						</div>
+					</div>
+
+					<!--[}else if(turnTableWxUserWinning.getState() == '4'){]-->
+					<!-- 已发货 -->
+					<div class="record1">
+						<div class="awardsPictures">
+							<img src="/activityUploadPath${turnTableWxUserWinning.getPrizeProjectImg()}" alt="" />
+						</div>
+						<div class="awardstext">
+							<p>中奖时间:<span class="winningTime">${turnTableWxUserWinning.getCreateTime()}</span></p>
+							<p>奖品:${turnTableWxUserWinning.getPrizeProject()}<span class="integralValue">1</span>个</p>
+							<p><img class="receiptStatus " src="${staticPath}/New_img/turntable/yifahuo.png" alt="" /></p>
+						</div>
+					</div>
+
+					<!--[}else if(turnTableWxUserWinning.getState() == '5'){]-->
+					<!-- 未发货 -->
+					<div class="record1">
+						<div class="awardsPictures">
+							<img src="/activityUploadPath${turnTableWxUserWinning.getPrizeProjectImg()}" alt="" />
+						</div>
+						<div class="awardstext">
+							<p>中奖时间:<span class="winningTime">${turnTableWxUserWinning.getCreateTime()}</span></p>
+							<p>奖品:${turnTableWxUserWinning.getPrizeProject()}<span class="integralValue">1</span>个</p>
+							<p><img class="receiptStatus " src="${staticPath}/New_img/turntable/weifahuo.png" alt="" /></p>
+						</div>
+					</div>
+
+					<!--[}else if(turnTableWxUserWinning.getState() == '6'){]-->
+					<!-- 已支付 -->
+					<div class="record1">
+						<div class="awardsPictures">
+							<img src="/activityUploadPath${turnTableWxUserWinning.getPrizeProjectImg()}" alt="" />
+						</div>
+						<div class="awardstext">
+							<p>中奖时间:<span class="winningTime">${turnTableWxUserWinning.getCreateTime()}</span></p>
+							<p>奖品:${turnTableWxUserWinning.getPrizeProject()}<span class="integralValue">1</span>个</p>
+							<p><img class="receiptStatus " src="${staticPath}/New_img/turntable/yizhifu.png" alt="" /></p>
+						</div>
+					</div>
+					<!--[ }  ]-->
+					<!--[}else if(turnTableWxUserWinning.getPrizeType() == '3'){]-->
+					<div class="record1">
+						<div class="awardsPictures">
+							<img src="${staticPath}/img/turntable/home/hongbao-img.png" alt="" />
+						</div>
+						<div class="awardstext">
+							<p>中奖时间:<span class="winningTime">${turnTableWxUserWinning.getCreateTime()}</span></p>
+							<p>奖品:${turnTableWxUserWinning.getPrizeProject()}<span class="integralValue">${turnTableWxUserWinning.getWinningMoney()}</span>元</p>
+							<p><img class="receiptStatus" src="${staticPath}/New_img/turntable/yilingqu.png" alt="" /></p>
+						</div>
+					</div>
+					<!--[}else if(turnTableWxUserWinning.getPrizeType() == '4'){]-->
+					<div class="record1">
+						<div class="awardsPictures">
+							<img src="${staticPath}/img/turntable/my-price/jiangpingliebiao-img.png" alt="" />
+						</div>
+						<div class="awardstext">
+							<p>中奖时间:<span class="winningTime">${turnTableWxUserWinning.getCreateTime()}</span></p>
+							<p>奖品:${turnTableWxUserWinning.getPrizeProject()}</p>
+							<p></p>
+						</div>
+					</div>
+					<!--[ }  ]-->
+					<!--[}]-->
+				</div>
+			</div>
+		
+			<div class="foot">
+				<div class="personCenter">
+					<img src="${staticPath}/img/turntable/home/ge3.png" alt="" />
+				</div>
+			</div> 
+			
+		</div>
+			<div class="bg-mask end" id="end" style="display: none;background-image: url('/activityUploadPath${turnTable.getMoblecBackGroundImg()}');">
+				
+				<div class='erweima'>
+					<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+				</div>
+				<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+			</div>
+				<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+			
+		<input type="hidden" value="${openid}" id="openid" />
+		<input type="hidden" value="${SPNId}" id="SPNId" />
+		<input type="hidden" value="${follow}" id="subscribe"/>
+	</body>
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script>
+	
+	/* 华为 */
+	if(screen.height<=640 && screen.width<=360){
+		$(".title img").css({"width":'9.5rem',"height":"7rem"})
+		$(".rule-name p").css({"bottom":"3%"})
+		$(".erweima img").css({"margin-top":"5rem"})
+		//alert("huaweishouji")
+	}
+	/* 苹果x */
+	if(screen.height==812 && screen.width==375){
+		$(".price-bg").css({"margin-top":"5rem"})
+		
+		
+		//alert("pingguo6666")
+	}
+	
+	
+	
+	
+	
+		var subscribe=$("#subscribe").val();
+		$(".addAddress").on("click", function() {
+			if(subscribe==1){
+				$(".end").css({"display":"none"});
+				var prizeId = $(this).parent().parent().find(".prizeId").val();
+				$.ajax({
+					type: "GET",
+					url: "${basePath}/index/WxConfig",
+					async: false,
+					dataType: "json",
+					data: { "locationUrl": location.href },
+					success: function(config) {
+						wx.config({
+							debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+							appId: config.appId, // 必填，公众号的唯一标识
+							timestamp: config.timestamp, // 必填，生成签名的时间戳
+							nonceStr: config.nonceStr, // 必填，生成签名的随机串
+							signature: config.signature, // 必填，签名，见附录1
+							jsApiList: ['openAddress'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+						});
+					}
+				});
+				wx.ready(function() {
+					wx.openAddress({
+						success: function(res) {
+							var provice = res.provinceName;
+							var city = res.cityName;
+							var counties = res.countryName;
+							var detail = res.detailInfo;
+							var tel = res.telNumber;
+							var name = res.userName;
+							var address = provice + city + counties + detail;
+							//保存收货地址到服务器
+							submitAddress({
+								"tel": tel,
+								"name": name,
+								"address": address,
+								"turnTablewWinningId": '${turnTablewWinningId}'
+							});
+						},
+						cancel: function(esg) {
+
+						},
+						fail: function(res) {
+
+						}
+					});
+				});
+				
+			}else if(subscribe==0){
+				$(".end").css({"display":"block"});
+			}
+		})
+		//保存收货地址到服务器
+		function submitAddress(data) {
+			var appId = '${appId}';
+			var turnTablewxUserId = '${turnTablewxUserId}';
+			var openid = $("#openid").val();
+			var SPNId = $("#SPNId").val();
+			var turnTablewWinningId='${turnTablewWinningId}';
+			$.ajax({
+				type: "GET",
+				url: "${basePath}/turntable/turntablePrizeAddress", //FIXME 此地址需要更换
+				async: false,
+				dataType: "json",
+				data: data,
+				success: function(response) {
+					
+					location.href = "${basePath}/turntable/myTurntablePrize?openid=" + openid + "&SPNId=" + SPNId + "&AppId=" + appId + "&turnTablewxUserId=" + turnTablewxUserId+ "&turnTablewWinningId=" + turnTablewWinningId;
+				},
+				error: function(error) {
+					alert("保存失败");
+				}
+			});
+		}
+		
+		$(".personCenter").on("click", function() {
+			if(subscribe==1){
+				$(".end").css({"display":"none"});
+				var openid = $("#openid").val();
+				var SPNId = $("#SPNId").val();
+				location.href = "${basePath}/personalCenter/ActivityPresonalCenter?openid=" + openid + "&BPN=" + SPNId;
+			}else if(subscribe==0){
+				$(".end").css({"display":"block"});
+				$(".bg").css({"display":"none"});
+			}
+			
+		})
+	</script>
+
+</html>

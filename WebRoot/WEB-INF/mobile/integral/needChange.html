@@ -1,0 +1,149 @@
+<!--[arg basePath,staticPath,wxUser,integralProduct,openid,integralId,publicNumberId,moblecBackgroundImg,sellerPublicNumber;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<title>我要兑换</title>
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/integral/style.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/integral/needChange.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/loading.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.js"></script>
+	</head>
+	<body style="background-image: url('/activityUploadPath${moblecBackgroundImg}')">
+	<div class="title1">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+		<header>
+			<span class='current-integral'>您的当前积分：<span id="integral-number">${wxUser.getSurplusTotalIntegral()}</span></span>
+			<div class="current-info" style="display:none">
+				<img src="${staticPath}/img/integral/warning.png" alt="" />
+				<span>您当前的积分不足<a href="#"></a></span>
+			</div>
+		</header>
+		<section>
+			<div class="exchange-product">
+				<img src="/activityUploadPath${integralProduct.getProductImg()}" alt="" />
+			</div>
+			<div class="product-infos" style="background-image: url('${staticPath}/New_img/index/lijiduihuan.png')">
+				<p class="product-name">${integralProduct.getProductName()}</p>
+				<div class='need-integral' style="background-image: url('${staticPath}/New_img/index/duihuan_kuang.png')">兑换积分：<span>${integralProduct.getNeedIntegral()}</span></div>
+			</div>
+			<footer>
+			<div class="exchange-btn" style="display:none"><img src="${staticPath}/New_img/index/woduihuan.png" alt="" class="chanp" /></div>
+			<div class="exchange-btn1" style="display:none"><img src="${staticPath}/New_img/index/huise.png" alt="" class="chanp" /></div>
+		</footer>
+		</section>
+		<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+		<input type="hidden" value="${openid}" id="openid">
+		<input type="hidden" value="${integralId}" id="integralId">
+		<input type="hidden" value="${integralProduct.getId()}" id="integralProductId">
+		<input type="hidden" value="${wxUser.getId()}" id="wxUserId">
+	</body>
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script>
+	/* 华为 */
+	if(screen.height<=640 && screen.width<=360){
+		
+		/* $(".title img").css({"width":'9.5rem',"height":"7rem"})*/
+		/* $("section").css({"margin-top":"-0.6rem"})  */
+		$("header").css({"margin-top":"3.2rem"})
+		/* $("exchange-product").css({"margin-top":"3.9rem"}) */
+		$(".rule").css({"margin-top":"0.6rem"})
+		//alert("huaweishouji")
+	}
+	/* 苹果x */
+	if(screen.height==812 && screen.width==375){
+		$(".frist-main").css({"margin-top":"6rem"})
+		$(".main-sceond").css({"margin-top":"1rem"})
+		/* $(".section").css({"height":"12.9rem"}) */
+		
+		//alert("pingguo6666")
+	}
+		
+	
+		$(function() {
+			var surplusTotalIntegral = parseInt('${wxUser.getSurplusTotalIntegral()}');
+			var needIntegral = parseInt('${integralProduct.getNeedIntegral()}');
+			if(surplusTotalIntegral > needIntegral) {
+				$(".exchange-btn").show();
+				$(".exchange-btn1").hide();
+				$(".current-info").hide();
+				$(".exchange-btn").attr("disabled", "disabled");
+			} else if(surplusTotalIntegral < needIntegral) {
+				$(".exchange-btn").hide();
+				$(".exchange-btn1").show();
+				$(".current-info").show();
+				$(".exchange-btn1").unbind();
+			} else if(surplusTotalIntegral = needIntegral) {
+				$(".exchange-btn").show();
+				$(".exchange-btn1").hide();
+				$(".current-info").hide();
+				$(".exchange-btn").attr("disabled", "disabled");
+			}
+			/*点击立即兑换 */
+			$(".exchange-btn").click(function() {
+				
+				$.ajax({
+					type: "GET",
+					url: "${basePath}/index/WxConfig",
+					async: false,
+					dataType: "json",
+					data: {
+						"locationUrl": location.href
+					},
+					success: function(config) {
+						/* alert("1") */
+						
+						wx.config({
+							debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+							appId: config.appId, // 必填，公众号的唯一标识
+							timestamp: config.timestamp, // 必填，生成签名的时间戳
+							nonceStr: config.nonceStr, // 必填，生成签名的随机串
+							signature: config.signature, // 必填，签名，见附录1
+							jsApiList: ['openAddress'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+						});
+					}
+				});
+				wx.ready(function() {
+					wx.openAddress({
+						success: function(res) {
+							
+							var provice = res.provinceName;
+							var city = res.cityName;
+							var counties = res.countryName;
+							var detail = res.detailInfo;
+							var tel = res.telNumber;
+							var name = res.userName;
+							var address = provice + city + counties + detail;
+							var integralProductId = $("#integralProductId").val();
+							var openid = $("#openid").val();
+							var integralId = $("#integralId").val();
+							var publicNumberId = '${publicNumberId}';
+							
+							location.href = "${basePath}/integral/nowExchange?integralProductId=" + integralProductId + "&name=" + name + "&tel=" + tel + "&address=" + address + "&openid=" + openid + "&integralId=" + integralId + "&wxUserId=" + $("#wxUserId").val() + "&publicNumberId=" + publicNumberId;
+						},
+						cancel: function(esg) {
+
+						},
+						fail: function(res) {
+
+						}
+					});
+				});
+
+			})
+		})
+	</script>
+
+</html>

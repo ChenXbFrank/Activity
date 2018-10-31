@@ -1,0 +1,816 @@
+	//活动名称验证
+	function activityNameValidate() {
+		if($("#active-name").val() == "") {
+			$(".activity-volidate").show();
+		} else {
+			$(".activity-volidate").hide();
+		}
+	}
+	//时间验证
+	function timeValidate() {
+		if($("#startTime").val() == "" && $("#endTime").val() == "") {
+			$(".time-volidate").show();
+		} else {
+			$(".time-volidate").hide();
+		}
+	}
+	//活动介绍验证
+	function introduceValidate() {
+		if(!$("#textarea").val()) {
+			$(".introduce-volidate").show();
+		} else {
+			$(".introduce-volidate").hide();
+		}
+	}
+	//运单信息是否选择验证
+	function billValidate() {
+		if($("#table-outer1 .table-tbody table tr").length == 0) {
+			$(".bill-volidate").show();
+		} else {
+			$(".bill-volidate").hide();
+		}
+	}
+	//奖品设置是否选择验证
+	function awardValidate() {
+		if($("#table-outer4 .table-tbody table tr").length == 0) {
+			$(".award-volidate").show();
+		} else {
+			$(".award-volidate").hide();
+		}
+	}
+
+	//将对象转化成字符串
+	function objTransform(jsonobj) {
+		return JSON.stringify(jsonobj);
+	}
+
+	//日期开始
+	$("#startTime").datepicker({
+		minDate: new Date(),
+		onSelect: function(startText) {
+			startText = $('#startTime').val(); //开始时间
+			$('#endTime').datepicker('option', 'minDate', startText);
+		}
+	});
+
+	//结束时间
+	$("#endTime").datepicker({
+		minDate: new Date(),
+		onSelect: function(endText) {
+			endText = $('#endTime').val();
+			$('#startTime').datepicker('option', 'maxDate', endText);
+		}
+	});
+
+	//日期开始
+	$("#startTime2").datepicker({
+		onSelect: function(startText) {
+			maxDate: new Date(),
+			startText2 = $('#startTime2').val(); //开始时间
+			$('#endTime2').datepicker('option', 'minDate', startText2);
+		}
+	});
+
+	//结束时间
+	$("#endTime2").datepicker({
+		onSelect: function(endText) {
+			endText2 = $('#endTime2').val();
+			$('#startTime2').datepicker('option', 'maxDate', endText2);
+		}
+	});
+
+	/*
+	 * 模拟下拉框
+	 */
+	var open = true;
+	$("#bargaining-situations").on("click", function(event) {
+		event.stopPropagation(); //阻止冒泡
+		if(open) {
+			$(".select1").show();
+			open = false;
+		} else {
+			$(".select1").hide();
+			open = true;
+		}
+	});
+	$(".outer1 ul li").on("click", function(event) {
+		//this指当前的这个Li
+		event.stopPropagation(); //阻止冒泡
+		$(this).css("background", "#d0d0d0").siblings().css("background", "white");
+		$("#bargaining-situations").val($(this).html());
+		$(".select1").hide();
+		open = true;
+	})
+	$(document).click(function() {
+		$(".select1").hide();
+		open = true;
+	});
+
+	$(".outer1 ul li").on("mouseover", function() {
+		//this指当前的这个Li
+		$(this).css("background", "#d0d0d0").siblings().css("background", "white");
+	});
+
+	/*
+	 * 模拟下拉框
+	 */
+	var open = true;
+	$("#bargaining-situation").on("click", function(event) {
+		event.stopPropagation(); //阻止冒泡
+		if(open) {
+			$(".select").show();
+			open = false;
+		} else {
+			$(".select").hide();
+			open = true;
+		}
+	});
+	$(".addPic-left .outer ul li").on("click", function(event) {
+		//this指当前的这个Li
+		event.stopPropagation(); //阻止冒泡
+		$(this).css("background", "#d0d0d0").siblings().css("background", "white");
+		$("#bargaining-situation").val($(this).html());
+		$(".select").hide();
+		open = true;
+	})
+	$(document).click(function() {
+		$(".select").hide();
+		open = true;
+	});
+
+	$(".addPic-left .outer ul li").on("mouseover", function() {
+		//this指当前的这个Li
+		$(this).css("background", "#d0d0d0").siblings().css("background", "white");
+	});
+
+
+	/*动态创建运单信息表格*/
+	function CreateTableWayBill(rowCount, content) {
+		/*动态创建表格之前先将除表头外的信息清空*/
+		$('#table-outer1 .table-tbody table').html("");
+		for(var i = 0; i < rowCount; i++) {
+			var tr = $("<tr></tr>");
+			tr.appendTo($('#table-outer1 .table-tbody table'));
+			var td1 = $('<td>' + content[i].outNo +
+				'</td>');
+			var td2 = $('<td>' + content[i].recsellerName +
+				'</td>');
+			var td3 = $('<td>' + content[i].productName +
+				'</td>');
+
+			var td4 = $('<td>' + content[i].degree +
+				'</td>');
+			var td5 = $('<td>' + content[i].volume +
+				'</td>');
+			var td6 = $('<td class="alcoholTotal">' + content[i].spec +
+				'</td>');
+			var td7 = $('<td class="caseNumber">' + content[i].boxCode +
+				'</td>');
+			var td8 = $('<td>' + content[i].brandsName +
+				'</td>');
+			var td9 = $('<td>' + content[i].outTime.substring(0, 19) +
+				'</td>');
+			var td10 = $('<td>' + content[i].status +
+				'</td>');
+			var td11 = $("<td class='delete' onclick='deleteTr(this)'>删除</td>");
+			td1.appendTo(tr);
+			td2.appendTo(tr);
+			td3.appendTo(tr);
+			td4.appendTo(tr);
+			td5.appendTo(tr);
+			td6.appendTo(tr);
+			td7.appendTo(tr);
+			td8.appendTo(tr);
+			td9.appendTo(tr);
+			td10.appendTo(tr);
+			td11.appendTo(tr);
+		}
+	};
+
+	/*计算总瓶数*/
+	function awardNumSum() {
+		var sum = 0;
+		for(var i = 0; i < billLists.length; i++) {
+			sum = sum + parseInt(billLists[i].spec) * parseInt(billLists[i].boxCode);
+		}
+		$("#sum").html(sum);
+		countAwardTotal();
+	}
+
+	/*点击每一行的delete就会删除该行的数据*/
+	var DeleteIndex;
+
+	function deleteTr(obj) {
+		DeleteIndex = $(obj).parent('tr').index();
+		if($("#table-outer4 .table-tbody tr").length == 0) {
+			/*刪除对应的数组项*/
+			billLists.splice(DeleteIndex, 1);
+			$(obj).parent('tr').remove();
+			billValidate();
+			awardNumSum();
+		} else {
+			$(".tishi1").show();
+		}
+	}
+
+	$(".tishi1 .yes1").on("click", function() {
+		$(".tishi1").hide();
+		/*刪除对应的数组项*/
+		billLists.splice(DeleteIndex, 1);
+		CreateTableWayBill(billLists.length, billLists)
+		awardNumSum();
+		$("#table-outer4 .table-tbody table").html(""); //清空表格
+		addAwards = []; //清空奖品设置数组中的数据
+		countAwardTotal();
+		billValidate();
+		awardValidate();
+	});
+
+	//点击提示1的取消事件
+	$(".tishi1 .no1").on("click", function() {
+		$(".tishi1").hide();
+	})
+
+	/*点击奖品设置出现/隐藏弹窗*/
+
+	$("#otherPic").on("click", function() {
+		//判断点击奖品设置，当运单信息没有内容时，提示
+		var billListslen = billLists.length;
+		if(billListslen != 0) {
+			if(addAwards.length >= $("input[name='awardNum']:checked").val()) {
+				$("#otherProduct").hide();
+			} else {
+				$("#otherProduct").show();
+				//清空弹窗里面的输入框
+				$("#bargaining-situation").val("");
+				$("#bargaining-situation1").val("");
+				$(".big_pattern").hide();
+				$("#proName").val("");
+				$("#proNum").val("");
+				$("#probability").html("");
+				$("#integral").val("");
+				$("#money").val("");
+				$("#remaining-prize-quantity").html("");
+				isClickWhere = false;
+			}
+		} else {
+			$(".tishi5").show();
+			$(".tishi5 .yes5").on("click", function() {
+				$(".tishi5").hide();
+			})
+		}
+
+	});
+	$("#otherPro-close,#otherPic-cancel").on("click", function() {
+		$("#otherProduct").hide();
+	});
+	/*改变奖品类型的下拉框时，分别出现不同数据配置*/
+	$(".addPic-left ul li").on("click", function() {
+		var awardType = $("#bargaining-situation").val();
+		if(awardType == "红包") {
+			$(".big_pattern").hide();
+			$(".proName").show();
+			$(".redBag").show();
+			$(".matter,.integral,.thanks").hide();
+			$("#proName").val("红包");
+		} else if(awardType == "积分") {
+			$(".big_pattern").hide();
+			$(".proName").show();
+			$(".integral").show();
+			$(".matter,.redBag,.thanks").hide();
+			$("#proName").val("积分");
+		} else if(awardType == "实物") {
+			$(".big_pattern").show();
+			$(".proName").show();
+			$(".matter").show();
+			$(".integral,.redBag,.thanks").hide();
+			
+		} else if(awardType == "谢谢惠顾") {
+			$(".big_pattern").hide();
+			$(".thanks").show();
+			$(".integral,.redBag,.matter").hide();
+			$(".proName").hide();
+			$("#proName").val("");
+		}
+	});
+	var addAwards = [];
+	var isClickWhere = false; //false代表点击的奖品设置按钮，true代表点击的修改
+	//当点击奖品设置的按钮时
+	$("#otherPic-save").on("click", function() {
+		var volidSuccess = false;
+		//验证弹窗的输入框信息是否填写完整
+		if($("#bargaining-situation").val() != "" && $("#proNum").val() != "" && $("#probability").html() != "") {
+			if($("#bargaining-situation").val() == "红包") {
+				if($("#money").val() != "" && $("#proName").val() != "") {
+					$("#otherProduct").hide();
+					volidSuccess = true;
+				} else {
+					$(".tishi4").show();
+					$(".tishi4 .yes4").on("click", function() {
+						$(".tishi4").hide();
+					})
+				}
+			} else if($("#bargaining-situation").val() == "积分") {
+				if($("#integral").val() != "" && $("#proName").val() != "") {
+					$("#otherProduct").hide();
+					volidSuccess = true;
+				} else {
+					$(".tishi4").show();
+					$(".tishi4 .yes4").on("click", function() {
+						$(".tishi4").hide();
+					})
+				}
+			} else if($("#bargaining-situation").val() == "实物") {
+				/**/
+				if($("#pic1").attr("src").indexOf("upload") > -1 && $("#proName").val() != "") {
+					$("#otherProduct").hide();
+					volidSuccess = true;
+				} else {
+					$(".tishi4").show();
+					$(".tishi4 .yes4").on("click", function() {
+						$(".tishi4").hide();
+					})
+				}
+				/**/
+			} else if($("#bargaining-situation").val() == "谢谢惠顾") {
+				$("#otherProduct").hide();
+				volidSuccess = true;
+			}
+		} else {
+			$(".tishi4").show();
+			$(".tishi4 .yes4").on("click", function() {
+				$(".tishi4").hide();
+			})
+		}
+
+		if(volidSuccess) {
+			if(isClickWhere) {
+				addAwards[index].type = $("#bargaining-situation").val();
+				addAwards[index].name = $("#proName").val();
+				addAwards[index].number = $("#proNum").val();
+				addAwards[index].probability = $("#probability").html();
+				addAwards[index].Pattern = $('input[name="Pattern"]:checked').val();
+				addAwards[index].frame_value = $('#bargaining-situations').val();
+				var awardType = addAwards[index].type;
+				if(awardType == "红包") {
+					addAwards[index].money = $("#money").val();
+					addAwards[index].integral="0";
+					addAwards[index].pic1Src="";
+					addAwards[index].Pattern="";
+					addAwards[index].frame_value='';
+				} else if(awardType == "积分") {
+					addAwards[index].integral = $("#integral").val();
+					addAwards[index].money = "0"; 
+					addAwards[index].pic1Src="";
+					addAwards[index].Pattern="";
+					addAwards[index].frame_value='';
+				} else if(awardType == "实物") {
+					addAwards[index].pic1Src = $("#pic1").attr("src");
+					addAwards[index].money = "0";
+					addAwards[index].integral = ""; 
+					addAwards[index].Pattern=$('input[name="Pattern"]:checked').val();
+					if($('input[name="Pattern"]:checked').val()==1 ){
+						addAwards[index].frame_value="";
+					}else{
+						addAwards[index].frame_value=$('#bargaining-situations').val();
+					}
+				} else if(awardType == "谢谢惠顾") {
+					addAwards[index].name="谢谢惠顾";
+					addAwards[index].pic1Src = "";
+					addAwards[index].money = '0';
+					addAwards[index].integral = "";
+					addAwards[index].Pattern="";
+					addAwards[index].frame_value='';
+				}
+				console.log(addAwards);
+				createTableOtherNew(addAwards.length, addAwards);
+				var checkedNumber1=0;
+				var checkMoney1=0;
+				for(var i in addAwards){
+					checkedNumber1+=parseFloat(addAwards[i].number);
+					checkMoney1+=parseFloat(addAwards[i].money)*parseFloat(addAwards[i].number);
+				}
+				$(".daqian").html(checkMoney1)
+			} else {
+				var addAwardObj = new Object();
+				addAwardObj.type = $("#bargaining-situation").val();
+				if($("#bargaining-situation").val() == "谢谢惠顾") {
+					addAwardObj.name = "谢谢惠顾";
+					addAwardObj.pic1Src = "";
+					addAwardObj.money = '0';
+					addAwardObj.integral = "";
+					addAwardObj.Pattern="";
+					addAwardObj.frame_value="";
+				} else {
+					if($("#bargaining-situation").val() == "实物") {
+						addAwardObj.pic1Src = $("#pic1").attr("src");
+						addAwardObj.money = "0";
+						addAwardObj.integral = "";
+						addAwardObj.Pattern=$('input[name="Pattern"]:checked').val();
+						if($('input[name="Pattern"]:checked').val()==1 ){
+							addAwardObj.frame_value="";
+						}else{
+							addAwardObj.frame_value=$('#bargaining-situations').val();
+						}
+					} else if($("#bargaining-situation").val() == "红包") {
+						addAwardObj.money = $("#money").val();
+						addAwardObj.pic1Src = " ";
+						addAwardObj.integral = "0";
+						addAwardObj.Pattern="";
+						addAwardObj.frame_value="";
+					} else if($("#bargaining-situation").val() == "积分") {
+						addAwardObj.integral = $("#integral").val();
+						addAwardObj.pic1Src = " ";
+						addAwardObj.money = "0";
+						addAwardObj.Pattern="";
+						addAwardObj.frame_value="";
+					}
+					addAwardObj.name = $("#proName").val();
+				}
+				addAwardObj.number = $("#proNum").val();
+				addAwardObj.probability = $("#probability").html();
+				addAwards.push(addAwardObj);
+				var checkedNumber2=0;
+				var checkMoney2=0;
+				for(var i in addAwards){
+					checkedNumber2+=parseFloat(addAwards[i].number);
+					checkMoney2+=parseFloat(addAwards[i].money)*parseFloat(addAwards[i].number);
+				}
+				$(".daqian").html(checkMoney2)
+
+			}
+			createTableOtherNew(addAwards.length, addAwards);
+			awardValidate();
+			console.log(addAwards);
+			awardSetTotal();
+		}
+	})
+
+	/*点击其他奖品表格中每一行的delete就会删除该行的数据*/
+	function deleteOtherProduct(obj) {
+		var index = $(obj).parent().parent('tr').index();
+		/*刪除对应的数组项*/
+		addAwards.splice(index, 1);
+		$(obj).parent().parent('tr').remove();
+		createTableOtherNew(addAwards.length, addAwards);
+		var checkedNumber = 0;
+		for(var i in addAwards) {
+			checkedNumber += parseInt(addAwards[i].number);
+		}
+		$("#residueAwardNum").html(parseInt($("#awardTotal").html() - checkedNumber));
+		$("#needAwardNum").html(parseInt($("input[name='awardNum']:checked").val()) - addAwards.length);
+		//console.log(addAwards);
+		awardValidate();
+		var checkedNumber4=0;
+		var checkMoney4=0;
+		for(var i in addAwards){
+			checkedNumber4+=parseFloat(addAwards[i].number);
+			checkMoney4+=parseFloat(addAwards[i].money)*parseFloat(addAwards[i].number);
+		}
+		$(".daqian").html(checkMoney4)
+	}
+	/*点击修改进行的事件*/
+	var index; //点击修改时是点击的表格中的第几个修改
+	function modify(obj) {
+		isClickWhere = true;
+		//将修改的弹窗显示出来
+		$("#otherProduct").show();
+		//改变弹窗里面的输入框的值
+		index = $(obj).parent().parent().index();
+		var awardType = addAwards[index].type;
+		var awardName = addAwards[index].name;
+		var awardNumber = addAwards[index].number;
+		var awardProbability = addAwards[index].probability;
+		$("#bargaining-situation").val(awardType);
+		$("#proName").val(awardName);
+		$("#proNum").val(awardNumber);
+		$("#probability").html(awardProbability);
+		if(awardType == "红包") {
+			$(".proName").show();
+			$(".redBag").show();
+			$(".matter,.integral,.thanks").hide();
+			var awardMoney = addAwards[index].money;
+			$("#money").val(awardMoney);
+
+		} else if(awardType == "积分") {
+			$(".proName").show();
+			$(".integral").show();
+			$(".matter,.redBag,.thanks").hide();
+			var awardIntegral = addAwards[index].integral;
+			$("#integral").val(awardIntegral);
+		} else if(awardType == "实物") {
+			$(".proName").show();
+			$(".matter").show();
+			$(".integral,.redBag,.thanks").hide();
+			var awardPic1Src = addAwards[index].pic1Src;
+			$("#pic1").attr("src", awardPic1Src);
+		} else if(awardType == "谢谢惠顾") {
+			$(".thanks").show();
+			$(".integral,.redBag,.matter").hide();
+			$(".proName").hide();
+		}
+
+	}
+	
+	/*配置奖品中的复制功能*/
+	var copyIndex;
+	function copyAwardSet(obj){
+		var addAwardsLength=addAwards.length;
+		var index = $(obj).parent().parent('tr').index();
+		copyIndex=index+1;
+		var awardNumChecked=$("input[name='awardNum']:checked").val();
+		if(addAwardsLength<parseInt(awardNumChecked)){
+			copyFunction(obj,index);
+			//在这里判断剩余奖品数是否小于0，小于就给提示，当提示消失，将此行数据删除，让其手动设置
+			var residueAwardNum = parseInt($("#residueAwardNum").html());
+			if(residueAwardNum<0){
+				//给提示
+				$(".tishi7").show();
+			}else{
+				var checkedNumber3=0;
+				var checkMoney3=0;
+				for(var i in addAwards){
+					checkedNumber3+=parseFloat(addAwards[i].number);
+					checkMoney3+=parseFloat(addAwards[i].money)*parseFloat(addAwards[i].number);
+				}
+				$(".daqian").html(checkMoney3)
+			}
+		}
+	}
+	$(".yes7").on("click",function(){
+		$(".tishi7").hide();
+		deletecopy(copyIndex);
+		console.log(addAwards);
+	});
+	
+	function copyFunction(obj,index){
+			var copyData=deepCopy(addAwards[index]);
+			//添加数据到addAwards数组中
+			addAwards.splice(index+1, 0,copyData);
+			//创建复制的这行表格，实现方法重新全部创建表格
+			createTableOtherNew(addAwards.length, addAwards);
+			//修改奖品数
+			var checkedNumber = 0;
+			for(var i in addAwards) {
+				checkedNumber += parseInt(addAwards[i].number);
+			}
+			$("#residueAwardNum").html(parseInt($("#awardTotal").html() - checkedNumber));
+			$("#needAwardNum").html(parseInt($("input[name='awardNum']:checked").val()) - addAwards.length);
+		}
+		
+		
+	/*点击复制，剩余奖品为负数的删除*/
+	function deletecopy(index) {
+		addAwards.splice(index, 1);
+		createTableOtherNew(addAwards.length, addAwards);
+		var checkedNumber = 0;
+		for(var i in addAwards) {
+			checkedNumber += parseInt(addAwards[i].number);
+		}
+		$("#residueAwardNum").html(parseInt($("#awardTotal").html() - checkedNumber));
+		$("#needAwardNum").html(parseInt($("input[name='awardNum']:checked").val()) - addAwards.length);
+		awardValidate();
+	}
+	/*深拷贝*/
+	var deepCopy = function(o) {
+    if (o instanceof Array) {
+	        var n = [];
+	        for (var i = 0; i < o.length; ++i) {
+	            n[i] = deepCopy(o[i]);
+	        }
+	        return n;
+	
+	    } else if (o instanceof Object) {
+	        var n = {}
+	        for (var i in o) {
+	            n[i] = deepCopy(o[i]);
+	        }
+	        return n;
+	    } else {
+	        return o;
+	    }
+	}
+	/*深拷贝结束*/
+	//其他奖品动态创建的表格
+	function createTableOtherNew(rowCount, content) {
+		/*动态创建表格之前先将除表头外的信息清空*/
+		$('#table-outer4 .table-tbody table').html("");
+		for(var i = 0; i < rowCount; i++) {
+			var tr = $("<tr></tr>");
+			tr.appendTo($('#table-outer4 .table-tbody table'));
+			var td1 = $('<td>' + (i + 1) +
+				'</td>');
+			var td2 = $('<td>' + content[i].name +
+				'</td>');
+			var td3 = $('<td>' + content[i].type +
+				'</td>');
+			var td4 = $('<td>' + content[i].number +
+				'</td>');
+			var td5 = $('<td>' + content[i].probability +
+				'</td>');
+			if(content[i].type=='红包'){
+				var td6 = $('<td class="qian">' + content[i].money +
+				'</td>');
+			}else{
+				var td6 = $('<td class="qian">' +0 +
+				'</td>');
+			}
+			var td7 = $("<td><span class='look' onClick='modify(this)'>修改</span>&nbsp;<span class='del' onclick='deleteOtherProduct(this)'>删除</span>&nbsp;<span class='copy' onclick='copyAwardSet(this)'>复制</span></td>");
+			td1.appendTo(tr);
+			td2.appendTo(tr);
+			td3.appendTo(tr);
+			td4.appendTo(tr);
+			td5.appendTo(tr);
+			td6.appendTo(tr);
+			td7.appendTo(tr);
+		}
+	};
+	/*自动填充谢谢惠顾的方法,needAwardNum表示转盘瓣数，residueAwardNum表示剩余奖品个数*/
+	function fillThanks(){
+		var needAwardNum=parseInt($("#needAwardNum").html());
+		var residueAwardNum=parseInt($("#residueAwardNum").html());
+		for(var i=0;i<needAwardNum;i++){
+			var obj=new Object();
+			obj.integral="";
+			obj.money="";
+			obj.name="谢谢惠顾";
+			obj.number="0";
+			obj.pic1Src="";
+			obj.probability="0.00%";
+			obj.type="谢谢惠顾"
+			addAwards.push(obj);
+		}
+		createTableOtherNew(addAwards.length, addAwards);
+		var checkedNumber = 0;
+		for(var i in addAwards) {
+			checkedNumber += parseInt(addAwards[i].number);
+		}
+		$("#residueAwardNum").html(parseInt($("#awardTotal").html() - checkedNumber));
+		$("#needAwardNum").html(parseInt($("input[name='awardNum']:checked").val()) - addAwards.length);
+		awardValidate();
+	}
+	$(".tishi10 .yes1").on("click",function(){
+		fillThanks();
+		$(".tishi10").hide();
+	});
+	$(".tishi10 .no1").on("click",function(){
+		$(".tishi10").hide();
+	});
+	
+	/*
+	 * 计算奖品总数
+	 */
+	function countAwardTotal() {
+		var times = $("input[name='scanTimes']:checked").val();
+		var awardTotalNum = $("#sum").html();
+		var result = parseInt(times) * parseInt(awardTotalNum);
+		$("#awardTotal").html(result);
+		//显示还需设置的奖品个数，剩余奖品数量
+		var needAwardNum = $("input[name='awardNum']:checked").val();
+		var residueAwardNum = $("#awardTotal").html();
+		$("#needAwardNum").html(needAwardNum);
+		$("#residueAwardNum").html(residueAwardNum);
+	}
+	/*
+	 * 当奖品数量失去焦点时，进行中奖概率的计算
+	 */
+	$("#proNum").on("blur", function() {
+		if(isClickWhere == false) {
+			var proNum = parseInt($("#proNum").val());
+			var awardTotal = parseInt($("#awardTotal").html());
+			var residueAwardNum = parseInt($("#residueAwardNum").html());
+			if(proNum > residueAwardNum) {
+				$("#proNum").val(residueAwardNum);
+				proNum = parseInt($("#proNum").val());
+				var countResult = (proNum / awardTotal * 100).toFixed(2) + "%";
+				$("#probability").html(countResult);
+				$("#remaining-prize-quantity").html("0");
+			} else {
+				var countResult = (proNum / awardTotal * 100).toFixed(2) + "%";
+				$("#probability").html(countResult);
+				var remaining_prize_quantity=residueAwardNum-proNum;
+				$("#remaining-prize-quantity").html(remaining_prize_quantity);
+			}
+		} else {
+			var proNum = parseInt($("#proNum").val());
+			var awardTotal = parseInt($("#awardTotal").html());
+			var residueAwardNum = 0;
+			for(var i = 0; i < addAwards.length; i++) {
+				residueAwardNum += parseInt(addAwards[i].number);
+			}
+			residueAwardNum = awardTotal - (residueAwardNum - parseInt(addAwards[index].number));
+			if(proNum > residueAwardNum) {
+				$("#proNum").val(residueAwardNum);
+				proNum = parseInt($("#proNum").val());
+				var countResult = (proNum / awardTotal * 100).toFixed(2) + "%";
+				$("#probability").html(countResult);
+				$("#remaining-prize-quantity").html("0");
+			} else {
+				var countResult = (proNum / awardTotal * 100).toFixed(2) + "%";
+				$("#probability").html(countResult);
+				var remaining_prize_quantity=residueAwardNum-proNum;
+				$("#remaining-prize-quantity").html(remaining_prize_quantity);
+			}
+		}
+
+	})
+
+	var awardSetNum = $("input[name='awardNum']:checked").val();
+
+	function awardSetTotal() {
+		/*获取选中的展示奖品数*/
+		awardSetNum = $("input[name='awardNum']:checked").val();
+		var awardSum = 0; //奖品数量之和
+		var hasSetAwardNum = addAwards.length;
+		for(var i = 0; i < addAwards.length; i++) {
+			awardSum += parseInt(addAwards[i].number);
+		}
+		//显示还需设置的奖品个数，剩余奖品数量
+		var needAwardNum = parseInt(awardSetNum) - parseInt(hasSetAwardNum);
+		//alert(awardSum);
+		var residueAwardNum = parseInt($("#awardTotal").html()) - awardSum;
+		if(needAwardNum >= 0) {
+			$("#needAwardNum").html(needAwardNum);
+		} else {
+			$("#needAwardNum").html("0");
+		}
+		if(residueAwardNum >= 0) {
+			$("#residueAwardNum").html(residueAwardNum);
+		} else {
+			$("#residueAwardNum").html("0");
+		}
+
+		//判断当设置奖品个数(转盘半数)==数组的长度时，判断当奖品数量之和大于或小于奖品总数时
+		if(hasSetAwardNum == awardSetNum) {
+			if(awardSum < parseInt($("#awardTotal").html())) {
+				$(".tishi3").show();
+				$(".yes3").on("click", function() {
+					$(".tishi3").hide();
+				});
+			}
+		}
+		//判断当奖品数量之和大于奖品总数时
+		if(awardSum > parseInt($("#awardTotal").html())) {
+			$("#setAwardNumber").html(awardSetNum);
+		}
+	}
+	//当改变扫码抽奖次数的时候
+	$("input[name='scanTimes']").on("change", function() {
+		countAwardTotal();
+		if(addAwards.length != 0) {
+			$("#table-outer4 .table-tbody table").html(""); //清空表格
+			addAwards = []; //清空奖品设置数组中的数据
+		}
+	})
+	//当改变转盘展示奖品数的时候
+	$("input[name='awardNum']").on("change", function() {
+		countAwardTotal();
+		addAwards = []; //清空奖品设置数组中的数据
+		$("#table-outer4 .table-tbody table").html(""); //清空表格
+	})
+	//积分值限制，只能是大于等于1的整数
+	$("#integral").on("blur", function() {
+		var integral = parseInt($(this).val());
+		if(integral <= 0) {
+			$(this).val("1");
+		}
+	});
+	//红包值限制，只能是大于等于0.01的数，可以是小数
+	/* 输入框限制
+	 */
+	function clearNoNum(obj) {
+		//先把非数字的都替换掉，除了数字和.    
+		obj.value = obj.value.replace(/[^\d.]/g, "");
+		//保证只有出现一个.而没有多个.    
+		obj.value = obj.value.replace(/\.{2,}/g, ".");
+		//必须保证第一个为数字而不是.    
+		obj.value = obj.value.replace(/^\./g, "");
+		//保证.只出现一次，而不能出现两次以上    
+		obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+		//只能输入两个小数  
+		obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+		obj.value = obj.value.replace(/[^\d.]/g, '')
+		/* var b=obj.value;
+		 b=(b+'').replace(/^0+\./g,'0.');
+		 b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;
+		 obj.value=Number(b)?b:0;*/
+	}
+	$("#money").on("blur", function() {
+		var money = parseFloat($(this).val());
+		if(money <= 0) {  
+			$(this).val("0.01");
+		}
+	})
+	
+	
+	
+/*转盘模式一、模式二*/
+function getRadio(evt) {
+	var evt = evt || window.event;
+	var e = evt.srcElement || evt.target;
+	if(e.value == "1") {
+		$(".outer1").hide();
+	} else if(e.value == "2") {
+		$(".outer1").show();
+	}
+}	

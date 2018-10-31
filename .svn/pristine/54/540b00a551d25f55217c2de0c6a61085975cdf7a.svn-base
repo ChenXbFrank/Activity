@@ -1,0 +1,39 @@
+<!--[arg user,basePath,staticPath,activityList;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css"/>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activity-accraditation-home/activity-accraditation-home.css"/>
+	</head>
+	<body style="background-image: url('${staticPath}/img/bg0.png')">
+	<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心 </div>
+			<p class="currentLocation">您的当前位置：<a href="${basePath}/goHomePage">首页></a><a href="${basePath}/activityApprove/index">活动审批</a></p>
+			<ul class="title-pic">
+				<li><a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+				<li><a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a></li>
+			</ul>
+	</div>
+		<div class="activities">
+			<ul>
+			<!--[ loop(activity:activityList){  ]-->
+				<li>
+				<a href="${basePath}${activity.getApproveHref()}">
+					<div class="img">
+						<img src="${staticPath}${activity.getImg()}" alt="" />
+					</div>
+					<p class="activity-name">${activity.getActivityName()}</p>
+				</a>
+				</li>
+				<!--[ }  ]-->
+			</ul>
+		</div>
+	</body>
+</html>

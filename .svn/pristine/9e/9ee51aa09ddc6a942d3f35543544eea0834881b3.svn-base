@@ -1,0 +1,32 @@
+<!--[arg staticPath,basePath,sellerPublicNumber;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>验证页面</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/index/blackinfo.css" />
+	</head>
+	<body>
+	<div class="bg" style="background-image: url('/activityUploadPath${sellerPublicNumber.getScanImg()}')">
+		<div class="main">
+			<p>亲，扫码失败哦</p>
+			<p>系统检测您多次扫码</p>
+			<p>如有疑问，请联系活动发起经销商</p>
+			<p>经销商电话：${sellerPublicNumber.getPhone()}</p>
+		
+		</div>
+	</div>
+		<script>
+		if(screen.height==812 && screen.width==375){
+			 $('.bg').css("height","100%");
+		}
+		
+		</script>
+	</body>
+	
+</html>

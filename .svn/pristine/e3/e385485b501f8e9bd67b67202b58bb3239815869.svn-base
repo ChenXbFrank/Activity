@@ -1,0 +1,612 @@
+<!--[arg basePath,staticPath,openid,qrcode,wxUserInfo,breakEgg,breakEggWxUserId,sellerPublicNumber,winningBreakEggPrize,breakEggWxUserWinning,breakEggWinningId,follow,breakEggWxUser;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>砸金蛋首页</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/breakEgg/breakEgg-homepage.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/loading.css" />
+			<style type="text/css">
+			@font-face {
+			font-family: 'fonts';
+			src: url("${staticPath}/font1/iconfont.eot");
+			src: url("${staticPath}/font1/iconfont.ttf");
+			src: url("${staticPath}/font1/iconfont.woff");
+	}
+		</style>
+	</head>
+	<body style="background-image: url('/activityUploadPath${breakEgg.getMobleBackgroundImg()}');">
+		<div class="title1">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+	<audio controls="controls" id="audio" src="${staticPath}/img/breakEgg/img/4133.mp3" style="display:none" preload="auto"></audio>
+	<audio style="display:none; height: 0" id="bg-music" preload="auto" src="${staticPath}/img/breakEgg/img/beijingyinyue.mp3" loop="loop"></audio>
+		<div class="music">
+   		 <i class="icon-music open" num="1" style="background-image: url(${staticPath}/img/breakEgg/img/icon-muisc.png);"></i>
+   		 <i class="music-span" style="background-image: url(${staticPath}/img/breakEgg/img/music-span.png);"></i>
+		</div>
+
+		<div class="bg-mask end" id="end" style="display: none;background-image: url('/activityUploadPath${breakEgg.getMobleBackgroundImg()}');">
+			
+			<div class=erweima>
+				<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+			</div>
+			<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+			
+		</div>
+		<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+		
+	
+		
+		<div class="egg">
+			<img src="${staticPath}/img/breakEgg/img/age光效.png" alt="" class="guangxiao"/>
+			<img src="${staticPath}/image/breakEgg/ee.png" alt="" class="egg-jin"/>
+			<img src="${staticPath}/image/breakEgg/landan.png" alt="" class="egg-after" style="display: none; "/>
+		</div>
+		<div id="tool">
+			<img src="${staticPath}/image/breakEgg/chuizi-min.png"/>
+		</div>
+		<div class="footer">
+				<img src="${staticPath}/image/breakEgg/guizeanniu.png" alt="" class="activity-rules"/>
+				<img src="${staticPath}/image/breakEgg/jiangpinanniu.png" alt="" class="my-prize"/>
+		</div>
+		<!--奖品弹窗-->
+		<!--实物-->
+		<div class="bg-mask material " style="display: none;">
+			<img src="${staticPath}/img/breakEgg/img/guanbi.png" alt="" class="close"/>
+			<div class="pic">
+				<img src="" alt="" />
+			</div>
+			<div class="winning">
+				<img src="${staticPath}/image/breakEgg/66-min.png" alt="" />
+			</div>
+			<div class="material-name">
+				<p>恭喜您获得<span>五粮液系列中国名酒</span></p>
+				
+			</div>
+			<div class="address" id="xianchang">
+				<img src="${staticPath}/image/breakEgg/xiedizhi.png" alt="" /> 
+			</div>
+			<div class="zhongjiangtongzhi">
+				<p>请返回公众号查看中奖详情</p>
+			</div>
+		</div>
+		<!--红包-->
+		<div class="bg-mask red " style="display: none;">
+			<img src="${staticPath}/img/breakEgg/img/guanbi.png" alt="" class="close"/>
+			<div class="pic-hong">
+				<img src="${staticPath}/img/breakEgg/img/hongbao.png" alt="" />
+				<div class="cash">
+					<p><span>5000</span>元</p>
+				</div>
+			</div>
+			<div class="winning">
+				<img src="${staticPath}/image/breakEgg/66-min.png" alt="" />
+			</div>
+			<div class="red-name">
+				<p>恭喜您获得<span>5</span>元现金红包</p>
+			</div>
+			<div class="address">
+				<img src="${staticPath}/image/breakEgg/person.png" alt="" class="person-center"/>
+			</div>
+			<div class="zhongjiangtongzhi">
+				<p>请返回公众号查看中奖详情</p>
+			</div>
+		</div>
+		<!--谢谢惠顾-->
+		<div class="bg-mask thank " style="display: none;">
+			<img src="${staticPath}/img/breakEgg/img/guanbi.png" alt="" class="close"/>
+			<div class="dan">
+				<img src="${staticPath}/image/breakEgg/landan.png" alt="" />
+			</div>
+			<div class="thank-name">
+				<p>抱歉，您没有中奖!</p>
+			</div>
+			<div class="address">
+				<img src="${staticPath}/image/breakEgg/person.png" alt="" class="person-center"/>
+			</div>
+			<div class="zhongjiangtongzhi">
+				<p>请返回公众号查看中奖详情</p>
+			</div>
+		</div>
+		<!--积分-->
+		<div class="bg-mask integral " style="display: none;">
+			<img src="${staticPath}/img/breakEgg/img/guanbi.png" alt="" class="close"/>
+			<div class="pic-integral">
+				<img src="${staticPath}/img/breakEgg/img/wodejiangpimg.png" alt="" />
+				<div class="integral-value">
+					<p><span>5000</span>积分</p>
+				</div>
+			</div>
+			<div class="winning">
+				<img src="${staticPath}/image/breakEgg/66-min.png" alt="" />
+			</div>
+			<div class="integral-name">
+				<p>恭喜您获得<span>5</span>积分</p>
+			</div>
+			<div class="address">
+				<img src="${staticPath}/image/breakEgg/person.png" alt="" class="person-center"/>
+			</div>
+			<div class="zhongjiangtongzhi">
+				<p>请返回公众号查看中奖详情</p>
+			</div>
+		</div>
+		<!--活动规则-->
+		<div class="bg-mask rule " style="display: none;">
+			<img src="${staticPath}/image/breakEgg/rule-bg.png" alt="" class="rule-bg"/>
+				<p class="rule-info">活动规则</p>
+				<div class="text">
+				<p>1.购买${sellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关注‘${sellerPublicNumber.getPublicNumberName()}’微信公众账号,接收活动中奖第一资讯;</P>
+				<p>2.活动时间：${breakEgg.getStartTime()}---${breakEgg.getEndTime()}；</p>
+				<p>3.在活动期间，此活动规则有效；</p>
+				<p>4.若获得现金红包，可在“我的奖品”内查看详情；若需要红包提现，请前往“个人中心—我的红包”内提现至微信零钱；</p>
+				<p>5.如有疑问，请咨询现场工作人员。</p>
+				</div>
+				<img src="${staticPath}/img/breakEgg/img/guanbi.png" alt="" class="close2" />
+		</div>
+		<!--我的奖品-->
+		<!--我的奖品---实物-->
+		<div class="bg-mask my-material" style="display: none;">
+			<img src="${staticPath}/img/breakEgg/img/guanbi.png" alt="" class="close1" />
+			<img src="${staticPath}/image/breakEgg/myprice.png" alt="" class="title-wode"/>
+			
+			<div class="words">
+			<p class="prize-name">奖品名称：<span>五粮液中国酒</span></p>
+				<p class="winning-time">获奖时间：<span>2017-11-20 18:16:30</span></p>
+				<p class="receipt-status1">领取状态：</p>
+				<div class="address-div">
+					<p>填写地址</p>
+				</div>
+				<div class="address-div1" style="display:none">
+					<p>地址已填写</p>
+				</div>
+				<div class="address-div10" style="display:none">
+					<p>已领取</p>
+				</div>
+				<div class="zhongjiangtongzhi0">
+				<p>请返回公众号查看中奖详情</p>
+			</div>
+			</div>
+		</div>
+		<!--我的奖品---红包-->
+ 		<div class="bg-mask my-red" style="display: none;">
+			<img src="${staticPath}/img/breakEgg/img/guanbi.png" alt="" class="close1" />
+			<img src="${staticPath}/image/breakEgg/myprice.png" alt="" class="title-wode"/>
+			<div class="words">
+				<p class="prize-name">奖品名称：<span>5</span>元现金红包</p>
+				<p class="winning-time">获奖时间：<span>2017-11-20 18:16:30</span></p>
+				<p class="receipt-status1">领取状态：</p><div class="address-div9">
+					<p>已领取</p>
+				</div>
+			</div>
+			<div class="details">
+				<p>更多详情请前往<span>个人中心</span>查看~</p>
+			</div>
+		</div> 
+		<!-- 我的奖品---积分 -->
+		<div class="bg-mask my-integral" style="display: none;">
+			<img src="${staticPath}/img/breakEgg/img/guanbi.png" alt="" class="close1" />
+			<img src="${staticPath}/image/breakEgg/myprice.png" alt="" class="title-wode"/>
+			<div class="words">
+				<p class="prize-name">奖品名称：<span>5</span>积分</p>
+				<p class="winning-time">获奖时间：<span>2017-11-20 18:16:30</span></p>
+				<p class="receipt-status1">领取状态：</p><div class="address-div9">
+					<p>已领取</p>
+				</div>
+			</div>
+			<div class="details">
+				<p>更多详情请前往<span>个人中心</span>查看~</p>
+			</div>
+		</div> 
+		<input type="hidden" value="${breakEgg.getId()}" id="breakEggId"/>
+		<input type="hidden" value="${openid}" id="openid"/>
+		<input type="hidden" value="${sellerPublicNumber.getId()}" id="sellerPublicNumberId"/> 
+		<input type="hidden" value="${breakEggWxUserId}" id="breakEggWxUserId"/>
+		<input type="hidden" value="${breakEggWxUser.getIsClick()}" id="canClick"/>
+		<input type="hidden" value="${wxUserInfo.getSubscribe()}" id="subscribe"/>
+		<input type="hidden" value="${follow}" id="follow"/>
+		<input type="hidden" value="${breakEggWinningId}" id="breakEggWinningId"/>
+		<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+		<script>
+		
+		var breakEggWinningId1;
+		//音乐自动播放
+        $(document).ready(function(){
+            autoPlayMusic();
+            audioAutoPlay();
+        });
+        function audioAutoPlay() {
+            var audio = document.getElementById('bg-music');
+            audio.play();
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                audio.play();
+            }, false);
+        }
+        // 音乐播放
+        function autoPlayMusic() {
+            // 自动播放音乐效果，解决浏览器或者APP自动播放问题
+            function musicInBrowserHandler() {
+                musicPlay(true);
+                document.body.removeEventListener('touchstart', musicInBrowserHandler);
+            }
+            document.body.addEventListener('touchstart', musicInBrowserHandler);
+            // 自动播放音乐效果，解决微信自动播放问题
+            function musicInWeixinHandler() {
+                musicPlay(true);
+                document.addEventListener("WeixinJSBridgeReady", function () {
+                    musicPlay(true);
+                }, false);
+                document.removeEventListener('DOMContentLoaded', musicInWeixinHandler);
+            }
+            document.addEventListener('DOMContentLoaded', musicInWeixinHandler);
+        }
+        function musicPlay(isPlay) {
+            var media = document.querySelector('#bg-music');
+            if (isPlay && media.paused) {
+                media.play();
+            }
+            if (!isPlay && !media.paused) {
+                media.pause();
+            }
+        }
+        
+        $(".music").click(function(){
+            if($(".icon-music").attr("num") == "1"){
+                $(".icon-music").removeClass("open");
+                $(".icon-music").attr("num","2")
+                $(".music-span").css("display","none");
+                document.getElementById("bg-music").pause();//关闭音乐
+                setTimeout(musicHide,2000);
+            }else{
+                $(".icon-music").attr("num","1");
+                $(".icon-music").addClass("open");
+                $(".music-span").css("display","block");
+               document.getElementById("bg-music").play();//开启音乐
+                setTimeout(musicHide,2000);
+            }
+            
+
+    	  });
+			
+		/* 	var subscribe=$("#subscribe").val();
+			if(subscribe==1){
+				$(".end").css({"display":"none"})
+			}else if(subscribe==0){
+				$(".end").css({"display":"block"})
+			} */ 
+			
+			if($("#canClick").val()==0){
+				$(".egg-jin").show();
+				$(".egg-after").hide();  
+				$(".guangxiao").show();
+			}else if($("#canClick").val()==1){
+				$(".egg-jin").hide();
+				$(".egg-after").show();
+				$(".guangxiao").hide();
+				$("#tool img").hide();
+			}
+			var breakEggId = $("#breakEggId").val();
+			var openid = $("#openid").val();
+			var sellerPublicNumberId = $("#sellerPublicNumberId").val();
+			var breakEggWxUserId = $("#breakEggWxUserId").val();
+		/* 	var breakEggWinningId; */
+
+		
+/* 填写地址 */
+			var follow=$("#follow").val();
+			//alert(follow)
+		 	$(".address-name,.address-div,#xianchang").click(function(){
+		 	if(follow==1){
+			 aa();
+		 	}else if(follow==0){
+		 		$(".material").hide();
+		 		$(".my-material").hide();
+		 		$(".end").show();
+		 	}
+			
+				
+			}) 
+			/* 砸金蛋后弹窗关闭按钮*/
+			$(".close").click(function(){
+				$(".material,.red,.thank,.integral").hide();
+				$(".egg-jin").hide();
+				$(".egg-after").show();
+				$(".guangxiao").hide();
+				$("#tool img").hide();
+				$(".title").show();
+				$(".egg-after").show();
+			})
+			/* 规则关闭按钮 */
+			$(".close2").click(function(){
+				$(".rule").hide();
+			})
+			/* 我的奖品关闭按钮 */
+			$(".close1").click(function(){
+				$(".my-material,.my-red,.my-integral").hide();
+				$(".title").show();
+				$(".egg-after").show();
+			});
+		 	/* 点击个人中心 */
+		 	$(".person-center,.details span").click(function(){
+		 		if(follow==1){
+		 			location.href="${basePath}/personalCenter/ActivityPresonalCenter?openid="+openid+"&BPN="+sellerPublicNumberId;
+		 		}else if(follow==0){
+		 			$(".red").hide();  
+		 			$(".integral").hide();
+		 			$(".thank").hide();
+		 			$(".my-red").hide();
+		 			$(".my-integral").hide();
+		 			$(".end").show();
+		 		}
+		 		
+		 	})
+			/*点击活动规则*/
+			$(".activity-rules").click(function(){
+				$(".rule").show();
+			})
+	/*点击我的奖品*/
+				$(".my-prize").click(function(){
+					$(".load").show();
+		 			$.ajax({
+						type: "GET",
+						url: "${basePath}/breakEgg/myBreakEggPrize",
+						async: false,
+						dataType: "json",
+						data: { 
+							"openid":openid,
+							"breakEggWxUserId":breakEggWxUserId
+						},
+						success: function(data){
+							$(".load").hide();
+							//alert(data.breakEggWxUserWinning.STATE)
+							 breakEggWinningId=data.breakEggWxUserWinning.ID;
+							if(data.breakEggWxUserWinning.PRIZE_TYPE=="1"){
+								$(".title").hide();
+								$(".egg-after").hide();
+								$(".my-material").show();
+								$(".prize-name span").html(data.breakEggWxUserWinning.PRIZE_PROJECT);
+								$(".winning-time span").html(data.breakEggWxUserWinning.CREATE_TIME);
+								if(data.breakEggWxUserWinning.STATE=="1"){
+									
+									 $(".address-div").show();
+								}
+								if(data.breakEggWxUserWinning.STATE=="2"){
+									
+									 $(".address-div").show();
+								}
+								if(data.breakEggWxUserWinning.STATE=="3"){
+									 $(".address-div1").show();
+									 $(".address-div").hide();
+								}
+								if(data.breakEggWxUserWinning.STATE=="4"){
+									
+									 $(".address-div10").show();
+									 $(".address-div").hide();
+									
+								}
+								if(data.breakEggWxUserWinning.STATE=="5"){
+									
+									 $(".address-div").show();
+								}
+								if(data.breakEggWxUserWinning.STATE=="6"){
+								
+									 $(".address-div").show();
+								}
+							
+							}else if(data.breakEggWxUserWinning.PRIZE_TYPE=="3"){
+								$(".title").hide();
+								$(".egg-after").hide();
+								$(".my-red").show();
+								$(".prize-name span").html(data.breakEggWxUserWinning.WINNING_MONEY);
+								$(".winning-time span").html(data.breakEggWxUserWinning.CREATE_TIME);
+							}else if(data.breakEggWxUserWinning.PRIZE_TYPE=="2"){
+								$(".title").hide();
+								$(".egg-after").hide();
+								$(".my-integral").show();
+								$(".prize-name span").html(data.breakEggWxUserWinning.WINNING_MONEY);
+								$(".winning-time span").html(data.breakEggWxUserWinning.CREATE_TIME);
+							}
+						},
+						error:function(){
+							alert("error");
+						}
+					}); 
+				})
+
+			/* 砸金蛋 */
+			$(".egg-jin").on("click",function(){
+				$(".load").show();
+				  $(".egg-jin").unbind("click")      ///阻止二次点击
+				audio.cloneNode().play();
+				$("#tool").animate({"top": "5rem", "left":"5.5rem" }, 1, function() {
+					$("#tool").css({
+						"-webkit-transform": "rotate(-70deg)",
+						"-moz-transform": "rotate(-70deg)",
+						"-o-transform": "rotate(-70deg)",
+						"transform": "rotate(-70deg)",
+						"-webkit-transition": "all 0.1s ease",
+						"-moz-transition": "all 0.1s ease",
+						"-o-transition": "all 0.1s ease",
+						"transition": "all 0.1s ease"
+					});
+				})
+				$.ajax({
+						type: "GET",
+						url: "${basePath}/breakEgg/breakLuckDraw",
+						async: false,
+						dataType: "json",
+						data: {
+							"openid":openid,
+							"qrcode":'${qrcode}',
+							"breakEggId":breakEggId,
+							"sellerPublicNumberId":sellerPublicNumberId,
+							"breakEggWxUserId":breakEggWxUserId
+						},
+						success: function(data){
+							$(".load").hide();
+							breakEggWinningId1=data.breakEggWinningId; 
+							setTimeout (function(){
+								/* 实物 */
+								if(data.winningBreakEggPrize.PRIZETYPE=="1"){
+									$(".title").hide();
+									$(".egg-jin").hide();
+									$(".material").show();
+									$(".red").hide();
+									$(".thank").hide();
+									$(".integral").hide();
+									$(".pic img").attr("src",'/activityUploadPath'+data.winningBreakEggPrize.PRIZEIMG); 
+									$(".material-name span").html(data.winningBreakEggPrize.PRIZENAME);
+								/* 积分 */
+								}else if(data.winningBreakEggPrize.PRIZETYPE=="2"){
+									$(".title").hide();
+									$(".egg-jin").hide();
+									$(".material").hide();
+									$(".red").hide();
+									$(".thank").hide();
+									$(".integral").show();
+									$(".integral-value span").html(data.winningBreakEggPrize.INTEGRAL);
+									$(".integral-name span").html(data.winningBreakEggPrize.INTEGRAL);
+								/* 红包 */
+								}else if(data.winningBreakEggPrize.PRIZETYPE=="3"){
+									$(".title").hide();
+									$(".egg-jin").hide();
+									$(".material").hide();
+									$(".red").show();
+									$(".thank").hide();
+									$(".integral").hide();
+									$(".cash span").html(data.winningBreakEggPrize.REDMONEY);
+									$(".red-name span").html(data.winningBreakEggPrize.REDMONEY);
+								/* 谢谢惠顾 */
+								}else if(data.winningBreakEggPrize.PRIZETYPE=="4"){
+									$(".title").hide();
+									$(".egg-jin").hide();
+									$(".material").hide();
+									$(".red").hide();
+									$(".thank").show();
+									$(".integral").hide();
+								}
+							},500);
+						},
+						error:function(){
+							alert("error");
+						}
+					});
+		})
+					/* 调用微信地址接口 */
+		function aa(obj){
+			 	 $.ajax({
+					type: "GET",
+					url: "${basePath}/index/WxConfig",
+					async: false,
+					dataType: "json",
+					data: {"locationUrl":location.href},
+					success: function(config){
+						wx.config({
+				              debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+				              appId : config.appId, // 必填，公众号的唯一标识
+				              timestamp : config.timestamp, // 必填，生成签名的时间戳
+				              nonceStr : config.nonceStr, // 必填，生成签名的随机串
+				              signature : config.signature,// 必填，签名，见附录1
+				              jsApiList : ['openAddress']// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+				         });
+					}
+				}); 
+				wx.ready(function(){
+					wx.openAddress({
+						success: function (res) {
+							//alert(breakEggWinningId1+"222")
+							var provice=res.provinceName;
+				    		var city= res.cityName;
+				    		var counties=res.countryName;
+				    		var detail=res.detailInfo;
+				    		var tel =res.telNumber;
+				    		var name=res.userName;
+				    		var address=provice+city+counties+detail;
+				    		$.ajax({
+								type: "GET",
+								url: "${basePath}/breakEgg/address",
+								async: false,
+								dataType: "json",
+								data: {
+									"breakEggWinningId":breakEggWinningId1,
+									"name":name,
+									"tel":tel,
+									"address":address
+								},
+								success: function(data){
+									$(".address-div").hide();
+									$(".address-div1").show(); 
+									$(".address img").hide();
+									$(".address-name").hide();
+									$(".address-name1").show();
+								},
+								error:function(){
+									/* alert(breakEggWinningId) */
+									alert("error");
+								}
+							});
+						},
+						cancel: function (esg) { 
+							
+						},
+						fail:function(res){
+							
+						} 
+					});
+				});   
+			}
+			/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			$(".zhongjiangtongzhi").css({"margin-top":"12rem"})
+			$(".material-name p").css({"top":"68%"})
+			$(".erweima img").css({"margin-top":"5rem"})
+			$("#tool").css({"top":"4rem"})
+			$(".egg-jin").on("click",function(){
+				$("#tool").animate({"top": "4rem", "left":"5.5rem" }, 1, function() {
+					$("#tool").css({
+						"-webkit-transform": "rotate(-70deg)",
+						"-moz-transform": "rotate(-70deg)",
+						"-o-transform": "rotate(-70deg)",
+						"transform": "rotate(-70deg)",
+						"-webkit-transition": "all 0.1s ease",
+						"-moz-transition": "all 0.1s ease",
+						"-o-transition": "all 0.1s ease",
+						"transition": "all 0.1s ease"
+					});
+				})
+			})
+		//	alert("huaweishouji")
+		}
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".zhongjiangtongzhi").css({"margin-top":"16rem"})
+			$(".rule-info").css({"top":"19%"})
+			$(".text").css({"top":"4.1rem"})
+			$("#tool").css({"top":"5rem"})
+			$(".egg-jin").on("click",function(){
+				$("#tool").animate({"top": "5rem", "left":"5.5rem" }, 1, function() {
+					$("#tool").css({
+						"-webkit-transform": "rotate(-70deg)",
+						"-moz-transform": "rotate(-70deg)",
+						"-o-transform": "rotate(-70deg)",
+						"transform": "rotate(-70deg)",
+						"-webkit-transition": "all 0.1s ease",
+						"-moz-transition": "all 0.1s ease",
+						"-o-transition": "all 0.1s ease",
+						"transition": "all 0.1s ease"
+					});
+				})
+			})
+		}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,89 @@
+<!--[arg staticPath,basePath,sbList;]-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" href="${staticPath}/css/index/Activity-selection.css" />
+
+
+<link rel="stylesheet" href="${staticPath}/common/css/Flexible.css" />
+<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+
+<script src="${staticPath}/js/common/Flexible.js"></script>
+<script src="${staticPath}/js/common/flexible.debug.js"></script>
+<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+<style>
+#imgBox {
+	width: 100%;
+	height: 5.333333rem;
+	margin-left: auto;
+	margin-right: auto;
+}
+</style>
+</head>
+<body>
+
+	<!-- HTML 主体结构，需按照此格式书写，其中的 <a> 链接可根据实际需要添加或删除 -->
+	<!-- 左右箭头和切换按钮的样式可根据实际需求在 jPicture.css 文件中进行修改 -->
+	<div id="imgBox">
+		<div>
+			<div>
+				<a href="#1"><img src="${staticPath}/img/1.png"></a>
+			</div>
+			<div>
+				<a href="#2"><img src="${staticPath}/img/2.png"></a>
+			</div>
+			<div>
+				<a href="#3"><img src="${staticPath}/img/3.png"></a>
+			</div>
+			<div>
+				<a href="#4"><img src="${staticPath}/img/4.png"></a>
+			</div>
+			<div>
+				<a href="#5"><img src="${staticPath}/img/5.png"></a>
+			</div>
+			<div>
+				<a href="#6"><img src="${staticPath}/img/6.png"></a>
+			</div>
+		</div>
+	</div>
+	<div class="bg">
+		<img src="${staticPath}/img/bg-xuanze.png" alt="" />
+		<div class="join">
+			<p>可参与活动</p>
+		</div>
+		<div class="more">
+			<p class="geng">更多活动</p>
+			<p class="huo">火热开启中</p>
+		</div>
+		<div class="kanjia">
+			<img src="${staticPath}/img/kanjia-icon.png" alt="" />
+
+			<h5>疯狂砍价</h5>
+		</div>
+
+		<ul class="aa">
+		<!--[arg sbList;loop(sb : sbList){]-->
+			<li>
+				<div>
+					<img src="${staticPath}${sb.getSpareOne()}" alt="" />
+				</div> <span>${sb.getActivityName()}</span>
+			</li>
+		<!--[}]-->
+		</ul>
+	</div>
+
+
+	<script src="${staticPath}/js/common/jquery-1.12.4.min.js"></script>
+	<script src="${staticPath}/js/common/jPicture.min.js"></script>
+	<script>
+		// Javascript 代码
+		jPicture("#imgBox", {
+			type : "slide",
+			autoplay : 5000
+		});
+	</script>
+</body>
+</html>

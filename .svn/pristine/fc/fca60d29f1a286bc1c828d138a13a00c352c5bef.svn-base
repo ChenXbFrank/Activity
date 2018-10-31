@@ -1,0 +1,509 @@
+package com.activity.common.controller.moblie.base;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.activity.common.model.accumulate.Accumulate;
+import com.activity.common.model.activity.ActivityCode;
+import com.activity.common.model.activity.ActivitySellerOutInfo;
+import com.activity.common.model.breakEgg.BreakEgg;
+import com.activity.common.model.centerObjcet.wx.WxUserInfo;
+import com.activity.common.model.fireStorm.FireStormRed;
+import com.activity.common.model.groupPurchase.GroupPurchase;
+import com.activity.common.model.integral.Integral;
+import com.activity.common.model.oneMoneyShop.OneMoneyShop;
+import com.activity.common.model.openWine.OpenWine;
+import com.activity.common.model.publicNumber.SellerPublicNumber;
+import com.activity.common.model.puzzle.Puzzle;
+import com.activity.common.model.robRed.RobRed;
+import com.activity.common.model.scratchCard.ScratchCard;
+import com.activity.common.model.shareBargain.ShareBargain;
+import com.activity.common.model.system.Advert;
+import com.activity.common.model.turntable.TurnTable;
+import com.activity.common.service.accumulateFabulous.AccumulateService;
+import com.activity.common.service.breakEgg.BreakEggService;
+import com.activity.common.service.fireStorm.FireStormService;
+import com.activity.common.service.groupPurchase.GroupPurchaseService;
+import com.activity.common.service.oneMoney.OneMoneyService;
+import com.activity.common.service.openWine.OpenWineService;
+import com.activity.common.service.puzzle.PuzzleService;
+import com.activity.common.service.robRed.RobRedService;
+import com.activity.common.service.scratchCard.ScratchCardService;
+import com.activity.common.service.shareBargain.ShareBargainService;
+import com.activity.common.service.system.ActivitySellerOutInfoService;
+import com.activity.common.service.system.IndexService;
+import com.activity.common.service.system.SellerOutInfoService;
+import com.activity.common.service.system.SellerPublicNumberService;
+import com.activity.common.service.turntable.TurntableService;
+import com.activity.common.utils.date.DateUitils;
+import com.activity.common.utils.wxInterface.WxConfigUitils;
+import com.jfinal.core.JFinal;
+import com.jfinal.kit.PropKit;
+import com.jfinal.weixin.sdk.api.ApiConfigKit;
+import com.web.controller.ControllerPath;
+
+/**
+ * IndexController 移动端基础控制器
+ * 
+ * @author 唐
+ */
+@ControllerPath(controllerKey = "/index")
+public class IndexController extends BaseController {
+	// 工具类
+	DateUitils uitils = DateUitils.getUitils();
+	IndexService indexService = IndexService.getService();
+	SellerOutInfoService sellerOutInfoService = SellerOutInfoService.getService();
+	ActivitySellerOutInfoService activitySellerOutInfoService = ActivitySellerOutInfoService.getService();
+	private final Logger log = LoggerFactory.getLogger(IndexController.class);
+		
+	
+	/**
+	 * 扫码进入该方法 返回输入四位验证码页面
+	 */
+	public void index() {
+		// 获取二维码数据内的瓶码
+		String qrcode = getPara("w");
+		log.error("扫码进入该方法 返回输入四位验证码页面***qrcode>"+qrcode);
+		String redirectUrl = "";
+		Map<String, Object> map = activitySellerOutInfoService.getActivitySellerOutInfoByQrcode(qrcode);
+		//这是开启活动的运单
+		ActivitySellerOutInfo activitySellerInfo = (ActivitySellerOutInfo) map.get("activitySellerInfo");
+		log.error("***map***"+map);
+		int sign = (int) map.get("sign");
+		if(activitySellerInfo!=null){
+			String userCode = "";
+			String isEnd="false";
+			//刮刮卡
+			if (activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("ScratchCard"))) {
+				ScratchCard sc = ScratchCard.dao.findById(activitySellerInfo.getActivityId());
+				userCode = sc.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(sc.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				if(sign==1){
+					redirectUrl=indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+				}else{
+					redirectUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2fscratchCard%2fscratchCard%3fspn%3d"
+							+ spn.getId() + "%26Activity%3d" + activitySellerInfo.getActivityId() + "%26qrcode%3d" +qrcode
+							+ "&response_type=code&scope=snsapi_base&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+			//抢红包
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("RobRed"))) {
+				RobRed red = RobRed.dao.findById(activitySellerInfo.getActivityId());
+				userCode = red.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(red.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				if(sign==1){
+					redirectUrl=indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+				}else{
+					redirectUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2frobRed%2frobRedIndex%3fSPNId%3d"
+							+ spn.getId() + "%26robRedActivityId%3d" + activitySellerInfo.getActivityId() + "%26qrcode%3d" +qrcode
+							+ "&response_type=code&scope=snsapi_base&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+			//分享砍价
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("ShareBargain"))) {
+				ShareBargain sb = ShareBargain.dao.findById(activitySellerInfo.getActivityId());
+				userCode = sb.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(sb.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				if(sign==1){
+					redirectUrl=indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+				}else{
+					redirectUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2fShareBargain%2fshareBargainIndex%3fspn%3d"
+							+ spn.getId() + "%26Activity%3d" + activitySellerInfo.getActivityId() + "%26qrcode%3d" +qrcode
+							+ "&response_type=code&scope=snsapi_base&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+			//转盘
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("Turntable"))) {
+				TurnTable tt = TurnTable.dao.findById(activitySellerInfo.getActivityId());
+				userCode = tt.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(tt.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				if(sign==1){
+					redirectUrl=indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+				}else{
+					redirectUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2fturntable%2fturntable%3fspn%3d"
+							+ spn.getId() + "%26Activity%3d" + activitySellerInfo.getActivityId() + "%26qrcode%3d" +qrcode
+							+ "&response_type=code&scope=snsapi_base&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+			//积分
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("Integral"))) {
+				Integral in = Integral.dao.findById(activitySellerInfo.getActivityId());
+				userCode = in.getAcitivityLaunchUserCode();
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				redirectUrl = indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+			}
+			//集赞
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("AccumulateFabulous"))) {
+				Accumulate in = Accumulate.dao.findById(activitySellerInfo.getActivityId());
+				userCode = in.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(in.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				if(sign==1){
+					redirectUrl=indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+				}else{
+					redirectUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2faccumulateFabulous%2faccumulate%3fsellerPublicNumber%3d"
+							+ spn.getId() + "%26Activity%3d" + activitySellerInfo.getActivityId() + "%26qrcode%3d" +qrcode
+							+ "&response_type=code&scope=snsapi_base&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+			//砸蛋
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("BreakEgg"))) {
+				BreakEgg in = BreakEgg.dao.findById(activitySellerInfo.getActivityId());
+				userCode = in.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(in.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				if(sign==1){
+					redirectUrl=indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+				}else{
+					redirectUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2fbreakEgg%2fbreakEgg%3fsellerPublicNumber%3d"
+							+ spn.getId() + "%26Activity%3d" + activitySellerInfo.getActivityId() + "%26qrcode%3d" +qrcode
+							+ "&response_type=code&scope=snsapi_base&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+			//一元购
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("OneMoneyShop"))) {
+				OneMoneyShop in = OneMoneyShop.dao.findById(activitySellerInfo.getActivityId());
+				userCode = in.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(in.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				if(sign==1){
+					redirectUrl=indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+				}else{
+					redirectUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2foneMoneyShop%2foneMoney%3fsellerPublicNumber%3d"
+							+ spn.getId() + "%26Activity%3d" + activitySellerInfo.getActivityId() + "%26qrcode%3d" +qrcode
+							+ "&response_type=code&scope=snsapi_base&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+			//拼图
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("Puzzle"))) {
+				Puzzle in = Puzzle.dao.findById(activitySellerInfo.getActivityId());
+				userCode = in.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(in.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				if(sign==1){
+					redirectUrl=indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+				}else{
+					redirectUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2fpuzzle%2fpuzzle%3fsellerPublicNumber%3d"
+							+ spn.getId() + "%26Activity%3d" + activitySellerInfo.getActivityId() + "%26qrcode%3d" +qrcode
+							+ "&response_type=code&scope=snsapi_base&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+			//拼团
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("GroupPurchase"))) {
+				GroupPurchase in = GroupPurchase.dao.findById(activitySellerInfo.getActivityId());
+				userCode = in.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(in.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService().getPublicNumberByUsercode(userCode);
+				SellerPublicNumber spn = new SellerPublicNumber();
+				for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+					spn = spnErgodic;
+				}
+				if(sign==1){
+					redirectUrl=indexService.feedbackVerification(spn.getAppId(),activitySellerInfo.getActivityId(),qrcode,spn.getId(),isEnd);
+				}else{
+					redirectUrl="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2fgroupPurchase%2fgroupPurchase%3fsellerPublicNumber%3d"
+							+ spn.getId() + "%26Activity%3d" + activitySellerInfo.getActivityId() + "%26qrcode%3d" +qrcode
+							+ "&response_type=code&scope=snsapi_base&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+			//火爆小酒
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("FireStorm"))) {
+				FireStormRed in = FireStormRed.dao.findById(activitySellerInfo.getActivityId());
+				userCode = in.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(in.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				//火爆小酒也是直接进入活动页面
+				redirectUrl = FireStormService.getService().fireStormActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//开酒瓶
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("OpenWine"))) {
+				OpenWine in = OpenWine.dao.findById(activitySellerInfo.getActivityId());
+				userCode = in.getAcitivityLaunchUserCode();
+				Date endDate = DateUitils.strToDateYMD(in.getEndTime());
+				// 判断当前时间是否大于活动结束时间 返回true表示大于当前时间，代表活动未结束
+				boolean endTime = DateUitils.isDateBefore(endDate);
+				if(!endTime){
+					isEnd="true";
+				}
+				//如果是开酒瓶的话，直接进入活动页面
+				redirectUrl = OpenWineService.getService().openWineActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//尖庄抢红包活动
+			if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("jzRed"))) {
+				//外码
+				if(sign==1) {
+					
+				}else {
+					
+				}
+				
+			}
+		}
+		redirect(redirectUrl);
+	}
+	
+	/**
+	 * 判断是否关注是否参与活动
+	 */
+	public void isJoin() {
+		String activityId = getPara("Activity");
+		String qrcode = getPara("qrcode");
+		String isEnd = getPara("flag");
+		String sellerPublicNumberId = getPara("spn");
+		SellerPublicNumber sellerPublicNumber = SellerPublicNumber.dao.findById(sellerPublicNumberId);
+		ApiConfigKit.putApiConfig(WxConfigUitils.getApiConfig(sellerPublicNumber.getToKen(), sellerPublicNumber.getAppId(), sellerPublicNumber.getAppSecret()));
+		ApiConfigKit.setThreadLocalAppId(sellerPublicNumber.getAppId());
+		String openid = getOpenid(sellerPublicNumber);
+		WxUserInfo wxuser = WxConfigUitils.getWxConfigUitils().getPublicUser(openid, sellerPublicNumber.getAppId(), sellerPublicNumber.getAppSecret());
+		ApiConfigKit.removeThreadLocalAppId();
+		// 查询当前二维码是否已参加活动
+		ActivityCode ac = IndexService.getService().getCodeByCodeAndActivity(qrcode, activityId);
+		String sql = "select * from TB_ADVERT where APPLYUSERID =? and STATE = ?";
+		Advert advert = Advert.dao.findFirst(sql,sellerPublicNumber.getSellerUserCode(),"1");
+		boolean rest = false;
+		if (ac!=null) {
+			if (ac.getOpenId().equals(openid)) {
+				// 自己进来查看，可以查看，但不用新建一个二维码失效记录
+				rest = true;
+			}else{
+				rest = false;
+			}
+		}else{
+			rest = true;
+		}
+		setAttr("advert", advert);
+		setAttr("qrcode", qrcode);
+		setAttr("wxUserInfo", wxuser);
+		setAttr("rest", rest);
+		setAttr("isEnd", isEnd);
+		setAttr("sellerPublicNumber", sellerPublicNumber);
+		boolean existBlack = indexService.isExistBlack(openid, activityId);
+		if(existBlack){
+			render("/index/blackInfo.html");
+		}else{
+			render("/index/Verification.html");
+		}
+	}
+	
+	
+	/**
+	 * 1.验证四位验证码是否正确 2.判断是否存在活动 3.返回活动集合
+	 */
+	public void scanCodeVerification() {
+		// 获取二维码数据内的瓶码
+		String qrcode = getPara("qrcode");
+		// 获取用户输入的四位验证码
+		String verificationCode = getPara("verificationCode");
+		log.error("***输入的验证码***"+verificationCode);
+		// 验证四位码是否输入正确
+		String queryVerification = IndexService.getService().QueryVerificationCodeByQrcode(qrcode);
+		log.error("***查询的验证码queryVerification***"+queryVerification);
+		Boolean result = false;
+		// 判断是否用户输入和数据库中的是否相等，相等返回true，不相等返回fasle
+		if (queryVerification.equals(verificationCode)) {
+			result = true;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", result);
+		map.put("qrcode", qrcode);
+		renderJson(map);
+	}
+
+	/**
+	 * 1.根据二维码信息查询可参与的活动 2.验证活动是否属于时间内 3.判断是单个活动还是多个活动或者没有活动，返回不同的页面
+	 */
+	public void SureJoinActvity() {
+		// 获取二维码数据内的瓶码
+		String qrcode = getPara("qrcode");
+		Map<String, Object> map = activitySellerOutInfoService.getActivitySellerOutInfoByQrcode(qrcode);
+		//这是开启活动的运单
+		ActivitySellerOutInfo activitySellerInfo = (ActivitySellerOutInfo) map.get("activitySellerInfo");
+		String redirectUrl = "";
+		if (activitySellerInfo != null ) {
+			/**
+			 * 根据运单信息中活动信息判断属于某一个活动
+			 * 根据运单找到活动-service处理，判断活动时间，和重定向至微信地址
+			 * 1.分享砍价 2.抢红包
+			 */
+			//分享砍价
+			if (activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("ShareBargain"))) {
+				redirectUrl = ShareBargainService.getService().ShareBargainActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//抢红包
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("RobRed"))) {
+				redirectUrl = RobRedService.getService().RobRedActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//积分
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("Integral"))) {
+				
+			}
+			//刮刮卡
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("ScratchCard"))) {
+				redirectUrl = ScratchCardService.getService().scratchCardActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//转盘
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("Turntable"))) {
+				redirectUrl = TurntableService.getService().TurntableActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//砸蛋
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("BreakEgg"))) {
+				redirectUrl = BreakEggService.getService().breakEggActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//积攒排名
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("AccumulateFabulous"))) {
+				redirectUrl = AccumulateService.getService().accumulateFabulousActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//一元购
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("OneMoneyShop"))) {
+				redirectUrl = OneMoneyService.getService().oneMoneyActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//拼图
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("Puzzle"))) {
+				redirectUrl = PuzzleService.getService().puzzleActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//拼团
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("GroupPurchase"))) {
+				redirectUrl = GroupPurchaseService.getService().groupPurchaseActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+			//开酒瓶活动
+			else if(activitySellerInfo.getBelongActivity().equals(PropKit.use("system.properties").get("OpenWine"))) {
+				redirectUrl = OpenWineService.getService().openWineActivity(activitySellerInfo.getActivityId(), qrcode);
+			}
+		}else {
+			// 没有活动
+		}
+		Map<String, Object> map1 = new HashMap<String, Object>();
+		map1.put("url", redirectUrl);
+		renderJson(map1);
+	}
+	
+	/**
+	 * 微信基础配置
+	 */
+	public void WxConfig() {
+		String locationUrl = getPara("locationUrl");
+		Map<String, String> wxConfigApi = WxConfigUitils.getWxConfigUitils().WxConfigApi(locationUrl);
+		renderJson(wxConfigApi);
+	}
+}

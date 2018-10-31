@@ -1,0 +1,263 @@
+<!--[arg basePath,staticPath,advert;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload2.css">
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/turntable-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/turntable-approval-info.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css"/>
+	<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css"/>
+	<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+	<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+	<script src="${staticPath}/js/upload/upload.min.js"></script>
+	<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+	
+	<link rel="stylesheet" type="text/css" href="${staticPath}/css/syetem/advert.css"/>
+		<script src="${staticPath}/js/upload/upload.min.js"></script>
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+
+.productInfos textarea{
+	vertical-align:top;
+	border-radius:4px;
+	width:20vw;
+	height:4vw;
+	font-size:1vw;
+}
+.btn{
+	    width: 32vw;
+    /* margin: 0vw auto 0; */
+    position: absolute;
+    top: 40vw;
+    left: 30vw;
+}
+.submitBtn {
+	width: 10vw;
+	height: 2.7vw;
+	color: white;
+	background: #f19032;
+	text-align: center;
+	line-height: 2.7vw;
+	border-radius: 4px;
+	display:inline-block; 
+}
+.submitBtn:hover{
+	cursor:pointer;
+}
+.red-time{
+	height:2vw;
+	font-size:1vw;
+	margin-top:1vw;
+}
+.red-time .line{
+	margin-left: 0vw; 
+    margin-right: 0vw; 
+    width:1vw;
+    height:2px;
+    vertical-align:middle;
+}
+.red-time .startTime{
+	margin-left:10px;
+}
+.active-name{
+	display:inline-block;
+	margin-top:1vw;
+}
+oductInfos textarea {
+    vertical-align: top;
+    border-radius: 4px;
+    width: 20vw;
+    height: 4vw;
+    font-size: 1vw;
+}
+oductInfos {
+    margin-top: 1vw;
+}
+.code0 {
+        position: absolute;
+    left: 11.5%;
+    /* float: right; */
+    margin-top: 1vw;
+}
+		</style>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：
+					<a href="${basePath}/goHomePage" class="back">首页></a>
+					<a href="${basePath}/activityApply" class="back">活动审批></a>
+					<a href="${basePath}/advert/approve" class="back">广告审批></a>
+					<a href="javascript:void(0);" class="back">广告审批</a>
+				</p>
+				<ul class="title-pic">
+					<li>
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li>
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+				<div id="popup" style="display:none">
+					<div class="fade"></div>
+					<!--审核成功-->
+					<div class="delivery-success">
+						<div class="success-outer">
+							<div class="pop-title">审核成功！</div>
+							<input type="button" value="确定" id="delivery-success-yes" />
+						</div>
+					</div>
+				</div>
+
+				<div class='main clearfloat'>
+			
+	
+	
+	
+				<div class="code0 clearfloat">
+					<label>广告图上传:</label>
+					<div class="tutu">
+					<div class="activity-pic" id="divPreview">
+						<img id="pic" class="ss" src="/activityUploadPath${advert.getAdvertUrl()}" alt="" />
+					</div>
+					<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+					<p class="picInfo4">建议上传尺寸为248px*413px</p>
+					
+				</div>
+				</div>
+			
+		</div>
+			<div class="productInfos">
+				<label for="textarea">审批建议：</label>
+				<textarea id="textarea" maxlength="30" placeholder="字数限制：30字以内"></textarea>
+			</div>
+			<input type="hidden" value="${advert.getId()}" id="activityId" />
+		<div class="btn">
+			<div class="submitBtn" id="pass">通过</div>
+			<div class="submitBtn" id="reject">驳回</div>
+			<div class="submitBtn" id="back">返回</div>
+		</div>
+	</body>
+	<script>
+
+		/*活动状态：0申请中   1审批通过  2 已驳回  */
+		$("#pass").on("click", function() {
+			
+			var remake = $("#textarea").val();
+			var activityId = $("#activityId").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/advert/approvalResult",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {　　　
+					remake: remake,
+					advertId: activityId,
+					state: 1　　
+				},
+				　success: function(data) {
+					$("#loadingInfo").hide();
+					//alert("审核成功！");
+					$("#popup").show();
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+						location.href = "${basePath}/advert/approve";
+					})
+
+					　　
+				},
+			});
+		})
+		$("#reject").on("click", function() {
+			
+			var remake = $("#textarea").val();
+			var activityId = $("#activityId").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/advert/approvalResult",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {　　　
+					remake: remake,
+					advertId: activityId,
+					state: 2　　
+				},
+				　success: function(data) {
+					$("#loadingInfo").hide();
+					$("#popup").show();
+					$(".pop-title").html("已成功驳回！");
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+						location.href = "${basePath}/advert/approve";
+					})
+
+					　　
+				},
+			});
+		});
+		$("#back").on("click", function() {
+			history.back(-1);
+		});
+	</script>
+
+</html>

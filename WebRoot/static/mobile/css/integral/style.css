@@ -1,0 +1,54 @@
+.text,
+.outer,
+section .explain {
+  font-size: 10px;
+}
+[data-dpr="2"] .text,
+[data-dpr="2"] .outer,
+[data-dpr="2"] section .explain {
+  font-size: 20px;
+}
+[data-dpr="3"] .text,
+[data-dpr="3"] .outer,
+[data-dpr="3"] section .explain {
+  font-size: 30px;
+}
+.company {
+  font-size: 6px;
+}
+[data-dpr="2"] .company {
+  font-size: 12px;
+}
+[data-dpr="3"] .company {
+  font-size: 18px;
+}
+.rules-outer a,
+section .awardInfo,
+.need-integral,
+.font-infos del,
+.suspend {
+  font-size: 9px;
+}
+[data-dpr="2"] .rules-outer a,
+[data-dpr="2"] section .awardInfo,
+[data-dpr="2"] .need-integral,
+[data-dpr="2"] .font-infos del,
+[data-dpr="2"] .suspend {
+  font-size: 18px;
+}
+[data-dpr="3"] .rules-outer a,
+[data-dpr="3"] section .awardInfo,
+[data-dpr="3"] .need-integral,
+[data-dpr="3"] .font-infos del,
+[data-dpr="3"] .suspend {
+  font-size: 27px;
+}
+.product-name {
+  font-size: 13px;
+}
+[data-dpr="2"] .product-name {
+  font-size: 26px;
+}
+[data-dpr="3"] .product-name {
+  font-size: 39px;
+}

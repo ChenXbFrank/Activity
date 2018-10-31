@@ -1,0 +1,248 @@
+<!--[arg basePath,staticPath,sbwId,jpn,openid,sbw,pi,sbp,sb,spn;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>分享砍价</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/Bargain-activities/Bargain-address.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/loading.css" />
+		<!-- <link rel="stylesheet" href="${staticPath}/css/common/tan.css" /> -->
+	</head>
+	<body>
+		<div class="bg-mask yikan" style="display:none">
+			<div class="main-small" style="background-image: url('${staticPath}/New_img/Bargain-activities/ok-bg.png')" >
+				<div class="Pbox">
+				<p>填写成功</p>
+				<p>请到${spn.getPublicNumberName()}公众号个人中心</p>
+				<p>查看物流发货信息</p>
+			</div>
+			<img class="h5-img" src="${staticPath}/New_img/Bargain-activities/true.png" alt="" />
+			</div>
+		<!-- 	<div class="Pbox">
+				<p>填写成功-请到公众号个人中心查</p>
+				<p>看物流发货信息</p>
+				<hr />
+				<h5>确认</h5>
+			</div> -->
+		</div>
+		<div class="bg-mask wancheng" style="display:none">
+			<div class="main-small" style="background-image: url('${staticPath}/New_img/Bargain-activities/ok-bg.png')" >
+				<div class="Pbox">
+				<p>支付成功</p>
+				<p>请到${spn.getPublicNumberName()}公众号个人中心</p>
+				<p>查看物流发货信息</p>
+			</div>
+			<img class="h5-img" src="${staticPath}/New_img/Bargain-activities/true.png" alt="" />
+			</div>
+			
+		</div>
+				<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+		<div class="bg" style="background-image: url('/activityUploadPath${sb.getMoblecBackGroundImg()}')">
+		<div class="title">
+				<img src="/activityUploadPath${spn.getLogo()}" alt=""  />
+			</div>
+			<div class="main">
+				<div class="small-bg" style="background-image: url('${staticPath}/New_img/Bargain-activities/adress_box_bg.png')">
+				<div class="pic-tu">
+					<img src="/activityUploadPath${sbp.getProductIMG()}" alt="" />
+				</div>
+				<div class="text">
+					<p>商品名称：${pi.getProductName()}</p>
+					<p>数量：1瓶</p>
+					<p>活动最低售价：${sbw.getLowPrice()}元</p>
+					
+					<div class="addressAndPay">
+						<img src="${staticPath}/New_img/Bargain-activities/quzhifu.png" alt="" class="kuang" />
+						<h4 style="display:none">等待商家配送</h4>
+						<img class="wuliu" src="${staticPath}/img/wuliu.gif" alt="" style="display:none" />
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			</div>
+	
+		</div>
+		<input type="hidden" value="${sbwId}" id="sbwId" />
+		<input type="hidden" value="${jpn}" id="jpn" />
+		<input type="hidden" value="${openid}" id="openid" />
+		<script src="${staticPath}/js/Bargain-activities/Bargain-address.js"></script>
+	</body>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript">
+
+	
+	/* 苹果x */
+	if(screen.height==812 && screen.width==375){
+		$(".small-bg").css({"margin-top":"7.5rem"});
+		$(".main-small").css({"margin-top":"7rem"});
+		//alert("pingguo6666")
+	}
+	
+	
+		$(".h5-img").click(function() {
+			$(".yikan").css({
+				"display": "none"
+			})
+			location.reload();
+		});
+		$(".h5-img").click(function() {
+			$(".wancheng").css({
+				"display": "none"
+			})
+			$("h4").show();
+			$(".addressAndPay .kuang").css({
+				"display": "none"
+			});
+			$(".wuliu").css({
+				"display": "block"
+			});
+			location.reload();
+		});
+		
+			if('${sbw.getState()}' == '6'){
+				$("h4").show();
+				$(".addressAndPay .kuang").css({"display": "none"});
+				$(".addressAndPay").removeClass("addressAndPay");
+				$(".wuliu").css({"display": "block"})
+			}
+		
+	/* 	if('${sbw.getState()}' == '6' || '${sbw.getState()}' == '4' || '${sbw.getState()}' == '5') {
+			$("h4").show();
+			$(".addressAndPay .kuang").css({"display": "none"});
+			$(".addressAndPay").removeClass("addressAndPay");
+			$(".wuliu").css({"display": "block"})
+		} */
+	
+		$(function() {
+			var openid = $("#openid").val();
+			$.ajax({
+				type: "GET",
+				url: "${basePath}/ShareBargain/WxShareConfig",
+				async: true,
+				dataType: "json",
+				data: {
+					"locationUrl": location.href
+				},
+				success: function(config) {
+					wx.config({
+						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId: config.appId, // 必填，公众号的唯一标识
+						timestamp: config.timestamp, // 必填，生成签名的时间戳
+						nonceStr: config.nonceStr, // 必填，生成签名的随机串
+						signature: config.signature, // 必填，签名，见附录1
+						jsApiList: ['openAddress'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+				}
+			});
+			$(".addressAndPay").click(function() {
+			
+				 $(".addressAndPay").unbind("click")
+				var sbwId = $("#sbwId").val();
+				var jpn = $("#jpn").val();
+				wx.ready(function() {
+					wx.openAddress({
+						success: function(res) {
+						
+							var provice = res.provinceName;
+							var city = res.cityName;
+							var counties = res.countryName;
+							var detail = res.detailInfo;
+							var tel = res.telNumber;
+							var name = res.userName;
+							var address = provice + city + counties + detail;
+							$.ajax({
+								type: "GET",
+								url: "${basePath}/ShareBargain/saveAddress",
+								async: true,
+								dataType: "json",
+								data: {
+									"sbwId": sbwId,
+									"jpn": jpn,
+									"name": name,
+									"tel": tel,
+									"address": address
+								},
+								success: function(data) {
+									
+									if(data) {
+										$.ajax({
+											type: "GET",
+											url: "${basePath}/ShareBargain/wxPay",
+											async: true,
+											dataType: "json",
+											data: {
+												"sbwId": sbwId,
+												"jpn": jpn,
+												"oid": openid
+											},
+											success: function(date) {
+												if(date.result == "0") {
+													$(".yikan").css({
+														"display": "block"
+													})
+													$("h4").show();
+													$(".addressAndPay .kuang").css({
+														"display": "none"
+													});
+													$(".addressAndPay").attr("disabled", "disabled");
+													$(".wuliu").css({
+														"display": "block"
+													})
+												} else if(date.result == "true") {
+													wx.chooseWXPay({
+														timestamp: date.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+														nonceStr: date.nonceStr, // 支付签名随机串，不长于 32 位
+														package: date.prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+														signType: date.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+														paySign: date.paySign, // 支付签名
+														success: function(res) {
+															// 支付成功后的回调函数
+															// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+															//alert("支付成功-等待收货-请到公众号菜单个人中心查看运单号");  
+															$(".wancheng").css({
+																"display": "block"
+															})
+															$("h4").show();
+															$(".addressAndPay .kuang").css({
+																"display": "none"
+															});
+															$(".wuliu").css({
+																"display": "block"
+															})
+														}
+													});
+												} else {
+													alert("网络错误，请退出后从新再试");
+												}
+											}
+										});
+									} else {
+										alert("地址已填写或已支付，请勿重复填写");
+									}
+								}
+							});
+						},
+						cancel: function(esg) {
+
+						},
+						fail: function(res) {
+
+						}
+					});
+				});
+			})
+		})
+	</script>
+
+</html>

@@ -1,0 +1,374 @@
+<!--[arg basePath,staticPath,shareBargain,shareBargainWxuser,shareBargainPrize,joinBelongPublicNumberId,spn,qrcode,chopAKnifeOpenid,WxUserInfo,SellerPublicNumber,url,nofollow,ProductInfo;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>分享砍价</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/Bargain-activities/Bargain-help.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/loading.css" />
+		<!-- <link rel="stylesheet" href="${staticPath}/css/common/tan.css" /> -->
+	</head>
+	<body>
+		<div class="bg1"  style="background-image: url('${staticPath}/New_img/Bargain-activities/rule-bg.png');display:none">
+		<img src="${staticPath}/img/close icon.png" alt="" class="close shijian-close" />
+			<div class="small-bg" style="background-image: url('${staticPath}/img/xinxi-box.png')">
+			<div class="text">
+				<p>1.购买${SellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关注‘${SellerPublicNumber.getPublicNumberName()}’微信公众账号,接收活动中奖第一资讯;</p>
+				<p>2.活动时间：${shareBargain.getStartTime()}---${shareBargain.getEndTime()}；</p>
+				<p>3.在活动期间，此活动规则有效；</p>
+				<p>4.活动流程：【售价】购买当前产品-邀请好友帮忙砍价-活动结束前砍到最低售价，则砍价成功；</p>
+				<p>5.砍价成功后，请在弹框中填写正确的收货地址和收件人信息，我们将安排物流发货，货单号将在发货后，以短信的方式发送到收件人手机上，请注意查收；</p>
+				<p>6.砍价成功后，我方客服会将【售价】与【最低售价】的差价，以微信红包的方式返还到您的【微信零钱】当中，请及时查收；</p>
+				<p>7.活动期间可邀请好友来帮忙砍价，且每人只能参与一次砍价，叠加砍价不计入本次活动；</p>
+				<p>8.活动结束以前，未达到【最低售价】砍价的用户则砍价失败；</p>
+				<p>9.本次活动商品充沛，先到先得，发完为止；</p>
+			</div>
+			</div>
+		</div>
+		<div class="Popup yikan" style="display:none">
+			<div class="main-small" style="background-image: url('${staticPath}/New_img/Bargain-activities/help-help.png')" >
+				<div class="Pbox">
+				<p>您已经帮朋友砍价了</p>
+			</div>
+			<img class="h5-img" src="${staticPath}/New_img/Bargain-activities/true.png" alt="" />
+			</div>
+		
+		</div>
+		<div class="Popup shibai" style="display:none">
+			<div class="main-small" style="background-image: url('${staticPath}/New_img/Bargain-activities/ok-bg.png')" >
+				<div class="Pbox">
+				<p>分享失败</p>
+			</div>
+			<img class="h5-img" src="${staticPath}/New_img/Bargain-activities/true.png" alt="" />
+			</div>
+			
+		</div>
+		<div class="Popup chnegg" style="display:none">
+			<div class="main-small" style="background-image: url('${staticPath}/New_img/Bargain-activities/ok-bg.png')" >
+				<div class="Pbox">
+				<p>分享成功</p>
+			</div>
+			<img class="h5-img" src="${staticPath}/New_img/Bargain-activities/true.png" alt="" />
+			</div>
+		</div>
+		<div class="bg-mask"  id='end'  style="display: none;background-image: url('/activityUploadPath${shareBargain.getMoblecBackGroundImg()}');">
+		
+			<div class=erweima>
+				<img src="/activityUploadPath${SellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+			</div>
+			<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+			
+		</div>
+				<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+
+		
+		 <div class="bg-mask end" style="display: none;">
+			<div class="my-kuang1" style="background-image: url('${staticPath}/New_img/Bargain-activities/my-gg.png')">
+				<img src="${staticPath}/New_img/Bargain-activities/close-close.png" alt="" class="close end1" />
+				<div class="my-kuang_p">
+					<p>活动结束</p>
+					<p>感谢参与活动</p>
+				</div>
+				<div class="QR"><img src="/activityUploadPath${SellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" /></div>
+				<div class="gongzong"><p>关注【${SellerPublicNumber.getPublicNumberName()}】公众账号</p></div>
+			</div>
+		</div> 
+		
+		
+		
+		<div class="bg-mask kaishi" style="display: none;">
+			<div class="my-kuang" style="background-image: url('${staticPath}/New_img/Bargain-activities/help_kan_friend.png')">
+				<img src="${staticPath}/New_img/Bargain-activities/close-close.png" alt="" class="close" />
+				<div class="my-kuang_p0">
+					<p>恭喜您!</p>
+					<p>帮朋友砍掉<span class="Price"></span>元</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="bg-mask meto" style="display: none;">
+			<div class="my-kuang" style="background-image: url('${staticPath}/New_img/Bargain-activities/help_kan_friend.png')">
+				<img src="${staticPath}/New_img/Bargain-activities/close-close.png" alt="" class="close" />
+				<div class="my-kuang_q">
+					<p>请购买活动酒品扫码参与活动!</p> 
+				</div>
+			</div>
+		</div>
+		
+		
+		
+<!-- 		<div class="bg-mask kaishi" style="display: block;">
+			<img src="${staticPath}/img/kanjia tubiao.png" alt="" class="caidai" />
+			<div class="biaoti">
+				<p style="color: white;">恭喜您！</p>
+			</div>
+			<div class="box">
+				<div class="zx">
+					<p>成功帮朋友砍掉<span class="Price"></span>元</p>
+				</div>
+				<div class="QR"><img src="${basePath}${spn.getPublicNumberQrcodeImg()}" alt="" /></div>
+				<div class="kk">
+					<p>扫描关注【${SellerPublicNumber.getPublicNumberName()}】公众账号</p><br/>
+					<p>疯狂砍价，超值有低价</p>
+				</div>
+			</div>
+			<img src="${staticPath}/img/close icon.png" alt="" class="close" />
+			<div class="btn1">
+				<p class="rr">我要发起砍价</p>
+				<img src="${staticPath}/img/lijikanjia-button.png" alt="" class="no1" />
+			</div>
+		</div> -->
+		<div class="bg" style="background-image: url('/activityUploadPath${shareBargain.getMoblecBackGroundImg()}')">
+		<div class="title">
+				<img src="/activityUploadPath${SellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+			<div class="main">
+				<div class="beijing" style="background-image: url('${staticPath}/New_img/Bargain-activities/box(1).png')">
+					<div class="product-pic">
+						<img src="/activityUploadPath${shareBargainPrize.getProductIMG()}" alt="" class="chanp" />
+					</div>
+					 <div class="aaa">
+						<p>${ProductInfo.getProductName()}</p>
+					</div>  
+					<div class="describe">
+						<p>${shareBargain.getIntroduce()}</p>
+					</div>
+					<div class="btn">
+						<h4>售价：${shareBargainPrize.getOriginalPrice()}元</h4>
+						<p>活动最低售价：${shareBargainPrize.getLowPrice()}元</p>
+						<div class="main-three">
+							 <div class="dao" >
+								<img src="${staticPath}/New_img/Bargain-activities/help-kan.png" alt="" />
+							</div>
+							 <div class="myjoin" >
+								<img src="${staticPath}/New_img/Bargain-activities/metohah.png" alt="" />
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="rule">
+				<p class="shijian">查看活动规则</p>
+			</div>
+		</div>
+		<input type="hidden" value="${shareBargain.getId()}" id="activityId" />
+		<input type="hidden" value="${shareBargainPrize.getId()}" id="shareBargainPrizeId" />
+		<input type="hidden" value="${shareBargainWxuser.getId()}" id="friendBargainId" />
+		<input type="hidden" value="${spn.getAppId()}" id="appid" />
+		<input type="hidden" value="${chopAKnifeOpenid}" id="chopAKnifeOpenid" />
+		<input type="hidden" value="${joinBelongPublicNumberId}" id="joinBelongPublicNumberId" />
+		<input type="hidden" value="${WxUserInfo.getSubscribe()}" id="subscribe" />
+		<!-- 标题 -->
+		<input type="hidden" value="${shareBargain.getShareTitle()}" id="shareTitle" />
+		<!-- 描述 -->
+		<input type="hidden" value="${shareBargain.getShareDetail()}" id="shareDetail" />
+		<!-- 图片 -->
+		<input type="hidden" value="${shareBargain.getShareImg()}" id="shareImg" />
+		<script src="${staticPath}/js/Bargain-activities/Bargain-help.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	</body>
+	<script type="text/javascript">
+	
+		/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			/* $(".title img").css({"width":'9.5rem',"height":"7rem"})
+			$(".rule-name p").css({"bottom":"3%"}) */
+			$(".beijing").css({"margin-top":"6rem"})
+			$(".rule").css({"margin-top":"0.6rem"})
+			$(".erweima img").css({"margin-top":"5rem"})
+			$(".close").css({"top":"0.55rem"})
+		}
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".beijing").css({"margin-top":"8.4rem"})
+			$(".close").css({"margin-top":"1rem"})
+			$(".main-small").css({"margin-top":"6rem"})
+			$(".my-kuang").css({"margin-top":"6rem"})
+			
+		}
+		
+		$(".myjoin img").click(function() {
+			$(".meto").show()
+		});
+		
+		
+		$(".h5-img").click(function() {
+			$(".yikan").css({
+				"display": "none"
+			})
+		});
+		$(".h5-img").click(function() {
+			$(".shibai").css({
+				"display": "none"
+			})
+		});
+		$(".h5-img").click(function() {
+			$(".chnegg").css({
+				"display": "none"
+			})
+		});
+		$(function() {
+			var subscribe = $("#subscribe").val();
+			if(subscribe == 1) {
+				$(".erweima").css({
+					"display": "none"
+				})
+			} else if(subscribe == 0) {
+				$(".erweima").css({
+					"display": "block"
+				})
+			}
+			var shareTitle = $("#shareTitle").val();
+			var shareDetail = $("#shareDetail").val();
+			var shareImg = $("#shareImg").val();
+			$.ajax({
+				type: "GET",
+				url: "${basePath}/ShareBargain/WxShareConfig",
+				async: true,
+				dataType: "json",
+				data: {
+					"locationUrl": location.href
+				},
+				success: function(config) {
+					wx.config({
+						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId: config.appId, // 必填，公众号的唯一标识
+						timestamp: config.timestamp, // 必填，生成签名的时间戳
+						nonceStr: config.nonceStr, // 必填，生成签名的随机串
+						signature: config.signature, // 必填，签名，见附录1
+						jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline']
+						// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+					wx.ready(function() {
+						//分享朋友
+						wx.onMenuShareAppMessage({
+							title: shareTitle, // 分享标题
+							desc: shareDetail, // 分享描述
+							link: '${url}', // 分享链接
+							imgUrl: 'http://www.wlypls.cn/activityUploadPath' + shareImg, // 分享图标
+							trigger: function(res) {
+
+							},
+							success: function() {
+								// 用户确认分享后执行的回调函数
+							},
+							cancel: function() {
+								// 用户取消分享后执行的回调函数
+								//alert("分享失败");
+								$(".shibai").css({
+									"display": "block"
+								})
+							}
+						});
+						//分享朋友圈
+						wx.onMenuShareTimeline({
+							title: shareTitle, // 分享标题
+							link: '${url}', // 分享链接
+							imgUrl: 'http://www.wlypls.cn/activityUploadPath' + shareImg, // 分享图标
+							success: function() {
+								$(".chnegg").css({
+									"display": "block"
+								})
+							},
+							cancel: function() {
+								// 用户取消分享后执行的回调函数
+								$(".shibai").css({
+									"display": "block"
+								})
+							}
+						});
+					});
+				}
+			});
+		})
+		$(".dao img").click(function() {
+			$(".load").show();
+			var activityId = $("#activityId").val();
+			var shareBargainPrizeId = $("#shareBargainPrizeId").val();
+			var friendBargainId = $("#friendBargainId").val();
+			var appid = $("#appid").val();
+			var joinBelongPublicNumberId = $("#joinBelongPublicNumberId").val();
+			var chopAKnifeOpenid = $("#chopAKnifeOpenid").val();
+			$.ajax({
+				type: 'POST',
+				url: '${basePath}/ShareBargain/chopAKnife',
+				data: {
+					"activityId": activityId,
+					"shareBargainPrizeId": shareBargainPrizeId,
+					"friendBargainId": friendBargainId,
+					"appid": appid,
+					"qrcode": '${qrcode}',
+					"joinBelongPublicNumberId": joinBelongPublicNumberId,
+					"chopAKnifeOpenid": chopAKnifeOpenid
+				},
+				success: function(date) {
+					$(".load").hide();
+					if(date.result == "nofollow"){
+						$("#end").show();
+					}else{
+						if(date.result == "已经砍至最低价") {
+							$(".end").css({
+								"display": "block"
+							});
+						} else if(date.result == "您朋友砍价次数已完") {
+							alert("您朋友砍价次数已完");
+						} else if(date.result == "") {
+							$(".kaishi").css({
+								"display": "block"
+							});
+							$(".Price").html(date.money);
+						} else if(date.result == "您已经帮忙砍价了") {
+							$(".yikan").css({
+								"display": "block"
+							})
+						}
+					}
+				
+				}
+			});
+		})
+		//我也要参加砍价
+		$(".rr").click(function() {
+			var activityId = $("#activityId").val();
+			var shareBargainPrizeId = $("#shareBargainPrizeId").val();
+			var friendBargainId = $("#friendBargainId").val();
+			var joinBelongPublicNumberId = $("#joinBelongPublicNumberId").val();
+			var appid = $("#appid").val();
+			location.href = "${basePath}/ShareBargain/IWantBargain?Activity=" + activityId + "&friendBargainId=" + friendBargainId + "&spn=" + joinBelongPublicNumberId;
+		})
+		//分享朋友的链接
+		//砍价结束关闭按钮 
+		$(".close").click(function() {
+			$(".end").css({
+				"display": "none"
+			});
+		})
+		$(".close").click(function() {
+			$(".kaishi").css({
+				"display": "none"
+			});
+			$(".meto").hide()
+		})
+			$(".shijian").click(function(){
+				$(".bg1").show();
+				$(".small-bg").show();
+				$(".bg").hide();
+			})
+			$(".close").click(function(){
+				$(".bg1").hide();
+				$(".small-bg").hide();
+				$(".bg").show();
+			})
+	</script>
+
+</html>

@@ -1,0 +1,165 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+input {
+	border: none;
+}
+
+label {
+	color: white;
+}
+
+body,
+html {
+	width: 100%;
+	height: 100%;
+}
+
+.bg {
+	width: 100%;
+	height: 17.9rem;
+	background-size: cover;
+	background-repeat: no-repeat;
+	position: relative;
+}
+
+.one,.two,.three {
+	width: 100%;
+	height: 5.333333rem;
+	background-color: white;
+}
+
+.Order {
+	width: 100%;
+	height: 4.666666rem;
+	background-color: white;
+	margin-top: 0.4rem;
+	border-top:1px solid #EDEDED;
+	border-bottom:1px solid #EDEDED ;
+}
+
+.Order img {
+	width: 2.32rem;
+	height: 2.52rem;
+	margin-left: 0.48rem;
+	margin-top: 1.1rem;
+	border: 0.013333rem solid #EDEDED;
+}
+
+.ming {
+	position: absolute;
+	left: 3.2rem;
+	font-family: "黑体";
+	font-size: 0.346666rem;
+	margin-top: -2.6rem;
+}
+
+.Specifications {
+	position: absolute;
+	left: 3.2rem;
+	margin-top: -1.266666rem;
+}
+
+.Specifications p {
+	width: 3.2rem;
+	height: 0.36rem;
+	padding-top: 0.066666rem;
+}
+
+.Specifications p:nth-child(1) {
+	color: #5D6264;
+	font-size: 0.32rem;
+}
+
+.Specifications p:nth-child(2) {
+	color: #5D6264;
+	font-size: 0.32rem;
+}
+
+.Specifications p:nth-child(3) {
+	color: #FCB31B;
+	font-size: 0.32rem;
+}
+
+.price {
+	position: absolute;
+	left: 7.3rem;
+	margin-top: -1.733333rem;
+}
+
+.price p:nth-child(1) {
+	width: 2.293333rem;
+	height: 0.4rem;
+	text-decoration: line-through;
+	font-size: 0.32rem;
+	font-family: "黑体";
+}
+
+.price p:nth-child(2) {
+	width: 2.293333rem;
+	height: 0.4rem;
+	color: #5D6264;
+	font-size: 0.293333rem;
+	margin-left: 0.173333rem;
+}
+
+.price p:nth-child(3) {
+	color: #5D6264;
+	font-size: 0.293333rem;
+	margin-left: 2rem;
+}
+.text{
+	width: 100%;
+	height: 4rem;
+    margin-top: -60px;
+}
+.amount{
+	width: 100%;
+}
+.amount p{
+	width: 6.6rem;
+	height: 0.36rem;
+	margin-left: 3.1rem;
+	margin-top: 0.4rem;
+	font-size: 0.32rem;
+	font-family: "黑体";
+}
+.See{
+	width: 2.506666rem;
+	height: 0.466666rem;
+	background-color: #FCB312;
+	text-align: center;
+	line-height: 0.466666rem;
+	margin-left: 7.1rem;
+	margin-top: 0.133333rem;
+}
+.immediately{
+	width: 2.506666rem;
+	height: 0.466666rem;
+	background-color: #FCB312;
+	text-align: center;
+	line-height: 0.466666rem;
+	margin-left: 4rem;
+	float: left;
+}
+.immediately p{
+	color: white;
+	font-size: 0.32rem;
+}
+.See p{
+	color: white;
+	font-size: 0.32rem;
+}
+.active{
+	width: 2.506666rem;
+	height: 0.466666rem;
+	background-color: #969696;
+	text-align: center;
+	line-height: 0.466666rem;
+	margin-left: 7.1rem;
+	margin-top: 0.133333rem;
+	color: white;
+	font-size: 0.32rem;
+}

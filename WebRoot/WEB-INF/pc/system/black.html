@@ -1,0 +1,430 @@
+<!--[arg basePath,staticPath,threshold;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-report.css" />
+		<!-- <link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-activity-report.css" /> -->
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/syetem/black.css" />
+	</head>
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+		<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+			<p class="currentLocation">
+				您的当前位置：
+				<a href="${basePath}/goHomePage">首页></a>
+				<a href="${basePath}/activityForm">黑名单</a>
+			</p>
+			<ul class="title-pic">
+				<li>
+					<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+				</li>
+				<li>
+					<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+		<!--页面遮罩-->
+		<div class="popUp" style="display: none;">
+			<div class="mask"></div>
+			<div class="popUp-window">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" />
+				<div class="infos">
+				是否将阀值数上限的用户加入黑名单？
+				</div>
+				<div class="btns">
+					<input type="button" value="取消" class="btn-left" />
+					<a href="javascript:void(0);" id="skip">
+						<input type="button" value="确定" class="btn-right" />
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="tishi" style="display: none">
+					<div class="mask"></div>
+					<div class="prompt">
+						<p>成功加入黑名单</p>
+						<button class="yes">确定</button>
+					</div>
+				</div>
+				<div class="tishi1" style="display: none">
+					<div class="mask"></div>
+					<div class="prompt1">
+						<p>保存成功！</p>
+						<button class="yes1">确定</button>
+					</div>
+				</div>
+		<div class="container">
+			<div>
+				<label for='name' id="personName">阀值：</label> <input type="text" id='threshold' class="save_value" value="${threshold}"/><input type="button" value="保存" id="search00" />
+			</div>
+			<label for='name' id="personName">活动查询：</label> <input type="text" id='name' value="" /><input type="button" value="查询" id="search" />
+			<input type="button" value="进入黑名单" class="export join_black" id="export" />
+			<!-- <label for='name' id="redBagMoney">您当前发出红包为：10000元</label> -->
+			<p class="limit">达阀值上限报表</p>
+			<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>序号</td>
+							<td>微信昵称</td>
+							<td>头像</td>
+							<td>活动名称</td>
+							<td>扫码酒品名称</td>
+							<td>扫码次数</td>
+							<td>操作</td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+					</table>
+				</div>
+			</div>
+			<div class="page-break">
+			<div class="page-btn">
+				<span class="manager-first-but">上一页</span>
+				<span id="admin-page">1</span>
+				<span class="manager-second-but">下一页</span>
+			</div>
+			<div class="skip">
+				<span>跳转至</span>
+				<input type="text" id="input-page" />&nbsp;页&nbsp;
+				<span class="skip-btn">跳转</span>
+			</div>
+			<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+			 <input type="checkbox" id="allcheck" name=ssss   onclick="demo()" /><span>全选</span><input type="button" value="加入黑名单" id="join" />
+		</div>
+		<div style="display: none;">
+			<table>
+				<tr class="admin-obj">
+					<td class="index"></td>
+					<td class="wx_name"></td>
+					<td class="headPicture">
+						<div class="headPic">
+							<img class="typian" src="" alt=''/>
+						</div>
+					</td>
+					<td class="activity_name"></td>
+					<td class="wine_name"></td>
+					<td class="sinNum"></td>
+					<td class="more_href" ><input type="checkbox" name=choice  class="checknum"  onclick="setAll()"/></td>
+					<td class="opid" style="display:none"></td>
+					<td class="acid" style="display:none"></td>
+				</tr>
+			</table>
+		</div>
+			
+		</div>
+	</body>
+	<script type="text/javascript">
+	$(".wx_name").each(function() {
+		$(this).text(decodeURI($(this).html()));
+	});
+	//将对象转化成字符串
+	function objTransform(jsonobj) {
+		return JSON.stringify(jsonobj);
+	}
+	/* 阀值保存按钮 */
+	/* var bao=$("#threshold").val(); */
+	
+	$("#search00").click(function(){
+		/* alert($("#threshold").val()) */
+		$("#loadingInfo").show();
+	 	$.ajax({
+			type: "GET",
+			url: "${basePath}/black/saveBlackThreshold",
+			async: false,
+			dataType: "json",
+			data: { 
+				"threshold":$("#threshold").val()
+			},
+			success: function(data){
+				$("#loadingInfo").hide();
+				if(data.result == "true") {
+					$(".tishi1").show();
+				}
+			},
+			error:function(){
+				$("#loadingInfo").hide();
+				alert("error");
+			}
+		}); 
+	})
+	/* 保存关闭 */
+	 $(".yes1").click(function(){
+        	$(".tishi1").hide();
+        	loaction.reload();
+        })
+	function deleteTr(obj){
+		var index = $(obj).parent('tr').index();
+		/*刪除对应的数组项*/
+		$(obj).parent('tr').remove();
+	}
+	
+	/* 加入黑名单 */
+		var wx_name;
+		var activity_name;
+		var wine_name;
+		var sinNum;
+		var more_href;
+		var opid;
+		var acid;
+		var addAwardsAjax = [];
+        var choice=document.getElementsByName("choice");
+        $('#join').click(function(){
+        	 for(var i=0;i<choice.length;i++){
+      		    if(choice[i].checked){
+      		    	$(".popUp").show();
+      		 	 for(var i=0;i<choice.length;i++){
+ 	        		var addAwardsAjaxObj = {};
+ 	     		    if(choice[i].checked){
+ 	     		    	addAwardsAjaxObj.wx_name=choice[i].parentNode.parentNode.children[1].innerHTML;
+ 	     		    	addAwardsAjaxObj.activity_name=choice[i].parentNode.parentNode.children[3].innerHTML;
+ 	     		    	addAwardsAjaxObj.wine_name=choice[i].parentNode.parentNode.children[4].innerHTML;
+ 	     		    	addAwardsAjaxObj.sinNum=choice[i].parentNode.parentNode.children[5].innerHTML;
+ 	     		    	addAwardsAjaxObj.opid=choice[i].parentNode.parentNode.children[7].innerHTML;
+ 	     		    	addAwardsAjaxObj.acid=choice[i].parentNode.parentNode.children[8].innerHTML;
+ 	     		    	addAwardsAjax.push(addAwardsAjaxObj);
+ 	     		    }
+ 	    		 }; 
+ 	    		/*  console.log(addAwardsAjax) */
+      		    }
+     		 }; 
+        });
+        /* 确定按钮点击事件 */
+        $(".btn-right").click(function(){
+        	/* console.log(addAwardsAjax) */
+        	$("#loadingInfo").show();
+         	$.ajax({
+    			type: "GET",
+    			url: "${basePath}/black/addBlackList",
+    			async: false,
+    			dataType: "json",
+    			data: { 
+    				"addAwardsAjax":objTransform(addAwardsAjax)
+    			},
+    			success: function(data){
+    				$("#loadingInfo").hide();
+    				if(data.result == "true") {
+    					$(".popUp").hide();
+        	        	$(".tishi").show();
+    				}else{
+    				/* 	alert("222") */
+    				}
+    	        	
+    			},
+    			error:function(){
+    				$("#loadingInfo").hide();
+    				alert("error");
+    			}
+    		}); 
+        })
+        /* 成功加入确定按钮 */
+        $(".yes").click(function(){
+        	$(".tishi").hide();
+        	location.reload();
+        })
+        /* 关闭加入黑名单 */
+        $(".close,.btn-left").click(function(){
+        	$(".popUp").hide();
+        	$(".checknum").prop("checked",false);
+        	$("#allcheck").prop("checked",false);
+        	
+        })
+        
+        /* 查看黑名单点击事件 */
+        $(".join_black").click(function(){
+        	
+        	location.href = "${basePath}/black/lookBlackList";
+        })
+        
+        
+      //点击全选，子复选框被选中
+        function demo(){
+        var allcheck=document.getElementById("allcheck");
+        choice=document.getElementsByName("choice");
+        for(var i=0;i<10;i++){
+        choice[i].checked=allcheck.checked;
+        }
+        }
+      //点击子复选框,全选框 选中、取消
+        function setAll(){
+        if(!$(".checknum").checked){
+        $("#allcheck").prop("checked",false); // 子复选框某个不选择，全选也被取消
+        }
+        var choicelength=$("input[type='checkbox'][class='checknum']").length;
+        var choiceselect=$("input[type='checkbox'][class='checknum']:checked").length;
+        if(choicelength==choiceselect){
+        $("#allcheck").prop("checked",true);   // 子复选框全部部被选择，全选也被选择；1.对于HTML元素我们自己自定义的DOM属性，在处理时，使用attr方法；2.对于HTML元素本身就带有的固有属性，在处理时，使用prop方法。
+        }
+        }
+      
+      
+      
+      
+      
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      var pageNumber=$("#input-page").val();
+      var activityName=$("#name").val();
+ 	  $(function(){
+ 		 $("#loadingInfo").show();
+			$.ajax({
+				data: {
+					pageNumber: 1,
+					activityName:''
+				},
+				type: "GET",
+				dataType: "JSON",
+				url: "${basePath}/black/getBlackListPage",
+				success: function(data) {
+					$("#loadingInfo").hide();
+					checkLoad(data);
+				},
+				error: function() {
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试00000");
+				}
+			});
+		}) 
+		$(function() {
+		adminAjax(1);
+		$(".manager-second-but").click(function() { //点击下一页
+			 $("#allcheck").prop("checked",false);
+			var total = Number($("#admin-total").text());
+			var page = Number($("#admin-page").text());
+			if(total > page) {
+				adminAjax(page + 1);
+			}
+		});
+
+		$(".manager-first-but").click(function() { //点击上一页
+			 $("#allcheck").prop("checked",false);
+			var page = Number($("#admin-page").text());
+			if(page > 1) {
+				adminAjax(page - 1);
+			}
+		});
+		$("#input-page").on("keyup", function(e) {
+			if(e.keyCode == 13) {
+				$(".skip-btn").click();
+			}
+		});
+
+		$(".skip-btn").click(function() {
+			 $("#allcheck").prop("checked",false);
+			if($("#input-page").val()>$("#admin-total").html()){
+				$("#input-page").val($("#admin-total").html())
+			}
+			var page = Number($("#input-page").val());
+			if(page == 0) {
+				page = page + 1;
+			}
+			adminAjax(page);
+			
+		});
+	});
+	
+ 	function adminAjax(page) {
+ 		 var activityName=$("#name").val();
+ 		$("#loadingInfo").show();
+		$.ajax({
+			data: {
+				pageNumber: page,
+				activityName : activityName
+			},
+			type: "GET",
+			dataType: "JSON",
+			url: "${basePath}/black/getBlackListPage",
+			success: function(data) {
+				$("#loadingInfo").hide();
+				checkLoad(data);
+			},
+			error: function() {
+				$("#loadingInfo").hide();
+				alert("网络连接异常，请稍后再试");
+			}
+		});
+	}; 
+	
+	/* 分页查询 */
+	function checkLoad(data) {
+		$(".table-tbody table").html("");
+		$("#admin-curent").text(data.currentPage + "/" + data.totalPages);
+		$("#admin-total").text(data.totalPages);
+		$("#admin-page").text(data.currentPage);
+		for(var i = 0; i < data.allAdmins.length; i++) {
+				var adminObj = $(".admin-obj:eq(0)").clone(true);
+				var adminArray = data.allAdmins[i];
+				/* console.log(adminArray); */
+				adminObj.find(".index").text(i + 1);
+				adminObj.find(".wx_name").text(decodeURI(adminArray.nickName).replace(/\+/g, " "));
+				adminObj.find(".headPicture img").attr("src", adminArray.headImgUrl);
+				adminObj.find(".activity_name").text(adminArray.activityName);
+				adminObj.find(".wine_name").text(adminArray.prizeName);
+				adminObj.find(".sinNum").text(adminArray.scanNum);
+				adminObj.find(".acid").text(adminArray.activityId);
+				adminObj.find(".opid").text(adminArray.openId);
+			/* 	adminObj.find(".more_href a").attr("href", "${basePath}/scanCount/lookMoreInfo?openId="+ adminArray.OPENID); */
+				$(".table-tbody table").append(adminObj);
+		} 
+	}; 
+	
+	$("#search").click(function() {
+		var activityName=$("#name").val();
+		//还需写个时间
+		$("#loadingInfo").show();
+		$.ajax({
+			data: {
+				pageNumber: 1,
+				activityName: activityName
+			},
+			type: "GET",
+			dataType: "JSON",
+			url: "${basePath}/black/getBlackListPage",
+			success: function(data) {
+				$("#loadingInfo").hide();
+				checkLoad(data);
+			},
+			error: function() {
+				$("#loadingInfo").hide();
+				alert("网络连接异常，请稍后再试");
+			}
+		});
+	});
+	/* 导出 */
+/* 	$("#export").click(function() {
+		var name = $("#name").val();
+		location.href = "${basePath}/scanCount/exportInfo?nickName=" + name;
+	}); */ 
+	</script>
+
+</html>

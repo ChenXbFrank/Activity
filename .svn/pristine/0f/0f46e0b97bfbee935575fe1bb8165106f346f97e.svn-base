@@ -1,0 +1,101 @@
+<!--[arg user,basePath,staticPath;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+			<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/index/My-order.css" />
+	</head>
+
+	<body>
+		<div class="bg" style="background-image: url('${staticPath}/img/bg-xuanze.png')">
+			<div class="one">
+				<div class="Order">
+					<img src="${staticPath}/img/wodedingdan-picture.png" alt="" />
+					<div class="ming">
+						<p>五粮醇大淡雅大淡雅大淡雅</p>
+						<p>大淡雅大淡雅大淡雅大淡雅</p>
+					</div>
+					<div class="Specifications">
+						<p>规格：精装版100mL</p>.
+						<p>活动类型：疯狂砍价</p>
+						<p>交易状态：卖家已付款</p>
+					</div>
+					<div class="price">
+						<p>市场价￥500.00</p>
+						<p>活动价￥130.00</p>
+						<p>x1</p>
+					</div>
+					<div class="amount">
+						<p>商品数量：1件 合计：130.00(含运费：10.00)</p>
+					</div>
+				</div>
+				<div class="See">
+					<p>查看订单详情</p>
+				</div>
+			</div>
+			<div class="two">
+				<div class="Order">
+					<img src="${staticPath}/img/wodedingdan-picture.png" alt="" />
+					<div class="ming">
+						<p>五粮醇大淡雅大淡雅大淡雅</p>
+						<p>大淡雅大淡雅大淡雅大淡雅</p>
+					</div>
+					<div class="Specifications">
+						<p>规格：精装版100mL</p>
+						<p>活动类型：疯狂砍价</p>
+						<p>交易状态：卖家未付款</p>
+					</div>
+					<div class="price">
+						<p>市场价￥500.00</p>
+						<p>活动价￥130.00</p>
+						<p>x1</p>
+					</div>
+					<div class="amount">
+						<p>商品数量：1件 合计：130.00(含运费：10.00)</p>
+					</div>
+				</div>
+				<div class="footer">
+					<div class="immediately">
+						<p>立即支付</p>
+					</div>
+					<div class="See">
+						<p>查看订单详情</p>
+					</div>
+				</div>
+			</div>
+			<div class="three">
+				<div class="Order">
+					<img src="${staticPath}/img/wodedingdan-picture.png" alt="" />
+					<div class="ming">
+						<p>五粮醇大淡雅大淡雅大淡雅</p>
+						<p>大淡雅大淡雅大淡雅大淡雅</p>
+					</div>
+					<div class="Specifications">
+						<p>规格：精装版100mL</p>
+						<p>活动类型：疯狂砍价</p>
+						<p>交易状态：卖家已付款</p>
+					</div>
+					<div class="price">
+						<p>市场价￥500.00</p>
+						<p>活动价￥130.00</p>
+						<p>x1</p>
+					</div>
+					<div class="amount">
+						<p>商品数量：1件 合计：130.00(含运费：10.00)</p>
+					</div>
+				</div>
+				<div class="active">
+					<p>活动已过期</p>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,95 @@
+.productInfos{
+	margin-top:2vw;
+}
+.productInfos textarea{
+	vertical-align:top;
+	border-radius:4px;
+	width:20vw;
+	height:4vw;
+	font-size:1vw;
+}
+.btn{
+	width:32vw;
+	margin:0vw auto 0;
+	text-aligin:center;
+}
+.submitBtn {
+	width: 10vw;
+	height: 2.7vw;
+	color: white;
+	background: #f19032;
+	text-align: center;
+	line-height: 2.7vw;
+	border-radius: 4px;
+	display:inline-block; 
+}
+.submitBtn:hover{
+	cursor:pointer;
+}
+.red-time{
+	height:2vw;
+	font-size:1vw;
+	margin-top:1vw;
+}
+.red-time .line{
+	margin-left: 0vw; 
+    margin-right: 0vw; 
+    width:1vw;
+    height:2px;
+    vertical-align:middle;
+}
+.red-time .startTime{
+	margin-left:10px;
+}
+.active-name,.gridNumber,.use-time{
+	margin-top:1vw;
+	display:inline-block;
+}
+.gridNumber{
+	margin-left:2vw;
+}
+.left .activity-pic {
+    width: 11.67vw;
+    height: 18.02vw;
+    vertical-align: middle;
+    margin-left: 4.1vw;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0px 0px 40px #9a9a9a;
+}
+.game-pic{
+	width: 15.5vw;
+    height: 14vw;
+    vertical-align: middle;
+    margin-left: 4.1vw;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0px 0px 40px #9a9a9a;
+}
+.game-pic img{
+	width: 100%;
+	vertical-align: middle;
+    max-width: 100%;
+    max-height: 100%;
+}
+.bgAndGame{
+	font-size:1vw;
+	margin-left:10.1vw;
+}
+#table-outer4 .table-tbody {
+    width: 60vw;
+    height: 4vw;
+}
+.parting-line {
+    width: 100%;
+    height: 1px;
+    background: #a5b2ba;
+    margin-top: 1vw;
+}
+.addPic-upload {
+    width: 15.5vw;
+    height: 14vw;
+    line-height: 14vw;
+    vertical-align: middle;
+    text-align: left;
+}

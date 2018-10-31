@@ -1,0 +1,25 @@
+<!--[arg user,basePath,staticPath;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>活动完成</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/index/QRCodeInvalid2.css"/>
+	</head>
+
+	<body>
+		<div class="bg">
+			<div class="small-bg">
+				<h5>此活动已经完成</h5>
+				<p>请到个人中心查看</p>
+			</div>
+		</div>
+	</body>
+
+</html>

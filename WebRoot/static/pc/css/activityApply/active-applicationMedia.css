@@ -1,0 +1,19 @@
+ @media all and (max-width: 907.6px) {
+ 	.activities ul li .person {
+ 		width: 19vw;
+ 		margin-top: 0.5vw;
+ 		color: #a5a5a5;
+ 		font-size: 1vw;
+ 		margin-left: 1vw;
+ 	}
+ }
+ 
+ @media all and (max-width: 822px) {
+ 	.activities ul li .person {
+ 		width: 21vw;
+ 		margin-top: 0.5vw;
+ 		color: #a5a5a5;
+ 		font-size: 1vw;
+ 		margin-left: -0.2vw;
+ 	}
+ }

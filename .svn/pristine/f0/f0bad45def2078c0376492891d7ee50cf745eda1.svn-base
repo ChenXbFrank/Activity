@@ -1,0 +1,812 @@
+<!--[arg _res,user,basePath,staticPath,soiList,srList,belongActivityId,userTargetId;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload2.css">
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		
+	
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/turntable-edit.css" />
+		<script src="${staticPath}/js/upload/upload.min.js"></script>
+		<script type="text/javascript">
+			var basePath = "${basePath}";			//获取basePath
+		</script>
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+		</style>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<!--提示数据丢失-->
+		<div id="popup1" style="display:none">
+			<div class="fade"></div>
+			<div class="delivery-success1">
+				<div class="success-outer1">
+					<div class="pop-title">已填数据可能会丢失。</div>
+					<input type="button" value="确定" id="yes" class="btn-button" />
+					<input type="button" value="取消" id="no" class="btn-button" />
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：
+					<a href="${basePath}/goHomePage" class="backHome">首页></a>
+					<a href="${basePath}/activityApply" class="backOne">活动申请></a>
+					<a href="javascript:void(0);" class="back">转盘活动申请</a>
+				</p>
+				<ul class="title-pic">
+					<li class="backHome">
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li class="exit">
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+				<div class="tishi3" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt">
+						<p>您当前奖品还有剩余，请修改奖品设置！</p>
+						<button class="yes3">确定</button>
+
+					</div>
+				</div>
+
+				<div class="tishi4" style="display:none">
+					<div class="mask4"></div>
+					<div class="prompt">
+						<p>请将信息填写完整。</p>
+						<button class="yes4">确定</button>
+
+					</div>
+				</div>
+				<div class="tishi5" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt">
+						<p>请先选择运单信息。</p>
+						<button class="yes5">确定</button>
+					</div>
+				</div>
+				<div class="tishi6" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt">
+						<p>您当前设置的奖品个数不足。</p>
+						<button class="yes6">确定</button>
+					</div>
+				</div>
+				<div class="tishi7" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt">
+						<p>复制后您当前的奖品剩余数量为负数，请手动配置。</p>
+						<button class="yes7">确定</button>
+					</div>
+				</div>
+
+				<div class="tishi1" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt9">
+						<p>提醒：此操作将清空您奖品设置参数</p>
+						<hr />
+						<h5>是否确定继续删除？</h5>
+						<button class="yes1">是</button>
+						<button class="no1">否</button>
+					</div>
+				</div>
+				<div class="tishi10" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt10">
+						<p>奖品配置不足</p>
+						<hr />
+						<h5>是否自动填充为“谢谢惠顾”？</h5>
+						<button class="yes1">是</button>
+						<button class="no1">否</button>
+					</div>
+				</div>
+				<div class="left">
+					<!--登录背景图片-->
+					<div>
+						<p class="dengru">登录背景图</p>
+						<div class="activity-pic" id="divPreview">
+							<img class="pic" src="/activityUploadPath/upload/kanjia.png" alt="" id="picLogin" />
+						</div>
+						<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+						<div class="upload">
+							<input type="button" value="上传图片" />
+						</div>
+					</div>
+					<!--首页背景图片-->
+					<div>
+						<p class="shouji">手机背景图</p>
+						<div class="activity-pic" id="divPreview">
+							<img class="pic" src="/activityUploadPath/upload/zhuanpanchoujiang-bg.png" alt="" id="picBg" />
+						</div>
+						<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+						<div class="upload">
+							<input type="button" value="上传图片" />
+						</div>
+					</div>
+					<!--活动规则-->
+					<div>
+						<p class="guize">活动规则</p>
+						<div class="activity-pic" id="divPreview">
+							<img class="pic" src="/activityUploadPath/upload/kanjia.png" alt="" id="picRulebg" />
+						</div>
+						<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+						<div class="upload">
+							<input type="button" value="上传图片" />
+						</div>
+					</div>
+				</div>
+				<div id="popup" style="display:none">
+					<div class="fade"></div>
+					<!--申请成功-->
+					<div class="delivery-success">
+						<div class="success-outer">
+							<div class="pop-title">申请成功！</div>
+							<input type="button" value="确定" id="delivery-success-yes" />
+						</div>
+					</div>
+				</div>
+
+				<div id="popup-upPic" style="display: none">
+					<div class="fade"></div>
+					<!--图片上传弹窗-->
+					<div class="delivery-success">
+						<div class="close" id="closePic">
+							<img src="${staticPath}/img/close-icon.png" alt="" />
+						</div>
+						<div class="upBtn">
+							<div class="upBtn-inner">
+								<input type="hidden" name="filePath" id="callbackPath2">
+								<a id="zwb_upload"> <input type="file" class="add" multiple>选择图片
+								</a> <input type="button" value="确定上传" id="yulan" />
+							</div>
+						</div>
+						<hr>
+						<div class="imgsBox">
+							<ul>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="excels">
+					<p class="setUp">活动内容设置:</p>
+					<label for="active-name">转盘抽奖活动名称：</label> <input type="text" id="active-name" maxlength="6" placeholder="6个字以内" onblur="activityNameValidate()" /><span class="activity-volidate volidate">*必填</span><br />
+					<input type="radio" name="scanTimes" checked="checked" value="1" style="display:none" />
+					<!--<label for="" class="hongbaoP">扫码抽奖次数: </label>
+				<input type="radio" name="scanTimes" checked="checked" value="1" />1次
+				<input type="radio" name="scanTimes" value="2" />2次
+				<input type="radio" name="scanTimes" value="3" />3次<br /> -->
+					<label for="">转盘抽奖活动时间：</label> <input type='text' id="startTime" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" onblur="timeValidate()" />
+					<div class='line'></div>
+					<input type='text' id="endTime" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" onblur="timeValidate()" /><span class="time-volidate volidate">*必选</span><br />
+					<label for="" class="rd">转盘展示奖品数: </label>
+					<span>(即，奖品设置中可添加奖品的个数)</span>
+					<input type="radio" name="awardNum" checked="checked" value="6" />6个<input type="radio" name="awardNum" value="8" />8个
+					<label for="" class="hongbaoP">转盘转速: </label>
+					<input type="radio" name="speed" checked="checked" value="0" />快<input type="radio" name="speed" value="1" />慢
+
+					<div class="list-bill">
+						<div class="bill-title">
+							运单信息：<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="addBill" onclick="addBillCommon({url : 'accumulateFabulousConfig/sellInfo', clickSendOrSell : 'sell'})"/>接受的货
+							<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="sendBill" onclick="addBillCommon({url : 'accumulateFabulousConfig/sendSellInfo', clickSendOrSell : 'send'})"/>发出的货
+							<span class="bill-volidate volidate">*必选</span>
+							<div class="BigSum">
+								<p>
+									总瓶数:<span class="sum" id="sum">0</span>瓶
+								</p>
+							</div>
+
+						</div>
+						<div id="table-outer1">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+										<td>发货时间</td>
+										<td>发货状态</td>
+										<td>编辑</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div>
+						<div class="bill-title">
+							<div class="prizeSetTitle">
+								<span class="prizeSet">奖品设置:</span><img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="otherPic" /><span class="award-volidate volidate">*必选</span>
+								<div class="BigSum">
+									<p>
+										<span style="color:black">奖项总金额:</span><span class="daqian" style="color:black">0</span>元<label style="margin-left: 0.5vw;">奖品总数:</label><span class="sum" id="awardTotal">0</span>个<span class="reminder">(提示：您还需设置<span id="needAwardNum">6</span>个奖品，剩余奖品数量<span id="residueAwardNum"></span>个！)</span>
+									</p>
+								</div>
+							</div>
+							<div id="table-outer4">
+								<div class="table-thead">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>序号</td>
+											<td>奖品名称</td>
+											<td>奖品类型</td>
+											<td>奖品数量</td>
+											<td>中奖概率</td>
+											<td>操作</td>
+										</tr>
+									</table>
+								</div>
+								<div class="table-tbody">
+									<table border="0" cellpadding="0" cellspacing="0">
+									</table>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="submitBtn"><input type="button" value="提交申请" /></div>
+		<!--运单信息-->
+		<div class="popUp" id="billPop" style="display: none">
+			<div class="mask"></div>
+			<div class="popUp-window bill-window">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" id="bill-close" />
+				<div class="list-bill">
+					<div class="kuang">
+						<p class="yund">运单中心</p>
+						<div class="qwe qwe1">
+							<lable class="jp">货品名称：</lable>
+							<input type="text" id="search2" value="" /> <label for="">发货时间：</label>
+							<input type='text' id="startTime2" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" />
+							<div class='line'></div>
+							<input type='text' id="endTime2" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" />
+							<button class="chazhao2">搜索</button>
+						</div>
+						<div id="table-outer3">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0" id="yourTableID3">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+										<td>发货时间</td>
+										<td>发货状态</td>
+										<td><input type="checkbox" id="checkAll" />选择</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0" id="zong">
+									<!--[loop(soi : soiList) {]-->
+									<tr>
+										<td>${soi.getOutNo()}</td>
+										<td>${soi.getRecsellerName()}</td>
+										<td>${soi.getProductName()}</td>
+										<td>${soi.getDegree()}</td>
+										<td>${soi.getVolume()}</td>
+										<td class="alcoholTotal">${soi.getSpec()}</td>
+										<td class="caseNumber">${soi.getBoxCode()}</td>
+										<td>${soi.getBrandsName()}</td>
+										<td>${soi.getOutDate()}</td>
+										<!--[ if(soi.getSellerId()==userTargetId) { ]-->
+										<td>发出的货</td>
+										<!--[ } else { ]-->
+										<td>接收的货</td>
+										<!--[ } ]-->
+										<td class="checkbox"><input type="checkbox" name="${soi.getSellerId()}" value="${soi.getRecordId()}" /></td>
+									</tr>
+									<!--[}]-->
+								</table>
+							</div>
+						</div>
+						<!-- 运单弹窗分页开始 -->
+						<div class="page-break">
+							<div class="page-btn">
+								<span class="manager-first-but">上一页</span>
+								<span id="admin-page">1</span>
+								<span class="manager-second-but">下一页</span>
+							</div>
+							<div class="skip">
+								<span>跳转至</span>
+								<input type="text" id="input-page" />&nbsp;页&nbsp;
+								<span class="skip-btn">跳转</span>
+							</div>
+							<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+						</div>
+						<!-- 运单弹窗分页结束 -->
+						<div class="btn billConfirm" id="bill-btn">
+							<input type="button" value="确定" class="bb " />
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- 奖品设置弹窗 -->
+		<div class="popUp" id="otherProduct" style="display:none">
+			<div class="mask"></div>
+			<div class="popUp-otherProduct-window otherProduct-window" style="background-image:url('${staticPath}/img/integralConfig/0.png')">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" id="otherPro-close" />
+				<div class="list-bill">
+					<div class="kuang">
+						<p class="yund">添加奖品：</p>
+						<div class="addPic">
+							<div class="addPic-left">
+								<label for="bargaining-situation">奖品类型：</label>
+								<div class="outer">
+									<input id="bargaining-situation" type="text" readonly="readonly" style="background-image: url('${staticPath}/img/more01.png')" />
+									<ul class="select" style="display: none;">
+										<li>实物</li>
+										<li>积分</li>
+										<li>红包</li>
+										<li>谢谢惠顾</li>
+									</ul>
+								</div><br>
+								<label class="proName">奖品名称：</label>
+								<input type="text" id="proName" class="proName" maxlength="6" placeholder="6个字以内" /><br />
+								<label>奖品数量：</label>
+								<input type="text" id="proNum" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;" />个<br />
+								<label>中奖概率：</label>
+								<span id="probability">10%</span>
+									 <br />
+								<div class="big_pattern" style="display:none">
+									<input name="Pattern" type="radio" value="1" class="Pattern" onclick="getRadio()" checked="checked" />物流发货
+									<input name="Pattern" type="radio" value="2" class="Pattern" onclick="getRadio()"  />现场领奖
+								<div class="outer1" style="display:none">
+									<input id="bargaining-situations" type="text" readonly="readonly" size="10"  style="background-image: url('${staticPath}/img/more01.png')" />
+									<ul class="select1" >
+										<li>大风浪幅度萨芬富大厦，二维码分为五冯绍峰 而我们但是废物幅度萨芬麽了负数二秒看来</li>
+										<li>通过</li>
+										<li>驳回</li>
+										<li>申请中</li>
+										<li>通过</li>
+										<li>驳回</li>
+										<li>申请中</li>
+										<li>通过</li>
+										<li>驳回</li>
+										<li>申请中</li>
+										<li>驳回</li>
+										<li>申请中</li>
+										<li>通过</li>
+										<li>驳回</li>
+										<li>申请中</li>
+									</ul>
+								</div>
+								</div>
+							
+							
+								<!-- <--<label>剩余奖品数量：</label>
+								<span id="remaining-prize-quantity"></span> --> 
+							</div>
+							<div class="addPic-right">      
+								<!-- 下拉框是实物 -->
+								<div class="matter">
+									<p>奖品图片：</p>
+									<div class="addPic-upload" id="addPic-upload">
+										<img id="pic1" src="${staticPath}/img/default.png" alt="" />
+									</div>
+									<p class="picInfo1">(上传图片大小不高于500kb,图片格式为jpg,png,gif)</p>
+									<div class="upload1">
+										<input type="button" value="上传图片" />
+									</div>
+								</div>
+								<!-- 下拉框是红包 -->
+								<div class="redBag" style="display:none">
+									<label>红包金额：</label>
+									<input type="text" id="money" oninput="clearNoNum(this)" onblur="clearNoNum(this)" />元
+								</div>
+								<!-- 下拉框是积分 -->
+								<div class="integral" style="display:none">
+									<label>积分值：</label>
+									<input type="text" id="integral" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;" />分
+								</div>
+								<!-- 下拉框是谢谢惠顾 -->
+								<div class="thanks" style="display:none">
+								</div>
+							</div>
+
+						</div>
+						<div class="btn billConfirm" id="bill-btn">
+							<input type="button" value="取消" class="bb" id="otherPic-cancel" />
+							<input type="button" value="保存" class="bb" id="otherPic-save" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!--图片上传弹窗-->
+		<div id="popup-upPic1" style="display:none">
+			<div class="fade"></div>
+			<div class="delivery-success">
+				<div class="close" id="closePic1">
+					<img src="${staticPath}/img/close-icon.png" alt="" />
+				</div>
+				<div class="upBtn">
+					<div class="upBtn-inner">
+						<input type="hidden" name="filePath" id="callbackPath1">
+						<a id="zwb_upload1">
+							<input type="file" class="add" multiple>选择图片
+						</a>
+						<input type="button" value="确定上传" id="yulan1" />
+					</div>
+				</div>
+				<hr>
+				<div class="imgsBox">
+					<ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" class="belong" value="${belongActivityId}" />
+	</body>
+	<script src="${staticPath}/js/common/editCloseReminder.js"></script>
+	<script type="text/javascript" src="${staticPath}/js/common/billCommon.js"></script>
+	<script type="text/javascript" src="${staticPath}/js/turntableConfig/turntable-edit.js"></script>
+	<script>
+		
+		/* 点击图片库中的删除图标 */
+		function deleteImg(obj){
+			event.stopPropagation();//阻止冒泡
+			var deleteSrc=$(obj).parent().find("img").attr("src");
+			var srcUrl=deleteSrc.substring(19,deleteSrc.length);
+			$("#loadingInfo").show();
+			$.ajax({
+				url : "${basePath}/upload/deleteImg",
+				type : "POST",
+				dataType : "JSON",
+				async : "false",
+				data : {"srcUrl":srcUrl},
+				success : function(data) {
+					$("#loadingInfo").hide();
+					if(data==true){
+						$(obj).parent().remove();
+					}else{
+						alert("删除图片失败");
+					}
+				},
+				error:function(){
+					$("#loadingInfo").hide();
+					alert("交互失败！");
+				}
+				
+			});
+		}
+		var uploadParent;
+		$(".upload").on("click", function() {
+			uploadParent=$(this).parent();
+			$("#popup-upPic").show();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/upload/getUserAllImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {},
+				success: function(data) {
+					$("#loadingInfo").hide();
+					$('#popup-upPic .imgsBox ul').html("");
+					for(var i = 0; i < data.length; i++) {
+						var li = $("<li></li>");
+						li.appendTo($('#popup-upPic .imgsBox ul'));
+						var img = $("<img src=" + '/activityUploadPath' + data[i].IMG_URL + " />");
+						img.appendTo(li);
+						var deleteImg=$("<div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div>");
+						deleteImg.appendTo(li);
+					}
+				}
+			});
+		})
+		$("#closePic").on("click", function() {
+			$("#popup-upPic").hide();
+		});
+		$("#popup-upPic .imgsBox ul li").on("click", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			$("#pic").attr("src", imgSrc);
+		}) 
+		$("#zwb_upload").bindUpload({
+			url: "${basePath}/upload/loadImg", //上传服务器地址
+			callbackPath: "#callbackPath2", //绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+			// ps:值返回上传成功的 默认id为#callbackPath  保存容器为位置不限制,id需要加上#号,class需要加上.
+			// 返回格式为:
+			// 原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径....
+			num: 1, //上传数量的限制 默认为空 无限制
+			type: "jpg|png|gif", //上传文件类型 默认为空 无限制
+			size: 0.488, //上传文件大小的限制,默认为5单位默认为mb
+		});
+		$("#zwb_upload .add").on("click", function() {
+			$("#callbackPath2").val("");
+		})
+		var address = ""; //传给后台的图片数据
+
+		$("#yulan").on("click", function() {
+			var imgPic = $("#callbackPath2").val();
+			var urlArr = imgPic.split(",");
+			address = urlArr[1];
+			var aa = "/activityUploadPath" + address;
+			//动态创建li img放在图片库的最前面
+			if(address != undefined) {
+				$("#popup-upPic .imgsBox ul").prepend(" <li><img src=" + aa + " /><div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div></li>");
+				$("#callbackPath2").val("");
+			}
+
+		});
+		$("#popup-upPic .imgsBox ul").on("click", "li", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			uploadParent.find(".pic").attr("src", imgSrc);
+		})
+
+		$(".upload1").on("click", function() {
+			$("#popup-upPic1").show();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/upload/getUserAllImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {},
+				success: function(data) {
+					$("#loadingInfo").hide();
+					$('#popup-upPic1 .imgsBox ul').html("");
+					for(var i = 0; i < data.length; i++) {
+						var li = $("<li></li>");
+						li.appendTo($('#popup-upPic1 .imgsBox ul'));
+						var img = $("<img src=" + '/activityUploadPath' + data[i].IMG_URL + " />");
+						img.appendTo(li);
+						var deleteImg=$("<div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div>");
+						deleteImg.appendTo(li);
+					}
+				}
+			});
+		})
+		$("#closePic1").on("click", function() {
+			$("#popup-upPic1").hide();
+		});
+		$("#popup-upPic1 .imgsBox ul li").on("click", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			$("#pic1").attr("src", imgSrc);
+		})
+		$("#zwb_upload1").bindUpload({
+			url: "${basePath}/upload/loadImg", //上传服务器地址
+			callbackPath: "#callbackPath1", //绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+			// ps:值返回上传成功的 默认id为#callbackPath  保存容器为位置不限制,id需要加上#号,class需要加上.
+			// 返回格式为:
+			// 原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径....
+			num: 1, //上传数量的限制 默认为空 无限制
+			type: "jpg|png|gif", //上传文件类型 默认为空 无限制
+			size: 0.488, //上传文件大小的限制,默认为5单位默认为mb
+		});
+		$("#zwb_upload1 .add").on("click", function() {
+			$("#callbackPath1").val("");
+		})
+		var address1 = ""; //传给后台的图片数据
+
+		$("#yulan1").on("click", function() {
+			var imgPic = $("#callbackPath1").val();
+			var urlArr = imgPic.split(",");
+			address1 = urlArr[1];
+			var aa = "/activityUploadPath" + address1;
+			//动态创建li img放在图片库的最前面
+			if(address1 != undefined) {
+				$("#popup-upPic1 .imgsBox ul").prepend(" <li><img src=" + aa + " /><div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div></li>");
+				$("#callbackPath1").val("");
+			}
+
+		});
+		$("#popup-upPic1 .imgsBox ul").on("click", "li", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			$("#pic1").attr("src", imgSrc);
+		})
+
+		
+		
+		$(".submitBtn input[type='button']").click(function() {
+			
+			window.onbeforeunload = null;
+			/* $(this).attr("disabled","disabled"); */
+			var turntableObj = {}; //转盘的上面一块的信息
+			turntableObj.activityName = $("#active-name").val();
+			//转盘扫码抽奖次数
+			//turntableObj.scanWinningNum=$("input[name='scanTimes']:checked").val();
+			turntableObj.scanWinningNum = "1";
+			turntableObj.totalmoney=$(".daqian").html();
+			turntableObj.startTime = $("#startTime").val();
+			turntableObj.endTime = $("#endTime").val();
+			turntableObj.awardNum = $("input[name='awardNum']:checked").val();
+			turntableObj.speed = $("input[name='speed']:checked").val();
+		/* 	turntableObj.picSrc = $("#pic").attr("src").substring(19, $("#pic").attr("src").length); */
+			if($("#pic").attr("src").indexOf("/static/") >= 0) {
+				turntableObj.picSrc = "";
+			} else {
+				turntableObj.picSrc = $("#pic").attr("src").substring(19, $("#pic").attr("src").length);
+			}
+			if($("#pic3").attr("src").indexOf("/static/") >= 0) {
+				turntableObj.ruleImg = "";
+			} else {
+				turntableObj.ruleImg = $("#pic3").attr("src").substring(19, $("#pic3").attr("src").length);
+			}
+			console.log(turntableObj)
+			turntableObj.belongId = $(".belong").val();
+			turntableObj.total = $("#awardTotal").html();
+			var addAwardsAjax = [];
+			for(var i = 0; i < addAwards.length; i++) {
+				var addAwardsAjaxObj = {};
+				if(addAwards[i].type == "实物") {
+					addAwardsAjaxObj.type = "1";
+				} else if(addAwards[i].type == "积分") {
+					addAwardsAjaxObj.type = "2";
+				} else if(addAwards[i].type == "红包") {
+					addAwardsAjaxObj.type = "3";
+				} else if(addAwards[i].type == "谢谢惠顾") {
+					addAwardsAjaxObj.type = "4";
+				}
+				addAwardsAjaxObj.name = addAwards[i].name;
+				addAwardsAjaxObj.number = addAwards[i].number;
+				addAwardsAjaxObj.probability = addAwards[i].probability;
+				addAwardsAjaxObj.pic1Src = addAwards[i].pic1Src.substring(19, addAwards[i].pic1Src.length);
+				addAwardsAjaxObj.money = addAwards[i].money;
+				addAwardsAjaxObj.integral = addAwards[i].integral;
+				addAwardsAjax.push(addAwardsAjaxObj);
+			}
+			//console.log(addAwardsAjax);
+			/* 点击下一步验证信息 */
+			var turntableObjVoli = false;
+			for(var i in turntableObj) {
+				if(turntableObj[i] == "") {
+					if(i != "picSrc") {
+						turntableObjVoli = true;
+					}
+				};
+
+			};
+			var billListsVoli = true;
+			if(billLists.length != 0) {
+				billListsVoli = false;
+			}
+			var addAwardsVoli = true;
+			if(addAwards.length != 0) {
+				var residueAwardNum = 0;
+				for(var i = 0; i < addAwards.length; i++) {
+					residueAwardNum += parseInt(addAwards[i].number);
+				}
+				var turntableNum = $("input[name='awardNum']:checked").val()
+				var changdu=$("#table-outer4 .table-tbody tr").length
+				//alert(changdu+'yuanyuan') 
+				if(residueAwardNum == $("#awardTotal").html() && changdu == turntableNum) {
+					addAwardsVoli = false;
+				}
+			} 
+			/* var geshu=$("input[name='awardNum']:checked").val() */
+			if(turntableObjVoli == false && billListsVoli == false) {
+				if(addAwardsVoli == false) {
+					$(this).attr("disabled", "disabled");
+					$("#otherPic").hide();
+					//console.log(addAwardsAjax);
+					$("#loadingInfo").show();
+					 $.ajax({
+						url: "${basePath}/turntableConfig/saveTurntableActivity",
+						type: "POST",
+						dataType: "JSON",
+						async: "false",
+						data: {
+							"turntableObj": objTransform(turntableObj),
+							"billLists": objTransform(billLists),
+							"addAwards": objTransform(addAwardsAjax)
+						},
+						success: function(data) {
+							$("#loadingInfo").hide();
+							if(data.result == "true") {
+								$(this).removeAttr("disabled");
+								$("#popup").show();
+								$("#delivery-success-yes").on("click", function() {
+									$("#popup").hide();
+									location.href = "${basePath}/activityApply";
+								})
+							} else {
+								$(this).attr("disabled", "disabled");
+							}
+						}
+					});  
+				} else {
+					/* 当转盘瓣数大于0小于配置瓣数，并且剩余奖品数为0时，将自动填充谢谢惠顾 */
+					var needAwardNum=parseInt($("#needAwardNum").html());
+					var residueAwardNum=parseInt($("#residueAwardNum").html());
+					if(needAwardNum>0 && residueAwardNum==0){
+						$(".tishi10").show();
+					}else{
+						$(".tishi6").show();
+						$(".tishi6 .yes6").on("click", function() {
+							$(".tishi6").hide();
+						})
+					}
+				}
+			} else {
+				$(".tishi4").show();
+				$(".tishi4 .yes4").on("click", function() {
+					$(".tishi4").hide();
+				})
+			}
+
+		});
+
+		
+	</script>
+
+</html>

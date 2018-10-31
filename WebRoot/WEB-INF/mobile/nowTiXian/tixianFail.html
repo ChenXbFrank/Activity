@@ -1,0 +1,59 @@
+<!--[arg basePath,staticPath,newMoney;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>提现失败</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+			<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		html {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+		body {
+			width: 100%;
+			height: 100%;
+			background-size: 100% 100%;
+			background-repeat: no-repeat;
+		
+		}
+	.wen{
+	width:100%;
+	text-align: center;
+	padding-top:7rem;
+	font-size:0.42rem;
+	color:white;
+	}
+	</style>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/nowTiXian/hehhe.png');">
+		<div class="wen">
+		<p >余额为${newMoney}元</p>
+		</div> 
+		<script>
+		/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			$(".wen").css({"padding-top":"6.3rem"})
+		}
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".wen").css({"padding-top":"8.5rem"})
+		
+			//alert("pingguo6666")
+		}
+		
+		
+		</script>
+	</body>
+
+</html>

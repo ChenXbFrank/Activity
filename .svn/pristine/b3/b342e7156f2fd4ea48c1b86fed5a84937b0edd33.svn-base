@@ -1,0 +1,74 @@
+<!--[arg basePath,staticPath,integralProduct,name,tel,address,publicNumberId,openid,moblecBackgroundImg,sellerPublicNumber;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<title>我要兑换</title>
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		 <link rel="stylesheet" type="text/css" href="${staticPath}/css/integral/style.css"/> 
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/integral/success.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.js"></script>
+	</head>
+	<body style="background-image: url('/activityUploadPath${moblecBackgroundImg}')">
+	<div class="title1">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+		<div class="successfulExchange">
+			<p>兑换成功</p>
+		</div>
+		<div class="commodity" style="background-image: url('${staticPath}/New_img/index/ok_bg.png')">
+				<div class="pic">
+					<img src="/activityUploadPath${integralProduct.getProductImg()}" alt="" />
+				</div>
+				<div class="name">
+					<p >${integralProduct.getProductName()}</p>
+				</div>
+				<div class="exchangeIntegral" style="background-image: url('${staticPath}/New_img/index/duihuan_kuang.png')">
+					<h5>兑换积分:${integralProduct.getNeedIntegral()}</h5>
+				</div>
+				<div class="information">
+					<p>收货人:<span>${name}</span></p>
+					<p>联系电话:<span>${tel}</span></p>
+					<p>收货地址:<span>${address}</span></p>
+				</div>
+				<div class="exchange-btn"><img src="${staticPath}/New_img/index/fanhui.png" alt="" /></div>
+				<div class="footer">
+					<p>温馨提示:兑换的商品,将在兑换成功后5个工作内日发出,如有疑问,请直接联系<span><客服小丽></span>,谢谢！</p>
+				</div>
+				<footer>
+			
+		</footer>
+		</div>
+	</body>
+	<script>
+	/* 华为 */
+	if(screen.height<=640 && screen.width<=360){
+		/* $(".title img").css({"width":'9.5rem',"height":"7rem"})
+		$(".rule-name p").css({"bottom":"3%"}) */
+		$(".rule").css({"margin-top":"0.6rem"})
+		//alert("huaweishouji")
+	}
+	/* 苹果x */
+	if(screen.height==812 && screen.width==375){
+		$(".successfulExchange").css({"padding-top":"5rem"})
+		
+		/* $(".section").css({"height":"12.9rem"}) */
+		
+		//alert("pingguo6666")
+	}
+	
+		$(".exchange-btn").click(function(){
+			var bpn = '${publicNumberId}';
+			var openid = '${openid}';
+			location="${basePath}/personalCenter/ActivityPresonalCenter?BPN="+bpn+"&openid="+openid;
+		})
+	</script>
+	
+</html>

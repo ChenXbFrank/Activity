@@ -1,0 +1,389 @@
+<!--[arg basePath,staticPath,robRed,sellerPublicNumber,scanWinningNumber,redWxUserId,openid,qrcode,wxUserInfo,mch_billno;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>抢红包首页</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/fireStorm/fireStorm-homepage.css" />
+	</head>
+	<body >
+		<div class="bg-mask" id="end" style="display: none;background-image: url('/activityUploadPath${robRed.getMoblecBackGroundImg()}');">
+			<div class=erweima>
+				<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+			</div>
+			<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+		</div>
+		<div class="bg" style="background-image: url('/activityUploadPath${robRed.getMoblecBackGroundImg()}');">
+			
+			<div class="main" style="display:block">
+				<div class="red-bg" style="background-image: url('${staticPath}/New_img/fireStorm/hongbao.png');">
+					<div class="gongxi-text">
+						<p>恭喜你</p>
+						<p>扫码获得一次抢红包机会</p>
+					</div>
+					<img src="${staticPath}/New_img/red/qiang-yuan.png" alt="" / class="Clicked">
+				</div> 
+			</div>
+			<audio id="audio" src="${staticPath}/img/robRed/yinxiao.mp3" style="display:none"></audio>
+			<!--点击马上抢弹出一等奖页面-->
+		<div class="first" style="display: none;">
+			<div class="zhongjiang-red-bg" style="background-image: url(${staticPath}/New_img/fireStorm/Congratulation.png);">
+				<p class="money0"><span>2</span>元</p>
+				<div class="personalCenter">
+					<img src="${staticPath}/New_img/red/masti.png" class="liji"  alt="" />
+				</div>
+				<p>好运爆棚!中<span>一等奖</span>!</p>
+			</div>
+		</div>
+			<!--点击马上抢弹出二、三等奖页面-->	
+		<div class="second" style="display: none;">
+			<div class="zhongjiang-red-bg" style="background-image: url(${staticPath}/New_img/fireStorm/Congratulation.png);">
+				
+				<p class="money0"><span>2</span>元</p>
+				<div class="personalCenter">
+					<img src="${staticPath}/New_img/red/masti.png" class="liji"  alt="" />
+				</div>
+				<p>手气不错哦!抽中<span>二等奖</span>!</p>
+			</div>
+		</div>	
+			<!--点击马上抢弹出四等奖后的页面-->
+		<div class="four" style="display: none;">
+			<div class="zhongjiang-red-bg" style="background-image: url(${staticPath}/New_img/fireStorm/Congratulation.png);">
+				
+				<p class="money0"><span>2</span>元</p>
+				<div class="personalCenter">
+					<img src="${staticPath}/New_img/red/masti.png" class="liji"  alt="" />
+				</div>
+				
+			</div>
+		</div>		
+			<!--点击马上抢弹出中积分的奖页面-->
+		<div class="integral" style="display: none;">
+			<div class="zhongjiang-integral-bg" style="background-image: url(${staticPath}/New_img/fireStorm/Congratulation.png);">
+			<div class="integrala" style="background-image: url(${staticPath}/New_img/fireStorm/jifen.png);">
+			<span></span>积分
+			
+			</div>
+				<div class="geren">
+					<img src="${staticPath}/New_img/red/genrenzhongx.png" class="liji"  alt="" />
+				</div>
+				<p class="integral-text">积分已领取至(个人中心)请前往查看</p>
+			</div>
+		</div>		
+			<!--点击马上抢弹出谢谢惠顾的页面-->
+		<div class="thank" style="display: none;">
+			<div class="zhongjiang-xiexie-bg" style="background-image: url(${staticPath}/New_img/fireStorm/aaaaa.png);">
+			<p>很遗憾你与红包擦肩而过</p>
+				<div class="geren0">
+					<img src="${staticPath}/New_img/red/genrenzhongx.png" class="liji"  alt="" />
+				</div>
+			</div>
+		</div>
+		<div class="footer-main">
+			<img src="${staticPath}/New_img/red/huodongguize.png" alt="" class="rule" />
+			<img src="${staticPath}/New_img/red/lingqian.png" alt="" class="qian" />
+		</div>
+		<!--活动规则弹出页面-->
+		<div class="mask rules" style="display: none;">
+		<img src="${staticPath}/img/robRed/close icon.png" alt="" class="close huodong-close" />
+			<div class="guize-main">
+			<div class="Stationery" style="background-image: url('${staticPath}/New_img/fireStorm/huo.png');">
+					 <div class="guiju-text">
+						<p>1.购买${sellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关注‘${sellerPublicNumber.getPublicNumberName()}’微信公众账号,接收活动中奖第一资讯;</p>
+						<p>2.关注后，再次扫描二维码,进入活动页面;</p>
+						<p>3.刮开二维码银色覆盖区域,输入正确的验证码,获取参与活动机会;</p>
+						<p>4.点击 “马上抢”按钮,抽取随机红包;</p>
+						<p>5.获得现金红包,可在‘我的奖品’内查看详情.若需要红包提现,请前往‘个人中心-我的红包’内提现即可;</p>
+						<p>6.活动时间：${robRed.getStartTime()}---${robRed.getEndTime()}；</p>
+						<p>7.获得积分,可在‘我的积分’内查看详情.若想查看更多,请前往‘个人中心-我的积分’查看即可;</p>
+						<p>8.若想继续参加活动,可前往就近商店购买正品五粮液,扫码即可获得参与机会;</p>
+						<p>9.如有疑问,请咨询【${sellerPublicNumber.getPublicNumberName()}】微信公众服务号,我们将第一时间回复解决您的问题;</p>
+					 </div>
+			</div>
+			</div>
+	
+		</div>
+		<input class="jiangx" type="hidden" >
+		</div>
+	
+
+		<!-- 提现成功 -->
+		<div class="mask Success-yes" style="display:none">
+			<img src="${staticPath}/New_img/red/okokok.png" alt="" class="Success-ok" />
+			<div class="wen">
+				
+			</div> 
+			<img src="${staticPath}/New_img/fireStorm/i know.png" alt="" class="zhidao" />
+		</div>
+		<!-- 提现失败 -->
+		<div class="mask Fail-no" style="display:none">
+			<img src="${staticPath}/image/bujige.png" alt="" class="Success-ok" />
+			<img src="${staticPath}/New_img/fireStorm/i know.png" alt="" class="zhidao" />
+		</div>
+		<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+		<input type="hidden" value="${wxUserInfo.getSubscribe()}" id="subscribe"/>
+		<input type="hidden" value="${sellerPublicNumber.getId()}" id="sellerNumberId" />
+		<input type="hidden" value="${scanWinningNumber}" id="scanWinningNumber" />
+		
+		<script>
+		
+		/* 点击微信自带返回按钮(返回时自动刷新) */
+		window.onpageshow = function(event){
+			if (event.persisted) {
+			window.location.reload();
+			}
+			}
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".main").css({"padding-top":"7rem"});
+			$(".first,.second,.four,.integral,.thank").css({"padding-top":"6rem"});
+			$(".erweima").css({"margin-top":"1rem"})
+		}
+		/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			/* $(".title img").css({"width":'9.5rem',"height":"7rem"})
+			$(".rule-name p").css({"bottom":"3%"}) */
+			$(".main").css({"padding-top":"5rem"});
+			$(".first,.second,.four,.integral,.thank").css({"padding-top":"5rem"});
+			$(".Stationery").css({"margin-top":"-0.5rem"});
+			$(".footer-main").css({"margin-top":"-0.2rem"});
+			$(".erweima img").css({"margin-top":"4rem"});
+			$(".miaoshu").css({"top":"76%"});
+			$(".Clicked").css({"margin-top":"1.5rem"});
+			//alert("huaweishouji")
+		}
+			$(function() {
+				//alert('${scanWinningNumber}')
+				var subscribe=$("#subscribe").val();
+			  	if('${scanWinningNumber}'==0){
+					$(".Clicked").css({"display":"none"})
+					$(".gongxi-text p:nth-child(1)").html('如需抢红包');
+					$(".gongxi-text p:nth-child(2)").html('请再次购买酒品参与活动');
+				}  
+			
+				/* 点击马上抢事件 */
+				var cishu;
+				var audio = document.getElementById('audio')
+				$(".Clicked").on("click",function(){
+					$(".Clicked").unbind("click")//阻止二次点击
+					
+					audio.cloneNode().play();
+					$.ajax ({
+						url : "${basePath}/fireStorm/nowRobRed",
+						type : "POST",
+						dataType : "JSON",
+						async:"false",
+						data: {
+							"robRedActivityId":'${robRed.getId()}',
+							"openid":'${openid}',
+							"redWxUserId":'${redWxUserId}',
+							"SPNId":'${sellerPublicNumber.getId()}'
+						},
+						success : function(data) {
+							/* cishu=data.scanWinningNumber==0; */
+							if(data.robRedPrize.PRIZE_PROJECT=="一等奖"){
+							$(".first").show();
+							$(".second").hide();
+							$(".four").hide();
+							$(".integral").hide();
+							$(".thank").hide();
+							$(".main").hide();
+							$(".money0 span").html(data.robRedPrize.PRIZE_PROJECT_MONEY);
+							$(".announce span").html(data.robRedPrize.PRIZE_PROJECT);
+							$(".footer span").html(data.scanWinningNumber);
+							$(".ziti span").html(data.scanWinningNumber);
+							if(data.scanWinningNumber==0){
+								$(".gongxi-text p:nth-child(1)").hide();
+								$(".gongxi-text p:nth-child(2)").html('抢红包次数已用完');
+								$(".Clicked").css({"display":"none"})
+								$(".personalCenter0").show();
+							}
+							}else if(data.robRedPrize.PRIZE_PROJECT=="二等奖"||data.robRedPrize.PRIZE_PROJECT=="三等奖"){
+								$(".first").hide();
+								$(".second").show()
+								$(".four").hide()
+								$(".integral").hide()
+								$(".thank").hide()
+								$(".main").hide();
+								$(".money0 span").html(data.robRedPrize.PRIZE_PROJECT_MONEY);
+								$(".announce span").html(data.robRedPrize.PRIZE_PROJECT);
+								$(".footer span").html(data.scanWinningNumber);
+								$(".ziti span").html(data.scanWinningNumber);
+								if(data.scanWinningNumber==0){
+									$(".gongxi-text p:nth-child(1)").hide();
+									$(".gongxi-text p:nth-child(2)").html('抢红包次数已用完');
+									$(".Clicked").css({"display":"none"})
+									$(".personalCenter0").show();
+								}
+							}else if(data.robRedPrize.PRIZE_PROJECT=="积分"){
+								$(".first").hide();
+								$(".second").hide()
+								$(".four").hide()
+								$(".integral").show()
+								$(".thank").hide()
+								$(".main").hide();
+								$(".footer span").html(data.scanWinningNumber);
+								$(".ziti span").html(data.scanWinningNumber);
+								$(".integrala span").html(data.robRedPrize.WINNING_INTEGRAL);
+								$(".zailai-p").css({"color":"#505050"});
+								if(data.scanWinningNumber==0){
+									$(".gongxi-text p:nth-child(1)").hide();
+									$(".gongxi-text p:nth-child(2)").html('抢红包次数已用完');
+									$(".Clicked").css({"display":"none"})
+									$(".personalCenter0").show();
+								}
+							}else if(data.robRedPrize.PRIZE_PROJECT=="谢谢惠顾"){
+								$(".first").hide();
+								$(".second").hide()
+								$(".four").hide()
+								$(".integral").hide()
+								$(".thank").show()
+								$(".main").hide();
+								$(".footer span").html(data.scanWinningNumber);
+								$(".ziti span").html(data.scanWinningNumber);
+								if(data.scanWinningNumber==0){
+									$(".gongxi-text p:nth-child(1)").hide();
+									$(".gongxi-text p:nth-child(2)").html('抢红包次数已用完');
+									$(".Clicked").css({"display":"none"})
+									$(".personalCenter0").show();
+								}
+							}else{
+								$(".first").hide();
+								$(".second").hide()
+								$(".four").show()
+								$(".integral").hide()
+								$(".thank").hide()
+								$(".main").hide();
+								$(".money0 span").html(data.robRedPrize.PRIZE_PROJECT_MONEY);
+								$(".announce span").html(data.robRedPrize.PRIZE_PROJECT);
+								$(".footer span").html(data.scanWinningNumber);
+								$(".ziti span").html(data.scanWinningNumber);
+								if(data.scanWinningNumber==0){
+									$(".gongxi-text p:nth-child(1)").hide();
+									$(".gongxi-text p:nth-child(2)").html('抢红包次数已用完');
+									$(".Clicked").css({"display":"none"})
+									$(".personalCenter0").show();
+								}
+							}
+							$("#data").html(JSON.stringify(data));
+							$(".money0 span").html(data.robRedPrize.PRIZE_PROJECT_MONEY);
+						},
+						error: function(data){
+							//alert("qweewrt")
+							
+						}
+					});
+					if(data.scanWinningNumber==0){
+						$(".Clicked").off("click");
+						$(".Clicked").unbind("click")
+					}
+				});
+		
+				
+				/*立即提现点击事件 */
+				$(".personalCenter").click(function(){
+					
+					var subscribe = $("#subscribe").val();
+					$(".liji").attr("disabled","true");//添加disabled属性
+					if(subscribe==1){
+						$(".load").show();
+						$("#end").css({"display":"none"})
+						$.ajax({
+							url: "${basePath}/sendRobRed/nowSendRedPackage",
+							type: "POST",
+							dataType: "JSON",
+							async: "false",
+							data: {
+								"openid": '${openid}',
+								"sellerPublicNumberId": '${sellerPublicNumber.getId()}',
+								"mch_billno":"${mch_billno}"
+								},
+							success: function(data) {
+								$(".load").hide();
+								if(data==1){
+									$(".integral").hide();
+									$(".first").hide();
+									$(".second").hide();
+									$(".four").hide();
+									$(".main").show();
+									$(".Success-yes").show();
+								}else{
+									$(".integral").hide();
+									$(".first").hide();
+									$(".second").hide();
+									$(".four").hide();
+									$(".main").show();
+									$(".Fail-no").show();
+								}
+								
+								}
+						})
+					}else if(subscribe==0){
+						$("#end").css({"display":"block"});
+						$(".bg").css({"display":"none"});
+					}
+					$('.liji').removeAttr("disabled"); //移除disabled属性
+				});
+				/*点击提现弹窗里面的“我知道了”按钮 */
+				$(".zhidao").click(function(){
+					$(".Success-yes").hide();
+					$(".Fail-no").hide();
+					$(".main").show();
+				})
+				/*点击活动规则事件*/
+				$(".rule").click(function() {
+					$(".rules").css({ "display": "block" })
+				})
+				/*点击活动规则关闭按钮 */
+				$(".huodong-close").click(function() {
+					$(".rules").css({ "display": "none" });
+				})
+				/*点击弹出层关闭按钮 */
+				$(".chakan-close").click(function() {
+					$(".first").css({ "display": "none" });
+					$(".second").css({ "display": "none" });
+					$(".four").css({ "display": "none" });
+					$(".integral").css({ "display": "none" });
+					$(".thank").css({ "display": "none" });
+					if(data.scanWinningNumber==0){
+						$(".Grab img").attr("src","${staticPath}/img/robRed/sy-bukeqiang-icon.png");
+						$(".ziti p").html("抢红包次数已用尽~");
+					}
+				})
+				 if($(".jiangx").val()=="积分"||$(".jiangx").val()=="谢谢惠顾"){
+					$(".noqian").css({"display":"block"})
+					$(".qian").css({"display":"none"})
+				}else{
+					$(".qian").css({"display":"block"})
+					$(".noqian").css({"display":"none"})
+				} 
+				/*点击零钱罐 */      
+				$(".qian,.piggybank").click(function(){
+					location.href="${basePath}/fireStorm/intoSmallChange?openid=${openid}&redWxUserId=${redWxUserId}&SPNId=${sellerPublicNumber.getId()}&redId=${robRed.getId()}&follow=${wxUserInfo.getSubscribe()}";
+				});
+				/* 个人中心 */
+				$(".geren .liji,.geren0 .liji").click(function(){
+					if(subscribe=='1'){
+						$("#end").css({"display":"none"});
+						var sellerNumberId =$("#sellerNumberId").val();  
+						location.href="${basePath}/personalCenter/index?BPN="+sellerNumberId;
+					}else if(subscribe=='0'){
+						$("#end").css({"display":"block"});	
+						$(".bg").css({"display":"none"});	
+					}
+					  
+				});
+			})
+		</script>
+
+	</body>
+
+</html>

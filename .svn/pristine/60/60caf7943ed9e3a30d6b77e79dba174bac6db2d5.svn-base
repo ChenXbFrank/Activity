@@ -1,0 +1,166 @@
+<!--[arg basePath,staticPath,accumulateCommentWxUser,openid,clickNum,accumulate,sellerPublicNumber,follow,isEnd;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<title>为他点赞</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/accumulateFabulous/accumulateFabulous-click.css" />
+	</head>
+	<div class="bg-mask end" id="end" style="display: none;background-image: url('/activityUploadPath${accumulate.getMobleBackgroundImg()}');">
+				
+				<div class='erweima'>
+					<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+				</div>
+				<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+		</div>
+			<div class="Popup chnegg" style="display:none">
+			<div class="main-small" style="background-image: url('${staticPath}/New_img/accmulate/jieshule.png')" >
+			
+			
+			</div>
+		</div>
+	<div class="bg-mask OK" style="display: none;">
+		<img src="${staticPath}/New_img/accmulate/dianzan.png" alt="" class="dianzantu" />
+		<div class="gongxini">
+			<p>恭喜您，为Ta点赞成功!</p>
+		</div>
+		<div class="want">我也要参与点赞</div>
+		<img src="${staticPath}/img/accumulateFabulous/img/guanbi-icon.png" alt="" class="close fabulous" />
+	</div>
+	<div class="rule-page bg-mask" style="display: none " >
+		<h3>活动规则</h3>
+			<div class="text">
+					<p>1.购买${sellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关注‘${sellerPublicNumber.getPublicNumberName()}’微信公众账号,接收活动中奖第一资讯;</p>
+					<p>2.关注后，再次扫描二维码,进入活动页面;</p>
+					<p>3.活动时间:${accumulate.getStartTime()}--${accumulate.getEndTime()};</p>
+					<p>4.刮开二维码银色覆盖区域,输入正确的验证码,获取参与活动机会;</p>
+					<p>5.点击“发表评论”后,编辑和上传图片及文字,成功发起集赞活动;</p>
+					<p>6.点击“分享集赞”即可将您的集赞页面分享给好友,并邀请好友帮忙点赞;</p>
+					<p>7.若活动时间结束,获得实物奖品,公众号将推送‘填写收货地址’链接.请务必及时填写真实有效的收货信息;</p>
+					<p>8.若活动时间结束,公众号没有推送任何获奖消息,即为集赞未中奖;</p>
+					<p>9.若想继续参加活动,可前往就近商店购买正品五粮液,扫码即可获得参与机会;</p>
+					<p>10.如有疑问,请咨询【${sellerPublicNumber.getPublicNumberName()}】微信公众服务号即可,我们将第一时间回复解决您的问题;</p>
+			</div>
+			<img src="${staticPath}/img/accumulateFabulous/img/guanbi-icon.png" alt="" class="close rule-close"/>
+		</div>
+	<body>
+			<div class="bg" style="background-image: url('/activityUploadPath${accumulate.getMobleBackgroundImg()}');">
+				<div class="title1">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+			<div class=main>
+				<div class="pic">
+					<img src="/activityUploadPath${accumulate.getProductImg()}" alt="" />
+				</div>
+				<div class="starProducts">
+					<div class="title">
+						<h5>明星产品</h5>
+					</div>
+					<div class="descriptiveText">
+						<p>${accumulateCommentWxUser.getComments()}
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="fenxiang-text"  style="background-image: url('${staticPath}/New_img/accmulate/jizan.png');">
+				<p>帮</p>
+				<p>${accumulateCommentWxUser.getNickName()}</p>
+				<p>点赞</p>
+			
+			</div>
+			<div class="ok-text" style="display:none">
+				<p>成功帮<span>${accumulateCommentWxUser.getNickName()}</span>点赞</p>
+			</div>
+			<div class="footer-main">
+				<img src="${staticPath}/New_img/accmulate/huodongguize.png" alt="" class="rule" / >
+			</div>
+		</div>
+		<input type="hidden" value="${accumulateCommentWxUser.getId()}" id="accumulateCommentWxUserId" />
+		<input type="hidden" value="${openid}" id="openid" />
+		<input type="hidden" value="${clickNum}" id="clickNum" />
+		<input type="hidden" value="${follow}" id="follow"/>
+		<script>
+		
+		/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			$(".erweima img").css({"margin-top":"5rem"})
+			$(".main").css({"margin-top":"5rem"})
+			$(".text").css({"margin-top":"0.3rem"})
+			$(".footer-main").css({"margin-top":"-0.5rem"})
+		}
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".main").css({"margin-top":"7rem"})
+			$(".fenxiang-text").css({"margin-top":"2rem"})
+			$(".erweima img").css({"margin-top":"8rem"})
+		}
+		if('${isEnd}'=='false'){
+			$(".fenxiang-text").attr('src','${staticPath}/New_img/accmulate/zanzan.png');
+			 $(".fenxiang-text").unbind();
+			 $(".chnegg").show();
+		} 
+			$(".starProducts h5").text(decodeURI($(".starProducts h5").html()));
+			$(".dianzan p").text(decodeURI($(".dianzan p").html()));
+			$(".descriptiveText p").text(decodeURI($(".descriptiveText p").html()));
+			if($("#clickNum").val() == "0") {
+				$(".fenxiang-text").show();
+			} else if($("#clickNum").val() == "1") {
+				$(".fenxiang-text").hide();
+				$(".ok-text").show();
+			}
+			/**/
+			$(".rule").click(function() {
+				$(".rule-page").show();
+			});
+			/*关闭为他点赞页面*/
+			$(".fabulous").click(function() {
+				$(".OK").hide();
+				$(".ok-text").show();
+				$(".fenxiang-text").hide();
+			});
+			/*点击为他集赞*/
+			$(".fenxiang-text").click(function() {
+				var accumulateCommentWxUserId = $("#accumulateCommentWxUserId").val();
+				var openid = $("#openid").val();
+				
+				$.ajax({
+					type: "GET",
+					url: "${basePath}/accumulateFabulous/helpAccumulate",
+					async: false,
+					dataType: "json",
+					data: {
+						"openid": openid,
+						"accumulateCommentWxUserId": accumulateCommentWxUserId
+					},
+					success: function(data) {
+						if(data.result == "true") {
+							//alert("点赞成功！");
+							$(".OK").show();
+						}else if(data.result == "false"){
+							alert("您已经点过赞了！");
+						}else if(data.result == "nofollow"){
+							//alert("请先关注！");
+							$(".end").show();
+						}
+					}
+				});
+			});
+			/*点击关闭活动规则*/
+			$(".want").click(function() {
+				var accumulateCommentWxUserId = $("#accumulateCommentWxUserId").val();
+				location.href = "${basePath}/accumulateFabulous/wantAccumulate?accumulateCommentWxUserId=" + accumulateCommentWxUserId;
+			});
+			/* 点击我也要参与 */
+			$(".rule-close").click(function() {
+				$(".rule-page").hide();
+			});
+		</script>
+	</body>
+
+</html>

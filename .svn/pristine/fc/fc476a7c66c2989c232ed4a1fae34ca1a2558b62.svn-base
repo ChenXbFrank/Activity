@@ -1,0 +1,24 @@
+.cashLook,
+.companyName,
+.pic-right p {
+  font-size: 6px;
+}
+[data-dpr="2"] .cashLook,
+[data-dpr="2"] .companyName,
+[data-dpr="2"] .pic-right p {
+  font-size: 12px;
+}
+[data-dpr="3"] .cashLook,
+[data-dpr="3"] .companyName,
+[data-dpr="3"] .pic-right p {
+  font-size: 24px;
+}
+.awardInfo {
+  font-size: 9px;
+}
+[data-dpr="2"] .awardInfo {
+  font-size: 18px;
+}
+[data-dpr="3"] .awardInfo {
+  font-size: 36px;
+}

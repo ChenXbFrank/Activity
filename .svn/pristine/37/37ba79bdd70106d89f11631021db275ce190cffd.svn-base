@@ -1,0 +1,541 @@
+<!--[arg basePath,staticPath,scanWinningNumber,qrcode,turnTable,openid,turnTableWxUser,sellerPublicNumber,turnTablePrizeList,wxUserInfo,follow;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<title>幸运大转盘</title>
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntable/style.css" /> 
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntable/index.css"/>
+		<link rel="stylesheet" href="${staticPath}/css/common/loading.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.js"></script>
+	</head>
+
+	<body style="background-image: url('/activityUploadPath${turnTable.getMoblecBackGroundImg()}')" > 
+	<div class="title">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+		
+			<div class="draw" >
+				<canvas id="myCanvas" width="600" height="600" style="background-image:url('${staticPath}/img/turntable/home/turntable-floor.png')">您的浏览器不支持！</canvas>
+				<button id="tupBtn"></button>
+				<img class="begin-bg" src="${staticPath}/img/turntable/home/GO-icon.png" alt="" />
+				<img class="begin-text" src="${staticPath}/img/turntable/home/begin.png" alt="" />
+				 <div class="myAward ">
+				<img src="${staticPath}/New_img/turntable/jiangp.png" alt=""  class="lookNow"/>
+				<img src="${staticPath}/New_img/turntable/guize.png" alt=""  class="rules" />
+			</div> 
+			</div>
+			
+		
+			<!--抽奖次数已用尽弹窗-->
+			<div class="bg-mask exhaust" style="display: none;">
+				<div class="prize" style="background-image:url('${staticPath}/New_img/turntable/cishu.png')">
+					
+				</div>
+				<div class="test">
+					<p >更多中奖奖品信息,请前往<span>【我的奖品】</span>查看!</p>
+				</div>
+				<div class="now" >
+					<img src="${staticPath}/New_img/turntable/chakan.png" alt=""  class="lookNow"/>
+				</div>
+				<img src="${staticPath}/img/turntable/home/close icon.png" alt="" class="close " />
+			</div>
+			<!--没有中奖弹窗-->
+			<div class="bg-mask nowin" style="display: none;">
+				<div class="prize" style="background-image:url('${staticPath}/New_img/turntable/yihan.png')">
+					
+				</div>
+				
+				<div class="now" >
+					<img src="${staticPath}/New_img/turntable/chakan.png" alt=""  class="lookNow"/>
+				</div>
+				<img src="${staticPath}/img/turntable/home/close icon.png" alt="" class="close " />
+			</div>
+			<!--中实物的弹窗-->
+			<div class="bg-mask goods" style="display: none;">
+				<div class="prize" style="background-image:url('${staticPath}/New_img/turntable/shiwu.png')">
+					<div class="goodspic">
+						<img src="${staticPath}/img/turntable/home/CP-img.png" alt="" />
+					</div>
+					<div class="prompt1">
+						<p>获得<span id="prizeName">五粮液大淡雅</span>一个</p>
+					</div>
+				</div>
+				<div class="test">
+					<p >请前往<span>【我的奖品】</span>填写收货地址!</p>
+				</div>
+				<div class="now" >
+					<img src="${staticPath}/New_img/turntable/chakan.png" alt=""  class="lookNow"/>
+				</div>
+				<img src="${staticPath}/img/turntable/home/close icon.png" alt="" class="close " />
+			</div>
+			<!--中红包的弹窗-->
+			<div class="bg-mask robRed" style="display: none;">
+				<div class="prize" style="background-image:url('${staticPath}/New_img/turntable/hongbao.png')">
+					<div class="red" >
+						<p><span class="getMoney">8.88</span>元</p>
+					</div>
+				</div>
+				<div class="test">
+					<p >请前往<span>【我的奖品】</span>中查看奖品详情!</p>
+				</div>
+				<div class="now lalalala" >
+					<img src="${staticPath}/New_img/turntable/chakan.png" alt=""  class="lookNow"/>
+				</div>
+				<div class="now1" style="display:none">
+					<img src="${staticPath}/New_img/turntable/okok.png" alt=""  class="cashNow"/>
+				</div>
+				<img src="${staticPath}/img/turntable/home/close icon.png" alt="" class="close " />
+			</div>
+			<!--中积分的弹窗-->
+			<div class="bg-mask integral" style="display: none;">
+				<div class="prize" style="background-image:url('${staticPath}/New_img/turntable/jifen.png')">
+					<div class="jinb" >
+						<p><span class="getIntegral">50</span>分</p>
+					</div>
+				</div>
+				<div class="test">
+					<p >请前往<span>【我的奖品】</span>中查看奖品详情!</p>
+				</div>
+				<div class="now" >
+					<img src="${staticPath}/New_img/turntable/chakan.png" alt=""  class="lookNow"/>
+				</div>
+				<img src="${staticPath}/img/turntable/home/close icon.png" alt="" class="close " />
+			</div>
+		<!--活动规则弹窗-->
+			<div class="bg-mask rule" style="display: none;">
+				<div class="activity-bg" >
+					<img src="/activityUploadPath${turnTable.getRuleImg()}" alt=""  class="zhongbj"/>
+					<!-- <img src="${staticPath}/img/turntable/activity-rule/huodongguize-img.png" alt="" class="activity-rule"/> -->
+					<!-- <div class="rule-text">
+						<p>1.购买${sellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关注‘${sellerPublicNumber.getPublicNumberName()}’微信公众账号,接收活动中奖第一资讯;</p>
+						<p>2.关注后，再次扫描二维码,进入活动页面;</p>
+						<p>3.刮开二维码银色覆盖区域,输入正确的验证码,获取参与活动机会;</p>
+						<p>4.点击转盘中间的“开始抽奖”按钮;</p>
+						<p>5.活动时间：${turnTable.getStartTime()}---${turnTable.getEndTime()}；</p>
+						<p>6.获得实物奖品,请在弹框内点击‘填写收货地址’及时填写收货信息.若意外关闭,可从‘我的奖品’或‘个人中心’进入并填写收货地址;</p>
+						<p>7.获得现金红包，可在‘我的奖品’内查看详情。若需要红包提现，请前往‘个人中心-我的红包’内提现即可;</p>
+						<p>8.获得积分,可在‘我的积分’内查看详情。若想查看更多,请前往‘个人中心-我的积分’查看即可;</p>
+						<p>9.若想继续参加活动,可前往就近商店购买正品五粮液,扫码即可获得参与机会;</p>
+						<p>10.如有疑问,请咨询【${sellerPublicNumber.getPublicNumberName()}】微信公众服务号即可,我们将第一时间回复解决您的问题。</p>
+					</div> -->
+				</div>
+				<img src="${staticPath}/img/turntable/home/close icon.png" alt="" class="close " />
+			</div>
+			
+			<!-- 提现成功 -->
+		<div class="mask Success-yes" style="display:none">
+			<img src="${staticPath}/New_img/red/okokok.png" alt="" class="Success-ok" />
+			<img src="${staticPath}/image/red/iknow.png" alt="" class="zhidao" />
+		</div>
+		<!-- 提现失败 -->
+		<div class="mask Fail-no" style="display:none">
+			<img src="${staticPath}/image/red/fail.png" alt="" class="Success-ok" />
+			<img src="${staticPath}/image/red/iknow.png" alt="" class="zhidao" />
+		</div>
+			<div class="bg-mask end" id="end" style="display: none;background-image: url('/activityUploadPath${turnTable.getMoblecBackGroundImg()}');">
+				
+				<div class='erweima'>
+					<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+				</div>
+				<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+			</div>
+			<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+		
+	</body>
+<input type="hidden" value="${sellerPublicNumber.getId()}" id="sellerPublicNumberId"/> 
+<input type="hidden" value="${sellerPublicNumber.getAppId()}" id="sellerPublicNumberIdAppId"/> 
+<input type="hidden" value="${follow}" id="subscribe"/>
+<script type="text/javascript">
+/* 华为 */
+if(screen.height<=640 && screen.width<=360){
+	
+	$(".rule-name p").css({"bottom":"3%"})
+	$(".draw").css({"margin-top":"4rem"})
+	/* $("#myCanvas").css({"width":"500","height":"500"}) */
+	$(".myAward").css({"margin-top":"1rem"})
+	$(".erweima img").css({"margin-top":"5rem"})
+}
+/* 苹果x */
+if(screen.height==812 && screen.width==375){
+	$(".myAward").css({"margin-top":"2rem"})
+	$(".draw").css({"margin-top":"5rem"})
+	$(".rule-name").css({"margin-top":"1rem"})
+	$(".zhongbj").css({"margin-top":"1rem"})
+}
+var subscribe=$("#subscribe").val();
+var surplusTotalMoney;
+var orderId;
+var clickNum = '${scanWinningNumber}';//FIXME 页面上只是显示：抽奖次数变量，
+ 
+
+
+function getTurnTablePicByPrizeType(prizeType) {
+	if(prizeType == 1) {
+		return "${staticPath}/img/turntable/home/gift-0.png";//TODO 中奖实物
+	} else if(prizeType == 2) {
+		return "${staticPath}/img/turntable/home/jijijiji.png";//TODO 中奖积分
+	} else if(prizeType == 3) {
+		return "${staticPath}/img/turntable/home/hongbao-0.png";//TODO 中奖红包
+	} else if(prizeType == 4) {
+		return "${staticPath}/img/turntable/home/home-img.png";//TODO 中奖谢谢惠顾
+	}
+	
+	alert("奖品数据错误！");
+}
+
+$(function() {
+	$("#times").html(clickNum);//FIXME 页面加载完毕后，把抽奖次数，显示在页面上。
+	var awardLists = '${turnTablePrizeList}';
+	//将字符串转化成json格式
+	var awards=[];
+	var awardListsObj = JSON.parse(awardLists); 
+	for(var i in awardListsObj){
+		var needObj={};
+		needObj.type=awardListsObj[i].prizeType;
+		needObj.name=awardListsObj[i].prizeName;
+		if(needObj.type==1){
+			needObj.turnTablePic ='/activityUploadPath'+awardListsObj[i].prizeImg;
+		}else{
+			needObj.turnTablePic = getTurnTablePicByPrizeType(awardListsObj[i].prizeType);//转盘上显示的图片
+		}
+		
+		if(awardListsObj[i].prizeImg != undefined && awardListsObj[i].prizeImg != null && awardListsObj[i].prizeImg != '') {
+			needObj.src='/activityUploadPath'+awardListsObj[i].prizeImg;
+		}else{
+			needObj.src="";
+		}
+		needObj.angle="";
+		needObj.id=awardListsObj[i].turntablePrizeId;
+		needObj.money=awardListsObj[i].redNumber;
+		needObj.intergralNum=awardListsObj[i].integralNumebr;
+		awards.push(needObj);
+	}
+	
+	
+	//可抽奖次数后台传值判断
+	
+	var turntableSpeed=${turnTable.getSpeed()}; //后台传转盘速度快慢
+	var turnCircle;
+	$('#tupBtn').on('click', function() {
+		    $("#tupBtn").unbind("click")   ////阻止二次点击  
+		if(clickNum <= 0) {
+			$(".exhaust").show();
+			return ;
+		}else{
+			$(".load").show();
+			$.ajax ({
+				url : "${basePath}/turntable/turntableLuckDraw",
+				type : "POST",
+				dataType : "JSON",
+				async:"false",
+				data: {
+					"activityId":'${turnTable.getTurnTableId()}',
+					"SPNId":'${sellerPublicNumber.getId()}',
+					"openid":'${openid}',
+					"turnTablewxUserId":'${turnTableWxUser.getTurntableWxuserId()}'
+				},
+				success : function(response) {
+					$(".load").hide();
+						//可抽奖次数减一
+						clickNum = clickNum - 1;
+						$("#times").html(clickNum);
+						var awardId = response.TurnTablePrize.TURNTABLE_PRIZE_ID; //后台传给我中奖产品的Id
+						var awardProduceInfo = getAngleByNameOnAwards(awardId);//根据id获取对象
+						var angle = awardProduceInfo.stopAngle;
+						surplusTotalMoney=response.surplusTotalMoney;
+						orderId=response.orderId;
+						//转盘旋转
+						if(awardId == undefined || angle == undefined) {
+							alert('加载出错，请重新加载！');
+							return;
+						}
+						//转盘速度快慢
+						if(turntableSpeed=="0"){
+							turnCircle=1800;
+						}else{
+							turnCircle=1080;
+						}
+						
+						runCup(angle,turnCircle);
+						//转盘旋转过程“开始抽奖”按钮无法点击
+						$('#tupBtn').attr("disabled", true);
+						//“开始抽奖”按钮无法点击恢复点击
+						setTimeout(function() {
+							//根据中奖产品类型显示不同的弹窗
+							
+							if(awardProduceInfo.stopType=="1"){//中奖实物
+								$(".goods").show();	
+								$(".goodspic img").attr("src",awardProduceInfo.stopSrc);
+								$("#prizeName").html(awardProduceInfo.stopName);
+							}else if(awardProduceInfo.stopType=="2"){//中奖积分
+								$(".integral").show();
+								$(".getIntegral").html(awardProduceInfo.stopIntergralNum);
+							}else if(awardProduceInfo.stopType=="3"){//中奖红包
+								//alert(awardProduceInfo.stopMoney)
+								if((awardProduceInfo.stopMoney)>=0.3){
+										$(".now1").show();	
+										$(".lalalala").hide();	
+									}else{
+										$(".now1").hide();	
+										$(".lalalala").show();	
+									}
+								$(".robRed").show();
+								
+								$(".getMoney").html(awardProduceInfo.stopMoney);
+							}else if(awardProduceInfo.stopType=="4"){//中奖谢谢惠顾
+								$(".nowin")	.show();
+							}
+							$('#tupBtn').removeAttr("disabled", true);
+							$('body').css("overflow", "hidden");
+						}, 3000);
+				}
+			})
+		}
+	});
+
+	var colorSix = ['#fda810', '#fde401'];
+	var colorEight = ['#fda810', '#fde401'];
+	var canvas = document.getElementById('myCanvas');
+	var ctx = canvas.getContext('2d');
+	//解决canvas的清晰度，画的时候将画布和画的过程扩大两倍
+	ctx.scale(2, 2);
+	/**
+	 * 画外圆
+	 */
+	function createCircle() {
+		//lineWidth:圆环的宽度
+		var num = awards.length;
+		ctx.lineWidth = 97;
+		var line_width = ctx.lineWidth;
+		var startAngle = 0; //扇形的开始弧度
+		var endAngle = 0; //扇形的终止弧度
+		var x = canvas.width / 4,
+			y = canvas.height / 4;
+		var color = num == 6 ? colorSix : colorEight;
+		for(var i = 0; i < num; i++) {
+			startAngle = -Math.PI / 2 - Math.PI / num + 2 * Math.PI / num * i;
+			endAngle = -Math.PI / 2 + Math.PI / num + 2 * Math.PI / num * i;
+			ctx.save();
+			ctx.beginPath();
+			ctx.arc(x, y, x - 65, startAngle, endAngle, false);
+			var colorIndex = i % 2;
+			ctx.strokeStyle = color[colorIndex];
+			ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+		}
+	}
+	/**
+	 * 创建文本文字
+	 * @param {Object} awards
+	 */
+	function createCirText() {
+		ctx.textAlign = 'start';
+		ctx.textBaseline = 'middle';
+		var step = 2 * Math.PI / awards.length;
+		var textStartOption;
+		for(var i = 0; i < awards.length; i++) {
+			var awardNameLength = awards[i].name.length;
+			if(awardNameLength == 1) {
+				textStartOption = -8;
+			} else if(awardNameLength == 2) {
+				textStartOption = -10;
+			} else if(awardNameLength == 3) {
+				textStartOption = -16;
+			} else if(awardNameLength == 4) {
+				textStartOption = -20;
+			} else if(awardNameLength == 5) {
+				textStartOption = -24;
+			}else if(awardNameLength == 6){
+				textStartOption = -30;
+			}
+			ctx.save();
+			ctx.beginPath();
+			//ctx.translate将坐标向右和向上各平移150，类似将画布移动
+			ctx.translate(150, 150);
+			//ctx.rotate将画布旋转多少度，旋转中心是画布的原点
+			ctx.rotate(i * step);
+			awards[i].angle = (-i * step * 180 / Math.PI);
+			ctx.font = "10px Microsoft YaHei";
+			ctx.fillStyle = 'white';
+			ctx.shadowColor = "rgba(52,158,178,0.3)";
+			ctx.shadowBlur = 7;
+			ctx.shadowOffsetY = 2;
+			ctx.fillText(awards[i].name, textStartOption, -120);
+			ctx.closePath();
+			ctx.restore();
+		}
+	}
+	/**
+	 * 画奖品图片
+	 */
+	function createCirPic() {
+		var step = 2 * Math.PI / awards.length;
+		for(var i = 0; i < awards.length; i++) {
+			(function(i) {
+				var img = new Image();
+				img.src = awards[i].turnTablePic;
+				img.onload = function() {
+					ctx.save();
+					ctx.beginPath();
+					ctx.translate(150, 150);
+					ctx.rotate(i * step);
+					//上传图片
+					ctx.drawImage(img, -17, -110, 38, 51.3);
+					ctx.closePath();
+					ctx.restore();
+				}
+			})(i)
+
+		}
+	}
+
+	function turntable(awards) {
+		createCircle();
+		createCirText();
+		createCirPic();
+	}
+	/**
+	 * 通过中奖id获取角度
+	 * @param {Object} name
+	 */
+	function getAngleByNameOnAwards(id) {
+		for(var i = 0; i < awards.length; i++) {
+		//alert("id:" + id + "   id:" + awards[i].id);
+			if(id == awards[i].id) {
+				return {
+					stopName: awards[i].name,
+					stopAngle: awards[i].angle,
+					stopSrc: awards[i].src,
+					stopType: awards[i].type,
+					stopId: awards[i].id,
+					stopMoney: awards[i].money,
+					stopIntergralNum: awards[i].intergralNum
+					//此对象还应添加类型
+				}
+			}
+		}
+		alert("没有找到奖品信息");
+	}
+	var last = 0;
+	var angles = 0;
+
+	function runCup(angle,speed) {
+		var num = parseInt(Math.random() * (7 - 0 + 0) + 0);
+		//var angles = 2160 * num + angle;
+		//转动速度快慢在这里设置
+		angles += parseInt(speed) + angle - last;
+		console.log(angles);
+		var degValue = 'rotate(' + angles + 'deg' + ')';
+		$('#myCanvas').css('-o-transform', degValue); //Opera
+		$('#myCanvas').css('-ms-transform', degValue); //IE浏览器
+		$('#myCanvas').css('-moz-transform', degValue); //Firefox
+		$('#myCanvas').css('-webkit-transform', degValue); //Chrome和Safari
+		$('#myCanvas').css('transform', degValue);
+		last = angle;
+	}
+	turntable(awards);
+	/**
+	 * 抽奖规则弹窗
+	 */
+	$('.mask').hide();
+	$('#rule-info').on('click', function() {
+		$('.mask').show();
+	})
+	$('#butn').on('click', function() {
+		$('.mask').hide();
+	});
+	/*
+	 点击关闭按钮事件
+	 * 
+	 * */
+	$(".close").click(function(){
+		$(".goods,.exhaust,.nowin,.robRed,.integral,.rule").hide()
+		location.reload();
+	})
+	
+	/*点击提现弹窗里面的“我知道了”按钮 */
+				$(".zhidao").click(function(){
+					$(".Success-yes").hide();
+					$(".Fail-no").hide();
+				})
+	
+	/*
+	
+	 点击活动规则按钮事件
+	 * */
+	$(".rules").click(function(){
+		$(".rule").show();
+	});
+	$(".lookNow").on("click",function(){
+		if(subscribe==1){
+			$(".end").css({"display":"none"});
+			var sellerPublicNumberId = $("#sellerPublicNumberId").val();
+			var sellerPublicNumberIdAppId = $("#sellerPublicNumberId").val();
+			location.href="${basePath}/turntable/myTurntablePrize?SPNId="+sellerPublicNumberId+"&AppId="+sellerPublicNumberIdAppId+"&openid=${openid}&turnTablewxUserId=${turnTableWxUser.getTurntableWxuserId()}";
+		}else{
+			$(".end").css({"display":"block"});
+		}
+	})
+	
+	
+	$(".now1").click(function() {
+		
+		if(subscribe==1){
+			$(".load").show();
+			$(".end").css({"display":"none"});
+			$.ajax({
+				url: "${basePath}/sendRobRed/nowSendRedPackage",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {
+					"openid": '${openid}',
+					"sellerPublicNumberId": '${sellerPublicNumber.getId()}',
+					"mch_billno":orderId
+				},
+				success: function(data) {
+					$(".load").hide();
+					//alert('data')
+					if(data==1){
+						$(".robRed").hide();
+						$(".Success-yes").show();
+					}else{
+						
+						$(".robRed").hide();
+						$(".Fail-no").show();
+					}
+				}
+			})
+		}else if(subscribe==0){
+			$(".end").css({"display":"block"});
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+})
+	
+})
+</script>
+</html>					

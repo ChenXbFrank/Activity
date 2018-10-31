@@ -1,0 +1,26 @@
+input[type="text"]{
+	border:none;
+	readonly:readonly;
+	background:none;
+}
+.Pattern2 {
+    margin-left: 0vw;
+}
+.red-time{
+	height:2vw;
+	font-size:1vw;
+	margin-top:1vw;
+}
+.red-time .line{
+	margin-left: 0vw; 
+    margin-right: 0vw; 
+    width:1vw;
+    height:2px;
+    vertical-align:middle;
+}
+.red-time .startTime{
+	margin-left:10px;
+}
+.productInfos{
+	margin-top:1vw;
+}

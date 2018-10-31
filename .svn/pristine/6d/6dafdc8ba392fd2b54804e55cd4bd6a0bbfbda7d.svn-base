@@ -1,0 +1,28 @@
+package com.web.config;
+
+import com.activity.common.controller.moblie.accumulateFabulous.AccumulateFabulousController;
+import com.activity.common.controller.moblie.groupPurchase.GroupPurchaseController;
+import com.activity.common.controller.moblie.oneMoneyShop.OneMoneyShopController;
+
+public class MyTask implements ITask {
+	 public void run() {
+		 System.out.println("**run********开始处理集赞活动中奖情况**********************");
+	     //这里放被执行的调试任务代码
+		 AccumulateFabulousController ac=new AccumulateFabulousController();
+		 ac.handleTaskMethod();
+		 System.out.println("**run********完成处理集赞活动中奖情况**********************");
+		 System.out.println("**run********开始处理一元购活动中奖情况******退款****************");
+		 OneMoneyShopController oc=new OneMoneyShopController();
+		 oc.returnMoney();
+		 System.out.println("**run********完成处理一元购活动中奖情况******退款****************");
+		 System.out.println("**run********开始处理拼团活动中奖情况*******退款****************");
+		 GroupPurchaseController gg=new GroupPurchaseController();
+		 gg.returnMoney();
+		 System.out.println("**run********完成处理拼团活动中奖情况*******退款****************");
+	   }
+	   
+	 public void stop() {
+	     // 这里的代码会在 task 被关闭前调用
+		 System.out.println("**stop********所有活动中奖情况结束**********************");
+	 }
+}

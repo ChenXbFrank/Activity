@@ -1,0 +1,663 @@
+#所有对数据库操作的sql语句,包括对视图的操作
+#格式service名称对应Dao名称使用=号区分
+#==============Start==IndexDao===============================
+
+#<!--根据USERCODE查询系统用户-->
+getUserByCode=SELECT * FROM PLSDBFLAT.Tb_Sys_User WHERE USERCODE = ?
+#<!--根据USERCODE和USERID查询系统用户-->
+getUserByCodeAndUserId=SELECT * FROM PLSDBFLAT.Tb_Sys_User WHERE USERCODE = ? AND USERID= ?
+#<!--查询菜单，对CREATE_DATE进行升序排列-->
+getMenu=SELECT * FROM SYS_MENU WHERE DELFLAG = 0 ORDER BY CREATE_DATE ASC
+#<!--根据二维码查询四位验证码-->
+QueryVerificationCodeByQrcode=select plsdbflat.pack_public.GetWlyGGCode(?)  as VERIFICATIONCODE from dual
+#<!--根据二维码查询箱码-->
+QueryBoxCodeByQrcode=select plsdbflat.pack_public.GetWlyQRBoxCode(?) as boxCode from dual
+#<!--根据code和ActivityId查询出已有的code-->
+getCodeByCodeAndActivity=select * from ACTIVITY_CODE a where a.CODE = ? and a.ACTIVITY_ID=? for update
+#<!--根据Openid和公众号APPID查询当前用户 只有ID-->
+getuserByopenid=select a.id from ACTIVITY_WXUSER a where a.OPENID = ?
+#<!--根据Openid和公众号APPID查询当前用户-->
+getUserByopenidAndappId=select a.ID as ID , a.OPENID as OPENID,a.NICKNAME as NICKNAME ,to_char(a.TOTAL_MONEY,'fm99990.0099') as TOTAL_MONEY ,a.TOTAL_INTEGRAL as TOTAL_INTEGRAL\
+		,a.BELONG_PUBLICNUMBER_ID as BELONG_PUBLICNUMBER_ID ,to_char(a.SURPLUS_TOTAL_MONEY,'fm99990.0099') as SURPLUS_TOTAL_MONEY ,a.SURPLUS_TOTAL_INTEGRAL as SURPLUS_TOTAL_INTEGRAL  \
+		from ACTIVITY_WXUSER a where a.OPENID = ? AND a.BELONG_PUBLICNUMBER_ID = ?
+#根据Openid和公众号ID查询当前用户所有信息
+queryUserByOpenidAndPublicNumberId=select a.ID as ID , a.OPENID as OPENID ,a.NICKNAME as NICKNAME,a.SEX as SEX,a.COUNTRY as COUNTRY,a.PROVINCE as PROVINCE,a.CITY as CITY ,a.HEADIMGURL as HEADIMGURL\
+		 ,to_char(a.TOTAL_MONEY,'fm99990.0099') as TOTAL_MONEY ,a.TOTAL_INTEGRAL as TOTAL_INTEGRAL,a.SURPLUS_TOTAL_INTEGRAL as SURPLUS_TOTAL_INTEGRAL\
+		,a.BELONG_PUBLICNUMBER_ID as BELONG_PUBLICNUMBER_ID ,to_char(a.SURPLUS_TOTAL_MONEY,'fm99990.0099') as SURPLUS_TOTAL_MONEY from ACTIVITY_WXUSER a where a.OPENID = ? AND a.BELONG_PUBLICNUMBER_ID = ?
+#<!--根据Openid和公众号APPID修改当前用户剩余余额-->
+updateUserByOpenidAndAppId=UPDATE ACTIVITY_WXUSER SET SURPLUS_TOTAL_MONEY=? WHERE  OPENID = ? AND BELONG_PUBLICNUMBER_ID = ? 
+#<!--根据角色ID查询除当前菜单的功能-->
+getMenuByRoleId=SELECT * FROM SYS_MENU a , SYS_MENU_ROLE b WHERE b.MENU = a.ID AND b.ROLE = ? ORDER BY a.CREATE_DATE ASC
+#<!--查询当前角色所有的图片-->
+getUserAllImg=SELECT * FROM UPLOAD_IMG a WHERE a.USERCODE = ? AND a.USERID = ?
+#根据微信用户修改积分或金额值
+updateWxUserIntegralAndMoneyById=UPDATE ACTIVITY_WXUSER SET TOTAL_INTEGRAL= ?,SURPLUS_TOTAL_INTEGRAL= ?,TOTAL_MONEY= ?,SURPLUS_TOTAL_MONEY= ? WHERE ID = ? 
+#修改微信用户信息
+updateWxUser=UPDATE ACTIVITY_WXUSER SET OPENID=?,BELONG_PUBLICNUMBER_ID= ?,NICKNAME= ?,SEX= ?,COUNTRY= ?,PROVINCE= ?,CITY= ?,HEADIMGURL= ? WHERE ID = ? 
+#保存微信用户信息
+saveWxUser=INSERT INTO ACTIVITY_WXUSER (ID,OPENID,BELONG_PUBLICNUMBER_ID,NICKNAME,SEX,COUNTRY,PROVINCE,CITY,HEADIMGURL) VALUES (?,?,?,?,?,?,?,?,?)
+#根据ScanCode修改码数据
+updateWinningByScanCode=UPDATE ACTIVITY_CODE SET ACTIVITY_WXID=?,WINTYPE=?,WININGID=? WHERE CODE=?
+#新增扫码进入活动记录
+insertAtcitityCode=INSERT INTO Activity_Code (ID,CODE,SELLEROUTINFO_RECORDID,SELLERPUBLICID,SELLERPUBLICNAME,ACTIVITY_WXID,OPENID,NICKNAME,HEADIMG,MARK,SING_NUMBER,ACTIVITY_ID,ACTIVITYNAME) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+#==============End==IndexDao==================================
+
+#==============Start==ActivityService====================
+
+#<!--获取全部可申请活动-->
+getAllActivity=SELECT * FROM TB_ACTIVITY ORDER BY UPDATE_DATE ASC 
+
+getActivityByRemarks=SELECT * FROM TB_ACTIVITY WHERE REMARKS =?
+
+#==============End==ActivityService======================
+
+#==============Start==SellerOutInfoService====================
+#<!--根据UserCode查询属于当前人接收的运单     分页显示运单数据 -->
+getSellerByUserCodePage=SELECT * FROM ( \
+       		SELECT a.*, ROWNUM rn FROM ( \
+             	SELECT a.outno,a.sellername,a.sellerId,a.RECORDID,a.recsellername,a.degree,a.spec,a.volume,a.productname,\
+                	a.brandsname,count(boxcode) as boxcode,min(a.outdate) as  outdate \
+            		FROM tb_SELLEROUTINFO a WHERE OUTTYPE = '出库' \
+            		AND RECSELLERCODE =? group by a.outno, a.sellername,a.sellerId,a.RECORDID,a.recsellername, \
+            		a.degree,a.spec,a.volume,a.productname,a.brandsname order  by  outdate desc ,outno \
+          		) a \
+         	WHERE ROWNUM < ? \
+      		) \
+ 	 	WHERE rn >=?
+ 	 	
+#<!-- 分页显示运单数据 -->
+getOraclePage= select * from \
+   (select a.*,rownum row_num from \
+      ( \
+       SELECT a.outno,a.sellername,a.sellerId,a.RECORDID,a.recsellername,a.degree,a.spec,a.volume,a.productname,\
+                  a.brandsname,count(boxcode) as boxcode,min(a.outdate) as  outdate \
+                FROM tb_SELLEROUTINFO a WHERE OUTTYPE = '出库' \
+                AND RECSELLERCODE ='100651'\
+               and (to_char(a.outdate,'yyyy-mm-dd') >= '2017-09-20')  and (to_char(a.outdate,'yyyy-mm-dd') <=  '2017-09-20')\
+                 group by a.outno, a.sellername,a.sellerId,a.RECORDID,a.recsellername, \
+                a.degree,a.spec,a.volume,a.productname,a.brandsname order  by  outdate desc ,outno\
+      ) a\
+   ) b \
+where b.row_num between 1 and 20
+
+#<!--根据UserCode查询属于当前人接收的运单的数量 ACTIVESIGN运单参与活动的标识0未开展活动  1开展活动了 -->
+getSoiByUserCodeCount=SELECT  count(*) as countNum  FROM tb_SELLEROUTINFO a WHERE OUTTYPE = '出库'  AND RECSELLERCODE =? AND ACTIVESIGN='0'
+getSoiByUserCodeCountRK=SELECT  count(*) as countNum  FROM tb_SELLERinINFO a WHERE sellerId = (SELECT b.targetid FROM PLSDBFLAT.Tb_Sys_User b WHERE b.USERCODE = ?) AND ACTIVESIGN='0'
+#<!--将该运单修改为已开展为活动中-->
+updateSelleInfoState=update tb_SELLEROUTINFO f set f.activesign='1'  where f.recordid=? 
+#updateSelleInfoState=update tb_SELLEROUTINFO f set f.activesign='1'  where f.recordid in (?)
+#<!--将该运单修改为未开展活动-->
+updateSelleInfoNoState=update tb_SELLEROUTINFO f set f.activesign='0'  where f.recordid=?
+
+#<!--根据UserCode查询属于当前人发出的运单-->
+# 这是发出去的货
+getSendSoiByUserCode=SELECT a.outno,a.sellername,a.sellerId,a.RECORDID,a.recsellername,a.degree,a.spec,a.volume,a.productname,\
+                a.brandsname,count(boxcode) as boxcode,min(a.outdate) as  outdate \
+		        FROM tb_SELLEROUTINFO a WHERE OUTTYPE = '出库' \
+		        AND sellerId = ?  AND ACTIVESIGN='0' group by a.outno, a.sellername,a.sellerId,a.RECORDID,a.recsellername, \
+		        a.degree,a.spec,a.volume,a.productname,a.brandsname order  by  outdate desc ,outno 
+#这是接收到的货		        
+querySoiByUserCode=SELECT a.inno as outno,a.sellername,a.sellerId,a.RECORDID,a.sellername as recsellername,a.degree,a.spec,a.volume,a.productname,\
+                a.brandsname,count(boxcode) as boxcode,min(a.indatetime) as  outdate \
+        FROM tb_SELLERInINFO a WHERE \
+         sellerId = (SELECT b.targetid FROM PLSDBFLAT.Tb_Sys_User b WHERE b.USERCODE = ?) AND ACTIVESIGN='0'
+#根据sellerId查询属于当前人发出去的运单   				
+querySendSoiByUserCode=SELECT a.outno,a.sellername,a.sellerId,a.RECORDID,a.recsellername,a.degree,a.spec,a.volume,a.productname,\
+                a.brandsname,count(boxcode) as boxcode,min(a.outdate) as  outdate \
+		        FROM tb_SELLEROUTINFO a WHERE OUTTYPE = '出库' \
+		        AND sellerId = ?    AND ACTIVESIGN='0'
+#querySendSoiByUserCode=SELECT * FROM tb_SELLEROUTINFO a WHERE OUTTYPE = '出库' AND sellerId = ?   
+getSendSoiByUserIdCount=SELECT  count(*) as countNum  FROM tb_SELLEROUTINFO a WHERE OUTTYPE = '出库'  AND sellerId =?  AND ACTIVESIGN='0'
+		        
+#<!--根据二维码瓶码查询属于运单-->
+getSoiByqrcode=SELECT a.outno,a.sellername,a.sellerId,a.RECORDID,a.recsellername,a.degree,a.spec,a.volume,a.productname, \
+        a.brandsname,a.boxcode,min(a.outdate) as  outdate \
+        FROM tb_SELLEROUTINFO a WHERE a.OUTTYPE = '出库' \
+        AND a.boxcode = ( select plsdbflat.pack_public.GetWlyQRBoxCode( ? ) as boxCode  from dual) \
+        group by a.outno, a.sellername,a.sellerId,a.RECORDID,a.recsellername, \
+        a.degree,a.spec,a.volume,a.productname,a.brandsname, a.boxcode order  by  outdate desc ,outno 
+getSoiByqrcodeRK=SELECT a.inno as outno,a.sellername,a.sellerId,a.RECORDID,a.sellername as recsellername,a.degree,a.spec,a.volume,a.productname, \
+        a.brandsname,a.boxcode,min(a.indatetime) as outdate FROM tb_SELLERinINFO a WHERE \
+         a.boxcode = ( select plsdbflat.pack_public.GetWlyQRBoxCode( ? ) as boxCode  from dual) \
+        group by a.inno, a.sellername,a.sellerId,a.RECORDID, \
+        a.degree,a.spec,a.volume,a.productname,a.brandsname, a.boxcode order  by  outdate desc ,outno 
+#<!-- 根据运单号查询该条运单的信息-->
+getSellerOutInfoByOutRecordId	= 	SELECT a.outno,a.sellername,a.sellerId,a.RECORDID,a.recsellername,a.degree,a.spec,a.volume, \
+		a.productname, a.brandsname,count(boxcode) as boxcode,min(a.outdate) as  outdate \
+        FROM tb_SELLEROUTINFO a WHERE a.OUTTYPE = '出库' \
+        AND a.RECORDID = ? \
+        group by a.outno, a.sellername,a.sellerId,a.RECORDID,a.recsellername, \
+        a.degree,a.spec,a.volume,a.productname,a.brandsname, a.boxcode order  by  outdate desc ,outno 
+	
+	
+#==============End==SellerOutInfoService=======================
+ 
+#==============Start==SellerRelationService====================
+
+#<!--根据USERCODE查询代理的产品-->
+getSrByTargetId=SELECT a.SELLERID AS SELLERID, a.ISVIEW AS ISVIEW, a.CHANNELID AS CHANNELID,a.PRODUCTID AS PRODUCTID,\
+       a.BRANDSID  AS BRANDSID,b.PRODUCTNAME AS PRODUCTNAME, b.DEGREE AS DEGREE, b.VOLUME AS VOLUME,b.SPEC AS SPEC \
+  	\u0020 FROM PLSDBFLAT.tb_SELLER_RELATION a, PLSDBFLAT.tb_PRODUCTINFO b where  a.PRODUCTID = b.PRODUCTID and  a.channelid = ? 
+#<!--根据目标ID和产品ID一起查询产品-->
+getProductById= SELECT a.SELLERID AS SELLERID,a.ISVIEW AS ISVIEW,a.CHANNELID AS CHANNELID,a.PRODUCTID AS PRODUCTID,\
+        a.BRANDSID   AS BRANDSID,b.PRODUCTNAME AS PRODUCTNAME,b.DEGREE AS DEGREE,b.VOLUME AS VOLUME,b.SPEC AS SPEC \
+        FROM PLSDBFLAT.tb_SELLER_RELATION a  LEFT JOIN PLSDBFLAT.tb_PRODUCTINFO b ON a.PRODUCTID = b.PRODUCTID \
+         WHERE a.channelid = ? AND a.PRODUCTID= ?
+
+
+
+
+#==============End==SellerRelationService======================
+
+#==============Start==ShareBargainService======================
+
+#<!--根据运单记录ID，查询出所属活动  判断是否审批通过-->
+getShareBargainByRecordId=SELECT a.ID,a.ACTIVITY_NAME,a.BELONG_ACTIVITY_ID,a.BACKGROUND_IMG,a.ACITIVITY_LAUNCH_USERID,\
+						a.ACITIVITY_LAUNCH_USERCODE,a.INTRODUCE,a.JOIN_PROPLE_NUMBER,a.WINNING_PROPLE_NUMBER,a.STATE,\
+						a.STARTTIME,a.ENDTIME FROM TB_SHARE_BARGAIN a \
+						LEFT JOIN TB_ACTIVITY_SELLEROUTINFO b ON a.ID = b.ACTIVITY_ID WHERE b.SELLEROUTINFO_RECORDID = ? AND a.state = '1' 
+
+#<!--根据userCode查询分享砍价的活动记录-->
+getShareBargainByUserCode=SELECT * FROM TB_SHARE_BARGAIN WHERE APPLYUSERID=?
+#<!--根据userCode查询审核通过的分享砍价的活动记录-->
+getShareBargainByUserCodeAndState=SELECT * FROM TB_SHARE_BARGAIN WHERE APPLYUSERID=? AND STATE = '1'
+
+#==============End==ShareBargainService==============================
+
+#==============Start==SellerPublicNumberService======================
+
+#<!--根据userCode查询出公众号-->
+getPublicNumberByUsercode=SELECT a.ID,a.PUBLICNUMBER_NAME,a.SENDERNAME,a.WISH,a.REMARKS,a.APPID,a.APPSECRET,a.PUBLICNUMBER_QRCODE_IMG,a.SHOP_NUMBER,a.PAY_KEY,\
+							a.SELLER_USERCODE,a.TOKEN FROM TB_SELLER_PUBLICNUMBER a WHERE a.SELLER_USERCODE = ?
+#<!--查询全部的公众号信息-->						
+getAllPublicNumber=Select * from TB_SELLER_PUBLICNUMBER
+#<!--根据公众号名称模糊查询出公众号-->		
+getPublicNumberByCondition=Select * from TB_SELLER_PUBLICNUMBER where PUBLICNUMBER_NAME like '%?%'
+
+
+
+
+#==============End==SellerPublicNumberService======================
+
+#==============Start==ActivitySellerOutInfoService====运单与活动关联==================
+#<!--根据运单查询出与当前运单有关联的活动-->
+getActivitySellerOutInfoByRecordId=SELECT a.ID,a.ACTIVITY_ID,a.SELLEROUTINFO_RECORDID,a.OUTNO,a.SELLER_USERCODE,a.STATE,\
+							a.BELONG_ACTIVITY FROM TB_ACTIVITY_SELLEROUTINFO a WHERE a.SELLEROUTINFO_RECORDID = ?
+#<!--根据活动ID查询该活动相关的信息-->
+getSellerInfoByActivityId=SELECT * FROM TB_ACTIVITY_SELLEROUTINFO WHERE ACTIVITY_ID =?
+#<!--查询出已经使用的运单信息 只查询运单记录ID      状态 1可以用 2不可用-->
+getUseActivitySellerOutInfo=SELECT a.ID AS ID,a.SELLEROUTINFO_RECORDID as SELLEROUTINFO_RECORDID FROM TB_ACTIVITY_SELLEROUTINFO a WHERE a.STATE = 2 
+
+
+
+#==============End==ActivitySellerOutInfoService======================
+
+#==============Start==ShareBargainPrizeService====分享砍价活动奖品==================
+#<!--根据活动ID查询出所有的奖品-->
+getShareBargainPrizeByActvityId=SELECT a.ID,a.SHARE_BARGAIN_ID,a.PRODUCTID,a.PRZIE_NUMBER,a.PRZIE_SURPLUS_NUMBER,a.ORIGINAL_PRICE,\
+ 							a.LOW_PRICE,a.BARGAIN_SECTION,a.BARGAIN_NUMBER,a.PRODUCTIMG FROM TB_SHARE_BARGAIN_PRIZE a WHERE \
+ 							a.SHARE_BARGAIN_ID= ?
+
+
+#==============End==ShareBargainPrizeService======================
+
+#==============Start==ProductInfoService====产品信息==================
+#<!--根据产品ID，查询出产品信息-->
+getProductInfoById=select a.PRODUCTID,a.BRANDSID,a.PRODUCTCODE,a.PRODUCTNAME,a.DEGREE,a.PRODUCTYEAR,a.VOLUME,a.REMARK,a.PRODUCTTYPE,\
+					a.STATUS,a.SPEC,a.KIND_ID,a.DEGREE_ID,a.CAPACITY_ID,a.SPEC_ID from PLSDBFLAT.tb_PRODUCTINFO a where a.PRODUCTID= ?
+#<!--根据产品ID，查询出产品图片-->
+getProductImgByProductId=select t.picid as picid ,t.remark as remark ,t.targetid as targetid,t.picurl as picurl,t.sortno as sortno from plsdbflat.TB_PICINFO t where t.targetId = ?
+
+#==============End==ProductInfoService======================
+
+#==============Start==ProductWinningInfoService====实物产品中奖记录==================
+#<!--保存一个产品中奖信息-->
+saveProductWinningInfo=insert into TB_PRODUCT_WINNING_INFO ("ID",BELONG_ACTIVITY_ID,ACTIVITY_NAME,ACTIVITY_NAME_TYPE,PRODUCT_ID,PRODUCT_NAME,PRODUCT_IMG,ACTIVITY_PRIZE_ID,\
+						CREATE_TIME,STARTTIME,ENDTIME,OPENID,ACTIVITY_WXUSER_ID,BELONG_PUBLICNUMBER_ID,STATE,WINNING_INFO_ID,ADDRESSEE_NAME,ADDRESSEE_ADDRESS,ADDRESSEE_PHONE,PAY_MONEY,PRICE,LOW_PRICE)values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+#<!--保存一个产品中奖信息-->
+queryProductWinningInfo=SELECT * FROM TB_PRODUCT_WINNING_INFO WHERE OPENID = ? AND BELONG_PUBLICNUMBER_ID = ? 
+
+
+#==============End==ProductWinningInfoService======================
+
+#==============Start==ActivityApproveService 活动审批======================
+#<!--查询出正在申请的分享砍价的活动记录-->
+#getShareActivityStateO=SELECT * FROM TB_SHARE_BARGAIN WHERE STATE='0' OR STATE='2'
+getShareActivityStateO=SELECT * FROM TB_SHARE_BARGAIN
+#==============End==ActivityApproveService======================
+
+##==============Start==ShareBargainWxuserService 申请活动的用户======================
+#<!--根据Openid查询出是否申请过砍价活动-->
+getSbwByOpenid=SELECT * FROM TB_SHARE_BARGAIN_WXUSER WHERE OPENID=? AND JOIN_ACTIVITY_ID =? AND PAY_MONEY = '0' AND SCAN_CODE = ?
+#<!--根据Id修改朋友砍价后的价格-->
+updateNowPrice=UPDATE TB_SHARE_BARGAIN_WXUSER SET NOW_PRICE=?,BARGAIN_NUMBER=?,STATE=? ,PRODUCT_WINNING_INFO_ID = ? WHERE ID = ?
+#<!--保存一个帮助砍价记录-->
+saveShareBargainHelp=insert into TB_SHARE_BARGAIN_HELP ("ID",OPENID,NICKNAME,HEADIMGURL,FRIEND_ACTIVITY_ID,BARGAIN_MONEY) \
+				values (?,?,?,?,?,?)
+#<!--查询是否已经帮忙砍过-->
+getSbhByOpenidAndFriendBargainId=SELECT * FROM TB_SHARE_BARGAIN_HELP WHERE OPENID=? AND FRIEND_ACTIVITY_ID=?
+#<!--查询需要帮助砍价-->
+getShareBargainHelpById=SELECT * FROM TB_SHARE_BARGAIN_WXUSER WHERE ID=? for update
+#<!--根据商户号和订单号查询出分享砍价-->
+getSbwByMchIdAndoutTradeNo=SELECT * FROM TB_SHARE_BARGAIN_WXUSER WHERE MCH_ID=? AND PAY_ORDER =? AND PAY_MONEY='0'
+#<!--根据活动id查询ShareBargainWxuser的记录-->
+getShareBargainWxuserByActivityId= SELECT * FROM TB_SHARE_BARGAIN_WXUSER WHERE JOIN_ACTIVITY_ID = ?
+#<!--根据活动id查询ShareBargainWxuser的记录                  注释：此处使用mch_id临时存放图片路径-->
+getSbwByOpenidAndBelongPublicNumberId=SELECT a.ID as ID,a.SHAREBARGAIN_PRIZE_ID as SHAREBARGAIN_PRIZE_ID,a.JOIN_ACTIVITY_ID as JOIN_ACTIVITY_ID,  a.GOODS_COMPANY as GOODS_COMPANY,\
+		a.GOODS_ODD_NUMBER as GOODS_ODD_NUMBER,c.productimg as mch_id,b.Activity_Name as PAY_ORDER,a.JOIN_ACTIVITY_ID as JOIN_ACTIVITY_ID,a.GOODS_STATE as GOODS_STATE ,\
+		a.STATE as STATE,a.CREATE_TIME as CREATE_TIME FROM TB_SHARE_BARGAIN_WXUSER a LEFT JOIN TB_SHARE_BARGAIN b ON b.id = a.join_activity_id \
+      	LEFT JOIN TB_SHARE_BARGAIN_PRIZE c ON a.sharebargain_prize_id = c.id WHERE a.OPENID = ? AND a.BELONG_PUBLICNUMBER_ID = ?
+#<!--根据活动id查询ShareBargainWxuser-->
+getSbwById=SELECT a.ID as ID,a.SHAREBARGAIN_PRIZE_ID as SHAREBARGAIN_PRIZE_ID,a.JOIN_ACTIVITY_ID as JOIN_ACTIVITY_ID,  a.GOODS_COMPANY as GOODS_COMPANY,\
+			a.GOODS_ODD_NUMBER as GOODS_ODD_NUMBER,a.JOIN_ACTIVITY_ID as JOIN_ACTIVITY_ID,a.GOODS_STATE as GOODS_STATE ,a.CONSIGNEE_PHONE as CONSIGNEE_PHONE,a.CONSIGNEE_NAME as CONSIGNEE_NAME,\
+			a.CONSIGNEE_ADDRESS as CONSIGNEE_ADDRESS,to_char(a.PRICE,'fm99990.0099') as PRICE,to_char(a.PAY_MONEY,'fm99990.0099') as PAY_MONEY,\
+			a.STATE as STATE,a.CREATE_TIME as CREATE_TIME FROM TB_SHARE_BARGAIN_WXUSER a where a.ID = ?
+#根据openID和二维码判断该用户是否已经参与了			
+getShareBargainByOpenIdCode= SELECT * from 	TB_SHARE_BARGAIN_WXUSER where openID= ? AND 
+			
+#==============End==ShareBargainWxuserService======================
+
+#==============Start==ShareBargainHelpService 帮忙砍价的用户的业务======================
+
+getShareBargainHelpByFriendActivityId=select a.ID as ID,a.OPENID as OPENID,a.NICKNAME as NICKNAME,a.HEADIMGURL as HEADIMGURL,a.FRIEND_ACTIVITY_ID as FRIEND_ACTIVITY_ID,\
+				a.BARGAIN_MONEY as BARGAIN_MONEY,a.SPARE_ONE as SPARE_ONE,a.SPARE_TWO as SPARE_TWO,to_char(a.BARGAIN_MONEY,'fm99990.0099') as BARGAIN_MONEY \
+				from tb_share_bargain_help a where a.FRIEND_ACTIVITY_ID = ?
+
+
+#==============End==ShareBargainHelpService======================
+
+#==============Start==RobRedService 抢红包======================
+getRobRedByUserCode=SELECT * FROM TB_ROB_RED t WHERE T.ACITIVITY_LAUNCH_USERCODE = ? 
+getAllRodRed=SELECT * FROM TB_ROB_RED t WHERE 1=1
+updateRobRedTotal=UPDATE TB_ROB_RED SET TOTAL=? WHERE RED_ID = ?
+#修改火爆小酒的总数
+updateFireRedTotal=UPDATE FIRE_STORM_RED SET TOTAL=? WHERE ID = ?
+#根据ID查红包
+getRobRedById=SELECT * FROM TB_ROB_RED WHERE RED_ID = ? for update
+#更新一下参与活动的人数
+updateRorRedNumber=UPDATE TB_ROB_RED SET JOIN_PROPLE_NUMBER=? WHERE RED_ID=?
+#==============End==RobRedService======================
+
+#==============Start==RobRedPrizeService 抢红包奖品======================
+getRobRedPrizeByActivityId=SELECT * FROM TB_ROB_RED_PRIZE t WHERE T.RED_ID = ?  for update ORDER BY t.CREATE_TIME ASC
+updateRobredNewProbability=UPDATE TB_ROB_RED_PRIZE SET SURPLUS_NUMBER=?,SURPLUS_PRIZE_PROBABILITY=?  WHERE RED_PRIZE_ID = ?
+
+updateFireStormredNewProbability=UPDATE FIRE_STORM_RED_PRIZE SET SURPLUS_NUMBER=?,SURPLUS_PRIZE_PROBABILITY=?  WHERE ID = ?
+
+saveRobRedWxUserWining=insert into TB_ROB_RED_WXUSER_WINNING (RED_WXUSER_WINNING_ID,RED_WXUSER_ID,BELONG_ROB_RED_PRIZE_ID,WINNING_MONEY,PRIZE_PROJECT,CREATE_TIME,OPENID) \
+				values (?,?,?,?,?,?,?)
+updateRobredNewIntegralProbability=UPDATE TB_ROB_RED_PRIZE SET SURPLUS_INTEGRAL_NUMBER=?,SURPLUS_INTEGRAL_PROBABILITY=?,SURPLUS_INTEGRAL=?  WHERE RED_PRIZE_ID = ?
+#火爆小酒积分剩余概率修改
+updateFireredNewIntegralProbability=UPDATE FIRE_STORM_RED_PRIZE SET SURPLUS_INTEGRAL_NUMBER=?,SURPLUS_INTEGRAL_PROBABILITY=?,SURPLUS_INTEGRAL=?  WHERE ID = ?
+updateRobredNewRedProbability=UPDATE TB_ROB_RED_PRIZE SET SURPLUS_NUMBER=?,SURPLUS_PRIZE_PROBABILITY=?,SURPLUS_MONEY=? WHERE RED_PRIZE_ID = ?
+#火爆小酒红包概率修改
+updateFireredNewRedProbability=UPDATE FIRE_STORM_RED_PRIZE SET SURPLUS_NUMBER=?,SURPLUS_PRIZE_PROBABILITY=?,SURPLUS_MONEY=? WHERE ID = ?
+
+saveAccumulateCommentWxUser=insert into TB_ACCUMULATE_COMMENT_WXUSER (ID,ACCUMULATE_ID,OPENID,NICKNAME,HEADIMGURL,CREATE_TIME,BELONG_PUBLICNUMBER_ID,SCAN_CODE,ACTIVITY_NAME,STATE,COMMENTS,COMMENTIMG) \
+values (?,?,?,?,?,?,?,?,?,?,?,?)
+
+saveActivityCode=insert into ACTIVITY_CODE(ID,CODE,SELLEROUTINFO_RECORDID,OPENID,ACTIVITY_ID) \
+values (?,?,?,?,?)
+
+updateAccumulateHelpNumber=UPDATE TB_ACCUMULATE_COMMENT_WXUSER SET HELP_NUMBER=? WHERE ID = ?
+
+saveHelpAccumulateWxUser=insert into TB_ACCUMULATE_HELP_WXUSER(ID,ACCUMULATE_ID,COMMENT_WXUSER_ID,OPENID,NICKNAME,HEADIMGURL,BELONG_PUBLICNUMBER_ID) \
+values (?,?,?,?,?,?,?)
+
+saveBreakEggWxUser=insert into TB_BREAKEGG_WXUSER(ID,BREAKEGG_ID,OPENID,NICKNAME,HEADIMGURL,CREATE_TIME,BELONG_PUBLICNUMBER_ID,SCAN_CODE,ACTIVITY_NAME,STATE) \
+values (?,?,?,?,?,?,?,?,?,?)
+
+#----保存openwine微信参与记录
+saveOpenWineWxUser=insert into TB_OPENWINE_WXUSER(ID,OPENWINE_ID,OPENID,NICKNAME,HEADIMGURL,CREATE_TIME,BELONG_PUBLICNUMBER_ID,SCAN_CODE,ACTIVITY_NAME,STATE) \
+values (?,?,?,?,?,?,?,?,?,?)
+
+#==============End==RobRedPrizeService======================
+
+#==============Start==RobRedWxUserService 抢红包微信用户参加记录======================
+#根据openid和所扫码scanCode查询是否已经参加活动
+getRobRedWxUserByOpenidAndQrCode=select t.red_wxuser_id as "red_wxuser_id" , t.red_id as  "red_id",t.openid as  "openid",a.nickname as  "nickname",a.headimgurl as  "headimgurl",\
+t.belong_publicnumber_id as  "belong_publicnumber_id", t.create_time as  "create_time",t.state as  "state",t.scan_code as  "scan_code",\
+t.scan_red_number as  "scan_red_number",t.total_money as  "total_money",t.activity_name as  "activity_name",t.starttime as  "starttime",\
+t.endtime as  "endtime",t.joinmode as  "joinmode" from TB_ROB_RED_WXUSER t left join ACTIVITY_WXUSER a on a.openid = t.openid  WHERE t.OPENID = ? AND t.SCAN_CODE = ?
+#火爆小酒***
+getFireRedWxUserByOpenidAndQrCode=select t.id as "id" , t.red_id as  "red_id",t.openid as  "openid",a.nickname as  "nickname",a.headimgurl as  "headimgurl",\
+t.belong_publicnumber_id as  "belong_publicnumber_id", t.create_time as  "create_time",t.state as  "state",t.scan_code as  "scan_code",\
+t.scan_red_number as  "scan_red_number",t.total_money as  "total_money",t.activity_name as  "activity_name",t.starttime as  "starttime",\
+t.endtime as  "endtime",t.joinmode as  "joinmode" from FIRE_STORM_RED_WXUSER t left join ACTIVITY_WXUSER a on a.openid = t.openid  WHERE t.OPENID = ? AND t.SCAN_CODE = ?
+#根据微信用户参与记录ID修改扫码次数
+updateRobredWxUserScanNumber=UPDATE TB_ROB_RED_WXUSER SET SCAN_RED_NUMBER=? WHERE RED_WXUSER_ID = ?
+
+#根据微信用户参与记录ID修改扫码次数
+updateFireredWxUserScanNumber=UPDATE FIRE_STORM_RED_WXUSER SET SCAN_RED_NUMBER=? WHERE ID = ?
+#根据openid和公众号ID查询参加活动
+getRobRedWxUserByOpenidAndAppid=select t.red_wxuser_id as "red_wxuser_id" , t.red_id as  "red_id",t.openid as  "openid",a.nickname as  "nickname",a.headimgurl as  "headimgurl",\
+t.belong_publicnumber_id as  "belong_publicnumber_id", t.create_time as  "create_time",t.state as  "state",t.scan_code as  "scan_code",\
+t.scan_red_number as  "scan_red_number",t.total_money as  "total_money",t.activity_name as  "activity_name",t.starttime as  "starttime",\
+t.endtime as  "endtime",t.joinmode as  "joinmode" from TB_ROB_RED_WXUSER t left join ACTIVITY_WXUSER a on a.openid = t.openid WHERE t.OPENID = ? AND t.BELONG_PUBLICNUMBER_ID = ?
+#根据openid和公众号ID查询参加活动未提现的
+getRobRedWxUserByOpenidAndSPNId=select t.red_wxuser_id as "red_wxuser_id" , t.red_id as  "red_id",t.openid as  "openid",a.nickname as  "nickname",a.headimgurl as  "headimgurl",\
+t.belong_publicnumber_id as  "belong_publicnumber_id", t.create_time as  "create_time",t.state as  "state",t.scan_code as  "scan_code",\
+t.scan_red_number as  "scan_red_number",t.total_money as  "total_money",t.activity_name as  "activity_name",t.starttime as  "starttime",\
+t.endtime as  "endtime",t.joinmode as  "joinmode" from TB_ROB_RED_WXUSER t left join ACTIVITY_WXUSER a on a.openid = t.openid WHERE t.OPENID = ? AND t.BELONG_PUBLICNUMBER_ID = ? AND t.STATE = '0'
+#根据openid和公众号ID修改参加活动未提现的记录   修改为已经提现
+updateRobredWxUserState=UPDATE TB_ROB_RED_WXUSER SET STATE='1' WHERE OPENID = ? AND BELONG_PUBLICNUMBER_ID = ? AND STATE = '0' AND SCAN_RED_NUMBER = '0'
+#根据openid查询抢红包参与用户
+getRobredWxUserById=SELECT * FROM TB_ROB_RED_WXUSER WHERE RED_WXUSER_ID=? for update
+#根据id查询参与的微信记录
+getFireStormRedWxUserById=SELECT * FROM FIRE_STORM_RED_WXUSER WHERE ID=? for update
+#根据openid修改昵称和头像  这是红包的
+updateNameByOpenid=UPDATE TB_ROB_RED_WXUSER SET NICKNAME=?,HEADIMGURL=? WHERE OPENID = ?
+#根据openid修改昵称和头像   这是砸蛋的
+updateBreakEggNameByOpenid=UPDATE TB_BREAKEGG_WXUSER SET NICKNAME=?,HEADIMGURL=? WHERE OPENID = ?
+#根据openid修改昵称和头像   这是转盘的
+updateTurnTableNameByOpenid=UPDATE TB_TURNTABLE_WXUSER SET NICKNAME=?,HEADIMGURL=? WHERE OPENID = ?
+#根据openid修改昵称和头像   这是刮刮乐
+updateCardNameByOpenid=UPDATE TB_SCRATCHCARD_WXUSER SET NICKNAME=?,HEADIMGURL=? WHERE OPENID = ?
+#根据openid修改昵称和头像   这是拼图
+updatePuzzleNameByOpenid=UPDATE TB_PUZZLE_WXUSER SET NICKNAME=?,HEADIMGURL=? WHERE OPENID = ?
+#根据openid修改昵称和头像   这是砍价****5个*****
+updateShareNameByOpenid=UPDATE TB_SHARE_BARGAIN_WXUSER SET NICKNAME=?,HEADIMGURL=? WHERE OPENID = ?
+#根据openid修改昵称和头像   这是集赞
+updateAccumulateNameByOpenid=UPDATE TB_ACCUMULATE_COMMENT_WXUSER SET NICKNAME=?,HEADIMGURL=? WHERE OPENID = ?
+#根据openid修改昵称和头像   这是一元购
+updateOneMoneyNameByOpenid=UPDATE TB_ONE_MONEY_WXUSER SET NICKNAME=?,HEADIMGURL=? WHERE OPENID = ?
+#根据openid修改昵称和头像   这是拼团
+updatePurchaseNameByOpenid=UPDATE TB_GROUP_PURCHASE_WXUSER SET NICKNAME=?,HEADIMGURL=? WHERE OPENID = ?
+#根据红包活动ID查询参与活动微信用户
+getRobRedWxUserByRedId=select t.red_wxuser_id as "red_wxuser_id" , t.red_id as  "red_id",t.openid as  "openid",a.nickname as  "nickname",a.headimgurl as  "headimgurl",\
+t.belong_publicnumber_id as  "belong_publicnumber_id", t.create_time as  "create_time ",t.state as  "state",t.scan_code as  "scan_code",\
+t.scan_red_number as  "scan_red_number",t.total_money as  "total_money",t.activity_name as  "activity_name",t.starttime as  "starttime",\
+t.endtime as  "endtime ",t.joinmode as  "joinmode" from TB_ROB_RED_WXUSER t left join ACTIVITY_WXUSER a on a.openid = t.openid WHERE t.RED_ID=?
+#根绝RED_WXUSER_ID查询数据
+getRobRedWxUserByRedWxuserId=select t.red_wxuser_id as "red_wxuser_id" , t.red_id as  "red_id",t.openid as  "openid",a.nickname as  "nickname",a.headimgurl as  "headimgurl",\
+t.belong_publicnumber_id as  "belong_publicnumber_id", t.create_time as  "create_time ",t.state as  "state",t.scan_code as  "scan_code",\
+t.scan_red_number as  "scan_red_number",t.total_money as  "total_money",t.activity_name as  "activity_name",t.starttime as  "starttime",\
+t.endtime as  "endtime",t.joinmode as  "joinmode" from TB_ROB_RED_WXUSER t left join ACTIVITY_WXUSER a on a.openid = t.openid  where t.RED_WXUSER_ID = ?
+#模糊查询前句
+redmohu=select t.red_wxuser_id as "red_wxuser_id" , t.red_id as  "red_id",t.openid as  "openid",a.nickname as  "nickname",a.headimgurl as  "headimgurl",\
+t.belong_publicnumber_id as  "belong_publicnumber_id", t.create_time as  "create_time",t.state as  "state ",t.scan_code as  "scan_code",\
+t.scan_red_number as  "scan_red_number",t.total_money as  "total_money",t.activity_name as  "activity_name",t.starttime as  "starttime",\
+t.endtime as  "endtime",t.joinmode as  "joinmode" 
+#==============End==RobRedWxUseService======================
+#==============Start==RobRedWxUserWiningService 抢红包微信用户参与中奖记录======================
+queryRobRedWxUserWiningByWxUserId=SELECT * FROM TB_ROB_RED_WXUSER_WINNING a WHERE a.RED_WXUSER_ID = ? 
+
+
+
+#==============End==RobRedWxUserWiningService======================
+
+#==============Start==RedWinningInfoService 抢红包微信用户参与中奖记录======================
+getRedWinningInfoByActivityIdAndOpenid=SELECT * FROM TB_RED_WINNING_INFO a WHERE a.BELONG_ACTIVITY_ID = ? AND a.OPENID = ? AND a.ACTIVITY_NAME_TYPE = ? AND ACTIVITY_WXUSER_ID = ?
+#保存红包中奖记录
+saveRedInfo=insert into TB_RED_WINNING_INFO ("ID",BELONG_ACTIVITY_ID,ACTIVITY_NAME,ACTIVITY_NAME_TYPE,WINNING_RED_TOTAL,CREATE_TIME,\
+		STATE,STARTTIME,ENDTIME,WITHDRAWALS,OPENID,ACTIVITY_WXUSER_ID,BELONG_PUBLICNUMBER_ID) values (?,?,?,?,?,?,?,?,?,?,?,?,?)
+#修改红包中奖记录转台和金额
+updateRedInfo=UPDATE TB_RED_WINNING_INFO SET WINNING_RED_TOTAL=? ,STATE=?,ACTIVITY_NAME=? WHERE ID=?
+#修改红包中奖记录状态和金额
+updateRedInfoByState=UPDATE TB_RED_WINNING_INFO SET STATE=? WHERE ID=?
+#修改红包中奖记录已经提现
+updateRedInfoByWithdrawals=UPDATE TB_RED_WINNING_INFO SET WITHDRAWALS = ? WHERE STATE = ? AND OPENID = ? AND BELONG_PUBLICNUMBER_ID= ?
+#根据openid和公众号ID查询记录
+queryRedInfoByPublicNumberAndOpenid=SELECT * FROM TB_RED_WINNING_INFO WHERE BELONG_PUBLICNUMBER_ID = ? AND OPENID = ? ORDER BY CREATE_TIME DESC
+
+
+
+#==============End==RedWinningInfoService======================
+
+#==============Start==IntrgralService 积分活动======================
+#全部积分活动
+allIntegral=SELECT * FROM TB_INTEGRAL
+#保存积分兑换活动的配置
+saveIntegralExchangeActivity=insert into TB_INTEGRAL_ACTIVITY ("ID",INTEGRAL_ID,ACTIVITY_NUMBER,ACTIVITY_NAME,ACTIVITY_ID,NEED_INTEGRAL,TEN_ACTIVITY_ID,TEN_ACTIVITY_NAME,BACKGROUND_IMG) \
+				values (?,?,?,?,?,?,?,?,?)
+#保存积分活动基础配置
+saveIntegralActivity=insert into TB_INTEGRAL (INTEGRAL_ID,SIGN_INTEGRAL,BACKGROUND_IMG,BELONG_ACTIVITY_ID,MOBLEC_BACKGROUND_IMG,ACITIVITY_LAUNCH_USERID,\
+					ACITIVITY_LAUNCH_USERCODE,STATE,CREATE_TIME,APPLYPHONE,APPLYUSERNAME,TOTAL,NEED_INTEGRAL) values (?,?,?,?,?,?,?,?,?,?,?,?,?)
+#保存积分兑换奖品配置
+saveIntegralPrize=insert into TB_INTEGRAL_PRODUCT ("ID",INTEGRAL_ID,ORDER_NUMBER,AGENT,PRODUCT_ID,PRODUCT_IMG,PRODUCT_NAME,PRODUCT_NUMBER,PRODUCT_INTRODUCE,NEED_INTEGRAL,SPEC,DEGREE,VOLUME,SURPLUS_PRODUCT_NUMBER) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+#查询出所有积分关联活动
+getIntegralActivityByActivityId=SELECT * FROM TB_INTEGRAL_ACTIVITY a WHERE a.INTEGRAL_ID = ? 
+#查询出所有积分关联产品
+getIntegralProductByActivityId=SELECT * FROM TB_INTEGRAL_PRODUCT a WHERE a.INTEGRAL_ID = ? AND a.SURPLUS_PRODUCT_NUMBER > 0
+#根据UserCode和UserId查询积分活动
+getIntegralByUser=SELECT * FROM TB_INTEGRAL WHERE ACITIVITY_LAUNCH_USERID = ? AND ACITIVITY_LAUNCH_USERCODE = ? AND STATE = '1'
+#保存积分“立即兑换”记录
+saveIntegralExchange=insert into TB_INTEGRAL_EXCHANGE (INTEGRAL_EXCHANGE_ID,INTEGRAL_ID,EXCHANGE_TYPE,EXCHANGE_PRIZE_ID,EXCHANGE_USE_INTEGRAL,EXCHANGE_PRIZE_NAME,EXCHANGE_PRIZE_IMG,EXCHANGE_PRIZE_NUMBER,\
+						OPENID,ADDRESSEE_NAME,ADDRESSEE_ADDRESS,ADDRESSEE_PHONE,STATE,NICKNAME,HEADIMGURL,CREATE_TIME,PRODUCT_WINNING_INFO_ID,BELONG_PUBLICNUMBER_ID) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+#查询积分关联活动返回单个对象
+queryIntegralProductById=SELECT * FROM TB_INTEGRAL_PRODUCT WHERE ID = ?
+#报表查询所有的积分活动
+queryIntegralReportAll=SELECT * FROM TB_INTEGRAL WHERE 1=1 
+#根据所属活动ID和微信参与记录ID和openid查询出是否存在积分记录
+queryIntegralWinningInfo=SELECT * FROM TB_INTEGRAL_WINNING_INFO WHERE BELONG_ACTIVITY_ID = ? AND ACTIVITY_WXUSER_ID = ? AND OPENID = ?
+#新增积分获奖记录
+saveIntegralWinningInfo=insert into TB_INTEGRAL_WINNING_INFO ("ID",BELONG_ACTIVITY_ID,ACTIVITY_NAME,ACTIVITY_NAME_TYPE,WINNING_INTEGRAL,CREATE_TIME,STARTTIME,ENDTIME,OPENID,ACTIVITY_WXUSER_ID,BELONG_PUBLICNUMBER_ID) \
+				values (?,?,?,?,?,?,?,?,?,?,?)
+#根据ID修改积分获得记录的积分值
+updateIntegralWinningInfoByIntegralNumber=UPDATE TB_INTEGRAL_WINNING_INFO SET WINNING_INTEGRAL= ? WHERE ID=?
+#根据活动ID，查询积分兑换记录
+queryIntegalExchangeByActivityId=SELECT * FROM TB_INTEGRAL_EXCHANGE WHERE INTEGRAL_ID = ? 
+#修改奖品配置剩余数量
+updateIntegralProductPrizeNumberById=UPDATE TB_INTEGRAL_PRODUCT SET SURPLUS_PRODUCT_NUMBER= ? WHERE ID=?
+#根据openid和AppId查询出当前公众号当前人的所有获得积分记录
+getIntegralByOpenidAndPublicNumber=SELECT * FROM TB_INTEGRAL_WINNING_INFO WHERE OPENID = ? AND BELONG_PUBLICNUMBER_ID = ?
+#根据openid和AppId查询出当前公众号当前人的所有兑换积分
+getIntegralExchangeByOpenidAndPublicNumber=SELECT * FROM TB_INTEGRAL_EXCHANGE WHERE OPENID = ? AND BELONG_PUBLICNUMBER_ID = ?
+
+#==============End==IntrgralService======================
+
+#==============Start==TurnTableService 转盘活动======================
+#根据openid和所扫码scanCode查询是否已经参加活动
+getTurnTableByOpenidAndQrCode=SELECT * FROM TB_TURNTABLE_WXUSER a WHERE a.OPENID = ? AND a.SCAN_CODE = ?
+#根据活动ID查询的奖品配置
+getTurnTablePrizeByActivityId=SELECT * FROM TB_TURNTABLE_PRIZE a WHERE a.TURNTABLE_ID = ? for update
+#根据ID查转盘
+getTurnTableById=SELECT * FROM TB_TURNTABLE WHERE TURNTABLE_ID = ? for update
+#更新一下砸蛋参与活动的人数
+updateTurntableNumber=UPDATE TB_TURNTABLE SET JOIN_PROPLE_NUMBER=? WHERE TURNTABLE_ID=?
+#根据转盘ID修改转盘奖品剩余数量和概率
+updateTurnTablePrizeNumberAndProbabilityById=UPDATE TB_TURNTABLE_PRIZE SET SURPLUS_PRIZE_NUMBER=? , SURPLUS_PRIZE_PROBABILITY=? WHERE TURNTABLE_PRIZE_ID=?
+#修改转盘活动剩余参与活动总数
+updateTurnTableTotalById=UPDATE TB_TURNTABLE SET TOTAL=? ,JOIN_PROPLE_NUMBER=? , WINNING_PROPLE_NUMBER=? WHERE TURNTABLE_ID=?
+# 查询所有的转盘活动
+allTurnTable=SELECT * FROM TB_TURNTABLE WHERE 1=1 
+# 根据ID查询参加转盘活动用户记录
+getTurnTableWxUserById=SELECT * FROM TB_TURNTABLE_WXUSER WHERE TURNTABLE_WXUSER_ID=? for update
+#保存转盘中奖记录
+saveTurnTableTotalWinning=insert into TB_TURNTABLE_WXUSER_WINNING (TURNTABLE_WXUSER_WINNING_ID,TURNTABLE_WXUSER_ID,PRIZE_TYPE,BELONG_WINNING_PRIZE_ID, \
+	WINNING_MONEY,PRIZE_PROJECT,CREATE_TIME,OPENID,STATE,PRIZE_PROJECT_IMG,PRODUCT_WINNING_INFO_ID) values (?,?,?,?,?,?,?,?,?,?,?)
+#修改转盘活动剩余可抽奖次数和本次中奖金额或积分值
+updateTurnTableWxUserJoinNumberById=UPDATE TB_TURNTABLE_WXUSER SET SCAN_WINNING_NUMBER=? ,TOTAL_MONEY=?,TOTAL_INTEGRAL=? \
+			,INTEGRAL_WINNING_NUMBER = ?,RED_WINNING_NUMBER = ?,GOODS_WINNING_NUMBER = ?,THINK_WINNING_NUMBER = ?  WHERE TURNTABLE_WXUSER_ID=?
+#查询本次扫码最多中奖三次的数据
+queryTurnTableWxUserWinningByOpenidAndTurnTableWxUserId=SELECT * FROM TB_TURNTABLE_WXUSER_WINNING a WHERE a.OPENID = ? AND TURNTABLE_WXUSER_ID=?
+#查询微信参与记录ID最多中奖三次的数据
+queryTurnTableWxUserWinningByTurnTableWxUserId=SELECT * FROM TB_TURNTABLE_WXUSER_WINNING a WHERE a.TURNTABLE_WXUSER_ID= ?
+#根据活动ID查询微信用户参与记录
+queryTurnTableWxUserByActivityId=SELECT * FROM TB_TURNTABLE_WXUSER WHERE TURNTABLE_ID = ?
+
+
+#==============End==TurnTableService======================
+
+#==============Start==ScratchCardSrevice 刮刮乐活动======================
+# 查询所有的刮刮乐活动
+allScratchCard=SELECT * FROM TB_SCRATCHCARD WHERE 1=1 
+#根据活动ID查询出所有中奖奖品
+queryScratchCardPrizeByActivityId=SELECT * FROM TB_SCRATCHCARD_PRIZE WHERE SCRATCHCARD_ID = ?
+#根据openid和所扫码scanCode查询是否已经参加活动
+getScratchCardByOpenidAndQrCode=SELECT * FROM TB_SCRATCHCARD_WXUSER a WHERE a.OPENID = ? AND a.SCAN_CODE = ?
+#根据刮刮乐活动查询出相关活动所有的奖品配置
+getScratchCardPrizeByScratchCardId=SELECT * FROM TB_SCRATCHCARD_PRIZE a WHERE a.SCRATCHCARD_ID = ?
+#根据刮刮乐ID修改转盘奖品剩余数量和概率
+updatePrizeNumberAndProbabilityById=UPDATE TB_SCRATCHCARD_PRIZE SET SURPLUS_PRIZE_NUMBER=? , SURPLUS_PRIZE_PROBABILITY=? WHERE SCRATCHCARD_PRIZE_ID=?
+#修改刮刮乐活动剩余参与活动总数
+updateScratchCardTotalById=UPDATE TB_SCRATCHCARD SET TOTAL=? ,JOIN_PROPLE_NUMBER=? , WINNING_PROPLE_NUMBER=? WHERE SCRATCHCARD_ID=?
+#保存刮刮乐中奖记录
+saveScratchCardWinning=insert into TB_SCRATCHCARD_WXUSER_WINNING (SCRATCHCARD_WXUSER_WINNING_ID,SCRATCHCARD_WXUSER_ID,PRIZE_TYPE,BELONG_WINNING_PRIZE_ID, \
+	WINNING_MONEY,PRIZE_PROJECT,CREATE_TIME,OPENID,STATE,PRIZE_PROJECT_IMG,PRODUCT_WINNING_INFO_ID) values (?,?,?,?,?,?,?,?,?,?,?)
+#修改刮刮乐活动剩余可抽奖次数和本次中奖金额或积分值
+updateScratchCardWxUserJoinNumberById=UPDATE TB_SCRATCHCARD_WXUSER SET SCAN_WINNING_NUMBER=? ,TOTAL_MONEY=?,TOTAL_INTEGRAL=? \
+			,INTEGRAL_WINNING_NUMBER = ?,RED_WINNING_NUMBER = ?,GOODS_WINNING_NUMBER = ?,THINK_WINNING_NUMBER = ?  WHERE SCRATCHCARD_WXUSER_ID=?
+#查询本次扫码最多中奖三次的数据
+queryScratchCardWxUserWinningByOpenidAndScratchCardWxUserId=SELECT * FROM TB_SCRATCHCARD_WXUSER_WINNING a WHERE a.OPENID = ? AND SCRATCHCARD_WXUSER_ID=?
+#根据活动ID查询微信用户参与记录
+queryScratchCardWxUserByActivityId=SELECT * FROM TB_SCRATCHCARD_WXUSER WHERE SCRATCHCARD_ID = ?
+#查询微信参与记录ID最多中奖三次的数据
+queryScratchCardWxUserWinningByScratchCardWxUserId=SELECT * FROM TB_SCRATCHCARD_WXUSER_WINNING a WHERE a.SCRATCHCARD_WXUSER_ID= ?
+#根据openid查询抢红包参与用户
+getScratchCardWxUserById=SELECT * FROM TB_SCRATCHCARD_WXUSER WHERE SCRATCHCARD_WXUSER_ID=? for update
+#==============End==ScratchCardSrevice======================
+
+#==============Start==AccumulateService 刮刮乐活动======================
+#根据openid和所扫码scanCode查询是否已经参加活动
+getAccumulateByOpenidAndQrCode=SELECT * FROM TB_ACCUMULATE_COMMENT_WXUSER a WHERE a.OPENID = ? AND a.SCAN_CODE = ?
+#==============End==AccumulateService======================
+
+#==============Start==BreakEggService 砸蛋活动======================
+getBreakEggByOpenidAndQrCode=SELECT * FROM TB_BREAKEGG_WXUSER a WHERE a.OPENID = ? AND a.SCAN_CODE = ?
+#====查询开酒瓶活动的微信参与小活动
+getOpenWineByOpenidAndQrCode=SELECT * FROM TB_OPENWINE_WXUSER a WHERE a.OPENID = ? AND a.SCAN_CODE = ?
+#更新一下集赞参与活动的人数
+updateAccumulateNumber=UPDATE TB_ACCUMULATEFABULOUS SET JOIN_PROPLE_NUMBER=? WHERE ID=?
+#更新一下砸蛋参与活动的人数
+updateBreakEggNumber=UPDATE TB_BREAK_EGG SET JOIN_PROPLE_NUMBER=? WHERE ID=?
+#更新一下开酒瓶参与活动的人数---
+updateOpenWineNumber=UPDATE TB_OPENWINE SET JOIN_PROPLE_NUMBER=? WHERE ID=?
+#更新一下一元购参与活动的人数
+updateOneMoneyNumber=UPDATE TB_ONE_MONEY_SHOP SET JOIN_PROPLE_NUMBER=? WHERE ID=?
+#更新一下拼图参与活动的人数
+updatePuzzleNumber=UPDATE TB_PUZZLE SET JOIN_PROPLE_NUMBER=? WHERE ID=?
+#更新一下拼团参与活动的人数
+updateGroupPurchaseNumber=UPDATE TB_GROUP_PURCHASE SET JOIN_PROPLE_NUMBER=? WHERE ID=?
+#更新一下分享砍价参与活动的人数
+updateShareBargainNumber=UPDATE TB_SHARE_BARGAIN SET JOIN_PROPLE_NUMBER=? WHERE ID=?
+#根据openid查询抢红包参与用户
+getBreakEggWxUserById=SELECT * FROM TB_BREAKEGG_WXUSER WHERE ID=? for update
+#根据openid查询开酒瓶活动参与用户
+getOpenWineWxUserById=SELECT * FROM TB_OPENWINE_WXUSER WHERE ID=? for update
+#根据ID修改砸蛋奖品剩余数量和概率
+updateEggPrizeNumberAndProbabilityById=UPDATE TB_BREAK_EGG_PRIZE SET SURPLUS_PRIZE_NUMBER=? , SURPLUS_PRIZE_PROBABILITY=? WHERE ID=?
+#根据ID修改砸蛋奖品剩余数量和概率
+updateWinePrizeNumAndProById=UPDATE TB_OPENWINE_PRIZE SET SURPLUS_PRIZE_NUMBER=? , SURPLUS_PRIZE_PROBABILITY=? WHERE ID=?
+#修改开酒活动剩余参与活动总数
+updateBreakEggTotalById=UPDATE TB_BREAK_EGG SET TOTAL=? WHERE ID=?
+#修改开酒活动剩余参与活动总数
+updateOpenWineTotalById=UPDATE TB_OPENWINE SET TOTAL=? WHERE ID=?
+#修改砸蛋活动获奖人数
+updateBreakEggWinningPensonById=UPDATE TB_BREAK_EGG SET WINNING_PROPLE_NUMBER=? WHERE ID=?
+#修改开酒瓶活动获奖人数
+updateOpenWineWinningPensonById=UPDATE TB_OPENWINE SET WINNING_PROPLE_NUMBER=? WHERE ID=?
+#根据ID查询砸蛋活动
+queryBreakEgg=select * from tb_break_egg where id=? for update
+#根据ID查询开酒活动
+queryOpenWine=select * from TB_OPENWINE where id=? for update
+#保存砸蛋中奖记录
+saveBreakEggWinning=insert into TB_BREAKEGG_WXUSER_WINNING (ID,BREAKEGG_WXUSER_ID,PRIZE_TYPE,BELONG_WINNING_PRIZE_ID, \
+	WINNING_MONEY,PRIZE_PROJECT,CREATE_TIME,OPENID,STATE,PRIZE_PROJECT_IMG,PRODUCT_WINNING_INFO_ID) values (?,?,?,?,?,?,?,?,?,?,?)
+	
+#保存开酒瓶中奖记录
+saveOpenWineWinning=insert into TB_OPENWINE_WXUSER_WIN (ID,OPENWINE_WXUSER_ID,PRIZE_TYPE,BELONG_WINNING_PRIZE_ID, \
+	WINNING_MONEY,PRIZE_PROJECT,CREATE_TIME,OPENID,STATE,PRIZE_PROJECT_IMG,PRODUCT_WINNING_INFO_ID,JOIN_TYPE) values (?,?,?,?,?,?,?,?,?,?,?,?)
+	
+#修改砸蛋活动本次中奖金额或积分值
+updateBreakEggWxUserJoinNumberById=UPDATE TB_BREAKEGG_WXUSER SET TOTAL_MONEY=?,TOTAL_INTEGRAL=?,THANKNUMBER=?,GOODSNUMBER=?,BREAKEGG_PRZIE_ID=?  WHERE ID= ?
+#修改开酒瓶活动本次中奖金额或积分值
+updateOpenWineWxUserJoinNumberById=UPDATE TB_OPENWINE_WXUSER SET TOTAL_MONEY=?,TOTAL_INTEGRAL=?,THANKNUMBER=?,GOODSNUMBER=?,OPENWINE_PRZIE_ID=?  WHERE ID= ?
+#根据openID和BreakEggWxUserId查询中奖的奖品
+queryBreakEggWxUserWinningByOpenidAndBreakEggWxUserId=SELECT * FROM TB_BREAKEGG_WXUSER_WINNING a WHERE a.OPENID = ? AND a.BREAKEGG_WXUSER_ID=?
+#根据openID和BreakEggWxUserId查询中奖的奖品
+queryTurnWxUserWinningByOpenidAndTurnWxUserId=SELECT * FROM TB_TURNTABLE_WXUSER_WINNING a WHERE a.OPENID = ? AND a.TURNTABLE_WXUSER_ID=?
+#==============End==BreakEggService================================
+#根据转盘的wxId和openId查询当前人参与该记录的中奖情况
+queryTurnWingByTurnWxUIdAndOpenId=SELECT * FROM TB_TURNTABLE_WXUSER_WINNING WHERE TURNTABLE_WXUSER_ID=? AND OPENID=?
+
+
+getOneMoneyByOpenidAndQrCode=SELECT * FROM TB_ONE_MONEY_WXUSER a WHERE a.OPENID = ? AND a.SCAN_CODE = ?
+
+saveOneMoneyWxUser=insert into TB_ONE_MONEY_WXUSER(ID,ONE_MONEY_ID,OPENID,NICKNAME,HEADIMGURL,CREATE_TIME,BELONG_PUBLICNUMBER_ID,SCAN_CODE,ACTIVITY_NAME,STATE) \
+values (?,?,?,?,?,?,?,?,?,?)
+
+saveOneMoneyGroupWxUser=insert into TB_ONE_MONEY_GROUP_WXUSER (ID,ONEMONEY_WXUSER_ID,OPENID,NICKNAME,HEADIMGURL,CREATE_TIME,ACTIVITY_NAME,STATE,CREATER,PAYMONEY,PAYSTATE,MCHID,PAYOUTNO) \
+values (?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+getPuzzleByOpenidAndQrCode=SELECT * FROM TB_PUZZLE_WXUSER a WHERE a.OPENID = ? AND a.SCAN_CODE = ?
+
+savePuzzleWxUser=insert into TB_PUZZLE_WXUSER (ID,PUZZLE_ID,OPENID,NICKNAME,HEADIMGURL,CREATE_TIME,BELONG_PUBLICNUMBER_ID,SCAN_CODE,ACTIVITY_NAME,STATE) \
+values (?,?,?,?,?,?,?,?,?,?)
+
+getOneMoneyGroupWxUser =select a.ID as ID , a.ONEMONEY_WXUSER_ID as ONEMONEY_WXUSER_ID ,a.NICKNAME as NICKNAME,a.OPENID as OPENID,a.HEADIMGURL as HEADIMGURL,\
+			a.CREATE_TIME as CREATE_TIME,a.STATE as STATE ,a.ACTIVITY_NAME as ACTIVITY_NAME\
+     		,to_char(a.PAYMONEY,'fm99990.0099') as PAYMONEY ,a.CREATER as CREATER,\
+     		a.PAYSTATE as PAYSTATE,a.MCHID as MCHID ,a.PAYOUTNO as PAYOUTNO from TB_ONE_MONEY_GROUP_WXUSER a \
+   			where a.ONEMONEY_WXUSER_ID = ?
+
+getOneMoneyShop =select a.ID as ID , a.ACTIVITYNAME as ACTIVITYNAME ,a.BACKGROUND_IMG as BACKGROUND_IMG,a.BELONG_ACTIVITY_ID as BELONG_ACTIVITY_ID,a.MOBLE_BACKGROUND_IMG as MOBLE_BACKGROUND_IMG,\
+			a.ACITIVITY_LAUNCH_USERID as ACITIVITY_LAUNCH_USERID,a.ACITIVITY_LAUNCH_USERCODE as ACITIVITY_LAUNCH_USERCODE ,a.JOIN_PROPLE_NUMBER as JOIN_PROPLE_NUMBER\
+     		,to_char(a.GROUPMONEY,'fm99990.0099') as GROUPMONEY ,a.WINNING_PROPLE_NUMBER as WINNING_PROPLE_NUMBER,\
+     		a.CREATE_TIME as CREATE_TIME,a.COMFIRMUSERID as COMFIRMUSERID ,a.COMFIRMTIME as COMFIRMTIME,\
+     		a.COMFIRMADVISE as COMFIRMADVISE,a.COMFIRMUSERNAME as COMFIRMUSERNAME,a.STARTTIME as STARTTIME,a.ENDTIME as ENDTIME, \
+     		a.OPENPRIZENUMBER as OPENPRIZENUMBER,a.APPLYPHONE as APPLYPHONE,a.APPLYUSERNAME as APPLYUSERNAME,a.APPLYUSERID as APPLYUSERID from TB_ONE_MONEY_SHOP a \
+   			where a.ID = ?
+   			
+getGroupPurchaseByOpenidAndQrCode=SELECT * FROM TB_GROUP_PURCHASE_WXUSER a WHERE a.OPENID = ? AND a.SCAN_CODE = ?   			
+
+
+saveGroupPurchaseWxUser=insert into TB_GROUP_PURCHASE_WXUSER(ID,GROUP_PURCHASE_ID,OPENID,NICKNAME,HEADIMGURL,CREATE_TIME,BELONG_PUBLICNUMBER_ID,SCAN_CODE,ACTIVITY_NAME,STATE,PAYMONEY) \
+values (?,?,?,?,?,?,?,?,?,?,?)
+
+saveGroupPurchaseGroupWxUser=insert into TB_GROUP_PURCHASE_GROUP_WXUSER (ID,GROUP_PURCHASE_WXUSER_ID,OPENID,NICKNAME,HEADIMGURL,CREATE_TIME,ACTIVITY_NAME,STATE,CREATER,PAYMONEY,PAYSTATE,MCHID,PAYOUTNO) \
+values (?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+getGroupPurchase=select a.ID as ID , a.ACTIVITYNAME as ACTIVITYNAME ,a.BACKGROUND_IMG as BACKGROUND_IMG,a.BELONG_ACTIVITY_ID as BELONG_ACTIVITY_ID,a.MOBLE_BACKGROUND_IMG as MOBLE_BACKGROUND_IMG,\
+			a.ACITIVITY_LAUNCH_USERID as ACITIVITY_LAUNCH_USERID,a.ACITIVITY_LAUNCH_USERCODE as ACITIVITY_LAUNCH_USERCODE ,a.JOIN_PROPLE_NUMBER as JOIN_PROPLE_NUMBER\
+     		,to_char(a.GROUPPRICE,'fm99990.0099') as GROUPPRICE ,a.WINNING_PROPLE_NUMBER as WINNING_PROPLE_NUMBER,\
+     		a.CREATE_TIME as CREATE_TIME,a.COMFIRMUSERID as COMFIRMUSERID ,a.COMFIRMTIME as COMFIRMTIME,\
+     		a.COMFIRMADVISE as COMFIRMADVISE,a.COMFIRMUSERNAME as COMFIRMUSERNAME,a.STARTTIME as STARTTIME,a.ENDTIME as ENDTIME, \
+     		a.OPENPRIZENUMBER as OPENPRIZENUMBER,a.APPLYPHONE as APPLYPHONE,a.APPLYUSERNAME as APPLYUSERNAME,a.APPLYUSERID as APPLYUSERID from TB_GROUP_PURCHASE a \
+   			where a.ID = ?
+
+getGroupPurchaseGroupWxUser =select a.ID as ID , a.GROUP_PURCHASE_WXUSER_ID as GROUP_PURCHASE_WXUSER_ID ,a.NICKNAME as NICKNAME,a.OPENID as OPENID,a.HEADIMGURL as HEADIMGURL,\
+			a.CREATE_TIME as CREATE_TIME,a.STATE as STATE ,a.ACTIVITY_NAME as ACTIVITY_NAME\
+     		,to_char(a.PAYMONEY,'fm99990.0099') as PAYMONEY ,a.CREATER as CREATER,\
+     		a.PAYSTATE as PAYSTATE,a.MCHID as MCHID ,a.PAYOUTNO as PAYOUTNO from TB_GROUP_PURCHASE_GROUP_WXUSER a \
+   			where a.GROUP_PURCHASE_WXUSER_ID = ?
+   			
+getProWinInfo=select a.ID as ID , a.BELONG_ACTIVITY_ID as BELONG_ACTIVITY_ID ,a.ACTIVITY_NAME as ACTIVITY_NAME,a.ACTIVITY_NAME_TYPE as ACTIVITY_NAME_TYPE,a.PRODUCT_ID as PRODUCT_ID,\
+			a.PRODUCT_NAME as PRODUCT_NAME,a.STATE as STATE ,a.PRODUCT_IMG as PRODUCT_IMG,\
+       a.ACTIVITY_PRIZE_ID as ACTIVITY_PRIZE_ID,a.CREATE_TIME as CREATE_TIME,a.STARTTIME as STARTTIME,\
+			a.ENDTIME as ENDTIME,a.OPENID as OPENID ,a.ACTIVITY_WXUSER_ID as ACTIVITY_WXUSER_ID,\
+	  a.BELONG_PUBLICNUMBER_ID as BELONG_PUBLICNUMBER_ID,a.STATE as STATE,a.WINNING_INFO_ID as WINNING_INFO_ID,\
+			a.DELIVER_NUMBER as DELIVER_NUMBER,a.DELIVER_COMPANY as DELIVER_COMPANY ,a.DELIVER_TIME as DELIVER_TIME,\
+	 	a.ADDRESSEE_NAME as ADDRESSEE_NAME,a.ADDRESSEE_ADDRESS as ADDRESSEE_ADDRESS,a.ADDRESSEE_PHONE as ADDRESSEE_PHONE,\
+		to_char(a.PAY_MONEY,'fm99990.0099') as PAY_MONEY , to_char(a.PRICE,'fm99990.0099') as PRICE , \
+		to_char(a.LOW_PRICE,'fm99990.0099') as LOW_PRICE \
+ 		from TB_PRODUCT_WINNING_INFO a  where a.ID = ?
+#=================================日志service====================================
+getLogByUserCode=select * from LOG_INFO WHERE USE_USERCODE=?
+
+getAllLog=select * from LOG_INFO
+
+#=================================JzRedservice-start====================================
+getJzRedWxUserByOpenidAndQrCode=select t.ID as "ID" , t.JZ_RED_ID as  "JZ_RED_ID",t.openid as  "openid",a.nickname as  "nickname",a.headimgurl as  "headimgurl",\
+t.belong_publicnumber_id as  "belong_publicnumber_id", t.create_time as  "create_time",t.state as  "state",t.scan_code as  "scan_code",\
+t.SCAN_RED_NUMBER as "SCAN_RED_NUMBER",t.total_money as  "total_money",t.activity_name as  "activity_name",t.starttime as  "starttime",\
+t.endtime as  "endtime" from TB_JZ_RED_WXUSER t left join ACTIVITY_WXUSER a on a.openid = t.openid  WHERE t.OPENID = ? AND t.SCAN_CODE = ?
+#根据ID查红包
+getJzRedById=SELECT * FROM TB_JZ_RED WHERE ID = ? for update
+#更新参与活动的人数
+updateJzRedNumber=UPDATE TB_JZ_RED SET JOIN_PROPLE_NUMBER=? WHERE ID=?
+#根据openid查询抢红包参与用户
+getjzRedWxUserById=SELECT * FROM TB_JZ_RED_WXUSER WHERE ID=? for update
+#获取奖品配置
+getJzRedPrizeByActivityId=SELECT * FROM TB_JZ_RED_PRIZE t WHERE T.JZ_RED_ID = ?  for update ORDER BY t.CREATE_TIME ASC
+updateJzRedTotal=UPDATE TB_JZ_RED SET TOTAL=? WHERE ID = ?
+updateJzRedNewProbability=UPDATE TB_JZ_RED_PRIZE SET SURPLUS_NUMBER=?,SURPLUS_PRIZE_PROBABILITY=?  WHERE ID = ?
+updateJzRedNewRedProbability=UPDATE TB_JZ_RED_PRIZE SET SURPLUS_NUMBER=?,SURPLUS_PRIZE_PROBABILITY=?,SURPLUS_MONEY=? WHERE ID = ?
+saveJzRedWxUserWining=insert into TB_JZ_RED_WXUSER_WININFO (ID,JZ_RED_WXUSER_ID,BELONG_JZ_RED_PRIZE_ID,WINNING_MONEY,PRIZE_PROJECT,CREATE_TIME,OPENID) \
+				values (?,?,?,?,?,?,?)
+#根据微信用户参与记录ID修改扫码次数
+updateJzRedWxUserScanNumber=UPDATE TB_JZ_RED_WXUSER SET SCAN_RED_NUMBER=? WHERE ID = ?
+updatejzRedNewIntegralProbability=UPDATE TB_JZ_RED_PRIZE SET SURPLUS_INTEGRAL_NUMBER=?,SURPLUS_INTEGRAL_PROBABILITY=?,SURPLUS_INTEGRAL=?  WHERE ID = ?
+queryJzRedWxUserWiningByWxUserId=SELECT * FROM TB_JZ_RED_WXUSER_WININFO a WHERE a.JZ_RED_WXUSER_ID = ?  
+#=================================JzRedservice-end======================================
+

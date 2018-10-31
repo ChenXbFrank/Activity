@@ -1,0 +1,42 @@
+body{
+	background-size:cover;
+	background-repeat:no-repeat;
+}
+/*table±íÍ·¹Ì¶¨  */
+#table-outer{
+	width:90vw;
+	
+}
+#table-outer table{
+	width:90vw;
+}
+#table-outer .table-tbody{
+	width:90vw;
+	height: 32vw;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+
+#table-outer table tr>td{
+	width:10vw;
+	height:3vw;
+}
+#table-outer .table-thead table tr>td{
+	height:3vw;
+}
+#table-outer table tr>td:nth-child(9){
+	width:10vw;
+}
+table tr td {
+	word-break:break-all;
+	font-size:1vw;
+}
+.pic{
+	margin:2px auto;
+	max-width:100%;
+	max-height:100%;
+	vertical-align:middle;
+}
+.table-thead table tr td{
+	background: #6291ca;
+}

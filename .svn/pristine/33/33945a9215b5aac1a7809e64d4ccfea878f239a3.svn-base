@@ -1,0 +1,640 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+html {
+	width: 100%;
+	height: 100%;
+}
+body {
+	width: 100%;
+	height:100%;
+	background-size: 100% 100%;
+	background-repeat:no-repeat;
+	position: fixed;
+}
+.title1{
+	width: 5.72rem;
+	height:0.8rem;
+	line-height:0.8rem;
+	text-align:center;
+	vertical-align:center;
+	position: absolute;
+	top:7%;
+	left:50%;
+	margin-left:-2.86rem;
+	margin-top:-0.4rem;
+}
+.title1 img{
+	max-width:100%;
+	max-height:100%;
+	vertical-align:middle;
+}
+.logo img{
+	width:5.866666rem;
+	height: 0.786666rem;
+	margin-left:2rem;
+	margin-top:0.4rem;
+}
+.erweima img{
+	width: 4.36rem;
+	height: 4.36rem;
+	margin-left:2.75rem;
+	margin-top:6rem;
+}
+.miaoshu{
+	width: 7.026666rem;
+	height: 2.906666rem;
+	position: absolute;
+	top:83%;
+	left: 50%;
+	margin-left:-3.5133rem;
+	margin-top:-1.45333rem;
+}
+.title{
+	width: 100%;
+	text-align: center;
+}
+.title img{
+	width:10rem;
+	height: 3.613333rem;
+	margin-top: 0.6rem;
+}
+.guangxiao{
+	width: 9.533333rem;
+	height: 9.146666rem;
+	position: absolute;
+	top:2.4rem;
+	left: 0.3rem;
+	
+}
+.egg-jin{
+	width: 4.36rem;
+	height:5.373333rem;
+	position: absolute;
+	top:55%;
+	left: 50%;
+	margin-left:-2.18rem;
+	margin-top:-2.68665rem;
+	
+}
+.egg-after{
+	width: 9.413333rem;
+	height: 4.133333rem;
+	position: absolute;
+	top:65%;
+	left: 51%;
+	margin-left:-4.7065rem;
+	margin-top:-2.0665rem;
+}
+.footer{
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+    align-items: center;
+}
+.activity-rules {
+	width: 2.733333rem;
+	height: 0.786666rem;
+	position: absolute;
+	bottom:1.95rem ;
+	left: 1.493333rem;
+}
+.my-prize {
+	width: 2.733333rem;
+	height: 0.786666rem;
+	position: absolute;
+	bottom:1.95rem ;
+	left: 5.7733rem;
+}
+.broadcast{
+	color: #2B29CF;
+	position: absolute;
+	bottom:1% ;
+	left: 1rem;
+}
+.broadcast span:nth-child(1){
+	font-size: 1rem;
+	font-family: 'fonts';
+	margin-left: -0.2rem;
+}
+.broadcast span:nth-child(2){
+	font-size: 0.6rem;
+	font-family: 'fonts';
+	margin-left: 0.2rem;
+}
+.gift{
+	font-family: 'fonts';
+	color: #2B29CF;
+	position: absolute;
+	bottom:1% ;
+	left: 6rem;
+}
+.gift span:nth-child(1){
+	font-size: 1rem;
+	font-family: 'fonts';
+	margin-left: -0.2rem;
+}
+.gift span:nth-child(2){
+	font-size: 0.6rem;
+	font-family: 'fonts';
+	margin-left: 0.2rem;
+}
+.bg-mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.8);
+	z-index: 99999999999999999000000;
+	left: 0;
+	top: 0;
+}
+#end{
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+.material .pic{
+    width: 2.986666rem;
+    height: 4.28rem;
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    margin-left: -1.493333rem;
+    margin-top: -2.14rem;
+ 	text-align:center;
+ 	line-height:4.28rem;
+ 	
+}
+.material .pic img{
+	vertical-align:middle;
+	max-height: 100%;
+	max-width: 100%;
+}
+.winning img{
+	width: 8.946666rem;
+	height: 11.4rem;
+	position: absolute;
+    top: 40%;
+    left: 53%;
+    margin-left: -4.473333rem;
+    margin-top: -5.7rem;
+    z-index: -1;
+}
+.close{
+	width: 0.6rem;
+	height: 0.6rem;
+	margin-left: 90%;
+	margin-top: 6%;
+}
+.close1{
+	width: 0.6rem;
+	height: 0.6rem;
+	margin-left: 90%;
+	margin-top: 10%;
+}
+.close2{
+	width: 0.6rem;
+	height: 0.6rem;
+	position: absolute;
+	left:89%;
+	
+}
+.material-name p:nth-child(1){
+	width: 100%;
+	text-align: center;
+	color: #E0D345;
+	position: absolute;
+	top:66%;
+	font-size: 0.4rem;
+}
+.material-name p:nth-child(2){
+	width: 100%;
+	text-align: center;
+	color: #E0D345;
+	position: absolute;
+	left:0.2rem;
+	top:69%;
+	font-size: 0.4rem;
+}
+.zhongjiangtongzhi{
+	width: 100%;
+	text-align: center;
+	margin-top:12rem;
+	
+}
+.zhongjiangtongzhi p{
+	color:white;
+	font-size:0.42rem;
+}
+.zhongjiangtongzhi0{
+	width: 100%;
+	text-align: center;
+	margin-top:2rem;
+}
+.zhongjiangtongzhi0 p{
+	color:white;
+	font-size:0.42rem;
+}
+.address img{
+	width: 3.733333rem;
+	height: 1.04rem;
+	position: absolute;
+	top: 78%;
+	left: 52%;
+	margin-left:-1.86665rem ;
+	margin-top: -0.52rem;
+	z-index: -1;
+}
+
+.address-name{
+	width: 5.933333rem;
+    height: 1.333333rem;
+	text-align: center;
+	color: #3839D0;
+	position: absolute;
+	top: 87%;
+	left: 50%;
+	margin-left:-2.96665rem ;
+	margin-top: -0.666665rem;
+	line-height:1.333333rem;
+	font-size: 0.4rem;
+	font-weight: bolder;
+}
+.address-name1{
+	width: 5.933333rem;
+    height: 1.333333rem;
+	text-align: center;
+	color: #fff;
+	position: absolute;
+	top: 87%;
+	left: 50%;
+	margin-left:-2.96665rem ;
+	margin-top: -0.666665rem;
+	line-height:1.333333rem;
+	font-size: 0.4rem;
+	font-weight: bolder;
+	
+}
+.red .person-center{
+		width: 3.733333rem;
+	height: 1.04rem;
+	position: absolute;
+	top: 78%;
+	left: 52%;
+	margin-left:-1.86665rem ;
+	margin-top: -0.52rem;
+	z-index: -1;
+}
+.integral .person-center{
+	width: 3.733333rem;
+	height: 1.04rem;
+	position: absolute;
+	top: 78%;
+	left: 52%;
+	margin-left:-1.86665rem ;
+	margin-top: -0.52rem;
+	z-index: -1;
+}
+.red .pic-hong{
+	width:3.146666rem ;
+	height: 3.946666rem;
+	position: absolute;
+	top: 35%;
+	left: 50%;
+	margin-left: -1.57333rem;
+	margin-top: -1.97333rem;
+	
+}
+.red .pic-hong img{
+	width: 100%;
+	max-height: 100%;
+	max-width: 100%;
+}
+.cash{
+	width: 100%;
+	text-align: center;
+	margin-top: -1.7rem;
+	color: white;
+	font-size: 0.4rem;
+	font-weight: bolder;
+}
+.red-name{
+	width: 100%;
+	text-align: center;
+	color: #E0D345;
+	position: absolute;
+	top:68%;
+	font-size: 0.4rem;
+}
+.thank-name{
+	width: 100%;
+	text-align: center;
+	color: white;
+	margin-top: 3.8rem;
+	font-size: 0.4rem;
+}
+.integral-name{
+	width: 100%;
+	text-align: center;
+	color: #E0D345;
+	position: absolute;
+	top:68%;
+	font-size: 0.4rem;
+}
+.dan img{
+	width: 9.413333rem;
+	height: 4.133333rem;
+	position: absolute;
+    top: 60%;
+    left: 56%;
+    margin-left: -4.98rem;
+    margin-top: -3rem;
+    z-index: -1;
+}
+.thank .person-center{
+	width: 3.733333rem;
+	height: 1.04rem;
+	position: absolute;
+	top: 78%;
+	left: 52%;
+	margin-left:-1.86665rem ;
+	margin-top: -0.52rem;
+	z-index: -1;
+}
+.integral .pic-integral{
+	width:3.146666rem ;
+	height: 3.946666rem;
+	position: absolute;
+	top: 35%;
+	left: 50%;
+	margin-left: -1.57333rem;
+	margin-top: -1.97333rem;
+}
+.integral .pic-integral img{
+	width: 100%;
+	max-height: 100%;
+	max-width: 100%;
+}
+.integral-value{
+	width: 100%;
+    text-align: center;
+    margin-top: -1.5rem;
+    color: #DF5418;
+    font-size: 0.3rem;
+    font-weight: bolder;
+}
+.rule .rule-bg{
+	width:9rem ;
+	height:14.533333rem ;
+	position: absolute;
+	top: 46%;
+	left: 50%;
+	margin-left:-4.5rem ;
+	margin-top: -6.2511rem;
+}
+.text{
+	width:80%;
+	position: absolute;
+	top: 2.7rem; 
+	left:1rem;
+}
+
+.rule-info{
+	width: 2rem;
+	height: 0.426666rem;
+	color: black;
+	display: inline-block;
+	position: absolute;
+	top:13%;
+	left:50% ;
+	margin-left:-1rem;
+	margin-top: -0.2133rem;
+	font-size: 0.42rem;
+	font-weight: bolder;
+}
+.title-wode{
+	width: 8.32rem;
+	height: 3.813333rem;
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	margin-left:-4.16rem ;
+	margin-top: -1.90665rem;
+}
+.lihe{
+	width: 10rem;
+	height:13.746666rem ;
+	position: absolute;
+	top: 55%;
+	left: 50%;
+	margin-left:-5rem ;
+	margin-top: -6.873333rem;
+    z-index: -1;
+}
+.prize-name{
+	width: 100%;
+	color: white;
+	margin-top: 5.5rem;
+	margin-left: 2.6rem;
+	font-size: 0.4rem;
+}
+.winning-time{
+	width: 100%;
+	color: white;
+	margin-left: 2.6rem;
+	margin-top: 0.4rem;
+	font-size: 0.4rem;
+}
+.receipt-status{
+	width: 100%;
+	color: white;
+	margin-left: 2.6rem;
+	margin-top: 0.4rem;
+	font-size: 0.4rem;
+}
+.receipt-status1{
+	width: 100%;
+	color: white;
+	margin-left: 2.6rem;
+	margin-top: 0.4rem;
+	font-size: 0.4rem;
+}
+.address-div{
+	width: 2.733333rem;
+	height: 0.786666rem;
+	background-color: #FED50B;
+	border-radius: 0.1rem;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #364678;
+	margin-left:4.5rem;
+	margin-top:-0.67rem;
+    font-size: 0.4rem;
+}
+.address-div9{
+	width: 2.733333rem;
+	height: 0.786666rem;
+	background-color: #E32430;
+	border-radius: 0.1rem;
+	line-height: 0.8rem;
+	text-align: center;
+	color: white;
+	margin-left:4.5rem;
+	margin-top:-0.67rem;
+    font-size: 0.4rem;
+}
+.address-div10{
+	width: 2.733333rem;
+	height: 0.786666rem;
+	background-color: #E32430;
+	border-radius: 0.1rem;
+	line-height: 0.8rem;
+	text-align: center;
+	color: white;
+	margin-left:4.5rem;
+	margin-top:-0.67rem;
+    font-size: 0.4rem;
+}
+.address-div1{
+	width: 2.733333rem;
+	height: 0.786666rem;
+	
+	
+	line-height: 0.8rem;
+	text-align: center;
+	color: white;
+	margin-left:4.5rem;
+	margin-top:-0.67rem;
+    font-size: 0.4rem;
+	
+}
+.details{
+	width: 100%;
+	text-align: center;
+	color: white;
+	margin-top: 1.7rem;
+	font-size: 0.4rem;
+}
+.details span{
+	color: #E32430;
+	text-decoration: underline;
+	font-size: 0.4rem;
+}
+#tool{
+	width:4rem;
+	height: 4rem;
+	text-align: center;
+	position: absolute;
+	top: 4rem;
+	left: 5.5rem;
+}
+#tool img {
+	max-width: 100%;
+	max-height: 100%;
+	vertical-align: middle;
+}
+.bg-mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.8);
+	z-index: 9000000;
+	left: 0;
+	top: 0;
+}
+.box img {
+	width: 6.666666rem;
+	height: 6.666666rem;
+	border-radius: 0.066666rem;
+	position: absolute;
+	top: 51%;
+	left: 50%;
+	margin-left: -3.333333rem;
+	margin-top: -3.333333rem;
+	z-index: 2;
+}
+.end p{
+	width: 6.666666rem;
+	height: 2.666666rem;
+	position: absolute;
+	top: 83%;
+	left: 51%;
+	margin-left: -3.333333rem;
+	margin-top: -1.333333rem;
+	color:white;
+	font-size:0.5rem;
+	z-index: 2000;
+}
+.music{
+   position: absolute;
+    left: 0.266666rem;
+    top: 0.266666rem; 
+    margin-top:0.666666rem;
+    z-index: 999;
+	width:0.666666rem;
+}
+.open{
+    -webkit-animation: moveRo linear 3.5s  infinite;
+    animation-delay:0;
+}
+.icon-music{
+    width: 1rem;
+    height: 1rem;
+  
+    background-size: 100% 100%;
+    display: block;
+}
+.music-span{
+    position: absolute;
+    top: -0.4rem;
+    left:0.7rem;
+    width: 0.453333rem;
+    height: 0.453333rem; 
+  /*   background: url(images/music-span.png); */
+    background-size: 100% 100%;
+    -webkit-animation: openIconRo ease 1.2s both infinite;
+    animation: openIconRo ease 1.2s both infinite;
+}
+
+@-webkit-keyframes moveRo {
+    from {-webkit-transform: rotate(360deg);  }
+    to { -webkit-transform: rotate(-360deg); }
+}
+@keyframes moveRo {
+    from {  transform: rotate(-360deg)}
+    to {  transform: rotate(360deg); }
+}
+/*小音符动画*/
+
+@-webkit-keyframes openIconRo {
+    0% { -webkit-transform: translateY(100%); opacity:0;}
+    50% { -webkit-transform: translateY(0%); opacity:1;}
+    100% { -webkit-transform: translateY(-100%); opacity:0;}
+}
+@keyframes openIconRo {
+    0% { -webkit-transform: translateY(100%);
+        transform: translateY(100%);
+        opacity:0;
+    }
+    50% { -webkit-transform: translateY(0%); transform: translateY(0%); opacity:1;}
+    100% { -webkit-transform: translateY(-100%); transform: translateY(-100%); opacity:0;}
+}
+
+
+
+@keyframes show_hide{
+    from{
+        opacity: 0;
+    }to{
+         opacity: 1;
+     }
+}
+@-webkit-keyframes show_hide{
+    from{
+        opacity: 0;
+    }to{
+         opacity: 1;
+     }
+}

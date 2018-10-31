@@ -1,0 +1,270 @@
+<!--[arg basePath,staticPath,turnTable,sellerInfoList,ttpList;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload2.css">
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/turntable-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/turntable-approval-info.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/turntable-my-one-activity-info.css" />
+		<script src="${staticPath}/js/upload/upload.min.js"></script>
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+		</style>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：
+					<a href="${basePath}/goHomePage" class="back">首页></a>
+					<a href="${basePath}/activity" class="back">我的活动 ></a>
+					<a href="${basePath}/turntableConfig/turntableMyAllActivity" class="back">转盘活动 ></a>
+					<a href="javascript:void(0);" class="back">${turnTable.getActivityName()}</a>
+				</p>
+				<ul class="title-pic">
+					<li>
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li>
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+				<div id="popup" style="display:none">
+					<div class="fade"></div>
+					<!--审核成功-->
+					<div class="delivery-success">
+						<div class="success-outer">
+							<div class="pop-title">审核成功！</div>
+							<input type="button" value="确定" id="delivery-success-yes" />
+						</div>
+					</div>
+				</div>
+
+				<div class="left">
+					<!--登录背景图片-->
+					<!-- <div>
+						<p class="dengru">登录背景图</p>
+						<div class="activity-pic" id="divPreview">
+							<img id="pic" src="/activityUploadPath${turnTable.getMoblecBackGroundImg()}" alt="" />
+						</div>
+					</div>
+					<br/> -->
+				<!--首页背景图片-->
+					<div>
+						<p class="shouji">手机背景图</p>
+						<div class="activity-pic" id="divPreview">
+							<img id="pic" src="/activityUploadPath${turnTable.getMoblecBackGroundImg()}" alt="" />
+						</div>
+					</div>
+					<br/>
+					<!--活动规则-->
+					<div>
+						<p class="guize">活动规则</p>
+						<div class="activity-pic" id="divPreview">
+							<img id="pic" src="/activityUploadPath${turnTable.getRuleImg()}" alt="" />
+						</div>
+					</div>
+				</div>
+				<div class="excels">
+					<p class="setUp">活动内容设置:</p>
+					<label class="active-name">转盘抽奖活动名称：${turnTable.getActivityName()}</label><br>
+					<!-- <label for="" class="hongbaoP">扫码抽奖次数: </label>
+				<input type="radio" name="scanTimes" checked="checked" value="1" />${turnTable.getScanTurnTableNumber()}次 -->
+					<div class="red-time">
+						<label for="active-status">状态：</label>
+						<!--[if(turnTable.getState() == '1'){]-->
+						<span>通过</span>
+						<!--[}else if(turnTable.getState() == '0'){]-->
+						<span>申请中</span>
+						<!--[}else if(turnTable.getState() == '2'){]-->
+						<span>驳回</span>
+						<!--[}]-->
+					</div>
+					<div class="red-time">
+						<label for="">转盘抽奖活动时间：</label> <span>${turnTable.getStartTime()}</span>
+						<div class='line'></div>
+						<span>${turnTable.getEndTime()}</span>
+					</div>
+					<label for="" class="rd">转盘展示奖品数: </label>
+					<input type="radio" name="awardNum" checked="checked" value="6" />${turnTable.getTurnTableNumber()}个
+					<label for="" class="hongbaoP">转盘转速: </label>
+					<input type="radio" name="speed" checked="checked" value="0" />
+					<!--[ if(turnTable.getSpeed()=='0') { ]-->
+					快
+					<!--[}else{ ]-->
+					慢
+					<!--[ }  ]-->
+					<div class="list-bill">
+						<div class="bill-title">
+							运单信息：<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="addBill" />
+							<div class="BigSum">
+								<p>
+									总瓶数:<span class="sum" id="sum">${turnTable.getTotal()}</span>瓶
+								</p>
+							</div>
+
+						</div>
+						<div id="table-outer1">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+										<td>发货时间</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<!--[ loop(sellerInfo:sellerInfoList){  ]-->
+									<tr>
+										<td>${sellerInfo.getOutNo()}</td>
+										<td>${sellerInfo.getOutSellerName()}</td>
+										<td>${sellerInfo.getProductName()}</td>
+										<td>${sellerInfo.getDeep()}</td>
+										<td>${sellerInfo.getVolume()}</td>
+										<td>${sellerInfo.getSpec()}</td>
+										<td>${sellerInfo.getBoxSize()}</td>
+										<td>${sellerInfo.getBandName()}</td>
+										<td>${sellerInfo.getOutDate()}</td>
+									</tr>
+									<!--[ }  ]-->
+
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div>
+						<div class="bill-title">
+							<div class="prizeSetTitle">
+								<span class="prizeSet">奖品设置:</span><img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="otherPic" />
+								<div class="BigSum">
+									<p>
+										奖品总数:<span class="sum" id="awardTotal">${turnTable.getTotal()}</span>个
+									</p>
+								</div>
+							</div>
+							<div id="table-outer4">
+								<div class="table-thead">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>序号</td>
+											<td>奖品名称</td>
+											<td>奖品类型</td>
+											<td>奖品数量(个)</td>
+											<td>中奖概率</td>
+											<td>剩余数量</td>
+											<td>剩余概率</td>
+										</tr>
+									</table>
+								</div>
+								<div class="table-tbody">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<!--[ loop(rrpLists:ttpList){  ]-->
+										<tr>
+											<td>${rrpLists_index+1}</td>
+											<td>${rrpLists.getPrizeName()}</td>
+											<!--[ if(rrpLists.getPrizeType()=='1') { ]-->
+											<!-- 实物 -->
+											<td>实物</td>
+											<!--[ }else if(rrpLists.getPrizeType()=='2') { ]-->
+											<!-- 积分 -->
+											<td>积分${rrpLists.getIntegralNumber()}</td>
+											<!--[ }else if(rrpLists.getPrizeType()=='3') { ]-->
+											<!-- 红包 -->
+											<td>红包${rrpLists.getRedNumber()}元</td>
+											<!--[ }else if(rrpLists.getPrizeType()=='4') { ]-->
+											<!-- 谢谢惠顾 -->
+											<td>谢谢惠顾</td>
+											<!--[ }  ]-->
+											<td>${rrpLists.getPrizeNumber()}</td>
+											<td>${rrpLists.getPrizeProbability()}</td>
+											<td>${rrpLists.getSurplusPrizeNumber()}</td>
+											<!--[if(rrpLists.getSurplusPrizeNumber() != '0'){]-->
+												<td>${rrpLists.getPrizeProbability()}</td>
+												<!--[}else if(rrpLists.getSurplusPrizeNumber() == '0'){]-->
+												<td>0</td>
+												<!--[}]-->
+										</tr>
+
+										<!--[ }  ]-->
+									</table>
+								</div>
+							</div>
+							<div class="productInfos">
+								<label for="textarea">活动建议：</label>
+								<span>${turnTable.getComfirmAdvise()}</span>
+							</div>
+							<input type="hidden" value="${turnTable.getBelongActivityId()}" id="activityId" />
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="submitBtn">返回</div>
+	</body>
+	<script>
+		$(".submitBtn").on("click", function() {
+			history.go(-1);
+		})
+	</script>
+
+</html>

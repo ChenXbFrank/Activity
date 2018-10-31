@@ -1,0 +1,234 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+input {
+	border: none;
+}
+
+label {
+	color: white;
+}
+
+body,
+html {
+	width: 100%;
+	height: 100%;
+}
+
+.bg {
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	position: relative;
+	z-index: -200;
+}
+
+.banner {
+	width: 100%;
+	height: 2.3rem;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.banner p:nth-child(1){
+	width: 4rem;
+	height: 0.4rem;
+	position: absolute;
+	top: 0.786666rem;
+	left: 1.32rem;
+	color: white;
+	font-size: 0.52rem;
+}
+.banner p:nth-child(2){
+	width: 4rem;
+	height: 0.4rem;
+	position: absolute;
+	top: 1.3rem;
+	left: 1.32rem;
+	color: white;
+	font-size: 0.352rem;
+}
+.banner img{
+	width: 1.746666rem;
+	height: 1.306666rem;
+	margin-top:0.6rem;
+	margin-left:6rem;
+}
+.address{
+	width: 100%;
+	height: 3.566666rem;
+	background-color: white;
+	
+}
+.address img{
+	width: 0.506666rem;
+	height: 0.706666rem;
+	
+	margin-left: 1.253333rem;
+	margin-top: 1.353333rem;
+}
+.mesg p:nth-child(1){
+	width: 2.533333rem;
+	height: 0.36rem;
+	margin-left: 2.253333rem;
+	margin-top: -1.353333rem;
+	font-size: 0.32rem;
+	color: #5D6264;
+}
+.mesg p:nth-child(2){
+	width: 4.36rem;
+	height: 0.36rem;
+	margin-left: 2.253333rem;
+	margin-top: 0.1rem;
+	font-size: 0.32rem;
+	color: #5D6264;
+}
+.Delivery-ddress p{
+	width:7rem;
+	height: 0.4rem;
+	margin-left: 2.253333rem;
+	margin-top: 0.12rem;
+	font-size: 0.32rem;
+	color: #5D6264;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.Delivery-ddress span{
+	width:6.72rem;
+	height: 0.36rem;
+	position: absolute;
+	top: 31%;
+	left: 22%;
+	font-size: 0.32rem;
+	color: #5D6264;
+}
+.company p{
+	width:7.0rem;
+	height: 0.36rem;
+	margin-left: 2.253333rem;
+	margin-top: 0.12rem;
+	font-size: 0.32rem;
+	color: #5D6264;
+}
+.odd-Numbers p{
+	width:7.0rem;
+	height: 0.46rem;
+	margin-left: 2.253333rem;
+	margin-top: 0.12rem;
+	font-size: 0.32rem;
+	color: #5D6264;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	
+}
+.Order{
+	width: 100%;
+	height: 6.666666rem;
+	background-color: white;
+	margin-top: 0.2rem;
+}
+
+.order00{
+	width: 4rem;
+	height: 4rem;
+	position: absolute;
+	top:45%;
+	left: 0.2rem;
+	
+	text-align:center;
+	line-height:4rem;
+	
+}
+.order00 img{
+	max-height: 100%;
+	max-width: 100%;
+	vertical-align:middle;
+}
+.ming{
+	position: absolute;
+	top:48%;
+	left: 6.2rem;
+	font-family: "����";
+	font-size: 0.426666rem;
+	
+}
+.Specifications{
+	position: absolute;
+	top: 54%;
+	left: 6.2rem;
+	
+}
+.Specifications p{
+	width: 3.2rem;
+	height: 0.36rem;
+	padding-top: 0.066666rem;
+	
+}
+.Specifications p:nth-child(1){
+	color:#5D6264 ;
+	font-size: 0.32rem;
+}
+.Specifications p:nth-child(2){
+	color:#5D6264 ;
+	font-size: 0.32rem;
+}
+.Specifications p:nth-child(3){
+	color:#FCB31B ;
+	font-size: 0.32rem;
+}
+.price{
+	position: absolute;
+	top:63%;
+	left: 6.2rem;
+	
+}
+.price p:nth-child(1){
+	width: 3.293333rem;
+	height: 0.4rem;
+	color:#000000 ;
+	font-size: 0.423333rem;
+	
+}
+.price p:nth-child(2){
+		width: 2.693333rem;
+	height: 0.4rem;
+	text-decoration: line-through;
+	font-size: 0.32rem;
+
+	margin-top: 0.173333rem;
+}
+.price p:nth-child(3){
+	color:#5D6264 ;
+	font-size: 0.293333rem;
+	margin-left: 2rem;
+	
+}
+.xian{
+	height: auto;
+    margin-top: 0.266666rem;
+	
+}
+.footer{
+	width: 100%;
+	height: 0.666666rem;
+	position: absolute;
+	top:70%;
+	
+	
+}
+.footer img{
+	width: 9.7rem;
+	height: 0.32rem;
+}
+.footer p{
+	width: 3.6rem;
+	height: 0.6rem;
+	margin-left: 6rem;
+	font-size: 0.423333rem;
+	color:red;
+
+}

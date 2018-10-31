@@ -1,0 +1,307 @@
+<!--[arg user,basePath,staticPath,openWineList,activityName,state;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/index/gong.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-accraditation.css" />
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心 </div>
+			<p class="currentLocation">您的当前位置：
+				<a href="${basePath}/goHomePage">首页></a>
+				<a href="${basePath}/approve">活动审批></a>
+				<a href="${basePath}/shareBargainConfig/approveShareBargain">开酒瓶活动</a>
+			</p>
+			<ul class="title-pic">
+				<li>
+					<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+				</li>
+				<li>
+					<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+		<div class="container approval-container">
+			<label for='name'>活动名称：</label>
+			<input type="text" id='name' value="${activityName}" />
+			<label for="bargaining-situations">状态：</label>
+			<div class="outer">
+				<input id="bargaining-situations" type="text" readonly="readonly" value="${state}" style="background-image: url('${staticPath}/img/more01.png')" />
+				<ul class="select" style="display: none;">
+					<li>全部</li>
+					<li>通过</li>
+					<li>驳回</li>
+					<li>申请中</li>
+				</ul>
+			</div>
+			<input type="button" value="查询" id="search1" />
+			
+			<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>活动名称</td>
+							<td>申请人</td>
+							<td>申请人电话</td>
+							<td>最后审核人</td>
+							<td>创建时间</td>
+							<td>开始时间</td>
+							<td>结束时间</td>
+							<td>状态</td>
+							<td>操作</td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+					</table>
+				</div>
+			</div>
+			<div id="popup" style="display:none">
+				<div class="fade"></div>
+				<!--删除成功-->
+				<div class="delivery-success">
+					<div class="success-outer">
+						<div class="pop-title">删除成功！</div>
+						<input type="button" value="确定" id="delivery-success-yes" />
+					</div>
+				</div>
+			</div>
+			<div class="page-break">
+				<div class="page-btn">
+					<span class="manager-first-but">上一页</span>
+					<span id="admin-page">1</span>
+					<span class="manager-second-but">下一页</span>
+				</div>
+				<div class="skip">
+					<span>跳转至</span>
+					<input type="text" id="input-page" />&nbsp;页&nbsp;
+					<span class="skip-btn">跳转</span>
+				</div>
+				<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+			</div>
+			<div style="display: none;">
+				<table>
+					<tr class="admin-obj">
+						<td class="activity_name"><a></a></td>
+						<td class="applay_name"></td>
+						<td class="applay_phone"></td>
+						<td class="check_name"></td>
+						<td class="create_time"></td>
+						<td class="start_time"></td>
+						<td class="end_time"></td>
+						<td class="applay_status"></td>
+						<td class="control">
+							<a>审批</a>&nbsp;<span class="delete">删除</span></td>
+					</tr>
+				</table>
+			</div>
+			<!--是否删除弹窗 -->
+	<div id="deletePop" style="display:none">
+	    <div class="deletePopMask"></div>
+	    <div class="deleteContainer" >
+	    	<div class="deleteInner">
+	    		<div class="pop-title">确定删除此申请活动？</div>
+	    	    <input type="button" value="确定" id="yes" />
+	    	    <input type="button" value="取消" id="no"  />
+	    	</div>
+	    </div>
+	</div> 
+	</body>
+	<script type="text/javascript" src="${staticPath}/js/activityBargain/bargain-accraditation.js"></script>
+	<script type="text/javascript">
+		var activityId;
+		$(".delete").on("click", function() {
+			$("#deletePop").show();
+			activityId = $(this).attr("name");
+		});
+		$("#yes").click(function(){
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/openWineConfig/deleteOpenWineActivity",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {　　　 activityId: activityId　　 },
+				　success: function(data) {
+					$("#loadingInfo").hide();
+					$("#deletePop").hide();
+					$("#popup").show();
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+						location.href = "${basePath}/robRedConfig/redRobApprove";
+					})	　　
+				},
+			});
+		})
+		$("#no").click(function(){
+			$("#deletePop").hide();
+		})
+		$(function() {
+			adminAjax(1);
+			$(".manager-second-but").click(function() { //点击下一页
+				var total = Number($("#admin-total").text());
+				var page = Number($("#admin-page").text());
+				if(total > page) {
+					adminAjax(page + 1);
+				}
+			});
+
+			$(".manager-first-but").click(function() { //点击上一页
+				var page = Number($("#admin-page").text());
+				if(page > 1) {
+					adminAjax(page - 1);
+				}
+			});
+			$("#input-page").on("keyup", function(e) {
+				if(e.keyCode == 13) {
+					$(".skip-btn").click();
+				}
+			});
+
+			$(".skip-btn").click(function() {
+				var page = Number($("#input-page").val());
+				if(page == 0) {
+					page = page + 1;
+				}
+				adminAjax(page);
+			})
+			$("#search1").click(function() {
+				var name = $("#name").val();
+				var bargaining_situations = $("#bargaining-situations").val();
+				if(bargaining_situations == "通过") {
+					bargaining_situations = "1";
+				} else if(bargaining_situations == "驳回") {
+					bargaining_situations = "2";
+				} else if(bargaining_situations == "申请中") {
+					bargaining_situations = "0";
+				} else {
+					bargaining_situations = "";
+				}
+				//还需写个时间
+				$("#loadingInfo").show();
+				$.ajax({
+					data: {
+						activityName: name,
+						currentPage: 1,
+						state: bargaining_situations,
+						startTime: "",
+						endTime: ""
+					},
+
+					type: "GET",
+					dataType: "JSON",
+					url: "${basePath}/openWineConfig/approveOpenWinePage",
+					success: function(data) {
+						$("#loadingInfo").hide();
+						if(data != false) {
+							checkLoad(data);
+							$("#input-page").val("");
+						} else {
+							$(".table-tbody table").html("");
+							$("#admin-curent").text("1/1");
+							$("#admin-total").text('1');
+							$("#admin-page").text('1');
+						}
+					},
+					error: function() {
+						$("#loadingInfo").hide();
+						alert("网络连接异常，请稍后再试");
+					}
+				});
+			});
+		})
+
+		/* 分页查询 */
+		function checkLoad(data) {
+			$(".table-tbody table").html("");
+			$("#admin-curent").text(data.currentPage + "/" + data.totalPages);
+			$("#admin-total").text(data.totalPages);
+			$("#admin-page").text(data.currentPage);
+			for(var i = 0; i < data.allAdmins.length; i++) {
+				var adminObj = $(".admin-obj:eq(0)").clone(true);
+				var adminArray = data.allAdmins[i];
+				adminObj.find(".activity_name a").text(adminArray.activity_name).attr("href","${basePath}/openWineConfig/openWineInfo?activityId=" + adminArray.id);
+				adminObj.find(".applay_name").text(adminArray.applyusername);
+				adminObj.find(".applay_phone").text(adminArray.applyphone);
+				adminObj.find(".check_name").text(adminArray.comfirmusername);
+				adminObj.find(".create_time").text(adminArray.create_time);
+				adminObj.find(".start_time").text(adminArray.starttime);
+				adminObj.find(".end_time").text(adminArray.endtime);
+				adminObj.find(".delete").attr("name", adminArray.id);
+				if(adminArray.state == "0") {
+					adminObj.find(".applay_status").text("申请中");
+				} else if(adminArray.state == "1") {
+					adminObj.find(".applay_status").text("通过");
+				} else if(adminArray.state == "2") {
+					adminObj.find(".applay_status").text("驳回");
+				} else {
+					alert("状态出错");
+				}
+				if(adminArray.state != "0") {
+					adminObj.find(".control a").text("");
+				} else {
+					adminObj.find(".control a").text("审批").attr("href", "${basePath}/openWineConfig/approveOpenWineInfo?activityId=" + adminArray.id);
+				}
+				$(".table-tbody table").append(adminObj);
+			}
+		}
+
+		function adminAjax(page) {
+			var name = $("#name").val();
+			var bargaining_situations = $("#bargaining-situations").val();
+			if(bargaining_situations == "通过") {
+				bargaining_situations = "1";
+			} else if(bargaining_situations == "驳回") {
+				bargaining_situations = "2";
+			} else if(bargaining_situations == "申请中") {
+				bargaining_situations = "0";
+			} else {
+				bargaining_situations = "";
+			}
+			$("#loadingInfo").show();
+			$.ajax({
+				data: {
+					activityName: name,
+					currentPage: page,
+					state: bargaining_situations,
+					startTime: "",
+					endTime: ""
+				},
+				type: "GET",
+				dataType: "JSON",
+				url: "${basePath}/openWineConfig/approveOpenWinePage",
+				success: function(data) {
+					$("#loadingInfo").hide();
+					checkLoad(data);
+				},
+				error: function() {
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+		}
+		$("#export").click(function() {
+			location.href = "${basePath}/openWineConfig/exportOpenWineActivity";
+		});
+	</script>
+
+</html>

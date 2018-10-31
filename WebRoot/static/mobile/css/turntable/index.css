@@ -1,0 +1,646 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	background-color: #65056e;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	position: fixed;
+	overflow: hidden;
+	margin: 0 auto;
+}
+.title{
+	width: 5.72rem;
+	height:0.8rem;
+	line-height:0.8rem;
+	text-align:center;
+	vertical-align:center;
+	position: absolute;
+	top:5%;
+	left:50%;
+	margin-left:-2.86rem;
+	margin-top:-0.4rem;
+}
+.title img{
+	max-width:100%;
+	max-height:100%;
+	vertical-align:middle;
+}
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="text"],
+input[type="password"] {
+	-webkit-appearance: none;
+}
+
+#myCanvas {
+	background-repeat: no-repeat;
+}
+
+header {
+	position: absolute;
+	z-index: 100;
+	width: 100%;
+}
+
+header .header-outer {
+	position: relative;
+}
+
+header .activity-rules {
+	width: 4.8rem;
+	height: 0.48rem;
+	position: absolute;
+	/*background: #ee1f8f url("../img/check-rules.png") no-repeat;*/
+	background-size: contain;
+	top: 0.4rem;
+	right: 0.42rem;
+	text-align: right;
+	line-height: 0.48rem;
+}
+
+header a {
+	color: #F9F100;
+	font-size: 0.26rem;
+	text-shadow: 0 2px 2px rgba(92, 91, 92, 0.3);
+	text-decoration: underline;
+	padding-right: 0.32rem;
+}
+
+
+
+section {
+	position: absolute;
+	top: 3rem;
+	z-index: 99;
+	width: 100%;
+	text-align: center;
+}
+
+
+/*section .shadow {
+	width: 9.8rem;
+	height: 11.33rem;
+	background: transparent url("../img/shadow.png") no-repeat;
+	background-position: 0 -0.5rem;
+	background-size: cover;
+	margin: 0 auto;
+	margin-top: 3.61rem;
+}*/
+
+.draw {
+	width: 8.3rem;
+	height: 8.3rem;
+	position: relative;
+	margin: 4rem auto;
+}
+
+#myCanvas {
+	width: 100%;
+	background: url('../img/home/turntable-floor.png') no-repeat center;
+	z-index: 1;
+	transition: transform 3s;
+	background-size: cover;
+}
+
+#tupBtn {
+	background: none;
+	border: none;
+	position: absolute;
+	width: 2.6rem;
+	height: 2.6rem;
+	left: 3.37rem;
+	top: 3.37rem;
+	border-radius: 100%;
+	z-index: 4;
+}
+
+.draw .begin-bg {
+	position: absolute;
+	width: 2.7rem;
+	height: 3.3rem;
+	left: 2.8rem;
+	bottom: 2.6rem;
+	z-index: 3;
+}
+
+.draw .begin-text {
+	position: absolute;
+	width: 1.2rem;
+	height: 1.2rem;
+	left: 3.5rem;
+	bottom: 3.4rem;
+	z-index: 3;
+}
+
+section .awardInfo {
+	font-size: 0.92rem;
+	text-shadow: 0 2px 2px rgba(92, 91, 92, 0.3);
+	color: #EDEA0A;
+	text-decoration: underline;
+	margin: -3.3rem auto 0;
+}
+
+section .floor {
+	width: 9.17rem;
+	height: 4.32rem;
+	margin: 0 auto;
+	margin-top: -1.2rem;
+	text-align: center;
+}
+
+section .floor img {
+	width: 100%;
+	vertical-align: middle;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+section .light {
+	position: absolute;
+	z-index: 20000;
+	width: 8.26rem;
+	height: 2.4rem;
+	top: 70%;
+	left: 50%;
+	margin-left: -4.13rem;
+}
+
+section .light .light-left {
+	width: 1.52rem;
+	height: 2.4rem;
+	float: left;
+}
+
+section .light .light-right {
+	float: right;
+	width: 1.52rem;
+	height: 2.4rem;
+}
+
+footer {
+	width: 100%;
+	
+}
+.myAward{
+	width: 100%;
+	display: -webkit-flex;
+	display: flex;
+	justify-content: space-around ;
+	margin-top:1rem;
+}
+.myAward img{
+	width: 2.733333rem;
+	height: 0.786666rem;
+}
+.zhongbj{
+	width: 8.186666rem;
+	height: 13.626666rem;
+}
+/*閬僵*/
+
+.award-mask {
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8);
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 99;
+}
+
+.award-background {
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-image: url('../img/winner-bg.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	position: relative;
+}
+
+.getAward-reminder {
+	text-align: center;
+	width: 100%;
+}
+
+.produce-bg {
+	width: 4.13rem;
+	height: 5.38rem;
+	background-image: url('../img/hongbao-picture.png');
+	background-position: center;
+	background-size: cover;
+	text-align: center;
+	margin: 0 auto;
+	margin-top: 4.5rem;
+	position: relative;
+}
+
+
+
+.award-text {
+	font-size: 0.48rem;
+	text-shadow: 0 2px 2px rgba(92, 91, 92, 0.3);
+	color: #FFF802;
+	padding-top: 0.36rem;
+}
+
+.cash-text {
+	font-size: 0.4rem;
+	text-shadow: 0 2px 2px rgba(92, 91, 92, 0.3);
+	color: #FFFFFD;
+	padding-top: 0.2rem;
+}
+
+.redbag-logo {
+	width: 1.38rem;
+	height: 1.38rem;
+	border-radius: 50%;
+	background: white;
+	text-align: center;
+	overflow: hidden;
+	line-height: 1.38rem;
+	position: absolute;
+	bottom: 0.9rem;
+	left: 50%;
+	margin-left: -0.69rem;
+}
+
+.redbag-logo img {
+	width: 100%;
+	vertical-align: middle;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.cash {
+	font-size: 0.4rem;
+	text-shadow: 0 2px 2px rgba(92, 91, 92, 0.3);
+	color: #FFFFFD;
+	position: absolute;
+	bottom: 0.32rem;
+	left: 32%;
+}
+
+.cashLook {
+	padding-top: 0.42rem;
+	color: #FFF802;
+	/*font-size: 0.16rem;*/
+	text-shadow: 0 2px 2px rgba(92, 91, 92, 0.3);
+	letter-spacing: 2px;
+	text-decoration: underline;
+}
+
+.btn {
+	width: 6.16rem;
+	height: 0.61rem;
+	position: absolute;
+	left: 50%;
+	margin-left: -3.08rem;
+	bottom: 2.64rem;
+	text-shadow: 0 2px 2px rgba(92, 91, 92, 0.3);
+	/*font-size:26px;*/
+}
+
+.btn div {
+	width: 2.4rem;
+	height: 0.61rem;
+	text-align: center;
+	line-height: 0.61rem;
+	float: left;
+	color: white;
+}
+
+.btn div.look {
+	background-image: url("../img/check-gifts-1.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.btn div.onceAgin {
+	/*background-image:url("../img/one-more-time-1.png");*/
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-left: 1.33rem;
+	background-size: cover;
+}
+
+
+/*涓瓑绾у鍝�*/
+
+#level-award .getAward-reminder {}
+
+
+
+#level-award .gift-box {
+	width: 6.85rem;
+	height: 6rem;
+	background: url("../img/gift-box.png") no-repeat center center;
+	background-size: cover;
+	margin: 0.56rem auto 0;
+	text-align: center;
+	position: relative;
+}
+
+#level-award .gift-box img {
+	width: 84%;
+	margin-top: 1.6rem;
+}
+
+#level-award .gift-box p {
+	width: 6.21rem;
+	height: 0.64rem;
+	line-height: 0.64rem;
+	color: white;
+	background: #ff2625;
+	border-radius: 3rem;
+	position: absolute;
+	top: 3.6rem;
+	left: 50%;
+	margin-left: -3.1rem;
+}
+
+.bg-mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.8);
+	z-index: 90000;
+	left: 0;
+	top: 0;
+}
+
+.bg-mask .close {
+	width: 0.8rem;
+	height: 0.8rem;
+	position: absolute;
+	top: 1.066666rem;
+	right: 0.6rem;
+}
+
+.prize {
+	width: 8.36rem;
+	height: 7.026666rem;
+	background-repeat:no-repeat;
+	background-size:cover;
+	margin:3rem auto 0px;
+	overflow:hidden;
+}
+
+.test {
+	width: 100%;
+	color: white;
+	text-align: center;
+	font-size: 0.35rem;
+	margin-top: 0.2rem;
+}
+
+.now img {
+	width: 3.2rem;
+	height: 0.68rem;
+	text-align: center;
+	margin-left:3.5rem;
+	margin-top:1rem;
+	
+}
+
+.now1 img {
+	width: 3.2rem;
+	height: 0.68rem;
+	text-align: center;
+	margin-left:3.5rem;
+	margin-top:1rem;
+	  
+}
+.now p {
+	width: 100%;
+	color: #CA7408;
+	font-size: 0.4rem;
+	font-weight: bold;
+}
+
+
+
+.now1 p {
+	width: 100%;
+	color: #CA7408;
+	font-size: 0.4rem;
+	font-weight: bold;
+}
+
+.prompt {
+	width: 100%;
+	text-align: center;
+	color: #FE4B04;
+	margin-top: 6rem;
+	font-size: 0.5rem;
+	font-weight: bolder;
+}
+.prompt1 {
+	width: 100%;
+	text-align: center;
+	color: #FE4B04;
+	margin-top:0.3rem;
+	font-size: 0.42rem;
+	font-weight: bolder;
+}
+
+.red {
+	width: 2.5rem;
+	height: 3.5rem;
+	margin:1.5rem auto 0px;
+	text-align: center;
+	vertical-align: center;
+	background-repeat:no-repeat;
+	background-size:cover;
+	color:white;
+	overflow:hidden;
+}
+.red p:nth-child(1){
+	margin-top:1.2rem;
+}
+.red p:nth-child(2){
+	margin-top:0.5rem;
+}
+.red span {
+	font-size: 0.62rem;
+}
+
+.jinb {
+	width: 3rem;
+	height:3rem;
+	text-align: center;
+	margin:2rem auto 0px;
+	text-align: center;
+	line-height:3rem;
+	background-repeat:no-repeat;
+	background-size:cover;
+	color:white;
+	overflow:hidden;
+}
+
+.jinb p {
+	font-size: 0.6rem;
+}
+
+.jinb span {
+	font-size: 1rem;
+	font-weight: bolder;
+}
+
+.rule {
+	text-align: center;
+}
+
+.rule .activity-bg {
+	width: 10rem;
+	height: 13rem;
+	margin: 1rem auto 0px;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+.rule .activity-rule {
+	width: 2.986666rem;
+	height: 0.613333rem;
+	margin-top: 1.2rem;
+}
+
+.rule-text {
+	width: 76%;
+	height: 80%;
+	color: white;
+	font-weight: bold;
+	font-family: "寰蒋闆呴粦";
+	text-align: left;
+	margin: 0.5rem auto 0px;
+	line-height: 0.5rem;
+	font-size: 0.38rem;
+}
+
+.goodspic {
+	width: 4rem;
+	height: 3.5rem;
+	margin:1rem auto 0px;
+	text-align: center;
+	line-height: 3.5rem;
+	vertical-align: center;
+}
+
+.goodspic img {
+	max-width: 100%;
+	max-height: 100%;
+	vertical-align: middle;
+}
+
+.box img {
+	width: 6.666666rem;
+	height: 6.666666rem;
+	border-radius: 0.066666rem;
+	position: absolute;
+	top: 51%;
+	left: 50%;
+	margin-left: -3.333333rem;
+	margin-top: -3.333333rem;
+	z-index: 2;
+}
+
+.end p {
+	width: 6.666666rem;
+	height: 2.666666rem;
+	position: absolute;
+	top: 83%;
+	left: 55%;
+	margin-left: -3.333333rem;
+	margin-top: -1.333333rem;
+	color: white;
+	font-size: 0.5rem;
+	z-index: 2000;
+}
+.mask{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.9);
+	z-index: 999999999999998;
+	left: 0;
+	top: 0;
+}
+.Success-ok{
+	width:6.333333rem;
+	height: 7.813333rem;
+	position: absolute;
+	top: 47%;
+	left: 50%;
+	margin-left: -3.16665rem;
+	margin-top: -3.905556rem;
+}
+.zhidao{
+	width:4.24rem;
+	height: 1.44rem;
+	position: absolute;
+	top: 57%;
+	left: 50%;
+	margin-left: -2.12rem;
+	margin-top: -0.72rem;
+}
+.end p{
+	width: 6.666666rem;
+	height: 2.666666rem;
+	position: absolute;
+	top: 83%;
+	left: 51%;
+	margin-left: -3.333333rem;
+	margin-top: -1.333333rem;
+	color:white;
+	font-size:0.5rem;
+	z-index: 2000;
+}
+.bg-mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.8);
+	z-index: 9000000;
+	left: 0;
+	top: 0;
+}
+#logo img{
+	width:5.866666rem;
+	height: 0.786666rem;
+	margin-left:2rem;
+	margin-top:0.4rem;
+}
+.erweima img{
+	width: 4.36rem;
+	height: 4.36rem;
+	margin-left:2.75rem; 
+	margin-top:6rem;
+}    
+.miaoshu{
+	width: 7.026666rem;
+	height: 2.906666rem;
+	position: absolute;
+	top:83%;
+	left: 50%;
+	margin-left:-3.5133rem;
+	margin-top:-1.45333rem;
+}
+#end{
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}

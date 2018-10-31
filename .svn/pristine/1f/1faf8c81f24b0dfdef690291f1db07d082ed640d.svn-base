@@ -1,0 +1,341 @@
+<!--[arg basePath,staticPath,integral,prizeList,integralProduct;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload2.css">
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/integralConfig/intergral-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/integralConfig/media-intergral-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/integralConfig/intergral-approve-info.css" />
+		<script src="${staticPath}/js/upload/upload.min.js"></script>
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+		</style>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：
+					<a href="${basePath}/goHomePage" class="back">首页></a>
+					<a href="${basePath}/activityApply" class="back">活动审批></a>
+					<a href="${basePath}/integralConfig/approveIntegral" class="back">积分兑换审批></a>
+					<a href="" class="back">积分兑换审批详细</a>
+				</p>
+				<ul class="title-pic">
+					<li>
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li>
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+				<div class="left">
+					<div class="activity-pic" id="divPreview">
+						<img id="pic" src="${basePath}${integral.getMoblecBackgroundImg()}" alt="" />
+					</div>
+				</div>
+				<div id="popup" style="display:none">
+					<div class="fade"></div>
+					<!--通过-->
+					<div class="delivery-success">
+						<div class="success-outer">
+							<div class="pop-title">审核成功！</div>
+							<input type="button" value="确定" id="delivery-success-yes" />
+						</div>
+					</div>
+				</div>
+				<div class="excels">
+					<p class="setUp">积分关联签到：</p>
+					<label for="active-name">签到获得积分：${integral.getSignIntegral()}积分/天<br /> 
+					<label for="active-name">活动所需积分：${integral.getNeedIntegral()}积分/次<br /> 
+				<div class="list-bill">
+					<div class="bill-title">
+						积分关联活动：<img src="${staticPath}/img/home - add.png" alt=""
+							class='addPic' id="addBill" />
+					</div>
+					<div id="table-outer1">
+						<div class="table-thead">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>序号</td>
+									<td>奖品名称</td>
+									<td>奖品类型</td>
+									<td>奖品权重</td>
+								</tr>
+								
+							</table>
+						</div>
+						<div class="table-tbody">
+							<table border="0" cellpadding="0" cellspacing="0">
+							<!--[loop(activity:prizeList){]-->
+								<tr >
+									 <td>${activity_index+1}</td>
+									<td>${activity.getName()}</td>
+									<td class="list">${activity.getType()}</td>
+									<td>${activity.getWeight()}</td> 
+								</tr>
+								<!--[}]--> 
+							</table>
+						</div>
+					</div>
+
+				</div>
+				<div>
+
+					<p class="prizeSet">积分关联产品：</p>
+					<div class="big">
+						<div class="awards1">
+							<input name="Pattern" type="radio" value="1" class="Pattern1"
+								 checked="checked" />
+							<lable for="">代理产品:</lable><img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="otherPic1" />
+							<img src="${staticPath}/img/integralConfig/add.png" alt="" class='addPic' id="otherPic2" style="display:none" />
+							<br /> 
+
+						</div>
+						<div class="awards2">
+							<input name="Pattern" type="radio" value="2" class="Pattern2"
+								 />
+							<lable for="">其他产品:</lable><img src="${staticPath}/img/integralConfig/add.png" alt="" class='addPic' id="otherPic" />
+							<br /> 
+						</div>
+					</div>
+
+					<div class="surface1">
+						<div id="table-outer2">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>序号</td>
+										<td>产品名称</td>
+										<td>规格(mL/瓶)</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>兑换积分(瓶/分)</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+								<!--[loop(productAgent:integralProduct){]-->
+											<!--[if(productAgent.getAgent() == '1'){]-->
+											<tr>
+												<td>${productAgent_index+1}</td>
+												<td class="list">${productAgent.getProductName()}</td>
+												<td>${productAgent.getSpec()}</td>
+												<td>${productAgent.getDegree()}</td>
+												<td>${productAgent.getVolume()}</td>
+												<td>${productAgent.getNeedIntegral()}</td>
+											</tr>
+											<!--[}]--> 
+										<!--[}]--> 
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div class="surface2" style="display: none;">
+						<div id="table-outer4">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>序号</td>
+										<td>产品名称</td>
+										<td>产品数量(个)</td>
+										<td>剩余产品数量(个)</td>
+										<td>积分兑换(分/个)</td>
+										<td>产品介绍</td>
+									</tr>
+									
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+										<!--[loop(product:integralProduct){]-->
+											<!--[if(product.getAgent() == '2'){]-->
+											<tr>
+												<td class="otherProductNumber"></td>
+												<td class="list">${productAgent.getProductName()}</td>
+												<td>${product.getProductNumber()}</td>
+												<td>${product.getSurplusProductNumber()}</td>
+												<td>${product.getNeedIntegral()}</td>
+												<td>${product.getProductIntroduce()}</td>
+											</tr>
+											<!--[}]--> 
+										<!--[}]--> 
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="productInfos">
+						<label for="textarea">活动建议：</label>
+					<textarea id="textarea" maxlength="30" placeholder="字数限制：30字以内"></textarea>
+				</div>
+				<input type="hidden" value="${integral.getIntegralId()}" id="activityId" />
+			</div>
+		</div>
+		</div>
+		</div>
+		<div class="btn">
+			<div class="submitBtn" id="pass">通过</div>
+			<div class="submitBtn" id="reject">驳回</div>
+			<div class="submitBtn" id="back">返回</div>
+		</div>
+	</body>
+	<script>
+		/*积分模式一、模式二,单选事件以及什么时候添加其他产品的时候生效*/
+		var pattern = "1";
+		$("input[name='Pattern']").on("click", function() {
+			$(this).attr("checked", "checked").parent().siblings().find(
+				"input[name='Pattern']").attr("checked", false);
+			if($(".Pattern1").attr("checked")) {
+				$(".surface1").show();
+				$(".surface2").hide();
+				$("#otherPic").attr("src",
+					"${staticPath}/img/integralConfig/add.png");
+				$("#otherPic1").show();
+				$("#otherPic2").hide();
+				pattern = "1";
+			} else {
+				$(".surface1").hide();
+				$(".surface2").show();
+				$("#otherPic").attr("src",
+					"${staticPath}/img/home - add.png");
+				$("#otherPic1").hide();
+				$("#otherPic2").show();
+				pattern = "2";
+			}
+			if(pattern == "2") {
+				$("#otherPic").on("click", function() {
+					$("#proName").val("");
+					$("#proNum").val("");
+					$("#exchangeIntegral").val("");
+					$("#proIntroduce").val("");
+					$("#otherProduct").show();
+				})
+			} else {
+				$("#otherPic").off("click");
+			}
+		});
+		/*改变其他产品序号*/
+		var totalNumber='${integralProduct.size()}';
+		var agencyNumber=$("#table-outer2 .table-tbody tr").length;
+		var otherNumber=parseInt(totalNumber)-agencyNumber;
+		$(".otherProductNumber").each(function(index,value){
+			$(this).text(index+1);
+		})
+		
+		
+		/*活动状态：0申请中   1审批通过  2 已驳回  */
+		$("#pass").on("click", function() {
+			var remake = $("#textarea").val();
+			var activityId = $("#activityId").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/integralConfig/Approve",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {　　　
+					remake: remake,
+					　　　activityId: activityId,
+					state: 1　　
+				},
+				　success: function(data) {
+					$("#loadingInfo").hide();
+					$("#popup").show();
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+						location.href = "${basePath}/integralConfig/approveIntegral";
+					})　　
+				},
+			});
+		})
+		$("#reject").on("click", function() {
+			var remake = $("#textarea").val();
+			var activityId = $("#activityId").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/integralConfig/Approve",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {　　　
+					remake: remake,
+					　　　activityId: activityId,
+					state: 2　　
+				},
+				　success: function(data) {
+					//alert("已成功驳回！");
+					$("#loadingInfo").hide();
+					$("#popup").show();
+					$(".pop-title").html("已成功驳回！！");
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+						location.href = "${basePath}/integralConfig/approveIntegral";
+					})
+
+					　　
+				},
+			});
+		});
+		$("#back").on("click", function() {
+			history.back(-1);
+		});
+	</script>
+
+</html>

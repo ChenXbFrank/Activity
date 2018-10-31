@@ -1,0 +1,14 @@
+.submitBtn {
+    margin-left: 40vw;
+    margin-top: 3vw;
+}
+#table-outer4 .table-tbody {
+    width: 60vw;
+    height: 3.6vw;
+}
+.status{
+	margin-top:0.6vw;
+}
+.red-time {
+    margin-top: 0.6vw;
+}

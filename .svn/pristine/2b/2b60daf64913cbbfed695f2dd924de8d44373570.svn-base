@@ -1,0 +1,229 @@
+<!--[arg basePath,staticPath,rrwuList,nickName,activityId,activityName;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-report.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/jzRedConfig/jz-activity-report.css" />
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+			<p class="currentLocation">
+				您的当前位置：
+				<a href="${basePath}/goHomePage">首页></a>
+				<a href="${basePath}/activityForm">活动报表></a>
+				<a href="${basePath}/jzRedConfig/report">大光瓶红包活动></a>
+				<a href="javascript:void(0);">${activityName}活动报表</a>
+			</p>
+			<ul class="title-pic">
+				<li>
+					<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+				</li>
+				<li>
+					<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+		<div class="container">
+			<label for='name' id="personName">微信昵称：</label> <input type="text" id='name' value="${nickName}" /><input type="button" value="查询" id="search" />
+			<input type="button" value="导出" class="export" id="export" />
+			<!-- <label for='name' id="redBagMoney">您当前发出红包为：10000元</label> -->
+			<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>序号</td>
+							<td>微信昵称</td>
+							<td>头像</td>
+							<td>参与时间</td>
+							<td>中奖金额(元)</td>
+							
+							<td>操作</td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+					</table>
+				</div>
+			</div>
+			<div class="page-break">
+			<div class="page-btn">
+				<span class="manager-first-but">上一页</span>
+				<span id="admin-page">1</span>
+				<span class="manager-second-but">下一页</span>
+			</div>
+			<div class="skip">
+				<span>跳转至</span>
+				<input type="text" id="input-page" />&nbsp;页&nbsp;
+				<span class="skip-btn">跳转</span>
+			</div>
+			<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+		</div>
+		<div style="display: none;">
+			<table>
+				<tr class="admin-obj">
+					<td class="index"></td>
+					<td class="wx_name"></td>
+					<td class="headPicture">
+						<div class="headPic">
+							<img src="" />
+						</div>
+					</td>
+					<td class="join_time"></td>
+					<td class="award_money"></td>
+						
+					<td class="more_href">
+						<a>查看明细</a>
+					</td>
+				</tr>
+				<tr class="lastTr">
+					<td colspan='7' id="totalMoney"></td>
+				</tr>
+			</table>
+		</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			var allMoney = 0;
+			$(".totalMoney").each(function() {
+				allMoney += parseFloat($(this).html());
+			});
+			$("#allMoney").html(allMoney.toFixed(2));
+		});
+		$(function() {
+			adminAjax(1);
+			$(".manager-second-but").click(function() { //点击下一页
+				var total = Number($("#admin-total").text());
+				var page = Number($("#admin-page").text());
+				if(total > page) {
+					adminAjax(page + 1);
+				}
+			});
+
+			$(".manager-first-but").click(function() { //点击上一页
+				var page = Number($("#admin-page").text());
+				if(page > 1) {
+					adminAjax(page - 1);
+				}
+			});
+			$("#input-page").on("keyup", function(e) {
+				if(e.keyCode == 13) {
+					$(".skip-btn").click();
+				}
+			});
+
+			$(".skip-btn").click(function() {
+				var page = Number($("#input-page").val());
+				if(page == 0) {
+					page = page + 1;
+				}
+				adminAjax(page);
+			})
+			$("#search").click(function() {
+				var name = $("#name").val();
+				$("#loadingInfo").show();
+				$.ajax({
+					data: {
+						currentPage: 1,
+						nickName: name,
+						activityId: "${activityId}"
+					},
+
+					type: "GET",
+					dataType: "JSON",
+					url: "${basePath}/jzRedConfig/getJzRedWxUserInfoPage",
+					success: function(data) {
+						$("#loadingInfo").hide();
+						if(data != false) {
+							checkLoad(data);
+							$("#input-page").val("");
+						} else {
+							$(".table-tbody table").html("");
+							$("#admin-curent").text("1/1");
+							$("#admin-total").text('1');
+							$("#admin-page").text('1');
+						}
+					},
+					error: function() {
+						$("#loadingInfo").hide();
+						alert("网络连接异常，请稍后再试");
+					}
+				});
+			});
+		})
+
+		/* 分页查询 */
+		function checkLoad(data) {
+			$(".table-tbody table").html("");
+			$("#admin-curent").text(data.currentPage + "/" + data.totalPages);
+			$("#admin-total").text(data.totalPages);
+			$("#admin-page").text(data.currentPage);
+			var allMoney = 0;
+			for(var i = 0; i < data.allAdmins.length; i++) {
+				var adminObj = $(".admin-obj:eq(0)").clone(true);
+				var adminArray = data.allAdmins[i];
+				//console.log(adminArray);
+				adminObj.find(".index").text(i + 1);
+				adminObj.find(".wx_name").text(decodeURI(adminArray.nickName));
+				adminObj.find(".headPicture img").attr("src", adminArray.headimgurl);
+				adminObj.find(".join_time").text(adminArray.create_time);
+				adminObj.find(".award_money").text(adminArray.money);
+				
+				adminObj.find(".more_href a").attr("href", "${basePath}/jzRedConfig/jzRedWinMoreInfo?jzRedWxUserId=" + adminArray.id + "&activityId=" + data.bigActivityId + "&activityName=" + data.activity_name);
+				$(".table-tbody table").append(adminObj);
+				allMoney += parseFloat(adminArray.money);
+			}
+			var lastTr = $(".lastTr:eq(0)").clone(true);
+			lastTr.find("#totalMoney").text("总计金额：" + allMoney.toFixed(2) + "元");
+			$(".table-tbody table").append(lastTr);
+		}
+
+		function adminAjax(page) {
+			var name = $("#name").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				data: {
+					currentPage: page,
+					nickName: name,
+					activityId: "${activityId}"
+				},
+				type: "GET",
+				dataType: "JSON",
+				url: "${basePath}/jzRedConfig/getJzRedWxUserInfoPage",
+				success: function(data) {
+					$("#loadingInfo").hide();
+					checkLoad(data);
+				},
+				error: function() {
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+		}
+		$("#export").click(function() {
+			location.href = "${basePath}/jzRedConfig/exportRebInfoExcel?activityId=${activityId}";
+		});
+	</script>
+
+</html>

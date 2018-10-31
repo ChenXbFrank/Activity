@@ -1,0 +1,815 @@
+package com.activity.common.controller.pc.shareBargainConfig;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.activity.common.controller.moblie.base.BaseController;
+import com.activity.common.controller.pc.system.UploadController;
+import com.activity.common.model.activity.Activity;
+import com.activity.common.model.activity.ActivitySellerOutInfo;
+import com.activity.common.model.activity.ProductWinningInfo;
+import com.activity.common.model.bigDataPlatform.PicInfo;
+import com.activity.common.model.bigDataPlatform.ProductInfo;
+import com.activity.common.model.bigDataPlatform.SellerOutInfo;
+import com.activity.common.model.bigDataPlatform.SellerRelation;
+import com.activity.common.model.centerObjcet.IntegralExchangeActivity;
+import com.activity.common.model.centerObjcet.TestActivitySellerOutInfo;
+import com.activity.common.model.centerObjcet.TestShareBargainPrize;
+import com.activity.common.model.loginfo.LogInfo;
+import com.activity.common.model.publicNumber.SellerPublicNumber;
+import com.activity.common.model.shareBargain.ShareBargain;
+import com.activity.common.model.shareBargain.ShareBargainHelp;
+import com.activity.common.model.shareBargain.ShareBargainPrize;
+import com.activity.common.model.shareBargain.ShareBargainWxuser;
+import com.activity.common.model.system.SystemUser;
+import com.activity.common.service.shareBargain.ShareBargainHelpService;
+import com.activity.common.service.shareBargain.ShareBargainPrizeService;
+import com.activity.common.service.shareBargain.ShareBargainService;
+import com.activity.common.service.shareBargain.ShareBargainWxuserService;
+import com.activity.common.service.system.ActivityApproveService;
+import com.activity.common.service.system.ActivityService;
+import com.activity.common.service.system.ProductInfoService;
+import com.activity.common.service.system.SellerOutInfoService;
+import com.activity.common.service.system.SellerRelationService;
+import com.activity.common.utils.date.DateUitils;
+import com.activity.common.utils.system.Tools;
+import com.activity.common.utils.wxInterface.WxConfigUitils;
+import com.jfinal.core.JFinal;
+import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.weixin.sdk.api.ApiConfigKit;
+import com.web.controller.ControllerPath;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+/**
+ * 分享砍价活动配置
+ * 
+ * @author 唐
+ */
+@ControllerPath(controllerKey = "/shareBargainConfig")
+public class ShareBargainConfigController extends BaseController {
+	// 运单Service
+	SellerOutInfoService sellerOutInfoService = SellerOutInfoService.getService();
+	// 产品关系service
+	SellerRelationService sellerRelationService = SellerRelationService.getService();
+	// 活动审核的service
+	ActivityApproveService activityApproveService = ActivityApproveService.getService();
+	// 分享砍价活动服务层
+	ShareBargainService shareBargainService = ShareBargainService.getService();
+	// 分享砍价活动奖品配置
+	ShareBargainPrizeService shareBargainPrizeService = ShareBargainPrizeService.getService();
+	// 奖品信息的service
+	ProductInfoService productInfoService = ProductInfoService.getService();
+	// 可申请活动service
+	ActivityService activityService = ActivityService.getService();
+	// 用户发起的活动service
+	ShareBargainWxuserService shareBargainWxuserService = ShareBargainWxuserService.getService();
+	// 工具类
+	DateUitils uitils = DateUitils.getUitils();
+	// 帮忙砍价的用户的业务
+	ShareBargainHelpService shareBargainHelpService = ShareBargainHelpService.getService();
+	UploadController upload = UploadController.getUilt();
+	/**
+	 * 分享砍价活动编辑
+	 */
+	public void shareBargainConfigUpdate() {
+		String belongActivityId = getPara("activity");
+		SystemUser user = CacheLoginUser();
+		setAttr("soiList", null);
+		List<SellerRelation> srList = sellerRelationService.getSrByTargetId(user.getTargetId().toString());
+		setAttr("srList", srList);
+		setAttr("userTargetId", user.getTargetId());
+		setAttr("belongActivityId", belongActivityId);
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "编辑-分享砍价活动")
+				.set("USE_TIME", uitils.newDate()).save();
+		render("/activityBargain/activity-bargain-edit.html");
+	}
+
+	/**
+	 * 保存分享砍价活动配置
+	 */
+	public void shareBargainConfigSave() {
+		boolean result = false;
+		String activityId = UUID.randomUUID().toString().replaceAll("-", "");
+		String shareBargainJson = getPara("shareBargain");
+		// 将前端的json数据转为JsonObject对象
+		JSONObject jsonSb = JSONObject.fromObject(shareBargainJson);
+		String mutualbills = getPara("mutualbills");
+		JSONArray json = JSONArray.fromObject(mutualbills);
+		@SuppressWarnings("unchecked")
+		List<TestActivitySellerOutInfo> sellerOutInfo = (List<TestActivitySellerOutInfo>) JSONArray.toCollection(json,
+				TestActivitySellerOutInfo.class);
+		// 分条保存运单信息
+		for (TestActivitySellerOutInfo so : sellerOutInfo) {
+			String recordId = so.getSELLEROUTINFO_RECORDID();
+			//在这里处理运单状态   将该运单修改为已开展为活动中
+			String sql = PropKit.use("database.properties").get("updateSelleInfoState");
+			Db.update(sql,recordId);
+			SellerOutInfo info = sellerOutInfoService.getSellerOutInfoByOutRecordId(recordId);
+			ActivitySellerOutInfo as = new ActivitySellerOutInfo();
+			result = as.set("ID", UUID.randomUUID().toString().replaceAll("-", "")).set("ACTIVITY_ID", activityId)
+					.set("SELLEROUTINFO_RECORDID", so.getSELLEROUTINFO_RECORDID()).set("OUTNO", so.getOUTNO())
+					// 状态 1可以用 2不可用
+					.set("SELLER_USERCODE", so.getSELLERID()).set("STATE", 2)
+					.set("BELONG_ACTIVITY", PropKit.use("system.properties").get("ShareBargain"))
+					.set("OUTSELLERNAME", info.getRecsellerName()).set("PRODUCTNAME", info.getProductName())
+					.set("DEEP", info.getDegree()).set("VOLUME", info.getVolume()).set("SPEC", info.getSpec())
+					.set("BOXSIZE", info.getBoxCode()).set("BANDNAME", info.getBrandsName()).set("OUTDATE", DateUitils.DateTostr(info.getOutDate())).save();
+		}
+		// 奖品信息数据及保存
+		String mutualawards = getPara("mutualawards");
+		JSONArray jsonInfo = JSONArray.fromObject(mutualawards);
+		@SuppressWarnings("unchecked")
+		List<TestShareBargainPrize> shareBargainPrizeList = (List<TestShareBargainPrize>) JSONArray
+				.toCollection(jsonInfo, TestShareBargainPrize.class);
+		for (TestShareBargainPrize sp : shareBargainPrizeList) {
+			ShareBargainPrize sbp = new ShareBargainPrize();
+			// 保存产品图片
+			PicInfo pi = productInfoService.getProductImgByProductId(sp.getPRODUCTID());
+			String picUrl = pi.getPicUrl();
+			String imgPath = "";
+			try {
+				if(!StringUtils.isEmpty(picUrl)){
+					imgPath = upload.getPlsImg(getRequest(),PropKit.use("system.properties").get("platform")+picUrl);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			result = sbp.set("ID", UUID.randomUUID().toString().replaceAll("-", "")).set("SHARE_BARGAIN_ID", activityId)
+					.set("PRODUCTID", sp.getPRODUCTID()).set("PRZIE_NUMBER", Integer.parseInt(sp.getPRZIE_NUMBER()))
+					.set("PRZIE_SURPLUS_NUMBER", Integer.parseInt(sp.getPRZIE_SURPLUS_NUMBER()))
+					.set("ORIGINAL_PRICE", sp.getORIGINAL_PRICE()).set("LOW_PRICE", sp.getLOW_PRICE())
+					.set("PRODUCTIMG", imgPath)
+					.set("PRIZENAME", sp.getPRIZE_NAME())
+					.set("BARGAIN_SECTION", sp.getBARGAIN_SECTION())
+					.set("BARGAIN_NUMBER", Integer.parseInt(sp.getBARGAIN_NUMBER())).save();
+		}
+		SystemUser user = CacheLoginUser();
+		String shareTitle = getPara("shareTitle");
+		String shareDetail = getPara("shareDetail");
+		String address = getPara("address");
+		if (address.equals("") || address == null) {
+			// SHAREIMG
+			address = "/upload/qrcode.jpg";
+		}
+		ShareBargain shareBargain = new ShareBargain();
+		Activity activity = activityService.getActivityByRemarks("shareBargain");
+		String string = jsonSb.get("src").toString();
+		if (string.equals("") || string == null) {
+			// MOBLEC_BACKGROUND_IMG 默认图片路径
+			string = "/upload/02-fenxiang1.png";
+		}
+		// 分享砍价活动信息
+		result = shareBargain.set("ID", activityId).set("ACTIVITY_NAME", jsonSb.get("ActivityName").toString())
+				.set("BELONG_ACTIVITY_ID", jsonSb.get("BelongActivityId").toString())
+				.set("ACITIVITY_LAUNCH_USERCODE", user.getUserCode()).set("ACITIVITY_LAUNCH_USERID", user.getUserId())
+				// state 活动状态：0申请中 1审批通过 2 已驳回 3下一步临时的状态
+				.set("INTRODUCE", jsonSb.get("Introduce").toString()).set("STATE", 0)
+				.set("STARTTIME", jsonSb.get("StartTime").toString()).set("ENDTIME", jsonSb.get("EndTime").toString())
+				.set("CREATE_TIME", DateUitils.newDateByYMD()).set("BACKGROUND_IMG", activity.getImg())
+				.set("APPLYUSERNAME", user.getUserName()).set("APPLYUSERID", user.getUserCode())
+				.set("APPLYPHONE", user.getPhone()).set("MOBLEC_BACKGROUND_IMG", string).set("SHARETITLE", shareTitle)
+				.set("SHAREDETAIL", shareDetail).set("SHAREIMG", address)
+				//TODO 这里将登陆img和活动规则img注释了
+				//.set("LOGINIMG", jsonSb.get("loginImg").toString()).set("RULEIMG", jsonSb.get("ruleImg").toString())
+				.save();
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode())
+				.set("USE_FUNCTION", "保存-分享砍价活动-" + jsonSb.get("ActivityName").toString())
+				.set("USE_TIME", uitils.newDate()).save();
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		if (result) {
+			map.put("result", "true");
+			map.put("activityId", activityId);
+		} else {
+			map.put("result", "false");
+			map.put("activityId", activityId);
+		}
+		renderJson(map);
+	}
+
+	/**
+	 * 当前所有申请分享砍价的活动 审核页面
+	 */
+	public void approveShareBargain() {
+		// 查询分享砍价中所有状态为0的活动 活动状态：0申请中 1审批通过 2 已驳回
+		setAttr("shareActivityStateO", null);
+		SystemUser user = CacheLoginUser();
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "查询-所有分享砍价活动")
+				.set("USE_TIME", uitils.newDate()).save();
+		render("/activityBargain/bargain-approval.html");
+	}
+	
+	/**
+	 * 去向审核的页面
+	 */
+	public void goToApprove() {
+		String activityId = getPara("activityId");
+		// 根据活动ID查询该活动的相关的信息
+		List<ActivitySellerOutInfo> sellerInfoList = sellerOutInfoService.getSellerInfoByActivityId(activityId);
+		setAttr("sellerInfoList", sellerInfoList);
+		ShareBargain shareBargain = shareBargainService.getShareBargainByActivityId(activityId);
+		setAttr("shareBargain", shareBargain);
+		ShareBargainPrize shareBargainPrize = shareBargainPrizeService.getShareBargainPrizeByActvityId(activityId)
+				.get(0);
+		setAttr("shareBargainPrize", shareBargainPrize);
+		String productId = shareBargainPrize.getProductId();
+		ProductInfo productInfo = productInfoService.getProductInfoById(productId).get(0);
+		setAttr("productInfo", productInfo);
+		SystemUser user = CacheLoginUser();
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "查询-分享砍价活动审核-详细")
+				.set("USE_TIME", uitils.newDate()).save();
+		render("/activityBargain/bargain-approval-info.html");
+	}
+	
+	/**
+	 * 这里是我申请的活动的详情
+	 */
+	public void getActivityInfo() {
+		String activityId = getPara("activityId");
+		// 根据活动ID查询该活动的相关的信息
+		List<ActivitySellerOutInfo> sellerInfoList = sellerOutInfoService.getSellerInfoByActivityId(activityId);
+		setAttr("sellerInfoList", sellerInfoList);
+		ShareBargain shareBargain = shareBargainService.getShareBargainByActivityId(activityId);
+		setAttr("shareBargain", shareBargain);
+		/* 活动状态：0申请中 1审批通过 2 已驳回 */
+		Number state = shareBargain.getState();
+		String activityState = "";
+		if (state.intValue() == 0) {
+			activityState = "申请中";
+		} else if (state.intValue() == 1) {
+			activityState = "审批通过";
+		} else {
+			activityState = "已驳回";
+		}
+		ShareBargainPrize shareBargainPrize = shareBargainPrizeService.getShareBargainPrizeByActvityId(activityId)
+				.get(0);
+		setAttr("shareBargainPrize", shareBargainPrize);
+		String productId = shareBargainPrize.getProductId();
+		ProductInfo productInfo = productInfoService.getProductInfoById(productId).get(0);
+		setAttr("productInfo", productInfo);
+		setAttr("activityState", activityState);
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "申请的活动的详情")
+				.set("USE_TIME", uitils.newDate()).save();
+		render("/activityBargain/bargain-my-one-activity-info.html");
+	}
+	
+	/**
+	 * 活动审批页面的查询 活动名称 状态
+	 */
+	public void searchApproveActivtyByCondition() {
+		String activityName = getPara("activityName");
+		String result = "";
+		// 活动状态：0申请中 1审批通过 2 已驳回
+		String state = getPara("state");
+		if (state.equals("申请中")) {
+			result = "0";
+		} else if (state.equals("通过")) {
+			result = "1";
+		} else if (state.equals("驳回")) {
+			result = "2";
+		} else {
+			result = "";
+		}
+		List<ShareBargain> shareBargainList = shareBargainService.searchApproveActivtyByCondition(activityName, result);
+		setAttr("shareActivityStateO", shareBargainList);
+		setAttr("activityName", activityName);
+		setAttr("state", state);
+		render("/activityApprove/bargain-accraditation.html");
+	}
+
+	/**
+	 * 活动审批 修改指定的活动的状态 活动状态：0申请中 1审批通过 2 已驳回
+	 */
+	public void updateState() {
+		String activityId = getPara("activityId");
+		// 当前登录用户
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		String state = getPara("state");
+		String sql = "select * from TB_ACTIVITY_SELLEROUTINFO where ACTIVITY_ID = ? ";
+		List<ActivitySellerOutInfo> sellerOutInfo = ActivitySellerOutInfo.dao.find(sql, activityId);
+		for (ActivitySellerOutInfo as : sellerOutInfo) {
+			// 如果是驳回的话 将活动运单的状态改为可以用 状态 1可以用 2不可用
+			if (state.equals("2")) {
+				as.set("ID", as.getId()).set("STATE", 1).update();
+			} else if (state.equals("1")) {
+				as.set("ID", as.getId()).set("STATE", 2).update();
+			}
+		}
+
+		String advise = getPara("remake");
+		ShareBargain shareBargain = ShareBargain.dao.findById(activityId);
+		shareBargain.set("ID", activityId).set("STATE", state).set("COMFIRMADVISE", advise)
+				.set("COMFIRMUSERNAME", user.getUserName()).set("COMFIRMTIME", uitils.newDate()).update();
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "编辑-分享砍价活动-状态")
+				.set("USE_TIME", uitils.newDate()).save();
+		renderJson("result", "true");
+	}
+
+	/**
+	 * 这里是分享砍价的活动报表
+	 */
+	public void shareBargainReport() {
+		// 这里查询该用户所有申请分享砍价的数据
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		String userCode = user.getUserCode();
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", userCode).set("USE_FUNCTION", "查询-分享砍价活动-报表")
+				.set("USE_TIME", uitils.newDate()).save();
+		render("/activityBargain/bargain-activity-report-all.html");
+	}
+	
+	/**
+	 * 这里是查看上面单条活动信息的分享砍价的详细信息 比如砍价多少 最低价是多少 支付情况等 点击砍价情况的时候 查询帮忙砍价的情况
+	 */
+	public void getShareActivityMoreInfo() {
+		// 这里的activityId是shareBargainHelp表里的friendId
+		String activityId = getPara("actvityuserid");
+		// shareBargainHelp表里的friendId是WXUser表里的id
+		// WXUser表里的joinActivityId是shareBargain表里的Id
+		List<ShareBargainHelp> helpByFriendList = shareBargainHelpService
+				.getShareBargainHelpByFriendActivityId(activityId);
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "查看-帮忙分享砍价活动")
+				.set("USE_TIME", uitils.newDate()).save();
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		map.put("helpByFriendList", helpByFriendList);
+		boolean lowest = shareBargainWxuserService.isLowest(activityId);
+		if (lowest) {
+			map.put("result", "true");
+		} else {
+			map.put("result", "false");
+		}
+		// 先判断WXUser表里当前价格和最低价是否一样
+		renderJson(map);
+	}
+
+	/**
+	 * 查询该条分享砍价的人的地址等信息
+	 */
+	public void getShareUserInfo() {
+		String id = getPara("actvityuserid");
+		ShareBargainWxuser shareBargainWxuser = ShareBargainWxuser.dao.findById(id);
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "查询-分享人的地址信息")
+				.set("USE_TIME", uitils.newDate()).save();
+		String activityId = shareBargainWxuser.getJoinActivityId();
+		setAttr("activityId", activityId);
+		setAttr("shareBargainWxuser", shareBargainWxuser);
+		render("/activityBargain/bargain-active-report-info-info.html");
+	}
+
+	/**
+	 * 保存发货信息 修改状态
+	 */
+	public void saveShareUserInfo() {
+		String id = getPara("id");
+		String company = getPara("company");
+		String billNumber = getPara("billNumber");
+		String deliveryTime = getPara("deliveryTime");
+		ShareBargainWxuser sbu = ShareBargainWxuser.dao.findById(id);
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		boolean update =sbu.set("ID", id).set("GOODS_COMPANY", company).set("GOODS_ODD_NUMBER", billNumber).set("SENDNAME", user.getUserName())
+		//1已发货 2未发货
+				.set("GOODS_TIME", deliveryTime).set("STATE", "4").set("GOODS_STATE", "1").update();
+	    update = new ProductWinningInfo().set("ID", sbu.getProductWinningInfoId()).set("STATE", "4").set("DELIVER_NUMBER", billNumber).set("DELIVER_COMPANY", company).set("DELIVER_TIME", deliveryTime).update();
+		if(update){
+			String joinActivityId = sbu.getJoinActivityId();
+			String sql="select * from TB_SHARE_BARGAIN_PRIZE where SHARE_BARGAIN_ID = ? ";
+			ShareBargainPrize shareBargainPrize = ShareBargainPrize.dao.findFirst(sql,joinActivityId);
+			int przieSurplusNumber = shareBargainPrize.getPrzieSurplusNumber().intValue();
+			shareBargainPrize.set("ID", shareBargainPrize.getId()).set("PRZIE_SURPLUS_NUMBER", przieSurplusNumber-1).update();
+		}
+		update=new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "保存发货信息  修改状态")
+				.set("USE_TIME", uitils.newDate()).save();
+		//传递参数*******发货通知
+		String openId = sbu.getOpenId();
+		if(openId!=null){
+			String belongPublicNumberId = sbu.getJoinBelongPublicNumberId();
+			String getshareBargainPrizeId = sbu.getshareBargainPrizeId();
+			ShareBargainPrize findById = ShareBargainPrize.dao.findById(getshareBargainPrizeId);
+			String prizeName = findById.getPrizeName();
+			SellerPublicNumber sellerPublicNumber = SellerPublicNumber.dao.findById(belongPublicNumberId);
+			ApiConfigKit.putApiConfig(WxConfigUitils.getApiConfig(sellerPublicNumber.getToKen(), sellerPublicNumber.getAppId(), sellerPublicNumber.getAppSecret()));
+			ApiConfigKit.setThreadLocalAppId(sellerPublicNumber.getAppId());
+			//发送通知
+			Tools.sendNotice(openId, sellerPublicNumber, prizeName, company, billNumber, sbu.getConsigneeAddress(), getAccessToken(sellerPublicNumber.getAppId(),sellerPublicNumber.getAppSecret()));
+			ApiConfigKit.removeThreadLocalAppId();
+		}
+		renderJson(update);
+	}
+
+	/**
+	 * 分享砍价经销商申请的活动的报表
+	 */
+	public void bargainReportInfo() {
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "分享砍价经销商申请的活动的报表")
+				.set("USE_TIME", uitils.newDate()).save();
+		setAttr("startTime", "");
+		setAttr("endTime", "");
+		render("/activityBargain/bargain-activity-report-info.html");
+	}
+
+	/**
+	 * 这里是分享砍价的所有活动记录 当前登录人
+	 */
+	public void shareBargainActivityByUserId() {
+		List<IntegralExchangeActivity> activityList = new ArrayList<IntegralExchangeActivity>();
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		String userCode = user.getUserCode();
+		// 这是分享砍价的活动
+		List<ShareBargain> code = shareBargainService.getShareBargainByUserCode(userCode);
+		for (ShareBargain sb : code) {
+			IntegralExchangeActivity ba = new IntegralExchangeActivity();
+			ba.setActivityId(sb.getId());
+			ba.setActivityImg(sb.getBackGroundImg());
+			ba.setActivityName(sb.getActivityName());
+			ba.setJoinNumber(sb.getJoinPropleNumber().toString());
+			ba.setWinNumber(sb.getWinningPropleNumber().toString());
+			activityList.add(ba);
+		}
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "查询-所有自己申请活动")
+				.set("USE_TIME", uitils.newDate()).save();
+		setAttr("activityList", activityList);
+		render("/activityBargain/bargain-my-all-activity.html");
+	}
+
+	/**
+	 * 这里是分享砍价的所有活动记录 当前登录人 
+	 * 返回json格式
+	 */
+	public void shareBargainActivityJson() {
+		List<IntegralExchangeActivity> activityList = new ArrayList<IntegralExchangeActivity>();
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		String userCode = user.getUserCode();
+		String sql="SELECT * FROM TB_SHARE_BARGAIN WHERE ACITIVITY_LAUNCH_USERCODE=? AND STATE = '1' AND JOINED = '0'";
+		// 这是分享砍价的活动
+		List<ShareBargain> code = ShareBargain.dao.find(sql,userCode);
+		for (ShareBargain sb : code) {
+			IntegralExchangeActivity ba = new IntegralExchangeActivity();
+			ba.setActivityId(sb.getId());
+			ba.setActivityImg(sb.getBackGroundImg());
+			ba.setActivityName(sb.getActivityName());
+			ba.setJoinNumber(sb.getJoinPropleNumber().toString());
+			ba.setWinNumber(sb.getWinningPropleNumber().toString());
+			activityList.add(ba);
+		}
+		renderJson(activityList);
+	}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								
+	
+	/**
+	 * 这里是分享砍价的所有活动记录 当前登录人 指定状态 名称的查询
+	 */
+	public void shareBargainActivityByCondition() {
+		String activityName = getPara("activityName");
+		String state1 = "";
+		// 活动状态：0申请中 1审批通过 2 驳回
+		String state = getPara("state");
+		if (state.equals("申请中")) {
+			state1 = "0";
+		} else if (state.equals("通过")) {
+			state1 = "1";
+		} else if (state.equals("驳回")) {
+			state1 = "2";
+		} else if (state.equals("全部")) {
+			state1 = "";
+		}
+		List<IntegralExchangeActivity> activityList = new ArrayList<IntegralExchangeActivity>();
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		String userCode = user.getUserCode();
+		// 这是分享砍价的活动
+		List<ShareBargain> code = shareBargainService.searchApproveActivtyByCondition(activityName, state1, userCode);
+		for (ShareBargain sb : code) {
+			IntegralExchangeActivity ba = new IntegralExchangeActivity();
+			ba.setActivityId(sb.getId());
+			ba.setActivityImg(sb.getBackGroundImg());
+			ba.setActivityName(sb.getActivityName());
+			ba.setJoinNumber(sb.getJoinPropleNumber().toString());
+			ba.setWinNumber(sb.getWinningPropleNumber().toString());
+			activityList.add(ba);
+		}
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "查询-所有自己申请活动")
+				.set("USE_TIME", uitils.newDate()).save();
+		setAttr("activityList", activityList);
+		setAttr("activityName", activityName);
+		setAttr("state", state);
+		render("/activityBargain/bargain-my-all-activity.html");
+	}
+
+	/**
+	 * 分享砍价报表页面的查询 活动名称 状态
+	 */
+	public void searchShareActivtyByCondition() {
+		String activityName = getPara("activityName");
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		String result = "";
+		// 活动状态：0申请中 1审批通过 2 驳回
+		String state = getPara("state");
+		if (state.equals("申请中")) {
+			result = "0";
+		} else if (state.equals("通过")) {
+			result = "1";
+		} else if (state.equals("驳回")) {
+			result = "2";
+		} else if (state.equals("全部")) {
+			result = "";
+		}
+		String startTime = getPara("startTime");
+		String endTime = getPara("endTime");
+		List<ShareBargain> shareBargainList = shareBargainService.searchShareActivtyByCondition(activityName, result,
+				user.getUserCode(), startTime, endTime);
+		setAttr("shareBargainList", shareBargainList);
+		setAttr("activityName", activityName);
+		setAttr("state", state);
+		setAttr("startTime", startTime);
+		setAttr("endTime", endTime);
+		render("/activityReport/activity-report-oneActivity.html");
+	}
+
+	/**
+	 * 这里是分享砍价的单条活动的信息 *********
+	 */
+	public void getShareBargainReportInfo() {
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		String activityId = getPara("activityId");
+		ShareBargain shareBargain = ShareBargain.dao.findById(activityId);
+		setAttr("shareBargain", shareBargain);
+		List<ShareBargainWxuser> shareBargainWxuserList = shareBargainWxuserService
+				.getShareBargainWxuserByActivityId(activityId);
+		setAttr("shareBargainWxuserList", shareBargainWxuserList);
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "编辑-分享砍价活动")
+				.set("USE_TIME", uitils.newDate()).save();
+		setAttr("startTime", "");
+		setAttr("endTime", "");
+		render("/activityBargain/bargain-activity-report-info.html");
+	}
+	
+	/**
+	 * 查询参加该条分享砍价活动的记录 昵称 砍价情况 支付情况 发货情况
+	 */
+	public void searchShareBargainUserReportByCondition() {
+		String nickName = getPara("nickName");
+		String state1 = "";
+		// 状态 1 进行中 2 砍价完成 3 已支付
+		String state = getPara("state");
+		if (state.equals("进行中")) {
+			state1 = "1";
+		} else if (state.equals("砍价完成")) {
+			state1 = "2";
+		} else if (state.equals("已支付")) {
+			state1 = "3";
+		} else if (state.equals("全部")) {
+			state1 = "";
+		}
+		String goodsState1 = "";
+		// 发货状态 1已发货 2未发货
+		String goodsState = getPara("goodsState");
+		if (goodsState.equals("已发货")) {
+			goodsState1 = "1";
+		} else if (goodsState.equals("未发货")) {
+			goodsState1 = "2";
+		} else if (goodsState.equals("全部")) {
+			goodsState1 = "";
+		}
+		String startTime = getPara("startTime");
+		String endTime = getPara("endTime");
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "按条件查询指定分享砍价")
+				.set("USE_TIME", uitils.newDate()).save();
+		String activityId = getPara("activityId");
+		ShareBargain shareBargain = ShareBargain.dao.findById(activityId);
+		setAttr("shareBargain", shareBargain);
+		List<ShareBargainWxuser> shareBargainWxuserList = shareBargainWxuserService
+				.searchShareBargainUserReportByCondition(nickName, state1, goodsState1, startTime, endTime);
+		setAttr("shareBargainWxuserList", shareBargainWxuserList);
+		setAttr("nickName", nickName);
+		setAttr("state", state);
+		setAttr("goodsState", goodsState);
+		setAttr("startTime", startTime);
+		setAttr("endTime", endTime);
+		render("/activityBargain/bargain-activity-report-info.html");
+	}
+
+	/**
+	 * 分享砍价时，进行编辑该条活动
+	 */
+	public void shareBargainInfoEdit() {
+		String activityId = getPara("activityId");
+		// 根据活动ID查询该活动的相关的信息
+		List<ActivitySellerOutInfo> sellerInfoList = sellerOutInfoService.getSellerInfoByActivityId(activityId);
+		setAttr("sellerInfoList", sellerInfoList);
+		ShareBargain shareBargain = shareBargainService.getShareBargainByActivityId(activityId);
+		setAttr("shareBargain", shareBargain);
+		/* 活动状态：0申请中 1审批通过 2 已驳回 */
+		Number state = shareBargain.getState();
+		String activityState = "";
+		if (state.intValue() == 0) {
+			activityState = "申请中";
+		} else if (state.intValue() == 1) {
+			activityState = "审批通过";
+		} else {
+			activityState = "已驳回";
+		}
+		ShareBargainPrize shareBargainPrize = shareBargainPrizeService.getShareBargainPrizeByActvityId(activityId)
+				.get(0);
+		setAttr("shareBargainPrize", shareBargainPrize);
+		String productId = shareBargainPrize.getProductId();
+		ProductInfo productInfo = productInfoService.getProductInfoById(productId).get(0);
+		setAttr("productInfo", productInfo);
+		setAttr("activityState", activityState);
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		new LogInfo().set("ID", newId()).set("USE_USERCODE", user.getUserCode()).set("USE_FUNCTION", "申请的活动的详情")
+				.set("USE_TIME", uitils.newDate()).save();
+		render("/activityBargain/bargain-my-one-activity-info.html");
+	}
+
+	/**
+	 * 删除该活动的配置信息和相关的运单和活动记录三张表的数据 Db.update("delete from t_biaoming where
+	 * fzhujian = ?", "canshu");
+	 */
+	public void deleteShareBargainInfo() {
+		boolean flag = false;
+		String activityId = getPara("activityId");
+		// 相关的运单
+		List<ActivitySellerOutInfo> sellerInfoByActivityId = sellerOutInfoService.getSellerInfoByActivityId(activityId);
+		for (ActivitySellerOutInfo a : sellerInfoByActivityId) {
+			//在这里处理运单状态   将该运单修改为未在活动中
+			String sql1 = PropKit.use("database.properties").get("updateSelleInfoNoState");
+			Db.update(sql1,a.getSellerOutInfoRecordId());
+			flag = ActivitySellerOutInfo.dao.deleteById(a.getId());
+		}
+		// 相关活动的配置
+		List<ShareBargainPrize> shareBargainPrizeByActvityId = shareBargainPrizeService
+				.getShareBargainPrizeByActvityId(activityId);
+		for (ShareBargainPrize a : shareBargainPrizeByActvityId) {
+			flag = ShareBargainPrize.dao.deleteById(a.getId());
+		}
+		//这里将扫码记录删除一下
+		int delete = Db.update("delete from ACTIVITY_CODE where ACTIVITY_ID = ?", activityId);
+		if(delete>0){
+			System.out.println("***码记录删除成功***delete"+delete);
+		}
+		// 删除该活动！！！
+		flag = ShareBargain.dao.deleteById(activityId);
+		// 删除成功返回true
+		if (flag) {
+			renderJson("result", "true");
+		} else {
+			renderJson("result", "false");
+		}
+	}
+	
+	/**
+	 * 进入更多的时候 跳转页面
+	 */
+	public void goToReport(){
+		String activityId = getPara("activityId");
+		setAttr("activityId", activityId);
+		render("/activityBargain/bargain-activity-report-info.html");
+	}
+	
+	/**
+	 * 这里是新增的查看明细 中奖的详情
+	 */
+	public void shareWxUserWinInfo(){
+		String shareWxUserId = getPara("shareWxUserId");
+		ShareBargainWxuser shareBargainWxuser = ShareBargainWxuser.dao.findById(shareWxUserId);
+		setAttr("shareBargainWxuser", shareBargainWxuser);
+		String activityId = shareBargainWxuser.getJoinActivityId();
+		setAttr("activityId", activityId);
+		render("/activityBargain/bargain-active-report-info-info.html");
+	}
+	
+	/**
+	 * 分页显示分享砍价的活动报表       当前所有申请分享砍价的活动 审核页面   分页
+	 */
+	public void shareBargainReportPage(){
+		String pageCount = PropKit.use("system.properties").get("pageCount");
+		int page = Integer.parseInt(pageCount);
+		String activityName = getPara("activityName");
+		String state = getPara("state");
+		String startTime = getPara("startTime");
+		String endTime = getPara("endTime");
+		String currentPage = getPara("currentPage");
+		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> map = ShareBargainService.getService().paginate(Integer.parseInt(currentPage), page,activityName,state,startTime,endTime,CacheLoginUser());
+		model.put("currentPage", map.get("currentPage"));
+		model.put("totalPages", map.get("totalPages"));
+		model.put("allAdmins", map.get("list"));
+		renderJson(model);
+	}
+	
+	/**
+	 * 分享砍价报表更多  分页
+	 */
+	public void shareBargainInfoPage(){
+		String pageCount = PropKit.use("system.properties").get("pageCount");
+		int page = Integer.parseInt(pageCount);
+		String activityId = getPara("activityId");
+		String nickName = getPara("nickName");
+		String state = getPara("state");
+		String goodsState = getPara("goodsState");
+		String currentPage = getPara("currentPage");
+		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> map = ShareBargainWxuser.dao.paginate(Integer.parseInt(currentPage), page,activityId,nickName,state,goodsState);
+		model.put("currentPage", map.get("currentPage"));
+		model.put("totalPages", map.get("totalPages"));
+		model.put("allAdmins", map.get("list"));
+		renderJson(model);
+	}
+
+	/**
+	 * 分享砍价报表导出功能
+	 */
+	public void getShareExcel(){
+		// Jfinal获取项目文件路径
+		String templateFilePath = JFinal.me().getServletContext().getRealPath("templete") + File.separator + "shareBargainTemplate.xlsx";
+		// 导出excel的标题
+		String title ="分享砍价报表"+DateUitils.newDateByYMD();
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		String userCode = user.getUserCode();
+		List<ShareBargain> shareBargainList=new ArrayList<>();
+		if(user.getUserId().intValue()==-1){
+			String sql="select * from TB_SHARE_BARGAIN";
+			shareBargainList = ShareBargain.dao.find(sql);
+		}else{
+			// 这是分享砍价的活动
+			shareBargainList = shareBargainService.getShareBargainByUserCode(userCode);
+		}
+		List<ShareBargain> shareBargainList1=new ArrayList<>();
+		//*活动状态：0申请中   1审批通过  2 已驳回  */
+		for (ShareBargain shareBargain : shareBargainList) {
+			if(shareBargain.getState().intValue()==0){
+				shareBargain.setSpareOne("申请中");
+			}else if(shareBargain.getState().intValue()==1){
+				shareBargain.setSpareOne("通过");
+			}else if(shareBargain.getState().intValue()==2){
+				shareBargain.setSpareOne("驳回");
+			}
+			shareBargainList1.add(shareBargain);
+		}
+		Tools.comExportExcel(shareBargainList1, title, getResponse(),templateFilePath);
+		renderNull();
+	}
+	
+	/**
+	 * 导出更多
+	 */
+	public void getShareInfoExcel(){
+		// Jfinal获取项目文件路径
+		String templateFilePath = JFinal.me().getServletContext().getRealPath("templete") + File.separator + "shareBargainWxTemplate.xlsx";
+		String title="分享砍价详情报表"+DateUitils.newDateByYMD();
+		String activityId = getPara("activityId");
+		String sql="select * from TB_SHARE_BARGAIN_WXUSER where join_activity_id =? ";
+		List<ShareBargainWxuser> list = ShareBargainWxuser.dao.find(sql,activityId);
+		List<ShareBargainWxuser> list1=new ArrayList<>();
+		for (ShareBargainWxuser shareBargainWxuser : list) {
+			//状态 1=已经领取 2未填写地址 3地址已填写  4已发货  5未发货 6已支付
+			String state = shareBargainWxuser.getState();
+			if(state.equals("1")){
+				shareBargainWxuser.setSpareOne("砍价未成功");
+				shareBargainWxuser.setSpareThree("已经领取");
+			}
+			if(state.equals("2")){
+				shareBargainWxuser.setSpareOne("砍价成功");
+				shareBargainWxuser.setSpareThree("未填写地址");
+			}
+			if(state.equals("3")){
+				shareBargainWxuser.setSpareOne("砍价成功");
+				shareBargainWxuser.setSpareThree("地址已填写");
+			}
+			if(state.equals("4")){
+				shareBargainWxuser.setSpareOne("砍价成功");
+				shareBargainWxuser.setSpareThree("已发货");
+			}
+			if(state.equals("5")){
+				shareBargainWxuser.setSpareOne("砍价成功");
+				shareBargainWxuser.setSpareThree("未发货");
+			}
+			if(state.equals("6")){
+				shareBargainWxuser.setSpareOne("砍价成功");
+				shareBargainWxuser.setSpareThree("已支付");
+			}
+			//1已发货 2未发货
+			String goodsState = shareBargainWxuser.getGoodsState();
+			if(goodsState.equals("1")){
+				shareBargainWxuser.setSpareTwo("已发货");
+			}
+			if(goodsState.equals("2")){
+				shareBargainWxuser.setSpareTwo("未发货");
+			}
+			list1.add(shareBargainWxuser);
+		}
+		Tools.comExportExcel(list1, title, getResponse(),templateFilePath);
+		renderNull();
+	}
+}

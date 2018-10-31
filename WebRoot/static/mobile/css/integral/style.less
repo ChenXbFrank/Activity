@@ -1,0 +1,21 @@
+.font-dpr(@font-size){
+    font-size:@font-size;
+    [data-dpr="2"] &{
+        font-size:@font-size*2;
+    }
+    [data-dpr="3"] &{
+        font-size:@font-size*3;
+    }
+}
+.text,.outer,section .explain{
+    .font-dpr(10px);
+}
+.company{
+    .font-dpr(6px);
+}
+.rules-outer a,section .awardInfo,.need-integral,.font-infos del,.suspend{
+    .font-dpr(9px);
+}
+.product-name{
+    .font-dpr(13px);
+}

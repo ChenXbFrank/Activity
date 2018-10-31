@@ -1,0 +1,275 @@
+<!--[arg staticPath,basePath,qrcode,sellerPublicNumber,wxUserInfo,rest,isEnd,sellerPublicNumber,advert;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/index/Verification.css" />
+		<style>
+			.big_kuang {
+				
+				width: 8rem;
+				height: 6rem;
+				margin: 5rem auto;
+				overflow: hidden;
+				border-radius: 3%;
+				background-color: rgba(255,255,255,0.6);
+				
+				
+			}
+			
+			.zhong_kuang {
+				width: 7rem;
+				height: 5rem;
+				margin: 0.5rem auto;
+				border-radius: 3%;
+				text-align: center;
+				border: 1px solid white;
+			}
+			.zhong_kuang p{
+				margin-top:0.5rem;
+				font-size:0.42rem
+			}
+			.big_input {
+				width: 6rem;
+				height: 1.4rem;
+				margin:0.5rem auto;
+				overflow: hidden;
+				border-radius: 1rem;
+				border: 1px solid white;
+			}
+			
+			
+			
+			.zhen_input {
+				width: 5.8rem;
+				height: 1.2rem;
+				margin: 0.07rem auto;
+				text-align: center;
+				border-radius: 1rem;
+				border: 1px solid white;
+			}
+				#submitBtn{
+				width: 3rem;
+				height: 1rem;
+				border: none;
+				border-radius:2rem;
+				margin-top: 0.2rem;
+				background-color: white;
+				font-size:0.42rem
+			}
+		</style>
+	</head>
+	<body>
+	<div class="guangao" style="display:none;background-image: url('/activityUploadPath${advert.getAdvertUrl()}')">
+		<div class="hui">
+			<span class="di">跳过<span class="miao">5</span></span>
+		</div>
+	</div>
+		<div class="bg" style="display:none;background-image: url('/activityUploadPath${sellerPublicNumber.getScanImg()}');overflow:hidden">
+			<!-- <div class="brand">
+				<img src="${staticPath}/img/chun-title.png" alt="" />
+			</div> -->
+			<!--<div class="text">
+				<h5>请输入验证码</h5>
+			</div>
+			<div class="VerificationCode">
+				<input type="text" id="verificationCode" placeholder="请输入四位验证码">
+			</div>
+			<div class="refer">
+				<button id="submitBtn">提交</button>
+			</div>
+		<!-- 	<div class="footer">
+				<img src="${staticPath}/img/yanzhengma222.png" alt="" />
+			</div>
+			<div class="footText">
+				<p>温馨提示：</p>
+				<p>刮开二维码标识底部的遮</p>
+				<p>盖区域即可获得验证码</p>
+				<p>将验证码输入验证区中并</p>
+				<p>提交，立即参与活动。</p>
+			</div> -->
+				<div class="big_kuang">
+			<div class="zhong_kuang">
+				<p>请输入验证码</p>
+				<div class="big_input">
+					<input type="text" class="zhen_input" id="verificationCode"/>
+				</div>
+				<div class="refer">
+					<button id='submitBtn'>提交</button>
+				</div>
+			</div>
+		</div>
+			<input type="hidden" value="${qrcode}" id="qrcode" />
+		</div>
+		<div class="bg-mask cuo" style="display: none;">
+			<img src="${staticPath}/New_img/index/hong_bg.png" alt="" />
+			<p class="mao">温馨提示：验证码错误，请重新输入</p>
+			<img src="${staticPath}/New_img/index/close_new.png" alt="" class="close0" />
+		</div>
+		<div class="bg-mask er" style="display: none;">
+			<img src="${staticPath}/New_img/index/hong_bg.png" alt="" />
+			<p class="mao">温馨提示：二维码已被使用</p>
+			<img src="${staticPath}/New_img/index/close_new.png" alt="" class="close0" />
+		</div>
+		<div class="bg-mask jieshu" style="display: none;">
+			<img src="${staticPath}/New_img/index/hong_bg.png" alt="" />
+			<p class="mao">温馨提示：活动已经结束</p>
+			<img src="${staticPath}/New_img/index/close_new.png" alt="" class="close0" />
+		</div>
+		<!-- <div class="bg-mask end" style="display: none;">
+			<div class="box">
+				<img src="${basePath}${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+			</div>
+			<p>长按屏幕识别图中二维码</p>
+		</div> -->
+		<input type="hidden" value="${wxUserInfo.getSubscribe()}" id="subscribe" />
+		<input type="hidden" value="${rest}" id="rest" />
+	</body>
+	<script type="text/javascript">
+	var i=5;
+	$(function(){
+	    setTimeout(function(){
+	       $(".miao").hide();
+	       $(".di").hide();
+	    },5000);//5秒后返回首页
+	    after();
+	});
+	//自动刷新页面上的时间
+	function after(){
+	    $(".miao").empty().append(i);
+	    i=i-1;
+	    setTimeout(function(){
+	        after();
+	    },1000);
+	}
+	
+ 	$(function() {
+ 		if('${advert.getAdvertUrl()}'==''){
+ 			$(".guangao").hide();  
+ 			$(".bg").show();
+ 		}else{
+ 			$(".guangao").show();  
+ 			$(".bg").hide();
+ 			setTimeout(function() {
+ 				$(".guangao").hide();
+ 				$(".bg").show();
+ 			}, 5000);	
+ 		}
+	}) 
+	$(".hui").click(function(){
+		$(".guangao").hide();
+		$(".bg").show()
+	})
+	/* $(".bg").show();
+	$(".hui").hide(); */
+	/* 苹果x */
+	if(screen.height==812 && screen.width==375){
+		 $('.bg').css("height","100%");
+		 $('.VerificationCode input').css("margin-top","7.5rem");
+		//alert("pingguo6666")
+	}
+	
+/*     $('#verificationCode').on("focus", function(){
+        $('.bg').css("height","100%");
+       
+         }
+    ) */
+	if('${isEnd}'=="true"){
+		$(".jieshu").show();
+		$(".bg").show();
+		$(".guangao").hide();
+		$("#verificationCode").attr("disabled", "disabled");
+	}else{
+		/* alert("没结束") */
+	}
+	
+	
+		window.onload = function() {
+			var subscribe = $("#subscribe").val();
+			if(subscribe == 1) {
+				$(".end").css({
+					"display": "none"
+				});
+				if($("#rest").val() == "false") {
+					$(".er").show();
+					$(".bg").show();
+					
+				
+					$("#verificationCode").attr("disabled", "disabled");
+				} else {
+					
+					$(".er").hide();
+				}
+
+			} else if(subscribe == 0) {
+				$(".end").css({
+					"display": "block"
+				})
+				if(("#rest").val() == "false") {
+					$(".er").show();
+					$(".bg").show();
+					$(".guangao").hide();
+				} else {
+					$(".er").hide();
+				}
+			}
+		};
+
+		function checkStrLong() {
+			var vstr = document.getElementById("verificationCode").value;
+			if(vstr.length >= 5) {
+				vstr = vstr.substr(0, 4);
+				document.getElementById("verificationCode").value = vstr;
+			}
+		}
+		$("#submitBtn").on("click", function() {
+			/*  $("#submitBtn").unbind("click")  */
+			var qrcode = $("#qrcode").val();
+			var verificationCode = $("#verificationCode").val();
+			$.ajax({
+				url: "${basePath}/index/scanCodeVerification",
+				type: "POST",
+				dataType: "JSON",
+				data: {
+					"qrcode": qrcode,
+					"verificationCode": verificationCode
+				},
+				success: function(data) {
+					//判断是否验证成功 true用户和系统输入相同，false用户系统属于不相同
+					if(data.result) {
+						$.ajax({
+							url: "${basePath}/index/SureJoinActvity",
+							type: "POST",
+							async: false,
+							dataType: "JSON",
+							data: {
+								"qrcode": qrcode
+							},
+							success: function(data) {
+								location.href = data.url;　　
+							},
+							error: function() {
+								alert("网络异常！请稍后在试");
+							},
+						});
+					} else {
+						$(".cuo").show();
+					}　　
+				},
+				error: function() {
+					alert("网络异常！请稍后在试");
+				},
+			});
+		})
+		$(".close,.close0").click(function() {
+			$(".bg-mask").hide();
+		})
+	</script>
+
+</html>

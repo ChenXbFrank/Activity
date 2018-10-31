@@ -1,0 +1,289 @@
+<!--[arg basePath,staticPath,puzzle,sellInfoList,prizeList,activityId;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload2.css">
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/turntable-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/puzzleConfig/puzzle-approval-info.css" />
+		<script src="${staticPath}/js/upload/upload.min.js"></script>
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+		</style>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：
+					<a href="${basePath}/goHomePage" class="back">首页></a>
+					<a href="${basePath}/activityApply" class="back">活动审批></a>
+					<a href="${basePath}/oneMoneyShopConfig/goApproveList" class="back">拼图游戏审批></a>
+					<a href="javascript:void(0);" class="back">${puzzle.getActivityName()}审批</a>
+				</p>
+				<ul class="title-pic">
+					<li>
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li>
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+				<div id="popup" style="display:none">
+					<div class="fade"></div>
+					<!--审核成功-->
+					<div class="delivery-success">
+						<div class="success-outer">
+							<div class="pop-title">审核成功！</div>
+							<input type="button" value="确定" id="delivery-success-yes" />
+						</div>
+					</div>
+				</div>
+
+				<div class="left">
+					<div class="activity-pic" id="divPreview">
+						<img id="pic" src="/activityUploadPath${puzzle.getMobleBackgroundImg()}" alt="" />
+					</div>
+					<div class="bgAndGame">背景图</div>
+					<div class="game-pic">
+						<img id="pic" src="/activityUploadPath${puzzle.getPuzzleImg()}" alt="" />
+					</div>
+					<div class="bgAndGame">拼图图片</div>
+				</div>
+				<div class="excels">
+					<p class="setUp">活动内容设置:</p>
+					<label class="active-name">拼图游戏名称：${puzzle.getActivityName()}</label>
+					<label for="" class="gridNumber">拼图宫格：9宫格</label>
+					<br />
+					<div class="red-time">
+						<label for="">拼图游戏时间：</label> <span>${puzzle.getStartTime()}</span>
+						<div class='line'></div>
+						<span>${puzzle.getEndTime()}</span>
+					</div>
+					<label class="look-time">拼图游戏看图时间：${puzzle.getLookTime()}秒</label>
+					<br />
+					<label class="use-time">拼图游戏拼图时间：${puzzle.getPalyTime()}秒</label>
+					<br />
+					<div class="list-bill">
+						<div class="bill-title">
+							运单信息：<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="addBill" />
+							<div class="BigSum">
+								<p>
+									总瓶数:<span class="sum" id="sum">${puzzle.getTotal()}</span>瓶
+								</p>
+							</div>
+
+						</div>
+						<div id="table-outer1">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+										<td>发货时间</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<!--[ loop(sellerInfo:sellInfoList){  ]-->
+									<tr>
+										<td>${sellerInfo.getOutNo()}</td>
+										<td>${sellerInfo.getOutSellerName()}</td>
+										<td>${sellerInfo.getProductName()}</td>
+										<td>${sellerInfo.getDeep()}</td>
+										<td>${sellerInfo.getVolume()}</td>
+										<td>${sellerInfo.getSpec()}</td>
+										<td>${sellerInfo.getBoxSize()}</td>
+										<td>${sellerInfo.getBandName()}</td>
+										<td>${sellerInfo.getOutDate()}</td>
+									</tr>
+									<!--[ }  ]-->
+
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div>
+						<div class="bill-title">
+							<div class="prizeSetTitle">
+								<span class="prizeSet">奖品设置:</span><img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="otherPic" />
+								<div class="BigSum">
+									<p>
+										奖品总数:<span class="sum" id="awardTotal">${puzzle.getTotal()}</span>个
+									</p>
+								</div>
+							</div>
+							<div id="table-outer4">
+								<div class="table-thead">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>产品名称</td>
+											<td>规格(瓶/箱)</td>
+											<td>箱数(箱)</td>
+											<td>度数(°)</td>
+											<td>容量(mL)</td>
+										</tr>
+									</table>
+								</div>
+								<div class="table-tbody">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<!--[ loop(rrpLists:prizeList){  ]-->
+										<tr>
+											<td>${rrpLists.getPrizeName()}</td>
+											<td>${rrpLists.getSpec()}</td>
+											<td>${rrpLists.getBoxCount()}</td>
+											<td>${rrpLists.getDeep()}</td>
+											<td>${rrpLists.getVolume()}</td>
+										</tr>
+
+										<!--[ }  ]-->
+									</table>
+								</div>
+								<div class="productInfos">
+									<label for="textarea">活动建议：</label>
+									<textarea id="textarea" maxlength="30" placeholder="字数限制：30字以内"></textarea>
+								</div>
+								<input type="hidden" value="${activityId}" id="activityId" />
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+		<div class="btn">
+			<div class="submitBtn" id="pass">通过</div>
+			<div class="submitBtn" id="reject">驳回</div>
+			<div class="submitBtn" id="back">返回</div>
+		</div>
+	</body>
+	<script>
+		/*活动状态：0申请中   1审批通过  2 已驳回  */
+		$("#pass").on("click", function() {
+			var remake = $("#textarea").val();
+			var activityId = $("#activityId").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/puzzleConfig/handleApprovePuzzle",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {　　　
+					remake: remake,
+					　　　activityId: activityId,
+					state: 1　　
+				},
+				　success: function(data) {
+					$("#loadingInfo").hide();
+					//alert("审核成功！");
+					$("#popup").show();
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+						location.href = "${basePath}/puzzleConfig/goApproveList";
+					})
+
+					　　
+				},
+			});
+		})
+		$("#reject").on("click", function() {
+			var remake = $("#textarea").val();
+			var activityId = $("#activityId").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/puzzleConfig/handleApprovePuzzle",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {　　　
+					remake: remake,
+					　　　activityId: activityId,
+					state: 2　　
+				},
+				　success: function(data) {
+					$("#loadingInfo").hide();
+					$("#popup").show();
+					$(".pop-title").html("已成功驳回！");
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+						location.href = "${basePath}/puzzleConfig/goApproveList";
+					})
+
+					　　
+				},
+			});
+		});
+		$("#back").on("click", function() {
+			history.back(-1);
+		});
+	</script>
+
+</html>

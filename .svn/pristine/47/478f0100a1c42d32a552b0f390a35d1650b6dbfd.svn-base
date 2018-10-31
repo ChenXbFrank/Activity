@@ -1,0 +1,17 @@
+  @media all and (max-width: 1100px){
+   .left{
+			width:30vw;
+		} 
+  #zwb_upload {
+	  width:50px;
+	}
+ 	#yulan{
+		width:50px;
+	}
+  	.upPic{
+		width:18vw;
+	}
+  }
+ 
+ 
+ 

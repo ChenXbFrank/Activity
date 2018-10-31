@@ -1,0 +1,191 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body,html{
+	width: 100%;
+	height: 100%;
+	position:fixed;
+}
+.bg{
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	
+}
+
+.Active-name{
+	width: 100%;
+	color: white;
+	padding-top: 0.6rem;
+	font-size: 0.4rem;
+}
+.time{
+	margin-left: 0.4rem;
+}
+
+#startTime,#endTime{
+	border-right:none; 
+	width: 3.3rem;
+	height: 0.7rem;
+	margin-left: 0.2rem;
+	padding-left: 0.2rem;
+}
+
+#endTime2{
+	margin-left: 4rem;
+}
+.select{
+	width:10vw;
+	border:1px solid #d0d0d0;
+	margin:0; 
+	padding:0;
+	position:absolute;
+	right:0;
+	border-radius: 4px;
+	background:white;
+}
+.select li{
+	list-style: none;
+	width:100%;
+	height: 2.2vw;
+	text-align: left;
+    line-height: 2.2vw;
+}
+.outer {
+	position: relative;
+	display: inline-block;
+}
+.line{
+	width: 2.5vw;
+	height: 1px;
+	background: #c4c4c4;
+	display: inline-block;
+}
+.btn button{
+	border: none;
+	width: 3.2rem;
+	height: 0.7266666rem;
+	text-align: center;
+	line-height: 0.666666rem;
+	color: black;
+	background-color: #FAFAF9;
+	border-radius: 0.1rem;
+	font-size: 0.32rem;
+	margin-left:3.5rem;
+	margin-top:0.3rem;
+
+}
+.integralType{
+	color: white;
+	font-size: 0.4rem;
+	margin-left: 0.4rem;
+	margin-top: 0.5rem;
+}
+.all{
+	margin-left: 0.3rem;
+}
+.get{
+	margin-left: 0.1rem;
+	width:0.366rem;
+	height:0.366rem;
+}
+.notGet{
+	margin-left: 0.1rem;
+	width:0.366rem;
+	height:0.366rem;
+	margin-top:0.1rem
+}
+.canyuGet{
+	width:0.366rem;
+	height:0.366rem;
+}
+.integralAwards{
+	width: 100%;
+	height: 10.2rem;
+	margin-top:1rem;
+	/* position: fixed;
+	top: 24.5%; */
+	
+	
+	/* text-align: center; */
+	overflow-y:auto ;
+	
+}
+.small{
+	width: 100%;
+	height: 2.286666rem;
+	padding-top:0.7rem;
+	position: relative;
+	border-bottom:2px dashed #fbe9e7;
+	background-color: white;
+	
+}
+
+.fraction{
+	position: absolute;
+	top: 0.85rem;
+	left: 0.8rem;
+	z-index: 9999999999999999999;
+	font-size: 0.52rem;
+	color: red;
+}
+.fraction span{
+	font-size: 1rem;
+}
+.gainAndLoss{
+	position: absolute;
+	top: 2.4rem;
+	left: 0.95rem;
+	z-index: 9999999999999999999;
+	font-size: 0.4rem;
+	color: white;
+}
+.time2{
+	position: absolute;
+	top: 1rem;
+	left: 4.2rem;
+	z-index: 9999999999999999999;
+	font-size: 0.32rem;
+	color: black;
+}
+.mode{
+	width:5rem;
+	position: absolute;
+	top: 1.6rem;
+	left: 4.2rem;
+	z-index: 9999999999999999999;
+	font-size: 0.32rem;
+	color: black;
+	word-wrap:break-word;
+	
+}
+.xiala{
+	height: 0.81rem;
+	position: absolute;
+	left: 4.52rem;
+	top: 0.6rem;
+}
+.xiala2{
+	height: 0.81rem;
+	position: absolute;
+	left: 8.4rem;
+	top: 0.6rem;
+}
+.kongbai{
+	width:100%;
+	text-align: center;
+	margin-top:-10rem;
+}
+.kongbai img{   
+	width: 6.506666rem;
+	height: 5rem;
+	margin-right:0.95rem;
+}
+.kongbai p{  
+	font-size:0.52rem;
+}
+.kongbai p:nth-child(2){  
+	margin-top:0.8rem;
+}

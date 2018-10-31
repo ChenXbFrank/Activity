@@ -1,0 +1,45 @@
+<!--[arg basePath,staticPath;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css"/>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" href="${staticPath}/css/syetem/syetem-index.css" />
+	</head>
+	<body style="background-image: url('${staticPath}/img/bg0.png')">
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">您的当前位置：<a href="${basePath}/goHomePage">首页></a><a href="${basePath}/system">系统设置</a></p>
+				<ul class="title-pic">
+					<li><a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+					<li><a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a></li>
+				</ul>
+		</div>
+		<div class="main">
+			<a href="${basePath}/log">
+				<div class="OperationLog">
+					<img src="${staticPath}/img/caozuorizhi-icon.png" alt="" />
+					<p>操作日志</p>
+				</div>
+			</a>
+			<a href="${basePath}/publicNumber/getAllPublicNumber">
+				<div class="PublicSignal">
+					<img src="${staticPath}/img/gongzhonghaopeizhi-icon.png" alt="" />
+					<p>公众号信息</p>
+				</div>
+			</a>
+			<a href="${basePath}/express/index">
+				<div class="PublicSignal">
+					<img src="${staticPath}/img/kuaidi.png" alt="" />
+					<p>物流管理</p>
+				</div>
+			</a>
+		</div>
+	</body>
+</html>

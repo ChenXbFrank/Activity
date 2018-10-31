@@ -1,0 +1,195 @@
+<!--[arg user,basePath,staticPath,activityId,activityName,oneMoneyWxUserWinning;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-report.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/oneMoneyShopConfig/oneMoneyShop-activity-report-info.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jedate.min.js"></script>
+		<script type="text/javascript">
+			var basePath = "${basePath}";			//获取basePath
+		</script>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<!--页面弹窗-->
+		<div id="popup" style="display: none;">
+			<div class="fade"></div>
+			<!--收货人信息-->
+			<div class="succ-pop" style="display: none;">
+				<div class="font-infos">
+					<div class="pop-title">
+						收货人信息
+					</div>
+					<div class="name-tel clearfloat">
+						<div class="receiver">收货人：<span></span></div>
+						<div class="tel">联系电话：<span></span></div>
+					</div>
+					<div class="address">收货地址：<span></span></div>
+					<div class="btn">
+						<input type="button" class="cancel" value="取消" />
+						<input type="button" value="下一步" class="confirm" id="receiver-yes" />
+					</div>
+				</div>
+			</div>
+			<!--运单信息-->
+			<div class="billInfos" style="display: none;">
+				<div class="font-infos">
+					<div class="pop-title">
+						填写运单信息
+					</div>
+					<label for="">物流公司：</label>
+					<div class="outer">
+						<input id="bargaining-situations1" type="text" style="background-image: url('${staticPath}/img/more01.png')" />
+						<ul class="select" id="express" style="display: none;">
+						</ul>
+					</div>
+					<div class="billNumber">运单编号：<input type="text" /></div>
+					<div class="delivery-time">发货时间：<input type="text" class="datainp" placeholder="请选择" readonly id="date" /></div>
+					<div class="btn">
+						<input type="button" class="cancel" value="取消" />
+						<input type="button" value="完成" class="confirm" id="bill-yes" />
+					</div>
+				</div>
+			</div>
+			<!--发货成功-->
+			<div class="delivery-success" style="display: none;">
+				<div class="success-outer">
+					<div class="pop-title">发货成功！</div>
+					<input type="button" value="确定" id="delivery-success-yes" />
+				</div>
+
+			</div>
+		</div>
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+			<p class="currentLocation">
+				您的当前位置：
+				<a href="${basePath}/goHomePage">首页></a>
+				<a href="${basePath}/activityForm">活动报表></a>
+				<a href="${basePath}/oneMoneyShopConfig/oneMoneyReport">一元购报表></a>
+				<a href="${basePath}/oneMoneyShopConfig/oneMoneyMoreInfoReport?activityId=${activityId}&activityName=${activityName}">${activityName}活动报表></a>
+				<a href="">查看明细</a>
+			</p>
+			<ul class="title-pic">
+				<li>
+					<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+				</li>
+				<li>
+					<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="container">
+			<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>奖品名称</td>
+							<td>奖品类型</td>
+							<td>收件人</td>
+							<td>收件人电话</td>
+							<td>收件人地址</td>
+							<td>发货人</td>
+							<td>物流公司</td>
+							<td>运单号</td>
+							<td>状态</td>
+							<td>操作</td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>${oneMoneyWxUserWinning.getPrizeProject()}</td>
+							<td>实物</td>
+							<td>${oneMoneyWxUserWinning.getAddresseeName()}</td>
+							<td>${oneMoneyWxUserWinning.getAddresseePhone()}</td>
+							<td>${oneMoneyWxUserWinning.getAddresseeAddress()}</td>
+							<td>${oneMoneyWxUserWinning.getLssueUserName()}</td>
+							<td>${oneMoneyWxUserWinning.getDeliverCompany()}</td>
+							<td>${oneMoneyWxUserWinning.getDeliverNumber()}</td>
+							<!--[if(oneMoneyWxUserWinning.getState() == '1'){]-->
+							<td>已经领取</td>
+							<!--[}else if(oneMoneyWxUserWinning.getState() == '2'){]-->
+							<td>未填写地址</td>
+							<!--[}else if(oneMoneyWxUserWinning.getState() == '3'){]-->
+							<td>地址已填写</td>
+							<!--[}else if(oneMoneyWxUserWinning.getState() == '4'){]-->
+							<td>已发货</td>
+							<!--[}else if(oneMoneyWxUserWinning.getState() == '5'){]-->
+							<td>未发货</td>
+							<!--[}else if(oneMoneyWxUserWinning.getState() == '6'){]-->
+							<td>已支付</td>
+							<!--[}else{]-->
+							<td></td>
+							<!--[}]-->
+							<!--[if(oneMoneyWxUserWinning.getState() == '3'){]-->
+							<td><span class="render">立即发货</span>
+								<input type="hidden" value="${oneMoneyWxUserWinning.getAddresseeName()}" class="receiverName" />
+								<input type="hidden" value="${oneMoneyWxUserWinning.getAddresseePhone()}" class="receiverPhone" />
+								<input type="hidden" value="${oneMoneyWxUserWinning.getAddresseeAddress()}" class="receiverAddress" />
+								<input type="hidden" value="${oneMoneyWxUserWinning.getId()}" class="oneMoneyWxUserWinningId" /></td>
+							<!--[}else{]-->
+							<td>——</td>
+							<!--[}]-->
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="${staticPath}/js/oneMoneyShopConfig/oneMoneyShop-activity-report-info.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$("#bill-yes").on("click", function() {
+				var company = $("#bargaining-situations1").val();
+				var billNumber = $(".billNumber input[type='text']").val();
+				var sendTime = $(".datainp").val();
+				$("#loadingInfo").show();
+				$.ajax({
+					url: "${basePath}/oneMoneyShopConfig/saveIssueGoods",
+					type: "POST",
+					dataType: "JSON",
+					async: "false",
+					data: {
+						"oneMoneyWxUserWinningId": oneMoneyWxUserWinningId,
+						"deliverCompany": company,
+						"deliverNumber": billNumber,
+						"sendTime": sendTime
+					},
+					success: function(data) {
+						$("#loadingInfo").hide();
+						$(".billInfos").hide();
+						$(".succ-pop").hide();
+						$(".delivery-success").show();
+					},
+					error: function() {
+						$("#loadingInfo").hide();
+						alert("error");
+					}
+				});
+
+			});
+
+		})
+	</script>
+	<script type="text/javascript" src="${staticPath}/js/common/expressCommon.js"></script>
+</html>

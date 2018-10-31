@@ -1,0 +1,62 @@
+<!--[arg user,basePath,staticPath;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>运单信息</title>
+			<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/index/Waybill-Information.css" />
+	</head>
+	<body>
+		<div class="bg" style="background-image: url('${staticPath}/img/bg-xuanze.png')">
+			<div class="First">
+				<img src="${staticPath}/img/yundanxinxi picture.png" alt="" />
+				<div class="mesg">
+					<p>物流状态：运货中</p>
+					<p>承运物流：韵达快递</p>
+					<p>运单编码：123456789654123</p>
+					<p>货运客服：95546</p>
+				</div>
+			</div>
+			<div class="second">
+				<div class="Progress-bar">
+						<div class="circular"></div>
+							<div class="circular"></div>
+							<div class="circular"></div>
+							<div class="circular"></div>
+							<div class="circular"></div>
+							<div class="circular"></div>
+				</div>
+				<div class="logistics">
+					<div class="first">
+						<p>[成都市]四川成都高新区 配送员正在派件</p>
+						<p>2017-08-15 08:05:50</p>
+					</div>
+					<div class="two">
+						<p>[成都市]四川成都郫县分公司 已发出</p>
+						<p>2017-08-14 14:35:50</p>
+					</div>
+					<div class="three">
+						<p>[宜宾市]快件以发达 南岸分拨中心</p>
+						<p>2017-08-12 15:35:50</p>
+					</div>
+					<div class="four">
+						<p>[宜宾市]韵达快递 翠屏区分部收件员 已揽件</p>
+						<p>2017-08-12 12:35:50</p>
+					</div>
+					<div class="five">
+						<p>包裹正在等待揽收</p>
+						<p>2017-08-12 08:35:50</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!--[arg basePath,staticPath,shareBargain,sellerPublicNumber;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>活动规则</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/Bargain-activities/Bargain-rules.css" />
+	</head>
+	<body>
+		<!-- ${staticPath}/img/bg-01.png -->
+		<div class="bg1" style="background-image: url('${basePath}${shareBargain.getMoblecBackGroundImg()}')">
+		<img src="${staticPath}/img/close icon.png" alt="" class="close" />
+			<div class="small-bg" style="background-image: url('${staticPath}/img/xinxi-box.png')">
+			<div class="text">
+				<p>1.活动时间：${shareBargain.getStartTime()}-${shareBargain.getEndTime()}；</p>
+				<p>2.参与方式：关注【${sellerPublicNumber.getPublicNumberName()}】微信公众号-转发活动页面</p>
+				<p>至微信朋友圈-获得参加砍价活动资格；</p>
+				<p>3.在活动期间，此活动规则有效；</p>
+				<p>4.活动流程：【售价】购买当前产品-邀请好友帮忙砍价-活</p>
+				<p>动结束前砍到最低售价，则砍价成功；</p>
+				<p>5.砍价成功后，请在弹框中填写正确的收货地址和收件人信</p>
+				<p>息，我们将安排物流发货，货单号将在发货后，以短信的方式</p>
+				<p>发送到收件人手机上，请注意查收；</p>
+				<p>6.砍价成功后，我方客服会将【售价】与【最低售价】的差</p>
+				<p>价，以微信红包的方式返还到您的【微信零钱】当中，请及时</p>
+				<p>查收；</p>
+				<p>7.活动期间可邀请好友来帮忙砍价，且每人只能参与一次砍</p>
+				<p>价，叠加砍价不计入本次活动；</p>
+				<p>8.活动结束以前，未达到【最低售价】砍价的用户则砍价失</p>
+				<p>败；</p>
+				<p>9.本次活动商品充沛，先到先得，发完为止；</p>
+				<p>10.本活动最终解释权归本公司所有；</p>
+			</div>
+			</div>
+		</div>
+		<script src="${staticPath}/js/Bargain-activities/Bargain-rules.js"></script>
+		<script>
+			$(".close").click(function(){
+				
+			})
+		
+		</script>
+	</body>
+</html>

@@ -1,0 +1,264 @@
+.upload{
+	margin-top:1vw;
+	width:8vw;
+}
+#zwb_upload1 {
+  text-align:center;
+  width:70px;
+  height: 20px;
+  line-height: 20px;
+  position: relative;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: inline-block;
+  *zoom: 1;
+  font-size:0.8vw;
+}
+#zwb_upload1 input {
+  width:100%;
+  height: 1.2vw;
+  position: absolute;
+  font-size: 0.8vw;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  cursor: pointer;
+}
+#zwb_upload1:hover,#yulan:hover{
+  color: #444;
+  background: #eee;
+  border-color: #ccc;
+  text-decoration: none;
+}
+#yulan1{
+	width:70px;
+	height: 22px;
+	border-radius: 4px;
+	font-size:0.8vw;
+	border:1px solid #ddd;
+	background:#fafafa;
+	color: black;
+}
+#callbackPath1{
+	width:10vw;
+	height: 1.4vw;
+	margin-left:4.1vw;
+}
+#zwb_upload_status {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+}
+#zwb_upload_status .box {
+  position: absolute;
+  top: 5%;
+  left: 30%;
+  width: 40%;
+  height: auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  color: #666;
+}
+#zwb_upload_status .box .title {
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  line-height: 2.08vw;
+  text-align: center;
+}
+#zwb_upload_status .box .list {
+  width: 100%;
+  padding-bottom: 0.52vw;
+  max-height: 31.25vw;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+#zwb_upload_status .box .list ul,
+#zwb_upload_status .box .list li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#zwb_upload_status .box .list ul {
+  width: 99%;
+  overflow: hidden;
+}
+#zwb_upload_status .box .list ul li {
+  float: left;
+  vertical-align: middle;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  border: 1px solid #ddd;
+  margin: 0.52vw;
+  height: 100%;
+  line-height: 6.25vw;
+  cursor: pointer;
+  background: url("../img/bg.png") no-repeat;
+  background-size: 100% 100%;
+}
+#zwb_upload_status .box .list ul li span.success {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  width: 1.82vw;
+  height: 1.82vw;
+  background: url("../img/success.png");
+  background-size: 100% 100%;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  opacity: 0;
+}
+#zwb_upload_status .box .list ul li span.success2 {
+  opacity: 1;
+}
+#zwb_upload_status .box .list ul li span.delete {
+  position: absolute;
+  right: 0.26vw;
+  top: 0.26vw;
+  width: 0.78vw;
+  height: 0.78vw;
+  background: url("../img/delete_white.png");
+  background-size: 100% 100%;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  opacity: 0;
+}
+#zwb_upload_status .box .list ul li img {
+  display: inline;
+  width: 76%;
+  vertical-align: middle;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  max-height: 95%;
+}
+#zwb_upload_status .box .list ul li a {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+#zwb_upload_status .box .list ul li a p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.25vw;
+  margin: 0;
+  color: #fff;
+  font-size: 0.625vw;
+}
+#zwb_upload_status .box .list ul li a .name {
+  margin-top: 1.04vw;
+  padding: 0 0.52vw;
+}
+#zwb_upload_status .box .list ul li .progressBox {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 0.46vw;
+  left: -1px;
+  border: 1px solid #ddd;
+  border-top: none;
+  background: #f6f6f6;
+  overflow: hidden;
+}
+#zwb_upload_status .box .list ul li .progressBox div {
+  width: 0;
+  height: 100%;
+  background: lightgreen;
+}
+#zwb_upload_status .box .list ul li .err {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  margin-top: -1.04vw;
+  width: 0;
+  height: 2.08vw;
+  background: #e4393c;
+  color: #fff;
+  text-align: center;
+  line-height: 2.08vw;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  box-shadow: 1px 1px 1px #f9f9f9;
+}
+#zwb_upload_status .box .list ul li:hover a {
+  opacity: 1;
+}
+#zwb_upload_status .box .list ul li:hover span.delete {
+  opacity: 1;
+}
+#zwb_upload_status .box .list ul li:hover img {
+  width: 100%;
+}
+#zwb_upload_status .box .foot {
+  border-top: 1px solid #ddd;
+  height: 2.6vw;
+}
+#zwb_upload_status .box .foot span {
+  float: right;
+  margin-right: 0.78vw;
+  width: 70px;
+  height: 20px;
+  background: #00B7EE;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+  margin-top: 0.39vw;
+  border-shadow: 1px 1px 1px #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#zwb_upload_status .box .foot .off {
+  background: none;
+  border: 1px solid #ddd;
+  color: #666;
+}
+@media screen and (max-width: 767px) {
+  #zwb_upload_status .box {
+    left: 0;
+    width: 300px;
+    left: 50%;
+    margin-left: -7.8vw;
+  }
+  #zwb_upload_status .box .list {
+    height: 15.6vw;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  #zwb_upload_status .box .list ul li {
+    width: 118px;
+    margin: 10px;
+  }
+}

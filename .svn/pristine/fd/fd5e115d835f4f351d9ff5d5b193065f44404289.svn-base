@@ -1,0 +1,718 @@
+package com.activity.common.controller.pc.system;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.activity.common.controller.moblie.base.BaseController;
+import com.activity.common.model.accumulate.Accumulate;
+import com.activity.common.model.accumulate.AccumulateCommentWxUser;
+import com.activity.common.model.accumulate.AccumulateWxUserWinning;
+import com.activity.common.model.activity.ActivityCode;
+import com.activity.common.model.activity.ActivityWxUser;
+import com.activity.common.model.activity.ProductWinningInfo;
+import com.activity.common.model.breakEgg.BreakEgg;
+import com.activity.common.model.breakEgg.BreakEggWxUser;
+import com.activity.common.model.breakEgg.BreakEggWxUserWinning;
+import com.activity.common.model.centerObjcet.ExportBean;
+import com.activity.common.model.centerObjcet.ScanReportObj;
+import com.activity.common.model.groupPurchase.GroupPurchase;
+import com.activity.common.model.groupPurchase.GroupPurchaseWxUser;
+import com.activity.common.model.groupPurchase.PurchaseWxUserWinning;
+import com.activity.common.model.integral.IntegralWinningInfo;
+import com.activity.common.model.oneMoneyShop.OneMoneyShop;
+import com.activity.common.model.oneMoneyShop.OneMoneyWxUser;
+import com.activity.common.model.oneMoneyShop.OneMoneyWxUserWinning;
+import com.activity.common.model.openWine.OpenWine;
+import com.activity.common.model.openWine.OpenWineWxUser;
+import com.activity.common.model.openWine.OpenWineWxUserWinning;
+import com.activity.common.model.publicNumber.SellerPublicNumber;
+import com.activity.common.model.puzzle.Puzzle;
+import com.activity.common.model.puzzle.PuzzleWxUser;
+import com.activity.common.model.puzzle.PuzzleWxUserWinning;
+import com.activity.common.model.robRed.RobRed;
+import com.activity.common.model.robRed.RobRedWxUser;
+import com.activity.common.model.robRed.RobRedWxUserWining;
+import com.activity.common.model.scratchCard.ScratchCard;
+import com.activity.common.model.scratchCard.ScratchCardWxUser;
+import com.activity.common.model.scratchCard.ScratchCardWxUserWinning;
+import com.activity.common.model.shareBargain.ShareBargain;
+import com.activity.common.model.shareBargain.ShareBargainWxuser;
+import com.activity.common.model.system.SystemUser;
+import com.activity.common.model.turntable.TurnTable;
+import com.activity.common.model.turntable.TurnTableWxUser;
+import com.activity.common.model.turntable.TurnTableWxUserWinning;
+import com.activity.common.service.openWine.OpenWineService;
+import com.activity.common.utils.date.DateUitils;
+import com.activity.common.utils.system.Tools;
+import com.alibaba.druid.util.StringUtils;
+import com.jfinal.core.JFinal;
+import com.jfinal.kit.PropKit;
+import com.web.controller.ControllerPath;
+
+/**
+ * @author ChenXb
+ *
+ * 2018年3月14日
+ */
+@ControllerPath(controllerKey = "/scanCount")
+public class ScanCountController extends BaseController{
+	
+	private static final Logger log = LoggerFactory.getLogger(ScanCountController.class);
+	
+	/**
+	 * 显示所有的用户的扫码记录
+	 * index
+	 * @author 81046
+	 * @date 2018年3月14日下午2:35:41
+	 */
+	public void index(){
+		render("/system/scanCount.html");
+	}
+	
+	/**
+	 * 进入页面加载报表数据
+	 */
+	public void loadPortInfo(){
+		String pageNumber = getPara("pageNumber");
+		String name = getPara("nickName");
+		List<ActivityCode> codeList = getScanList(name);
+		int startLen=0;
+		int endLen=0;
+		int totalPages=0;
+		//每页显示的条数
+		String pageCount = PropKit.use("system.properties").get("pageCount");
+		int page = Integer.parseInt(pageCount);
+		int pageNum = Integer.parseInt(pageNumber);
+		int size = codeList.size();
+		log.error("***size***"+size);
+		totalPages=Tools.getSize(size);
+		if(pageNum==1){
+			startLen=0;
+			if(size<page){
+				endLen=size;
+			}else{
+				endLen=page;
+			}
+		}
+		//其他页数
+		else{
+			//如果是最后一页
+			if(pageNum==totalPages){
+				log.error("***最后一页***"+size);
+				startLen=page*pageNum-page;
+				endLen=size;
+				log.error("***startLen***"+startLen+"***endLen***"+endLen);
+			}
+			//中间页
+			else{
+				log.error("***中间页***"+size);
+				//比如是第3页  20-30
+				startLen=page*pageNum-page;
+				endLen=page*pageNum;
+				log.error("***startLen***"+startLen+"***endLen***"+endLen);
+			}
+		}
+		List<ActivityCode> resultList=new ArrayList<>();
+		//前包含 后不包含
+		resultList = codeList.subList(startLen, endLen);    //获取子列表
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("currentPage", pageNumber);
+		model.put("totalPages", totalPages);
+		model.put("allAdmins", resultList);
+		renderJson(model);
+	}
+	
+	/**
+	 * 点击查看详情
+	 */
+	public void lookMoreInfo(){
+		String openId = getPara("openId");
+		//根据openId查找该用户的中奖记录
+		List<ScanReportObj> result = getWinInfoByOpenId(openId);
+		setAttr("results", result);
+		render("/system/scanCount-info.html");
+	}
+
+	
+	/**
+	 * 导出报表
+	 */
+	public void exportInfo(){
+		String name = getPara("nickName");
+		String templateFilePath = JFinal.me().getServletContext().getRealPath("templete") + File.separator + "exportAllWinTemplate.xlsx";
+		if(StringUtils.isEmpty(name)){
+			name="全部";
+		}
+		String title=name+"扫码报表分析"+DateUitils.newDateByYMD();
+		List<ActivityCode> codeList = getScanList(name);
+		List<ExportBean> result=new ArrayList<>();
+		//这里 该用户可能会参与很多活动  所以要
+		for (ActivityCode ac : codeList) {
+			String openId = ac.getOpenId();
+			if(!StringUtils.isEmpty(openId)){
+				List<ScanReportObj> winInfoByOpenId = getWinInfoByOpenId(openId);
+				if(winInfoByOpenId!=null){
+					for (ScanReportObj s : winInfoByOpenId) {
+						ExportBean eb=new ExportBean();
+						eb.setNickName(ac.getNickName());
+						eb.setHeadImgUrl(ac.getHeadImg());
+						eb.setActivityName(s.getActivityName());
+						eb.setActivityType(s.getTypeName());
+						eb.setPrizeName(s.getPrizeName());
+						eb.setPrizeType(s.getWinType());
+						eb.setWinInfo(s.getWinInfo());
+						eb.setWinTime(s.getWinTime());
+						eb.setRecevier(s.getRecvierName());
+						eb.setReceviePhone(s.getRecvierPhone());
+						eb.setRecevieAddress(s.getRecvierAddress());
+						eb.setSender(s.getSender());
+						eb.setCompany(s.getCompany());
+						eb.setOrder(s.getOrder());
+						result.add(eb);
+					}
+				}
+			}
+		}
+		Tools.comExportExcel(result, title, getResponse(),templateFilePath);
+		renderNull();
+	}
+	
+	/**
+	 * 
+	 * getWinInfoByOpenId   根据openid查询该用户的参与以及中奖情况
+	 * @author 81046
+	 * @date 2018年4月9日上午10:12:07
+	 * @param openId
+	 * @return
+	 */
+	public List<ScanReportObj> getWinInfoByOpenId(String openId){
+		String sql1="select * from ACTIVITY_CODE where openid = ? ";
+		//这是该用户扫码的记录  将
+		List<ActivityCode> list = ActivityCode.dao.find(sql1,openId);
+		//这是传递给前端的集合
+		List<ScanReportObj> result=new ArrayList<>();
+		for (ActivityCode activityCode : list) {
+			//根据每条的记录查询其对应的中奖记录
+			//先看该码参与的哪一条记录  根据对应的记录查询中奖记录  和十个活动的标识比较 
+			String mark = activityCode.getMark();
+			String winingId = activityCode.getWiningId();
+			//参与的微信小活动
+			String activityWxId = activityCode.getActivityWxId();
+			ScanReportObj so=new ScanReportObj();
+			//分享砍价活动   只中实物奖品
+			if(mark.equals(PropKit.use("system.properties").get("ShareBargain"))){
+				if(!StringUtils.isEmpty(activityWxId)){
+					ShareBargainWxuser shareBargainWxuser = ShareBargainWxuser.dao.findById(activityWxId);
+					String joinActivityId = shareBargainWxuser.getJoinActivityId();
+					ShareBargain shareBargain = ShareBargain.dao.findById(joinActivityId);
+					so.setActivityName(shareBargain.getActivityName());
+					so.setTypeName("分享砍价活动");
+					so.setCreateTime(shareBargainWxuser.getCreateTime());
+				}
+				//中奖纪录
+				if(!StringUtils.isEmpty(winingId)){
+					//砍价因为没有设计中奖表 而是实物表里
+					ProductWinningInfo findById = ProductWinningInfo.dao.findById(winingId);
+//					so.setActivityName(findById.getActivityName());
+//					so.setTypeName("分享砍价活动");
+//					so.setCreateTime(joinTime);
+					so.setPrizeName(findById.getProductName());
+					so.setWinType("实物");
+					so.setWinInfo("实物奖品");
+					so.setWinTime(findById.getCreateTime());
+					so.setRecvierName(findById.getAddresseeName());
+					so.setRecvierPhone(findById.getAddresseePhone());
+					so.setRecvierAddress(findById.getAddresseeAddress());
+					String activityWxUserId = findById.getActivityWxUserId();
+					String sendName = ShareBargainWxuser.dao.findById(activityWxUserId).getSendName();
+					so.setSender(sendName);
+					so.setCompany(findById.getDeliverCompany());
+					so.setOrder(findById.getDeliverNumber());
+					so.setState(findById.getState());
+				}
+				result.add(so);
+			}
+			//红包活动  中红包和积分   
+			else if(mark.equals(PropKit.use("system.properties").get("RobRed"))){
+				if(!StringUtils.isEmpty(activityWxId)){
+					RobRedWxUser robRedWxUser = RobRedWxUser.dao.findById(activityWxId);
+					String redId = robRedWxUser.getRedId();
+					RobRed robRed = RobRed.dao.findById(redId);
+					so.setActivityName(robRed.getActivityName());
+					so.setTypeName("红包活动");
+					so.setCreateTime(robRedWxUser.getCreateTime());
+				}
+				if(!StringUtils.isEmpty(winingId)){
+					RobRedWxUserWining findById = RobRedWxUserWining.dao.findById(winingId);
+//					RobRedWxUser robRedWxUser = RobRedWxUser.dao.findById(redWxuserId);
+//					String redId = robRedWxUser.getRedId();
+//					RobRed robRed = RobRed.dao.findById(redId);
+//					String activityName = robRed.getActivityName();
+//					so.setActivityName(activityName);
+//					so.setTypeName("红包活动");
+					so.setPrizeName(findById.getPrizeProject());
+					if(findById.getPrizeProject().equals("谢谢惠顾")){
+						so.setWinType("谢谢惠顾");
+					}else{
+						so.setWinType("积分/红包");	
+					}
+					so.setWinInfo(findById.getWinningMoney());
+					so.setWinTime(findById.getCreateTime());
+				}
+				result.add(so);
+			}
+			//积分活动
+			else if(mark.equals(PropKit.use("system.properties").get("Integral"))){
+				if(!StringUtils.isEmpty(winingId)){
+					IntegralWinningInfo findById = IntegralWinningInfo.dao.findById(winingId);
+					System.out.println(findById);
+					result.add(so);
+				}
+			}
+			//拼图活动
+			else if(mark.equals(PropKit.use("system.properties").get("Puzzle"))){
+				if(!StringUtils.isEmpty(activityWxId)){
+					PuzzleWxUser puzzleWxUser = PuzzleWxUser.dao.findById(activityWxId);
+					String puzzleId = puzzleWxUser.getPuzzleId();
+					Puzzle puzzle = Puzzle.dao.findById(puzzleId);
+					so.setActivityName(puzzle.getActivityName());
+					so.setTypeName("拼图活动");
+					so.setCreateTime(puzzleWxUser.getCreateTime());
+				}
+				if(!StringUtils.isEmpty(winingId)){
+					PuzzleWxUserWinning findById = PuzzleWxUserWinning.dao.findById(winingId);
+//					String puzzleWxuserId = findById.getPuzzleWxuserId();
+//					PuzzleWxUser puzzleWxUser = PuzzleWxUser.dao.findById(puzzleWxuserId);
+//					String puzzleId = puzzleWxUser.getPuzzleId();
+//					Puzzle puzzle = Puzzle.dao.findById(puzzleId);
+//					String activityName = puzzle.getActivityName();
+					//先判断中的是什么类型  奖品类型1=实物 2=积分  3=红包   4=谢谢惠顾
+					String prizeType = findById.getPrizeType();
+//					so.setActivityName(activityName);
+//					so.setTypeName("拼图活动");
+					so.setPrizeName(findById.getPrizeProject());
+					if(prizeType.equals("1")){
+						so.setWinType("实物");
+						so.setWinInfo("实物奖品");
+					}
+					so.setWinTime(findById.getCreateTime());
+					so.setRecvierName(findById.getAddresseeName());
+					so.setRecvierPhone(findById.getAddresseePhone());
+					so.setRecvierAddress(findById.getAddresseeAddress());
+					so.setSender(findById.getLssueUserName());
+					so.setCompany(findById.getDeliverCompany());
+					so.setOrder(findById.getDeliverNumber());
+					so.setState(findById.getState());
+				}
+				result.add(so);
+			}
+			//刮刮乐活动
+			else if(mark.equals(PropKit.use("system.properties").get("ScratchCard"))){
+				if(!StringUtils.isEmpty(activityWxId)){
+					ScratchCardWxUser scratchCardWxUser = ScratchCardWxUser.dao.findById(activityWxId);
+					String scratchCardId = scratchCardWxUser.getScratchCardId();
+					ScratchCard scratchCard = ScratchCard.dao.findById(scratchCardId);
+					so.setActivityName(scratchCard.getActivityName());
+					so.setTypeName("刮刮乐活动");
+					so.setCreateTime(scratchCardWxUser.getCreateTime());
+				}
+				if(!StringUtils.isEmpty(winingId)){
+					ScratchCardWxUserWinning findById = ScratchCardWxUserWinning.dao.findById(winingId);
+					if(findById!=null){
+//						String scratchCardWxuserId = findById.getScratchCardWxuserId();
+//						ScratchCardWxUser scratchCardWxUser = ScratchCardWxUser.dao.findById(scratchCardWxuserId);
+//						String scratchCardId = scratchCardWxUser.getScratchCardId();
+//						ScratchCard scratchCard = ScratchCard.dao.findById(scratchCardId);
+//						String activityName = scratchCard.getActivityName();
+						//先判断中的是什么类型  奖品类型1=实物 2=积分  3=红包   4=谢谢惠顾
+						String prizeType = findById.getPrizeType();
+//						so.setActivityName(activityName);
+//						so.setTypeName("刮刮乐活动");
+						so.setPrizeName(findById.getPrizeProject());
+						if(prizeType.equals("1")){
+							so.setWinType("实物");
+							so.setWinInfo("实物奖品");
+						}else if(prizeType.equals("2")){
+							so.setWinType("积分");
+							so.setWinInfo(findById.getWinningMoney());
+						}else if(prizeType.equals("3")){
+							so.setWinType("红包");
+							so.setWinInfo(findById.getWinningMoney());
+						}else if(prizeType.equals("4")){
+							so.setWinType("谢谢惠顾");
+							so.setWinInfo("谢谢惠顾");
+						}
+						so.setWinTime(findById.getCreateTime());
+						so.setRecvierName(findById.getAddresseeName());
+						so.setRecvierPhone(findById.getAddresseePhone());
+						so.setRecvierAddress(findById.getAddresseeAddress());
+						so.setSender(findById.getLssueUserName());
+						so.setCompany(findById.getDeliverCompany());
+						so.setOrder(findById.getDeliverNumber());
+						so.setState(findById.getState());
+					}
+				}	
+				result.add(so);
+			}
+			//转盘活动
+			else if(mark.equals(PropKit.use("system.properties").get("Turntable"))){
+				if(!StringUtils.isEmpty(activityWxId)){
+					TurnTableWxUser turnTableWxUser = TurnTableWxUser.dao.findById(activityWxId);
+					String turntableId = turnTableWxUser.getTurntableId();
+					TurnTable turnTable = TurnTable.dao.findById(turntableId);
+					so.setActivityName(turnTable.getActivityName());
+					so.setTypeName("转盘活动");
+					so.setCreateTime(turnTableWxUser.getCreateTime());
+				}
+				if(!StringUtils.isEmpty(winingId)){
+					TurnTableWxUserWinning findById = TurnTableWxUserWinning.dao.findById(winingId);
+//					String turntableWxuserId = findById.getTurntableWxuserId();
+//					TurnTableWxUser turnTableWxUser = TurnTableWxUser.dao.findById(turntableWxuserId);
+//					String turntableId = turnTableWxUser.getTurntableId();
+//					TurnTable turnTable = TurnTable.dao.findById(turntableId);
+//					String activityName = turnTable.getActivityName();
+					//先判断中的是什么类型  奖品类型1=实物 2=积分  3=红包   4=谢谢惠顾
+					String prizeType = findById.getPrizeType();
+//					so.setActivityName(activityName);
+//					so.setTypeName("转盘活动");
+					so.setPrizeName(findById.getPrizeProject());
+					if(prizeType.equals("1")){
+						so.setWinType("实物");
+						so.setWinInfo("实物奖品");
+					}else if(prizeType.equals("2")){
+						so.setWinType("积分");
+						so.setWinInfo(findById.getWinningMoney());
+					}else if(prizeType.equals("3")){
+						so.setWinType("红包");
+						so.setWinInfo(findById.getWinningMoney());
+					}else if(prizeType.equals("4")){
+						so.setWinType("谢谢惠顾");
+						so.setWinInfo("谢谢惠顾");
+					}
+					so.setWinTime(findById.getCreateTime());
+					so.setRecvierName(findById.getAddresseeName());
+					so.setRecvierPhone(findById.getAddresseePhone());
+					so.setRecvierAddress(findById.getAddresseeAddress());
+					so.setSender(findById.getLssueUserName());
+					so.setCompany(findById.getDeliverCompany());
+					so.setOrder(findById.getDeliverNumber());
+					so.setState(findById.getState());
+				}
+				result.add(so);
+			}
+			//拼团活动
+			else if(mark.equals(PropKit.use("system.properties").get("GroupPurchase"))){
+				if(!StringUtils.isEmpty(activityWxId)){
+					GroupPurchaseWxUser groupPurchaseWxUser = GroupPurchaseWxUser.dao.findById(activityWxId);
+					String groupPurchaseId = groupPurchaseWxUser.getGroupPurchaseId();
+					GroupPurchase groupPurchase = GroupPurchase.dao.findById(groupPurchaseId);
+					so.setActivityName(groupPurchase.getActivityName());
+					so.setTypeName("拼团活动");
+					so.setCreateTime(groupPurchaseWxUser.getCreateTime());
+				}
+				if(!StringUtils.isEmpty(winingId)){
+					PurchaseWxUserWinning findById = PurchaseWxUserWinning.dao.findById(winingId);
+//					String groupPurchaseWxUserId = findById.getGroupPurchaseWxUserId();
+//					GroupPurchaseWxUser groupPurchaseWxUser = GroupPurchaseWxUser.dao.findById(groupPurchaseWxUserId);
+//					String groupPurchaseId = groupPurchaseWxUser.getGroupPurchaseId();
+//					GroupPurchase groupPurchase = GroupPurchase.dao.findById(groupPurchaseId);
+//					String activityName = groupPurchase.getActivityName();
+					//先判断中的是什么类型  奖品类型1=实物 2=积分  3=红包   4=谢谢惠顾
+					String prizeType = findById.getPrizeType();
+//					so.setActivityName(activityName);
+//					so.setTypeName("拼团活动");
+					so.setPrizeName(findById.getPrizeProject());
+					if(prizeType.equals("1")){
+						so.setWinType("实物");
+						so.setWinInfo("实物奖品");
+					}
+					so.setWinTime(findById.getCreateTime());
+					so.setRecvierName(findById.getAddresseeName());
+					so.setRecvierPhone(findById.getAddresseePhone());
+					so.setRecvierAddress(findById.getAddresseeAddress());
+					so.setSender(findById.getLssueUserName());
+					so.setCompany(findById.getDeliverCompany());
+					so.setOrder(findById.getDeliverNumber());
+					so.setState(findById.getState());
+				}
+				result.add(so);
+			}
+			//砸蛋活动
+			else if(mark.equals(PropKit.use("system.properties").get("BreakEgg"))){
+				if(!StringUtils.isEmpty(activityWxId)){
+					BreakEggWxUser breakEggWxUser = BreakEggWxUser.dao.findById(activityWxId);
+					String breakEggId = breakEggWxUser.getBreakEggId();
+					BreakEgg breakEgg = BreakEgg.dao.findById(breakEggId);
+					so.setActivityName(breakEgg.getActivityName());
+					so.setTypeName("砸蛋活动");
+					so.setCreateTime(breakEggWxUser.getCreateTime());
+				}
+				if(!StringUtils.isEmpty(winingId)){
+					BreakEggWxUserWinning findById = BreakEggWxUserWinning.dao.findById(winingId);
+					if(findById!=null){
+//						String breakeggWxuserId = findById.getBREAKEGGWxuserId();
+//						BreakEggWxUser breakEggWxUser = BreakEggWxUser.dao.findById(breakeggWxuserId);
+//						String breakEggId = breakEggWxUser.getBreakEggId();
+//						BreakEgg breakEgg = BreakEgg.dao.findById(breakEggId);
+//						String activityName = breakEgg.getActivityName();
+						//先判断中的是什么类型  奖品类型1=实物 2=积分  3=红包   4=谢谢惠顾
+						String prizeType = findById.getPrizeType();
+//						so.setActivityName(activityName);
+//						so.setTypeName("砸蛋活动");
+						so.setPrizeName(findById.getPrizeProject());
+						if(prizeType.equals("1")){
+							so.setWinType("实物");
+							so.setWinInfo("实物奖品");
+						}else if(prizeType.equals("2")){
+							so.setWinType("积分");
+							so.setWinInfo(findById.getWinningMoney());
+						}else if(prizeType.equals("3")){
+							so.setWinType("红包");
+							so.setWinInfo(findById.getWinningMoney());
+						}else if(prizeType.equals("4")){
+							so.setWinType("谢谢惠顾");
+							so.setWinInfo("谢谢惠顾");
+						}
+						so.setWinTime(findById.getCreateTime());
+						so.setRecvierName(findById.getAddresseeName());
+						so.setRecvierPhone(findById.getAddresseePhone());
+						so.setRecvierAddress(findById.getAddresseeAddress());
+						so.setSender(findById.getLssueUserName());
+						so.setCompany(findById.getDeliverCompany());
+						so.setOrder(findById.getDeliverNumber());
+						so.setState(findById.getState());
+					}
+				}
+				result.add(so);
+			}
+			//集赞活动
+			else if(mark.equals(PropKit.use("system.properties").get("AccumulateFabulous"))){
+				if(!StringUtils.isEmpty(activityWxId)){
+					AccumulateCommentWxUser accumulateCommentWxUser = AccumulateCommentWxUser.dao.findById(activityWxId);
+					String accumulateId = accumulateCommentWxUser.getAccumulateId();
+					Accumulate accumulate = Accumulate.dao.findById(accumulateId);
+					so.setActivityName(accumulate.getActivityName());
+					so.setTypeName("集赞活动");
+					so.setCreateTime(accumulateCommentWxUser.getCreateTime());
+				}
+				if(!StringUtils.isEmpty(winingId)){
+					AccumulateWxUserWinning findById = AccumulateWxUserWinning.dao.findById(winingId);
+//					String accumulateWxuserId = findById.getAccumulateWxuserId();
+//					AccumulateCommentWxUser accumulateCommentWxUser = AccumulateCommentWxUser.dao.findById(accumulateWxuserId);
+//					String accumulateId = accumulateCommentWxUser.getAccumulateId();
+//					Accumulate accumulate = Accumulate.dao.findById(accumulateId);
+//					String activityName = accumulate.getActivityName();
+					//先判断中的是什么类型  奖品类型1=实物 2=积分  3=红包   4=谢谢惠顾
+					String prizeType = findById.getPrizeType();
+//					so.setActivityName(activityName);
+//					so.setTypeName("集赞活动");
+					so.setPrizeName(findById.getPrizeProject());
+					if(prizeType.equals("1")){
+						so.setWinType("实物");
+						so.setWinInfo("实物奖品");
+					}else if(prizeType.equals("2")){
+						so.setWinType("积分");
+						so.setWinInfo(findById.getWinningMoney());
+					}else if(prizeType.equals("3")){
+						so.setWinType("红包");
+						so.setWinInfo(findById.getWinningMoney());
+					}else if(prizeType.equals("4")){
+						so.setWinType("谢谢惠顾");
+						so.setWinInfo("谢谢惠顾");
+					}
+					so.setWinTime(findById.getCreateTime());
+					so.setRecvierName(findById.getAddresseeName());
+					so.setRecvierPhone(findById.getAddresseePhone());
+					so.setRecvierAddress(findById.getAddresseeAddress());
+					so.setSender(findById.getLssueUserName());
+					so.setCompany(findById.getDeliverCompany());
+					so.setOrder(findById.getDeliverNumber());
+					so.setState(findById.getState());
+				}
+				result.add(so);
+			}
+			//一元购活动
+			else if(mark.equals(PropKit.use("system.properties").get("OneMoneyShop"))){
+				if(!StringUtils.isEmpty(activityWxId)){
+					OneMoneyWxUser oneMoneyWxUser = OneMoneyWxUser.dao.findById(activityWxId);
+					String oneMoneyId = oneMoneyWxUser.getOneMoneyId();
+					OneMoneyShop oneMoneyShop = OneMoneyShop.dao.findById(oneMoneyId);
+					so.setActivityName(oneMoneyShop.getActivityName());
+					so.setTypeName("一元购活动");
+					so.setCreateTime(oneMoneyWxUser.getCreateTime());
+				}
+				if(!StringUtils.isEmpty(winingId)){
+					OneMoneyWxUserWinning findById = OneMoneyWxUserWinning.dao.findById(winingId);
+//					String oneMoneyWxUserId = findById.getOneMoneyWxUserId();
+//					OneMoneyWxUser oneMoneyWxUser = OneMoneyWxUser.dao.findById(oneMoneyWxUserId);
+//					String oneMoneyId = oneMoneyWxUser.getOneMoneyId();
+//					OneMoneyShop oneMoneyShop = OneMoneyShop.dao.findById(oneMoneyId);
+//					String activityName = oneMoneyShop.getActivityName();
+					//先判断中的是什么类型  奖品类型1=实物 2=积分  3=红包   4=谢谢惠顾
+					String prizeType = findById.getPrizeType();
+//					so.setActivityName(activityName);
+//					so.setTypeName("一元购活动");
+					so.setPrizeName(findById.getPrizeProject());
+					if(prizeType.equals("1")){
+						so.setWinType("实物");
+						so.setWinInfo("实物奖品");
+					}
+					so.setWinTime(findById.getCreateTime());
+					so.setRecvierName(findById.getAddresseeName());
+					so.setRecvierPhone(findById.getAddresseePhone());
+					so.setRecvierAddress(findById.getAddresseeAddress());
+					so.setSender(findById.getLssueUserName());
+					so.setCompany(findById.getDeliverCompany());
+					so.setOrder(findById.getDeliverNumber());
+					so.setState(findById.getState());
+				}
+				result.add(so);
+			}
+			//开酒瓶活动
+			else if(mark.equals(PropKit.use("system.properties").get("OpenWine"))){
+				String activityName = "";
+				if(!StringUtils.isEmpty(activityWxId)){
+					OpenWineWxUser openWineWxUser = OpenWineWxUser.dao.findById(activityWxId);
+					String openWineId = openWineWxUser.getOpenWineId();
+					OpenWine openWine = OpenWine.dao.findById(openWineId);
+					activityName = openWine.getActivityName();
+//					so.setActivityName(openWine.getActivityName());
+//					so.setTypeName("开酒瓶活动");
+//					so.setCreateTime(openWineWxUser.getCreateTime());
+				}
+				if(!StringUtils.isEmpty(winingId)){
+					//开酒瓶会中两条记录信息
+					List<OpenWineWxUserWinning> winInfoList = OpenWineService.getService().getOpenWineWinListByIdOpenId(openId, activityWxId);
+					for (OpenWineWxUserWinning openWineWxUserWinning : winInfoList) {
+						ScanReportObj sro=new ScanReportObj();
+						sro.setActivityName(activityName);
+						sro.setTypeName("开酒瓶活动");
+						sro.setCreateTime(openWineWxUserWinning.getCreateTime());
+						//先判断中的是什么类型  奖品类型1=实物 2=积分  3=红包   4=谢谢惠顾
+						String prizeType = openWineWxUserWinning.getPrizeType();
+//						so.setActivityName(activityName);
+//						so.setTypeName("砸蛋活动");
+						sro.setPrizeName(openWineWxUserWinning.getPrizeProject());
+						if(prizeType.equals("1")){
+							sro.setWinType("实物");
+							sro.setWinInfo("实物奖品");
+						}else if(prizeType.equals("2")){
+							sro.setWinType("积分");
+							sro.setWinInfo(openWineWxUserWinning.getWinningMoney());
+						}else if(prizeType.equals("3")){
+							sro.setWinType("红包");
+							sro.setWinInfo(openWineWxUserWinning.getWinningMoney());
+						}else if(prizeType.equals("4")){
+							sro.setWinType("谢谢惠顾");
+							sro.setWinInfo("谢谢惠顾");
+						}
+						sro.setWinTime(openWineWxUserWinning.getCreateTime());
+						sro.setRecvierName(openWineWxUserWinning.getAddresseeName());
+						sro.setRecvierPhone(openWineWxUserWinning.getAddresseePhone());
+						sro.setRecvierAddress(openWineWxUserWinning.getAddresseeAddress());
+						sro.setSender(openWineWxUserWinning.getLssueUserName());
+						sro.setCompany(openWineWxUserWinning.getDeliverCompany());
+						sro.setOrder(openWineWxUserWinning.getDeliverNumber());
+						sro.setState(openWineWxUserWinning.getState());
+						result.add(sro);
+					}
+				}
+				result.add(so);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * getScanList  根据名字和页数获取扫码的用户
+	 * @author 81046
+	 * @date 2018年4月9日上午10:10:46
+	 * @param name
+	 * @param pageNumber
+	 * @return              这里的集合是该用户所属的公众号下面的记录   如果是厂商则看全部
+	 */
+	public List<ActivityCode> getScanList(String name){
+		SystemUser user = CacheLoginUser();
+		//这里查询所有的码中奖情况
+		String sql="select * from ACTIVITY_CODE where 1= 1";
+		// 这里是模糊查询名字
+		if (!StringUtils.isEmpty(name)&&!name.equals("全部")) {
+			sql += " and NICKNAME like '%" + name + "%'";
+		}
+		List<ActivityCode> list = ActivityCode.dao.find(sql);
+		List<ActivityCode> codeList=new ArrayList<>();
+		String sql1="select * from ACTIVITY_CODE where openid = ?";
+		List<String> openIdList=new ArrayList<>();
+		for (ActivityCode activityCode3 : list) {
+			//根据这个openId去查询该用户扫码了几次
+			String openId=activityCode3.getOpenId();
+			openIdList.add(openId);
+		}
+		//去重并且按照自然顺序排列
+		List<String> newList = new ArrayList<String>(new TreeSet<String>(openIdList)); 
+		//根据openId查找头像和昵称
+		String sqlHN="select * from ACTIVITY_WXUSER where openid=? ";
+		for (String s : newList) {
+			//新建一个对象保存 数据给前端  一个人只展示一条记录  统计他的扫码总个数。 
+			ActivityCode ac=new ActivityCode();
+			//根据openid查找他所有的扫码记录
+			List<ActivityCode> list2 = ActivityCode.dao.find(sql1,s);
+			ActivityWxUser wxUser = ActivityWxUser.dao.findFirst(sqlHN,s);
+			String headImgUrl = "";
+			String nickName = "";
+			if(!StringUtils.isEmpty(wxUser.getHeadImgUrl())){
+				headImgUrl=wxUser.getHeadImgUrl();
+			}
+			if(!StringUtils.isEmpty(wxUser.getNickName())){
+				nickName=wxUser.getNickName();
+			}
+			ActivityCode activityCode=null;
+			String publicName="";
+			String publicId="";
+			if(list2!=null){
+				activityCode = list2.get(0);
+				publicName=activityCode.getSellerPublicName();
+				publicId=activityCode.getSellerPublicId();
+				if(StringUtils.isEmpty(headImgUrl)||StringUtils.isEmpty(nickName)){
+					headImgUrl=activityCode.getHeadImg();
+					nickName = activityCode.getNickName();
+				}
+			}
+			ac.setOpenId(s);
+			ac.setHeadImg(headImgUrl);
+			ac.setNickName(nickName);
+			ac.setSignNumber(list2.size()+"");
+			ac.setSellerPublicName(publicName);
+			ac.setSellerPublicId(publicId);
+			codeList.add(ac);
+		}
+		List<ActivityCode> result=new ArrayList<>();
+		String userCode = user.getUserCode();
+		//以上的codeList是全部的 没有筛选   这是admin账户   !就是其他的公众号  这里筛选
+		if(!PropKit.use("system.properties").get("SystemUserCode").equals(userCode)){
+			for (ActivityCode activityCode : codeList) {
+				String sellerPublicId = activityCode.getSellerPublicId();
+				if(!StringUtils.isEmpty(sellerPublicId)){
+					SellerPublicNumber sp = SellerPublicNumber.dao.findById(sellerPublicId);
+					if(sp!=null){
+						String sellerUserCode = sp.getSellerUserCode();
+						if(sellerUserCode.equals(userCode)){
+							result.add(activityCode);
+						}
+					}
+				}
+			}
+		}else{
+			result=codeList;
+		}
+		return result;
+	}
+}

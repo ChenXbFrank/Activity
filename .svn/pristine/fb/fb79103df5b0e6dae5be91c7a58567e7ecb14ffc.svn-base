@@ -1,0 +1,205 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+html,body  {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.bg{
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	position: fixed;
+}
+.title{
+	width: 5.72rem;
+	height:0.8rem;
+	line-height:0.8rem;
+	text-align:center;
+	vertical-align:center;
+	position: absolute;
+	top:7%;
+	left:50%;
+	margin-left:-2.86rem;
+	margin-top:-0.4rem;
+}
+.title img{
+	max-width:100%;
+	max-height:100%;
+	vertical-align:middle;
+}
+.red {
+	width:6.826666rem;
+	height:8.533333rem;
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    margin-left: -3.4133rem;
+    margin-top: -4.26656rem;
+}
+.notes{
+	width: 6rem;
+    height: 3.853333rem;
+    position: absolute;
+    top: 51%;
+    left: 50%;
+    margin-left: -3rem;
+    margin-top: -1.92665rem;
+    color: white;
+  
+}
+.notes .prizeName{
+	
+	font-size: 0.38rem;
+	
+}
+.notes .prizeToall{
+	margin-left:0.5rem;
+	font-size: 0.38rem;
+	
+}
+.notes .prizeTime{
+	margin-left: 0.6rem;
+	font-size: 0.38rem;
+	
+}
+.notes .prizeName1{
+	width: 1.6rem;
+	height: 0.8rem;
+	display: inline-block;
+	text-align: center;
+	line-height: 1rem;
+	margin-left: -0.05rem;
+	
+}
+.notes hr{
+	margin-top: 0.2rem;
+}
+.notes .prizeToall1{
+    width: 1.6rem;
+    height: 0.8rem;
+    text-align: center;
+    display: inline-block;
+    line-height: 1rem;
+    margin-left: 0.4rem;
+
+}
+.notes .prizeTime1{
+	 width: 1.8rem;
+	 height: 1.5rem;
+     display: inline-block;
+	 height: 1rem;
+	 margin-left: 0.3rem;  
+	/*  margin-top: 0.2rem; */
+	 text-align: center;
+	
+}
+.bill{
+	height: 1rem;
+    border-bottom: 1px dashed yellow;
+    width: 100%;
+}
+.bigbill{
+	height: 2.853333rem;
+	overflow-y: auto;
+}
+.personalCenter img {
+	width:2.96rem;
+	height:0.84rem;
+	position: absolute;
+	top: 80%;
+	left: 50%;
+	margin-left: -1.48rem;
+	margin-top: -0.42rem;
+}
+.personalCenter p {
+	width: 4.6rem;
+	height: 1.4rem;
+	position: absolute;
+	top: 71%;
+	left: 59%;
+	margin-left: -2.3rem;
+	margin-top: 0.7rem;
+	z-index: 3;
+	font-size: 0.7rem;
+	font-family: "Tahoma";
+	font-weight: bold;
+	color: #680416;
+}
+.prompt{
+	width: 100%;
+	height: 0.626666rem;
+	margin-top:12.5rem;
+	
+	color: #c70110;
+	
+}
+.prompt p{
+	text-align: center;
+}
+.bigbonus{
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 17%;
+    z-index: 3;
+    font-size: 1.2rem;
+    color: #FCDA36;
+}
+.personalCenter img{
+	width:2.96rem;
+	height:0.84rem;
+}
+
+#end p{
+	width: 6.666666rem;
+	height: 2.666666rem;
+	position: absolute;
+	top: 83%;
+	left: 51%;
+	margin-left: -3.333333rem;
+	margin-top: -1.333333rem;
+	color:white;
+	font-size:0.5rem;
+	z-index: 2000;
+}
+#end{
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+.bg-mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.8);
+	z-index: 9000000;
+	left: 0;
+	top: 0;
+}
+#logo img{
+	width:5.866666rem;
+	height: 0.786666rem;
+	margin-left:2rem;
+	margin-top:0.4rem;
+}
+.erweima img{
+	width: 4.36rem;
+	height: 4.36rem;
+	margin-left:2.75rem;
+	margin-top:5rem;
+}
+.miaoshu{
+	width: 7.026666rem;
+	height: 2.906666rem;
+	position: absolute;
+	top:76%;
+	left: 50%;
+	margin-left:-3.5133rem;
+	margin-top:-1.45333rem;
+}

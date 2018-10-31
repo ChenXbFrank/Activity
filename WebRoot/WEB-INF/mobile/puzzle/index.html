@@ -1,0 +1,481 @@
+<!--[arg basePath,staticPath,openid,canPuzzle,qrcode,wxUserInfo,puzzle,puzzlePrize,puzzleWxUserId,sellerPublicNumber,follow;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>拼图首页</title>
+		<link rel="stylesheet"  href="${staticPath}/css/puzzleConfig/index.css"/>
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/puzzleConfig/index.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.js"></script>
+		<style>
+			
+		
+		
+		</style>
+	</head>
+	<body>
+	<div  class='beijing' style="background-image: url('/activityUploadPath${puzzle.getMobleBackgroundImg()}');">
+		<div class="titl">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+		<div class="bg-mask" id="aaa" style="display: none;background-image: url('/activityUploadPath${puzzle.getMobleBackgroundImg()}')">
+			<div class='erweima'>
+				<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+			</div>
+			<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+		</div>
+		<div class="bg-mask shouzhi" style="display:none">
+			<p>点击开始拼图倒计时</p>
+			<p>温馨提示:任意滑动方块完成拼图</p>
+			<div class=xiaoguo>
+				<img src="${staticPath}/New_img/index/ddddd.gif" alt="" />
+			</div>
+			
+		</div> 
+		<div class='container'>
+			<div class="door">
+				<div class="doorIner" >
+					<div class="award_bg">
+						<img src="/activityUploadPath${puzzlePrize.getProductImg()}" alt="" />
+					</div>
+					<img src="${staticPath}/New_img/index/woshi.png" alt="" class="jiangpI"/>
+					<p class="begain_font">点击开始拼图，豪礼马上有!</p>
+					<button class="gameBegain" id="startBtn">开始拼图</button>
+				</div>
+				<div class="doorInner_pic" style="display: none;">
+					<div class="game-title" id="lookTime">拼图游戏将在<span class="times" style="background-image: url('${staticPath}/img/puzzle/img/daojishikuang-img.png');">${puzzle.getLookTime()}</span>秒后<span class="game-title-start">开始！</span></div>
+					<div class="game-title" id="playTime" style="display: none;"><span class="game-title-start">游戏结束</span>倒计时：<span class="times" id="times" style="background-image: url('${staticPath}/img/puzzle/img/daojishikuang-img.png');">${puzzle.getPalyTime()}</span>秒</div>
+ 					<div class="imgbox" id="imgbox">
+						<div class="box" data-index="0" style="top:0px;left:0px;background-position:0px 0px; background-image: url('/activityUploadPath${puzzle.getPuzzleImg()}');"></div>
+						<div class="box" data-index="1" style="top:0px;left:82px;background-position:-82px 0px; background-image: url('/activityUploadPath${puzzle.getPuzzleImg()}');"></div>
+						<div class="box" data-index="2" style="top:0px;left:164px;background-position:-164px 0px; background-image: url('/activityUploadPath${puzzle.getPuzzleImg()}');"></div>
+						<div class="box" data-index="3" style="top:82px;left:0px;background-position:0px -82px; background-image: url('/activityUploadPath${puzzle.getPuzzleImg()}');"></div>
+						<div class="box" data-index="4" style="top:82px;left:82px;background-position:-82px -82px; background-image: url('/activityUploadPath${puzzle.getPuzzleImg()}');"></div>
+						<div class="box" data-index="5" style="top:82px;left:164px;background-position:-164px -82px; background-image: url('/activityUploadPath${puzzle.getPuzzleImg()}');"></div>
+						<div class="box" data-index="6" style="top:164px;left:0px;background-position:0px -164px; background-image: url('/activityUploadPath${puzzle.getPuzzleImg()}');"></div>
+						<div class="box" data-index="7" style="top:164px;left:82px;background-position:-82px -164px; background-image: url('/activityUploadPath${puzzle.getPuzzleImg()}');"></div>
+						<div class="box" data-index="8" style="top:164px;left:164px;background-position:-164px -164px; background-image: url('/activityUploadPath${puzzle.getPuzzleImg()}');"></div>
+					</div>
+				</div>
+			</div>
+				<div class="buttons_pd">
+					<div class="rules">活动规则</div>
+					<div class="myAward">我的奖品</div>
+				</div>
+		</div>
+		<div class="jieshao-mask" id="puzzle_rules" style="display: none;">
+			<div class="mask_bg"></div>
+			<div class="rules_content">
+				
+				<div class="rules_bg">
+				<img src="${staticPath}/img/puzzle/img/off.png" class="close" id="rules_close" />
+					<div>
+						<img src="${staticPath}/img/puzzle/img/guize.png" />
+						<div class="rules-info">
+							<p>1.购买${sellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关注‘${sellerPublicNumber.getPublicNumberName()}’微信公众账号,接收活动中奖第一资讯;</p>
+							<p>2.关注后，再次扫描二维码,进入活动页面;</p>
+							<p>3.刮开二维码银色覆盖区域,输入正确的验证码,获取参与活动机会;</p>
+							<p>4.点击“开始拼图”开启拼图游戏赢奖活动;</p>
+							<p>5.开始后,您有一定时间记忆原图,倒计时结束后，开始正式拼图;</p>
+							<p>6.活动时间：${puzzle.getStartTime()}---${puzzle.getEndTime()}；</p>
+							<p>7.若活动时间内,图片被复原,则拼图成功.您需要根据提示填写收货地址信息,以便我们及时发放奖品;</p>
+							<p>8.若活动时间结束,图片未被复原,则游戏失败;</p>
+							<p>9.若想继续参加活动,可前往就近商店购买正品五粮液,扫码即可获得参与机会;</p>
+							<p>10.如有疑问,请咨询【${sellerPublicNumber.getPublicNumberName()}】微信公众服务号即可,我们将第一时间回复解决问题。</p>
+						</div>
+					</div>
+				</div>
+				
+			</div>	
+		</div>
+		<!--我的奖品-->
+<!-- 		<div class='award-mask' id="myAward" style="display:none">
+			<img src="${staticPath}/img/puzzle/img/guanbiicon.png" alt="" class="close" id="myAward_close" />
+			<div class="myAward_bg" style="background-image: url('${staticPath}/img/puzzle/img/guize-IMG.png');">
+				<h2 class="myAward_title">我的奖品</h2>
+				<ul class="myAward_infos_title">
+					<li>奖品名称</li>
+					<li>中奖时间</li>
+					<li>领取情况</li>
+				</ul>
+				<div class="line"></div>
+				<div class="noAwardInfo" style="display:none">您还暂时没有奖品信息哦~</div>
+				<ul class="myAward_infos_content">
+					<li>五粮液精装酒</li>
+					<li>2017-12-25 18:20:30</li>
+					<li><input type="button" value="填写收货地址" class="addressBtn" /></li>
+				</ul>
+			</div>
+			<div class="personCenterInfo">
+				更多奖品信息，请前往<span class="personCenter">个人中心</span>查看~
+			</div>
+		</div> -->
+		
+		<div class="award-mask" id="myAward" style="display: none;">
+			<div class="mask_bg"></div>
+			<div class="myAward_content">
+				
+				<div class="myAward_bg">
+				<img src="${staticPath}/img/puzzle/img/off.png" class="close" id="myAward_close" />
+					<div>
+						<img src="${staticPath}/img/puzzle/img/tanchuwode.png"  class="myAward_bgImg"/>
+						<div class="rules-info">
+							<ul class="myAward_infos_title">
+								<li>奖品名称</li>
+								<li>中奖时间</li>
+								<li>领取情况</li>
+							</ul>
+							<div class="line"></div>
+							<div class="noAwardInfo" style="display:none;">您还暂时没有奖品信息哦~</div>
+							<ul class="myAward_infos_content">
+								<li></li>
+								<li></li>
+								<li></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="mycenter_btn">
+					<button>个人中心</button>
+				</div>
+			</div>	
+		</div>
+		<!--中奖弹窗-->
+<!-- 		<div class='award-mask' id="puzzle_award" style="display: none;">
+			<img src="${staticPath}/img/puzzle/img/guanbiicon.png" alt="" class="close" id="award_close" />
+			<div class="award_bg" style="background-image: url('${staticPath}/img/puzzle/img/zhongjiang-IMG.png');">
+				<div class="award_pic">
+					<img src="${basePath}${puzzlePrize.getProductImg()}" alt="" />
+				</div>
+				<span>拼图成功！获得<span class="awardName">${puzzlePrize.getPrizeName()}</span>豪礼!</span>
+			</div>
+			<p class="getAddress">我要填写收货地址>></p>
+		</div> -->
+		<div class="award-mask" id="puzzle_award" style="display: none;">
+		
+			<div class="award_content">
+				<div class="award_closeBtn">
+					<img src="${staticPath}/img/puzzle/img/off.png" class="close" id="award_close" />
+				</div>
+				<div class="Award_bg">
+				<div class="gongxi_zhong" style="background-image: url('${staticPath}/img/puzzle/img/you.png');">
+					<div class="tup">
+						<img src="/activityUploadPath${puzzlePrize.getProductImg()}" alt="" />
+					</div>
+					<span class="cccc">拼图成功！获得<span class="awardName">${puzzlePrize.getPrizeName()}</span>豪礼!</span>
+					<p class="getAddress"><img src="${staticPath}/img/puzzle/img/zu11.png" alt="" /></p>
+				</div>
+				</div>
+			</div>	
+		</div>
+		<!--未中奖弹窗-->
+<!-- 		<div class='award-mask' id="puzzle_noAward" style="display: none;">
+			<img src="${staticPath}/img/puzzle/img/guanbiicon.png" alt="" class="close" id="noAward_close" />
+			<div class="noAward_bg" style="background-image: url('${staticPath}/img/puzzle/img/timeout.png');">
+				<p class="failInfos">抱歉，游戏时间到，<span class="font-color">拼图失败！</span></p>
+				<p class="failInfos">再购一瓶，扫码继续来拼！豪礼不见不散~</p>
+			</div>
+		</div> -->
+		<div class="award-mask" id="puzzle_noAward" style="display: none;">
+			
+			<div class="noAward_content">
+				<div class="noAward_closeBtn">
+					<img src="${staticPath}/img/puzzle/img/off.png" class="close" id="noAward_close" />
+				</div>
+				<div class="noAward_bg">
+					<div><img src="${staticPath}/img/puzzle/img/timeout.png" /></div>
+					<div class="noAward_text">
+						<p class="failInfos_hd">抱歉，游戏时间到，<span class="font-color">拼图失败！</span></p>
+						<p class="failInfos_cont">再购一瓶，扫码继续来拼！</p>
+						<p class="failInfos_cont">豪礼不见不散~</p>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+	
+		
+	
+	</body>
+	<input type="hidden" value="${sellerPublicNumber.getId()}" id="sellerPublicNumberId"/>
+	<input type="hidden" value="${follow}" id="subscribe"/>
+	
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript">
+	/* 华为 */
+	if(screen.height<=640 && screen.width<=360){
+		$(".buttons_pd").css({"margin-top":"-0.53rem"})
+		$(".award_bg").css({"margin-top":"4.2rem"})
+		$(".doorInner_pic").css({"margin-top":"-1.3rem"})
+		$(".erweima img").css({"margin-top":"4.2rem"})
+		$("#playTime").css({"margin-top":"3.4rem"})
+		$("#lookTime").css({"margin-top":"3.4rem"})
+	}
+	/* 苹果x */
+	if(screen.height==812 && screen.width==375){
+		$(".main").css({"margin-top":"7rem"})
+		$(".fenxiang-text").css({"margin-top":"2rem"})
+		$(".erweima img").css({"margin-top":"6.5rem"})
+		$(".buttons_pd").css({"margin-top":"1rem"})
+		//alert("pingguo6666")
+	}
+		
+	
+	 !(function(win, doc) {
+	        function setFontSize() {
+	            // 获取window 宽度
+	            // zepto实现 $(window).width()就是这么干的
+	            var winWidth = window.innerWidth;
+	            doc.documentElement.style.fontSize = (winWidth/750) * 100 + 'px';
+	        }
+	        var evt = 'onorientationchange' in win ? 'orientationchange' : 'resize';
+	        var timer = null;
+	        win.addEventListener(evt, function() {
+	            clearTimeout(timer);
+	            timer = setTimeout(setFontSize, 300);
+	        }, false);
+	        win.addEventListener("pageshow", function(e) {
+	            if (e.persisted) {
+	                clearTimeout(timer);
+	                timer = setTimeout(setFontSize, 300);
+	            }
+	        }, false);
+	        //初始化
+	        setFontSize();
+	    }(window, document));
+	
+	
+	var subscribe=$("#subscribe").val();
+	//alert(subscribe)
+	//当一进页面判断是否进行过拼图游戏
+	var canPuzzle='${canPuzzle}';//为0，表示不可以进行拼图；1，表示可以进行拼图
+	//alert(canPuzzle);
+	if(canPuzzle=="0"){
+		$(".begain_font").html("已经参与过该活动！");
+		$(".gameBegain").hide();
+	}else{
+		$(".begain_font").html("点击开始拼图，豪礼马上有！");
+		$(".gameBegain").show();
+	} 
+	//点击开始拼图的方法
+	 function startPlayGame(){
+		$.ajax({
+			type : "GET",
+			url : "${basePath}/puzzle/puzzleStart",
+			async : false,
+			dataType : "json",
+			data : {
+				"puzzleWxUserId":'${puzzleWxUserId}'
+			},
+			success : function(response) {
+				
+			},
+			error : function(error) {
+				alert("开始拼图失败");
+			}
+		});
+	}
+	//拼图成功的方法
+	var puzzleWinningId;
+	function successAward(){
+		$.ajax({
+			type : "GET",
+			url : "${basePath}/puzzle/savePrize",
+			async : false,
+			dataType : "json",
+			data : {
+				"puzzleWxUserId":'${puzzleWxUserId}',
+				"openId":'${openid}'
+			},
+			success : function(reponse) {
+				//成功之后动态改变文字和图片
+				puzzleWinningId=reponse.puzzleWinningId;
+			},
+			error : function(error) {
+				alert("拼图成功失败");
+			}
+		});
+	} 
+	
+	//拼图失败的方法
+	 function failAjax(){
+		$.ajax({
+			type : "GET",
+			url : "${basePath}/puzzle/puzzleFailure",
+			async : false,
+			dataType : "json",
+			data : {
+				"puzzleWxUserId":'${puzzleWxUserId}'
+			},
+			success : function(response) {
+			},
+			error : function(error) {
+				alert("拼图交互失败");
+			}
+		});
+	} 
+	//获取微信地址
+	function getWxAddress(){
+		//alert("789456123485456")
+		if(subscribe==1){
+			$.ajax({
+				type: "GET",
+				url: "${basePath}/index/WxConfig",
+				async: false,
+				dataType: "json",
+				data: {"locationUrl":location.href},
+				success: function(config){
+					wx.config({
+			              debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			              appId : config.appId, // 必填，公众号的唯一标识
+			              timestamp : config.timestamp, // 必填，生成签名的时间戳
+			              nonceStr : config.nonceStr, // 必填，生成签名的随机串
+			              signature : config.signature,// 必填，签名，见附录1
+			              jsApiList : ['openAddress']// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			         });
+				}
+			});
+			wx.ready(function(){
+				wx.openAddress({
+					success: function (res) {
+						var provice=res.provinceName;
+			    		var city= res.cityName;
+			    		var counties=res.countryName;
+			    		var detail=res.detailInfo;
+			    		var tel =res.telNumber;
+			    		var name=res.userName;
+			    		var address=provice+city+counties+detail;
+			    		$.ajax({
+							type: "GET",
+							url: "${basePath}/puzzle/address",
+							async: false,
+							dataType: "json",
+							data: {
+								"name":name,
+								"tel":tel,
+								"address":address,
+								"puzzleWinningId":puzzleWinningId
+							},
+							success: function(data){
+								location.reload();
+								
+							},
+							error:function(){
+								alert("error");
+							}
+						});
+					},
+					cancel: function (esg) { 
+						
+					},
+					fail:function(res){
+						
+					} 
+				});
+			});  
+		}else if(subscribe==0){
+			$("#aaa").show();
+		}	
+	}
+	
+		$(".getAddress,.addressBtn").click(function(){
+			//alert("wojinlail ")
+		//	alert("5555")
+			if(subscribe==1){
+				
+				getWxAddress();
+			}else if(subscribe==0){
+				
+				//alert("2")
+				$("#aaa").show();
+			}
+			
+		});//click
+			
+		//保存收货地址到服务器
+		function submitAddress(data) {
+			$.ajax({
+				type : "GET",
+				url : "${basePath}/puzzle/address",//FIXME 此地址需要更换
+				async : false,
+				dataType : "json",
+				data : data,
+				success : function(response) {
+					alert("地址保存成功");
+				},
+				error : function(error) {
+					alert("保存失败");
+				}
+			});
+		};
+		//点击个人中心
+		$(".mycenter_btn").on("click", function() {
+			//alert("88888")
+			if(subscribe==1){
+				$("#aaa").css({"display":"none"});
+				var sellerPublicNumberId=$("#sellerPublicNumberId").val();
+				location.href="${basePath}/personalCenter/index?BPN="+sellerPublicNumberId;
+			}else if(subscribe==0){
+				//alert(".0.0.")
+				$("#aaa").css({"display":"block"});
+				$(".bg").css({"display":"none"});
+				$("#myAward").css({"display":"none"});
+			}
+		})
+		//点击我的奖品
+		$(".myAward").on("click",function(){
+			$("#myAward").show();
+			$.ajax({
+				type : "GET",
+				url : "${basePath}/puzzle/myPrize",
+				async : false,
+				dataType : "json",
+				data : {
+					"puzzleWxUserId":"${puzzleWxUserId}"
+				},
+				success : function(response) {
+					//alert(response);
+					if(response==null || response==""){
+						$(".noAwardInfo").show();
+					}else{
+						$(".noAwardInfo").hide();
+						$(".myAward_infos_content").html("");
+						puzzleWinningId=response.ID;
+						var myAward_infos_content=$(".myAward_infos_content");
+						var li1 = $('<li>' + response.PRIZE_PROJECT + '</li>');
+						var li2 = $('<li>' + response.CREATE_TIME + '</li>');
+						if(response.STATE=="1"){
+							var li3 = $("<li><input type='button' value='已领取' class='addressBtn'></li>");
+						}else if(response.STATE=="2"){
+							var li3 = $("<li><input type='button' value='填写收货地址' class='addressBtn' id='addressBtn' onclick='getWxAddress()'></li>");
+						}else if(response.STATE=="3"){
+							var li3 = $("<li><input type='button' value='地址已填写' class='addressBtn'></li>");
+						}else if(response.STATE=="4"){
+							var li3 = $("<li><input type='button' value='已发货' class='addressBtn'></li>");
+						}else if(response.STATE=="5"){
+							var li3 = $("<li><input type='button' value='未发货' class='addressBtn'></li>");
+						}else {
+							var li3 = $("<li><input type='button' value='出错' class='addressBtn'></li>");
+						}
+						li1.appendTo(myAward_infos_content);
+						li2.appendTo(myAward_infos_content);
+						li3.appendTo(myAward_infos_content); 
+					}
+				},
+				error : function(error) {
+					alert("点击我的奖品交互失败");
+				}
+			});
+		})
+	</script>
+	</html>

@@ -1,0 +1,342 @@
+<!--[arg basePath,staticPath,systemHttp,url,shareBargain,shareBargainWxuser,shareBargainPrize,qrcode,sbhList,sellerPublicNumber,openid;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>分享砍价</title>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<link rel="stylesheet" href="${staticPath}/css/Bargain-activities/Bargain-Invitation.css" />
+		<!-- <link rel="stylesheet" href="${staticPath}/css/common/tan.css" /> -->
+	</head>
+	<body>
+		<div class="Popup shibai" style="display:none">
+			<div class="main-small" style="background-image: url('${staticPath}/New_img/Bargain-activities/ok-bg.png')" >
+				<div class="Pbox">
+				<p>分享失败</p>
+			</div>
+			<img class="h5-img" src="${staticPath}/New_img/Bargain-activities/true.png" alt="" />
+			</div>
+		</div>
+		<div class="Popup chnegg" style="display:none">
+				<div class="main-small" style="background-image: url('${staticPath}/New_img/Bargain-activities/ok-bg.png')" >
+				<div class="Pbox">
+				<p>分享成功</p>
+			</div>
+			<img class="h5-img" src="${staticPath}/New_img/Bargain-activities/true.png" alt="" />
+			</div>
+		</div>
+	 	<div class="bg-mask7 end" style="display: none;">
+			<div class="my-kuang1" style="background-image: url('${staticPath}/New_img/Bargain-activities/my-gg.png')">
+				<div class="my-kuang_p">
+					<p>活动结束</p>
+					<p>感谢参与活动</p>
+				</div>
+				<div class="QR"><img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" /></div>
+				<div class="gongzong"><p>关注【${sellerPublicNumber.getPublicNumberName()}】公众账号</p></div>
+			</div>
+			<img src="${staticPath}/New_img/Bargain-activities/guanbi.png" alt="" class="close end1" />
+		</div> 
+		<div class="bg-mask7 already1" style="display: none;">
+			<div class="my-kuang" style="background-image: url('${staticPath}/New_img/Bargain-activities/my-kan.png')">
+				<div class="my-kuang_p">
+					<p>您真棒!</p>
+					<p>本次已砍掉<span id="Price">3</span>元</p>
+				</div>
+				<div class="btn limian" onclick="invite()">
+					<img src="${staticPath}/New_img/Bargain-activities/yaoqing.png" alt="" />
+				</div>
+			</div>
+		</div>
+		<div class="bg-mask " style="display: none">
+			<div class="tanchuan" style="background-image: url('${staticPath}/New_img/Bargain-activities/dianjifenxiang.png')">
+			
+			</div>
+		</div>
+		<div class="bg" style="background-image: url('/activityUploadPath${shareBargain.getMoblecBackGroundImg()}');display:block">
+		<div class="title">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+			<div class="main">
+				<div class="Insane" style="background-image: url('${staticPath}/New_img/Bargain-activities/daojishi_bg(1).png')">
+					<p>活动倒计时：<span id="no1"></span> 天 <span id="no2"></span> 时 <span id="no3"></span> 分 <span id="no4"></span> 秒</p>
+				</div>
+			</div>
+			<div class="main_2">
+				<div  class="banner" style="background-image: url('${staticPath}/New_img/Bargain-activities/zhanji_bg.png')">
+					<div class="wan" onclick="invite()">
+						<p>分享给好友,继续帮忙砍价</p>
+					</div>
+					<div class="jilu">
+						<p>已砍掉<span class="three"></span>元,离完成目标仅差<span class="four"></span>元！</p>
+					</div>
+					
+					<div class="please" style="display:none">
+						<p>请返回公众号填写地址</p>
+						<p>砍价成功!已完成目标价</p>
+					</div>
+				
+					<input type="hidden" class="zero" value="${shareBargainWxuser.getNowPrice()}" />
+					<div class="MONEY">
+						<span class="yuanJ">原价:</span><span class="one">${shareBargainPrize.getOriginalPrice()}</span><span class="yuan">元</span> <span class="mu">目标价:</span><span class="two">${shareBargainPrize.getLowPrice()}</span><span class="yuan1">元</span> 
+					</div>
+					<div class="main_3">
+						<img src="${staticPath}/img/progress bar-01.png" alt="" class="progress-after" />
+						<div class="progress-before"></div> 
+					</div>
+					<div class="kanjia-name">
+						<p>好友帮砍名单</p>
+					</div>
+				<div class="white">
+					<!--[loop(sbh:sbhList){]-->
+					<div class="footer">
+						<span class="no0">${sbh_index+1}.</span>
+						<img class="headImg" src="${sbh.getHeadImgUrl()}" style="width: 1rem; height: 1rem;"> <span class="no1">${sbh.getNickName()}</span>
+						<span class="no2">成功砍掉</span> <span class="no3">${sbh.getBargainMoney()}元</span>
+					</div>
+					<!--[}]-->
+				</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" value="${shareBargain.getActivityName()}" id="ActivityName" />
+		<input type="hidden" value="${shareBargainWxuser.getId()}" id="friendBargainId" />
+		<input type="hidden" value="${shareBargain.getId()}" id="activityId" />
+		<input type="hidden" value="${shareBargainPrize.getId()}" id="shareBargainPrizeId" />
+		<input type="hidden" value="${sellerPublicNumber.getId()}" id="joinBelongPublicNumberId" />
+		<input type="hidden" value="${sellerPublicNumber.getAppId()}" id="appid" />
+		<input type="hidden" value="${openid}" id="chopAKnifeOpenid" />
+		<!-- 标题 -->
+		<input type="hidden" value="${shareBargain.getShareTitle()}" id="shareTitle" />
+		<!-- 描述 -->
+		<input type="hidden" value="${shareBargain.getShareDetail()}" id="shareDetail" />
+		<!-- 图片 -->
+		<input type="hidden" value="${shareBargain.getShareImg()}" id="shareImg" />
+		<script src="${staticPath}/js/Bargain-activities/Bargain-Invitation.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+		<script type="text/javascript">
+		
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".main").css({"padding-top":"1rem"});
+			$(".progress-after").css({"margin-top":"1rem"});
+			$(".progress-before").css({"margin-top":"1rem"});
+			//$(".erweima").css({"margin-top":"1rem"})
+			//alert("pingguo6666")
+		}
+		/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			$(".Insane").css({"margin-top":"5rem"})
+			$(".progress-after").css({"margin-top":"-0.5rem"});
+			$(".progress-before").css({"margin-top":"-0.5rem"});
+			$(".kanjia-name").css({"margin-top":"0.7rem"}) 
+			//alert("huaweishouji")
+		}
+		
+		$(function() {
+			var starttime = new Date("${shareBargain.getEndTime()}");
+			var countdownTimer = setInterval(function() {
+				var nowtime = new Date();
+				var time = starttime - nowtime;
+				var day = parseInt(time / 1000 / 60 / 60 / 24);
+				var hour = parseInt(time / 1000 / 60 / 60 % 24);
+				var minute = parseInt(time / 1000 / 60 % 60);
+				var seconds = parseInt(time / 1000 % 60);
+				$("#no1").html(day)
+				$("#no2").html(hour)
+				$("#no3").html(minute)
+				$("#no4").html(seconds)
+					/*当活动时间结束触发事件*/
+				if(day <= 0 && hour <= 0 && minute <= 0 && seconds <= 0) {
+					clearInterval(countdownTimer);
+					$("#no1").html(0)
+					$("#no2").html(0)
+					$("#no3").html(0)
+					$("#no4").html(0)
+					$(".wan p").css({"background-color":"gray"})
+					$(".wan").unbind();
+				} else {
+					
+				}
+			}, 1000);
+		})
+			/* 表情转码 */
+			$(".no1").each(function() {
+				$(this).text(decodeURI($(this).html()));
+			});
+			$(function() {
+				var friendBargainId = $("#friendBargainId").val();
+				var activityId = $("#activityId").val();
+				var shareBargainPrizeId = $("#shareBargainPrizeId").val();
+				var joinBelongPublicNumberId = $("#joinBelongPublicNumberId").val();
+				var appid = $("#appid").val();
+				var chopAKnifeOpenid = $("#chopAKnifeOpenid").val();
+				var shareTitle = $("#shareTitle").val();
+				var shareDetail = $("#shareDetail").val();
+				var shareImg = $("#shareImg").val();
+				$.ajax({
+					type: 'POST',
+					url: '${basePath}/ShareBargain/chopAKnife',
+					data: {
+						"activityId": activityId,
+						"shareBargainPrizeId": shareBargainPrizeId,
+						"friendBargainId": friendBargainId,
+						"appid": appid,
+						"qrcode": '${qrcode}',
+						"joinBelongPublicNumberId": joinBelongPublicNumberId,
+						"chopAKnifeOpenid": chopAKnifeOpenid
+					},
+					success: function(date) {
+						if(date.result == "已经砍至最低价") {
+							$(".end").css({
+								"display": "block"
+							});
+						} else if(date.result == "您朋友砍价次数已完") {
+							alert("您砍价次数已完");
+						} else if(date.result == "") {
+							$(".already1").css({
+								"display": "block"
+							});
+							$("#Price").html(date.money);
+						} else if(date.result == "您已经帮忙砍价了") {}
+					}
+				});
+				var ActivityName = $("#ActivityName").val();
+				$.ajax({
+					type: "GET",
+					url: "${basePath}/ShareBargain/WxShareConfig",
+					async: true,
+					dataType: "json",
+					data: {
+						"locationUrl": location.href
+					},
+					success: function(config) {
+						wx.config({
+							debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+							appId: config.appId, // 必填，公众号的唯一标识
+							timestamp: config.timestamp, // 必填，生成签名的时间戳
+							nonceStr: config.nonceStr, // 必填，生成签名的随机串
+							signature: config.signature, // 必填，签名，见附录1
+							jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline']
+							// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+						});
+						wx.ready(function() {
+							var a = 'http://${systemHttp}/activityUploadPath' + shareImg;
+							
+							//分享朋友
+							wx.onMenuShareAppMessage({
+								title: shareTitle, // 分享标题
+								desc: shareDetail, // 分享描述
+								link: '${url}', // 分享链接
+								imgUrl: 'http://${systemHttp}/activityUploadPath' + shareImg, // 分享图标
+								trigger: function(res) {
+
+								},
+								success: function() {
+									// 用户确认分享后执行的回调函数
+								},
+								cancel: function() {
+									// 用户取消分享后执行的回调函数
+									//alert("分享失败");
+									$(".shibai").css({
+										"display": "block"
+									})
+								}
+							});
+							//分享朋友圈
+							wx.onMenuShareTimeline({
+								title: shareTitle, // 分享标题
+								link: '${url}', // 分享链接
+								imgUrl: 'http://${systemHttp}/activityUploadPath' + shareImg, // 分享图标
+								success: function() {
+									//alert("分享成功");
+									$(".chnegg").css({
+										"display": "block"
+									})
+								},
+								cancel: function() {
+									// 用户取消分享后执行的回调函数
+									//alert("分享失败");
+									$(".shibai").css({
+										"display": "block"
+									})
+								}
+							});
+						});
+					}
+				});
+			})
+
+			/*砍价进度条 */
+			var Maximum = parseFloat($(".one").html()); //原价
+			var Minimum = parseFloat($(".two").html()); //最低价
+			var Middleimum = parseFloat($(".zero").val()); //中间价
+			var dan = parseFloat($(".six").val()); //当前价
+			var a = Maximum - Minimum;
+			var haveCut = Maximum - Middleimum;
+			var haveBai = haveCut / a;
+			var length;
+			if(haveBai > 0.05) {
+				length = haveBai;
+			} else {
+				length = 0.05
+			}
+			$(".main_3 .progress-before").css({
+				"width": (length * 562.5) / 75 + "rem"
+			});
+			var kan = Maximum - Middleimum;
+			var aa = Maximum - kan - Minimum;
+			$(".three").html(kan.toFixed(2));
+			$(".four").html(aa.toFixed(2));
+			if(aa.toFixed(2) == '0.00') {
+				$(".wan").hide()
+				$(".jilu").hide()
+				$(".please").show()
+				$(".over").hide()
+				$(".MONEY").css({"margin-top":"0.9rem"})
+			} else if(aa.toFixed(2) == '0') {
+				$(".wan").hide()
+				$(".jilu").hide()
+				$(".please").show()
+				$(".over").hide()
+				$(".MONEY").css({"margin-top":"0.9rem"})
+			} else if(aa.toFixed(2) == '0.0') {
+				$(".wan").hide()
+				$(".jilu").hide()
+				$(".please").show()
+				$(".over").hide()
+				$(".MONEY").css({"margin-top":"0.9rem"})
+			} else if(aa.toFixed(2) == '-0.00') {
+				$(".wan").hide()  
+				$(".jilu").hide()
+				$(".please").show()
+				$(".over").hide()
+				$(".MONEY").css({"margin-top":"0.9rem"})
+			}
+			$(".h5-img").click(function() {
+				$(".shibai").css({
+					"display": "none"
+				})
+			});
+			$(".h5-img").click(function() {
+				$(".chnegg").css({
+					"display": "none"
+				})
+			});
+			$(".bg-mask").click(function() {
+				$(".bg-mask").css({
+					"display": "none"
+				})
+				location.reload();
+			});
+			$(".end1").click(function() {
+				$(".end").css({
+					"display": "none"
+				});
+			})
+		</script>
+	</body>
+</html>

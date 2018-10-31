@@ -1,0 +1,57 @@
+<!--[arg user,basePath,staticPath,activityList;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css"/>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityApply/active-application.css"/>
+	</head>
+	<body style="background-image: url('${staticPath}/img/bg0.png')">
+	<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心 </div>
+			<p class="currentLocation">您的当前位置：<a href="${basePath}/goHomePage">首页></a><a href="${basePath}/activityApprove/index">活动审批</a></p>
+			<ul class="title-pic">
+				<li><a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+				<li><a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a></li>
+			</ul>
+	</div>
+		<div class="activities">
+				<ul>
+				<li class="one">
+					<div class="img">
+						
+						<img src="/Activity/static/pc/image/shige.png" alt="" />
+					</div>
+					<p class="activity-name">十个活动</p>
+					
+				</li>
+				<li class="two">
+					<div class="img">
+						
+						<img src="/Activity/static/pc/image/dizhi.png" alt="" />
+					</div>
+					<p class="activity-name">定制活动</p>
+				
+				</li>
+			</ul>
+		</div>
+			<script>
+	/* 十个活动 */
+	$(".one").on("click", function() {
+		 location.href="${basePath}/approveTen"; 
+	})
+	/* 定制活动 */
+	$(".two").on("click", function() {
+		 location.href="${basePath}/customActivityConfig/approveCustomActivity";
+	})
+	
+	
+	</script>
+	</body>
+</html>

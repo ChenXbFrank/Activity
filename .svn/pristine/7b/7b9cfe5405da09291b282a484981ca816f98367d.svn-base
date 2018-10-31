@@ -1,0 +1,33 @@
+<!--[arg basePath,staticPath,ShareBargain,ProductInfo,ShareBargainPrize;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/Bargain-activities/Bargain-error.css" />
+	</head>
+	<body style="background-image: url('${staticPath}/img/bg-xuanze.png')">
+		<div class="bg-mask7 end" style="display: block ;">
+			<img src="${staticPath}/img/kanjia tubiao.png" alt="" class="caidai" />
+			<div class="biaoti">
+				<p class="ee" style="color: #fff608;">赶快购酒</p>
+			</div>
+			<div class="box">
+				<div class="zx">
+					<h5 style="color: #fff608;">码上参加吧</h5>
+				</div>
+				<div class="QR">
+					<img src="${ShareBargainPrize.getProductImg()}" alt="" />
+				</div>
+			</div>
+			<div class="jiuM">
+				<p>${ProductInfo.getProductName()}砍价活动火热进行中……</p>
+			</div>
+		</div>
+	</body>
+</html>

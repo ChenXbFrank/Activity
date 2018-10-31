@@ -1,0 +1,181 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+ul li {
+	list-style: none;
+}
+a,button,input{
+	outline:none;
+}
+a {
+	text-decoration: none;
+}
+img{
+	border:none;
+}
+body {
+	background-color:#fbf4f1;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.select li{
+	font-size:1vw;
+}
+.activities {
+	width: 100%;
+}
+.font-color{
+	color:white;
+}
+.activities{
+	width:100%;
+	margin-top:1.2vw;
+}
+.activities ul li{
+	float:left;
+	width:16vw;
+	height: 17vw;
+	background: white;
+	text-align: center;
+	margin: 0px 0px 3vw 3vw; 
+	box-shadow: 0px 0px 27px rgba(114,78,61,0.25);
+	position: relative;
+	/* border:1px solid yellow; */
+}
+.activities ul li .activity-name{
+	font-size:1vw;
+	color:#545353;
+	margin-top: -1.5vw;
+}
+.activities ul li .person{
+	width:100%;
+	margin-top:0.4vw;
+	color:#a5a5a5;
+	font-size:0.8vw;
+}
+.person .join-person{
+	display:inline-block;
+	width:50%;
+	float:left;
+}
+.person .award-person{
+	display:inline-block;
+	width:50%;
+	float:right;
+}
+.img{
+	width:14.8vw;
+	height: 11.9vw;
+	margin:2vw auto 1.3vw;
+	position: relative;
+}
+.img img{
+	width:100%;
+	height: 100%;
+	margin-top:-1vw;
+}
+.img .mask-img{
+	position: absolute;
+	width:100%;
+	height: 100%;
+	background:rgba(241,116,21,0.9);
+	line-height: 14vw;
+	font-size:1.2vw;
+	color:white;
+}
+.search{
+	margin-top:1vw;
+	margin-left:4vw;
+	border:none;
+	font-size:1vw;
+}
+.search input[type="text"]{
+	width:12vw;
+	height: 2vw;
+	outline:none;
+	border:none;
+	border:1px solid #d0d0d0;
+	border-radius: 4px;
+}
+.search input[type="button"]{
+	width:4vw;
+	height: 2vw;
+	border-radius: 4px;
+	border:none;
+}
+label{
+	margin-left:3vw;
+	font-size:1vw;
+}
+/* 删除样式 */
+.activities .deleteImg{
+	position:absolute;
+	right:0px;
+	bottom:0px;
+	z-index:999;
+	width:1.4vw;
+}
+/*弹窗提示是否删除样式*/
+/*遮罩*/
+.deletePopMask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.6);
+	z-index: 998;
+	left: 0;
+	top: 0;
+}
+/*弹窗样式*/
+.deleteContainer{
+	text-align: center;
+	width: 20vw;
+	height: 8vw;
+	background: rgba(255, 255, 255, 1);
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-left: -10vw;
+	margin-top: -4vw;
+	z-index: 9999;
+	font-size: 1vw;
+}
+
+.deleteInner{
+	width: 18vw;
+	height: 6vw;
+	margin: 1vw auto 0px;
+	position:relative;
+}
+
+.deleteInner input[type="button"] {
+	width: 5vw;
+	height: 2vw;
+	margin-top: 2vw;
+	background: #fcb213;
+	border: none;
+	color: white;
+	font-size: 1vw;
+	border-radius: 4px;
+}
+.deleteInner #yes{
+	float:left;
+	margin-left:2vw;
+}
+.deleteInner #no{
+	float:right;
+	margin-right:2vw;
+}
+.deleteInner:after {
+	width: 0;
+	height: 0;
+	visibility: hidden;
+	clear: both;
+	display: block;
+	content: "";
+}
+input[type="button"] {
+   margin-left: 0vw; 
+}

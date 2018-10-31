@@ -1,0 +1,486 @@
+package com.activity.common.utils.wxInterface;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.Map.Entry;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import com.activity.common.model.bigDataPlatform.ProductInfo;
+import com.activity.common.model.centerObjcet.wx.WxConfig;
+import com.activity.common.model.centerObjcet.wx.WxUserInfo;
+import com.activity.common.model.publicNumber.SellerPublicNumber;
+import com.activity.common.model.shareBargain.ShareBargain;
+import com.activity.common.model.shareBargain.ShareBargainPrize;
+import com.activity.common.model.shareBargain.ShareBargainWxuser;
+import com.activity.common.service.system.ProductInfoService;
+import com.activity.common.utils.date.DateUitils;
+import com.activity.common.utils.http.HttpRequest;
+import com.activity.common.utils.system.Tools;
+import com.jfinal.core.JFinal;
+import com.jfinal.json.Jackson;
+import com.jfinal.kit.HttpKit;
+import com.jfinal.kit.PropKit;
+import com.jfinal.weixin.sdk.api.*;
+import com.jfinal.weixin.sdk.utils.HttpUtils;
+
+public class WxConfigUitils {
+	private static WxConfigUitils wxConfigUitils = new WxConfigUitils();
+	private final Logger log = LoggerFactory.getLogger(WxConfigUitils.class);
+	// 工具类
+	DateUitils uitils = DateUitils.getUitils();
+
+	private WxConfigUitils() {
+	}
+
+	public static WxConfigUitils getWxConfigUitils() {
+		return wxConfigUitils;
+	}
+
+	// 微信配置对象
+	WxConfig wxConfig = new WxConfig();
+	// http请求
+	HttpRequest httpRequest = new HttpRequest();
+
+	/**
+	 * 添加微信公众号配置获取配置
+	 */
+	public static ApiConfig getApiConfig(String Token, String AppId, String AppSecret) {
+		ApiConfig ac = new ApiConfig();
+		// 配置微信 API 相关常量
+		ac.setToken(Token);
+		ac.setAppId(AppId);
+		ac.setAppSecret(AppSecret);
+		/**
+		 * 是否对消息进行加密，对应于微信平台的消息加解密方式： 1：true进行加密且必须配置 encodingAesKey
+		 * 2：false采用明文模式，同时也支持混合模式
+		 */
+		ac.setEncryptMessage(PropKit.getBoolean("encryptMessage", false));
+		ac.setEncodingAesKey(PropKit.get("encodingAesKey", "setting it in config file"));
+		return ac;
+	}
+
+	/**
+	 * 产生随机串--由程序自己随机产生
+	 * 
+	 * @return
+	 */
+	public static String create_nonce_str() {
+		return UUID.randomUUID().toString();
+	}
+
+	/**
+	 * 产生随机串--由程序自己随机产生 32位
+	 * 
+	 * @return
+	 */
+	public static String create_nonce_str32() {
+		return UUID.randomUUID().toString().substring(0, 32);
+	}
+	
+	
+	/**
+	 * 调用微信分享接口微信所需时间
+	 */
+	public String getDate() {
+		Date dete = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		return formatter.format(dete);
+	}
+
+	/**
+	 * 由程序自己获取当前时间 时间戳
+	 * 
+	 * @return
+	 */
+	public String create_timestamp() {
+		return Long.toString(System.currentTimeMillis() / 1000);
+	}
+
+	/**
+	 * 随机加密
+	 * 
+	 * @param hash
+	 * @return
+	 */
+	public String byteToHex(final byte[] hash) {
+		Formatter formatter = new Formatter();
+		for (byte b : hash) {
+			formatter.format("%02x", b);
+		}
+		String result = formatter.toString();
+		formatter.close();
+		return result;
+	}
+
+	/**
+	 * 微信js-sdk基本配置参数
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public Map<String, String> WxConfigApi(String url) {
+		// jsapi_ticket
+		JsTicket jsapi_ticket = JsTicketApi.getTicket(JsTicketApi.JsApiType.jsapi);
+		// 随机串
+		String nonce_str = create_nonce_str();
+		// 时间戳
+		String timestamp = create_timestamp();
+		// 签名
+		String signature = "";
+		// 拼接字符串进行加密，获取签名
+		String sha1 = "jsapi_ticket=" + jsapi_ticket.getTicket() + "&noncestr=" + nonce_str + "&timestamp=" + timestamp
+				+ "&url=" + url;
+		try {
+			MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+			crypt.reset();
+			crypt.update(sha1.getBytes("UTF-8"));
+			signature = byteToHex(crypt.digest());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		Map<String, String> configMap = new HashMap<String, String>();
+		String appId = ApiConfigKit.getApiConfig().getAppId();
+		configMap.put("url", url);
+		configMap.put("appId", appId);
+		configMap.put("jsapi_ticket", jsapi_ticket.getTicket());
+		configMap.put("nonceStr", nonce_str);
+		configMap.put("timestamp", timestamp);
+		configMap.put("signature", signature);
+		return configMap;
+	}
+
+	/**
+	 * 获取公众号用户信息
+	 */
+	public WxUserInfo getPublicUser(String accessToken, String openid) {
+		// 读取用户基本信息
+		String token = HttpUtils.post("https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken
+				+ "&openid=" + openid + "&lang=zh_CN", "");
+		// JSON字符串转为实体对象
+		//WxUserInfo wxuser = Jackson.getJson().parse(token, WxUserInfo.class);
+		@SuppressWarnings("unchecked")
+		Map<String, Object> s = Jackson.getJson().parse(token,Map.class);
+		WxUserInfo wxuser = new WxUserInfo();
+		wxuser.setSubscribe(s.get("subscribe").toString());
+		wxuser.setOpenid(s.get("openid").toString());
+		wxuser.setNickname(s.get("nickname").toString());
+		wxuser.setSex(s.get("sex").toString());
+		wxuser.setLanguage(s.get("language").toString());
+		wxuser.setCity(s.get("city").toString());
+		wxuser.setProvince(s.get("province").toString());
+		wxuser.setCountry(s.get("country").toString());
+		wxuser.setHeadimgurl(s.get("headimgurl").toString());
+		wxuser.setSubscribe_time(s.get("subscribe_time").toString());
+		wxuser.setRemark(s.get("remark").toString());
+		wxuser.setGroupid(s.get("groupid").toString());
+		wxuser.setSubscribe_scene(s.get("subscribe_scene").toString());
+		wxuser.setQr_scene(s.get("qr_scene").toString());
+		wxuser.setQr_scene_str(s.get("qr_scene_str").toString());
+		return wxuser;
+	}
+
+	/**
+	 * 未关注，获取临时
+	 * https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+	 */
+	public WxUserInfo getWxUser(String accessToken, String openid) {
+		// 读取用户基本信息
+		String token = HttpUtils.post("https://api.weixin.qq.com/sns/userinfo?access_token="+accessToken+"&openid="+openid+"&lang=zh_CN","");
+		// JSON字符串转为实体对象
+		@SuppressWarnings("unchecked")
+		Map<String, String> s = Jackson.getJson().parse(token,Map.class);
+		WxUserInfo wxuser = new WxUserInfo();
+		wxuser.setSubscribe(s.get("subscribe"));
+		wxuser.setOpenid(s.get("openid"));
+		wxuser.setNickname(s.get("nickname"));
+		wxuser.setSex(s.get("sex"));
+		wxuser.setLanguage(s.get("language"));
+		wxuser.setCity(s.get("city"));
+		wxuser.setProvince(s.get("province"));
+		wxuser.setCountry(s.get("country"));
+		wxuser.setHeadimgurl(s.get("headimgurl"));
+		wxuser.setSubscribe_time(s.get("subscribe_time"));
+		wxuser.setRemark(s.get("remark"));
+		wxuser.setGroupid(s.get("groupid"));
+		wxuser.setSubscribe_scene(s.get("subscribe_scene"));
+		wxuser.setQr_scene(s.get("qr_scene"));
+		wxuser.setQr_scene_str(s.get("qr_scene_str"));
+		return wxuser;
+	}
+	
+	/**
+	 * 分享砍价中奖 中奖 aAmrKzgYCDBsYTgwGJn_a04O8l_2OgcZ94_CnvHN8MY 推送消息
+	 */
+	public void wxInformation(String openid, String templateId, String appid, String http, String token,
+			ShareBargainWxuser sbw, ShareBargain sb, ShareBargainPrize sbp, SellerPublicNumber spn) {
+		List<ProductInfo> piList = ProductInfoService.getService().getProductInfoById(sbp.getProductId());
+		ProductInfo pi = new ProductInfo();
+		for (ProductInfo piErgodic : piList) {
+			pi = piErgodic;
+		}
+		String activityUrl="%2fShareBargain%2fPrizeAddress%3fsbw%3d" + sbw.getId() + "%26jpn%3d" + spn.getId() ;
+		Tools.sendWinNotice(openid, spn, activityUrl, sb.getActivityName(), pi.getProductName(), token);
+	}
+
+	/**
+	 * 微信公众号支付
+	 * 
+	 * @return
+	 */
+	public Map<String, String> wxPay(String openid, String appid, String key, String mch_id, String money, String ip,
+			String outTradeNo) {
+		// 商品描述
+		String body = "en";
+		// 订单号
+		String out_trade_no = outTradeNo;
+		log.error("---支付时---加密前---"+out_trade_no);
+		// 支付金额
+		BigDecimal re1 = new BigDecimal(money);
+		BigDecimal re2 = new BigDecimal(Float.toString(100.00f));
+		Float aa = re1.multiply(re2).floatValue();
+		String total_fee = String.valueOf(aa);
+		String[] smill = total_fee.split("\\.");
+		total_fee = smill[0];
+		// 终端IP
+		String spbill_create_ip = ip;
+		// 异步接收微信支付结果通知的回调地址
+		String notify_url = "http://"+PropKit.use("system.properties").get("http")+JFinal.me().getContextPath()+"/wxpayxml/analysisXml";
+		// 交易类型
+		String trade_type = "JSAPI";
+		// 随机串
+		String nonce_str = UUID.randomUUID().toString().substring(0, 32);
+		// 时间戳
+		String timestamp = create_timestamp();
+		// 签名类型
+		String signType = "MD5";
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("appid", appid);
+		map.put("mch_id", mch_id);
+		map.put("nonce_str", nonce_str);
+		map.put("body", body);
+		map.put("out_trade_no", out_trade_no);
+		map.put("total_fee", total_fee);
+		map.put("spbill_create_ip", spbill_create_ip);
+		map.put("notify_url", notify_url);
+		map.put("trade_type", trade_type);
+		map.put("openid", openid);
+		// 支付签名
+		String paySign = null;
+		// 预付商品id
+		String prepayid = "";
+		try {
+			paySign = getPayCustomSign(map, key);
+			map.put("sign", paySign);
+			String xml = ArrayToXml(map);
+			// 统一下单
+			String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+			String xmlStr = HttpKit.post(url, xml);
+			log.error("---支付时---加密串---"+xml);
+			if (xmlStr.indexOf("SUCCESS") != -1) {
+				Map<String, String> map2 = doXMLParse(xmlStr);
+				prepayid = (String) map2.get("prepay_id");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// 封装h5页面调用参数
+		Map<String, String> signMap = new HashMap<String, String>();
+		signMap.put("appId", appid);
+		signMap.put("timeStamp", timestamp + "");
+		signMap.put("package", "prepay_id=" + prepayid);
+		signMap.put("signType", "MD5");
+		signMap.put("nonceStr", nonce_str);
+		String paySigntwo = null;
+		try {
+			paySigntwo = getPayCustomSign(signMap, key);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Map<String, String> paymap = new HashMap<String, String>();
+		paymap.put("timestamp", timestamp);
+		paymap.put("nonceStr", nonce_str);
+		paymap.put("prepay_id", "prepay_id=" + prepayid);
+		paymap.put("signType", signType);
+		paymap.put("paySign", paySigntwo);
+		return paymap;
+	}
+
+	/**
+	 * 获取支付所需签名
+	 * 
+	 * @param ticket
+	 * @param timeStamp
+	 * @param card_id
+	 * @param code
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getPayCustomSign(Map<String, String> bizObj, String key) throws Exception {
+		String bizString = FormatBizQueryParaMap(bizObj, false);
+		return sign(bizString, key);
+	}
+
+	/**
+	 * 商户订单号
+	 * @return
+	 */
+	public static String MchBillno(){
+		Random r = new Random(1000);
+		String mchBillno = "wly" + (r.nextInt() * 100) + newDateByYMD();
+		return mchBillno;
+	}
+	
+	/**
+	 * 新建时间并格式转换 年月日
+	 */
+	public static String newDateByYMD() {
+		Date date = new Date();
+		SimpleDateFormat time = new SimpleDateFormat("yyyyMMddHHmmss");
+		return time.format(date);
+	}
+	
+	/**
+	 * 字典排序
+	 * 
+	 * @param paraMap
+	 * @param urlencode
+	 * @return
+	 * @throws Exception
+	 */
+	public static String FormatBizQueryParaMap(Map<String, String> paraMap, boolean urlencode) throws Exception {
+		String buff = "";
+		try {
+			List<Map.Entry<String, String>> infoIds = new ArrayList<Map.Entry<String, String>>(paraMap.entrySet());
+			Collections.sort(infoIds, new Comparator<Map.Entry<String, String>>() {
+				public int compare(Map.Entry<String, String> o1, Map.Entry<String, String> o2) {
+					return (o1.getKey()).toString().compareTo(o2.getKey());
+				}
+			});
+			for (int i = 0; i < infoIds.size(); i++) {
+				Map.Entry<String, String> item = infoIds.get(i);
+				if (item.getKey() != "") {
+					String key = item.getKey();
+					String val = item.getValue();
+					if (urlencode) {
+						val = URLEncoder.encode(val, "utf-8");
+					}
+					buff += key + "=" + val + "&";
+				}
+			}
+			if (buff.isEmpty() == false) {
+				buff = buff.substring(0, buff.length() - 1);
+			}
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+		return buff;
+	}
+
+	public static String sign(String content, String key) throws Exception {
+		String signStr = "";
+		signStr = content + "&key=" + key;
+		return MD5(signStr).toUpperCase();
+	}
+
+	public final static String MD5(String s) {
+		char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+		try {
+			byte[] btInput = s.getBytes("utf-8");
+			MessageDigest mdInst = MessageDigest.getInstance("MD5");
+			mdInst.update(btInput);
+			byte[] md = mdInst.digest();
+			int j = md.length;
+			char str[] = new char[j * 2];
+			int k = 0;
+			for (int i = 0; i < j; i++) {
+				byte byte0 = md[i];
+				str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+				str[k++] = hexDigits[byte0 & 0xf];
+			}
+			return new String(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static String ArrayToXml(Map<String, String> arr) {
+		String xml = "<xml>";
+		Iterator<Entry<String, String>> iter = arr.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<String, String> entry = iter.next();
+			String key = entry.getKey();
+			String val = entry.getValue();
+			if (IsNumeric(val)) {
+				xml += "<" + key + ">" + val + "</" + key + ">";
+			} else
+				xml += "<" + key + "><![CDATA[" + val + "]]></" + key + ">";
+		}
+		xml += "</xml>";
+		return xml;
+	}
+
+	public static boolean IsNumeric(String str) {
+		if (str.matches("\\d *")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static Map<String, String> doXMLParse(String xml) throws XmlPullParserException, IOException {
+		InputStream inputStream = new ByteArrayInputStream(xml.getBytes());
+		Map<String, String> map = null;
+		XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
+		pullParser.setInput(inputStream, "UTF-8");// 为xml设置要解析的xml数据
+		int eventType = pullParser.getEventType();
+		while (eventType != XmlPullParser.END_DOCUMENT) {
+			switch (eventType) {
+			case XmlPullParser.START_DOCUMENT:
+				map = new HashMap<String, String>();
+				break;
+			case XmlPullParser.START_TAG:
+				String key = pullParser.getName();
+				if (key.equals("xml"))
+					break;
+				String value = pullParser.nextText();
+				map.put(key, value);
+				break;
+			case XmlPullParser.END_TAG:
+				break;
+			}
+			eventType = pullParser.next();
+		}
+		return map;
+	}
+
+	public static void main(String[] args) {
+		WxConfigUitils ss = new WxConfigUitils();
+		System.out.println(ss.create_timestamp());
+	}
+}

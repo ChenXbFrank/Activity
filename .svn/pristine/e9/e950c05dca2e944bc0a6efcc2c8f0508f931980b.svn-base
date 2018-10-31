@@ -1,0 +1,27 @@
+<!--[arg basePath,staticPath,openid,sellerPublicNumberId;]-->
+<html>
+<head>
+<meta charset="UTF-8">
+<title>领取</title>
+<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/breakEgg/breakEgg-homepage.css" />
+</head>
+<body>
+	<h1>领取奖品成功</h1>
+	<div id="reciveAddress">前往个人中心</div>
+	<input type="hidden" value="${openid}" id="openid"/>
+	<input type="hidden" value="${sellerPublicNumberId}" id="sellerPublicNumberId"/>
+</body>
+<script type="text/javascript">
+	/* 填写地址 */
+	$("#reciveAddress").click(function(){
+		var openid=$("#openid").val();
+		var sellerPublicNumberId=$("#sellerPublicNumberId").val();
+		location.href="${basePath}/personalCenter/ActivityPresonalCenter?openid="+openid+"&BPN="+sellerPublicNumberId;
+	}) 
+</script>
+</html>

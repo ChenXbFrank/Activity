@@ -1,0 +1,23 @@
+<!--[arg basePath,staticPath,sellerPublicNumber,openWineWxUser,openWine,openid,wxUserInfo,openWineWxUserId,shareUrl,follow;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>wulianghong</title>
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/openWin/openWin-share.css"/>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/openWin/five_grain_red_index.js"></script>
+	</head>
+	<body>
+		<div class="share" style="background-image:url('${basePath}${openWine.getShareImg()}')">
+			
+		</div>
+	</body>
+</html>

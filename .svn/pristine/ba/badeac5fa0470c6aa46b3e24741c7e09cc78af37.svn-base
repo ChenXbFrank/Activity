@@ -1,0 +1,13 @@
+@media all and (max-width: 900px){
+ 	.activities ul li{
+ 		width:19vw;
+		height: 20vw;
+	}
+ 	.upload1 input[type="button"] {
+	    margin-top: 0vw;
+	}
+	.addPic-right input[type="text"] {
+	    margin-bottom: 0vw; 
+	}
+ 
+ }

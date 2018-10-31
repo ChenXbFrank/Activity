@@ -1,0 +1,228 @@
+<!--[arg basePath,staticPath,sellerInfoList,shareBargain,shareBargainPrize,productInfo,activityState;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="multipart/form-data; charset=iso-8859-1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.form.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/applay-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/media-applay-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/activity-bargain-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/share-set.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/media-share-set.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-approval-info.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-my-one-activity-info.css" />
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+		</style>
+	</head>
+
+	<body style="background-image:url('${staticPath}/img/newVersionImg/bg-new.png');background-size:cover">
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：
+					<a href="${basePath}/goHomePage">首页></a>
+					<a href="${basePath}/activity">我的活动>
+						<a href="${basePath}/shareBargainConfig/shareBargainActivityByUserId">我的砍价活动></a>
+						<a href="">砍价活动详情</a>
+				</p>
+				<ul class="title-pic">
+					<li>
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li>
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+				<div class="left">
+					<div class="activity-pic" id="divPreview">
+						<img id="imgHeadPhoto" src="/activityUploadPath${shareBargain.getMoblecBackGroundImg()}" alt="" />
+					</div>
+				</div>
+				<div class="excels">
+					<input type="hidden" value="${shareBargain.getId()}" id="activityId" />
+					<div class="content">活动内容配置：</div>
+					<div class="nameAndStatus">
+						<label>砍价活动名称：</label>
+						<span>${shareBargain.getActivityName()}</span>
+						<span style="margin-left:2.196vw">状态：</span><span>${activityState}</span>
+					</div>
+					<div class="times">
+						<label for="">砍价活动时间：</label>
+						<span class="times">${shareBargain.getStartTime()}</span>
+						<div class='line'></div>
+						<span class="times">${shareBargain.getEndTime()}</span>
+					</div>
+					<div class="list-bill">
+						<div class="bill-title">
+							运单信息：
+						</div>
+						<div id="table-outer1">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<!--[ loop(sellerInfo:sellerInfoList){  ]-->
+									<tr>
+										<td>${sellerInfo.getOutNo()}</td>
+										<td>${sellerInfo.getOutSellerName()}</td>
+										<td>${sellerInfo.getProductName()}</td>
+										<td>${sellerInfo.getDeep()}</td>
+										<td>${sellerInfo.getVolume()}</td>
+										<td>${sellerInfo.getSpec()}</td>
+										<td>${sellerInfo.getBoxSize()}</td>
+										<td>${sellerInfo.getBandName()}</td>
+									</tr>
+									<!--[ }  ]-->
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div class="list-award">
+						<div class="award-title">
+							奖品信息：
+						</div>
+						<div id="table-outer2">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>奖品名称</td>
+										<td>奖品总数(个)</td>
+										<td>剩余数量(个)</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>原价(元)</td>
+										<td>最低价(元)</td>
+										<td>砍价区间(元)</td>
+										<!-- <td>砍价人数</td> -->
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>${productInfo.getProductName()}</td>
+										<td>${shareBargainPrize.getPrzieNumber()}</td>
+										<td>${shareBargainPrize.getPrzieSurplusNumber()}</td>
+										<td>${productInfo.getDegree()}</td>
+										<td>${productInfo.getVolume()}</td>
+										<td>${productInfo.getSpec()}</td>
+										<td>${shareBargainPrize.getOriginalPrice()}</td>
+										<td>${shareBargainPrize.getLowPrice()}</td>
+										<td>${shareBargainPrize.getBargainSection()}</td>
+										<!-- <td>${shareBargainPrize.getBargainNumber()}</td> -->
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="productInfos">
+						<label for="textarea">奖品信息介绍：</label>
+						<span class="awardIntroduce">${shareBargain.getIntroduce()}</span>
+					</div>
+					<div class="parting-line"></div>
+					<div class="main clearfloat">
+						<div class="main-left">
+							<div class="content commonStyle">分享内容配置：</div>
+							<div class="commonStyle">
+								<label for="">分享标题：</label>
+								<span>${shareBargain.getShareTitle()}</span>
+							</div>
+							<div class="commonStyle">
+								<label for="">分享描述：</label>
+								<span class="shareDetail">${shareBargain.getShareDetail()}</span>
+							</div>
+						</div>
+
+						<div class="commonStyle imgUp">
+							<div class="sharePic">
+								<label for="">分享图片：</label><br>
+							</div>
+							<div class="pic-box">
+								<div class="addPic-upload" id="addPic-upload">
+									<img id="pic1" src="/activityUploadPath${shareBargain.getShareImg()}" alt="" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="productInfos">
+						<label>活动建议：</label>
+						<span class="comfirmAdvise">${shareBargain.getComfirmAdvise()}</span>
+					</div>
+				</div>
+			</div>
+			<div class="submitBtn">
+				返回
+			</div>
+		</div>
+
+	</body>
+	<script>
+		$(".submitBtn").on("click", function() {
+			history.go(-1);
+		})
+	</script>
+
+</html>

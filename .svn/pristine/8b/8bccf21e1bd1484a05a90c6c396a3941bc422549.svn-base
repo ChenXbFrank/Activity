@@ -1,0 +1,52 @@
+# ----------[DB Config]-------------
+jdbcdriver=oracle.jdbc.driver.OracleDriver
+jdbcUrl = jdbc:oracle:thin:@118.190.208.172:1521:ORCL
+user = joffro_activity
+password =joffro2014
+# ----------[System Config]-------------
+viewPath=/WEB-INF/
+devMode=true
+upload=/upload/
+systemname=Activity
+http=www.joffro.com
+#\u5E73\u53F0\u5730\u5740
+platform=http://www.joffro.com/Activity
+#platform=http://221.10.133.197
+#admin
+SystemUserCode=admin
+# ----------[Ten Activity]-------------
+#分享砍价
+ShareBargain=shareBargain
+#红包
+RobRed=robRed
+#积分
+Integral=integral
+#拼图
+Puzzle=puzzle
+#刮刮乐
+ScratchCard=scratchCard
+#转盘
+Turntable=turntable
+#拼团
+GroupPurchase=groupPurchase
+#砸蛋
+BreakEgg=breakEgg
+#集赞
+AccumulateFabulous=accumulateFabulous
+#一元购
+OneMoneyShop=oneMoneyShop
+#开酒瓶活动
+OpenWine=openWine
+#火爆小酒活动
+FireStorm=fireStorm
+JzRed=jzRed
+# ----------[Red]-------------
+client_ip=118.190.208.172
+pageCount=10
+imgPath=D:\\upload\\
+level=4
+p12Path=E:\\cert\\apiclient_cert.p12
+#E:\push3D\cert
+weixintixian=30
+#文件上传-文件保存路径
+uploadFilePath=Z:\\ActivityUploadPath\\upload

@@ -1,0 +1,149 @@
+<!--[arg basePath,staticPath,activityList,activityName,state;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-accraditation.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/index/my-all-activity.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/index/media-my-activity.css" />
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/bg0.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+			<p class="currentLocation">
+				您的当前位置：
+				<a href="${basePath}/goHomePage">首页></a>
+				<a href="${basePath}/activity">我的活动>
+					<a href="javascript:void(0);">开酒瓶活动</a>
+				</a>
+			</p>
+			<ul class="title-pic">
+				<li>
+					<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+				</li>
+				<li>
+					<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+		<label for='name' id="activityName">开酒瓶活动名称：</label>
+		<input type="text" id='name' value="${activityName}" />
+		<label for="bargaining-situations">开酒瓶活动状态：</label>
+		<div class="outer">
+			<input id="bargaining-situations" type="text" readonly="readonly" value="${state}" style="background-image: url('${staticPath}/img/more01.png')" />
+			<ul class="select" style="display: none; z-index: 9999999">
+				<li>全部</li>
+				<li>通过</li>
+				<li>驳回</li>
+				<li>申请中</li>
+			</ul>
+		</div>
+		<input type="button" value="查询" class="search font-color" id="search" />
+		<div class="activities">
+			<ul>
+				<!--[ loop(activity:activityList){  ]-->
+				<li>
+					<a href="${basePath}/openWineConfig/openWineInfo?activityId=${activity.getId()}">
+					<img src="${staticPath}/img/deleteImg.png" class="deleteImg" name="${activity.getId()}" />
+						<div class="img">
+							<div></div>
+							<img src="${staticPath}${activity.getBackgroundImg()}" alt="" />
+						</div>
+						<p class="activity-name">${activity.getActivityName()}</p>
+						<div class="person">
+							<span class="join-person">参与人数：${activity.getJoinPropleNumber()}</span>
+							<span class="award-person">中奖人数：${activity.getWinningPropleNumber()}</span>
+						</div>
+					</a>
+				</li>
+				<!--[ } ]-->
+			</ul>
+		</div>
+		<!--是否删除弹窗 -->
+	<div id="deletePop" style="display:none">
+	    <div class="deletePopMask"></div>
+	    <div class="deleteContainer" >
+	    	<div class="deleteInner">
+	    		<div class="pop-title">确定删除此活动？</div>
+	    	    <input type="button" value="确定" id="yes" />
+	    	    <input type="button" value="取消" id="no"  />
+	    	</div>
+	    </div>
+	</div> 
+	</body>
+	<script type="text/javascript" src="${staticPath}/js/index/my-activity.js"></script>
+	<script type="text/javascript">
+	var bargainingsituations = $("#bargaining-situations").val();
+	
+	if(bargainingsituations=='1'){
+		$("#bargaining-situations").val("通过")
+	}else if(bargainingsituations=='2'){
+		$("#bargaining-situations").val("驳回")
+	}else if(bargainingsituations=='0'){
+		$("#bargaining-situations").val("申请中")
+	}else{
+		$("#bargaining-situations").val("全部")
+	}
+		$("#search").on("click", function() {
+			var name = $("#name").val();
+			var bargaining_situations = $("#bargaining-situations").val();
+			var zhauntai;
+			if(bargaining_situations=='通过'){
+				zhauntai=1
+			}else if(bargaining_situations=='驳回'){
+				zhauntai=2
+			}else if(bargaining_situations=='申请中'){
+				zhauntai=0
+			}else{
+				zhauntai=""
+			}
+			
+			location.href = "${basePath}/openWineConfig/getOpenWinActivity?activityName=" + name + "&activityState=" + zhauntai;
+		});
+		/*点击删除图标*/
+		var currentId;
+		$(".deleteImg").on("click",function(){
+			event.preventDefault();//阻止默认事件
+			$("#deletePop").show();
+			currentId=$(this).attr("name");
+			//alert(currentId);
+		});
+		/*点击提示是否删除的确定*/
+		$("#yes").on("click",function(){
+			$("#loadingInfo").show();
+			$.ajax ({
+				 url : "${basePath}/openWineConfig/deleteOpenWineActivity",
+				 type : "POST",
+				 dataType : "JSON",
+				 async:"false",
+				 data: {
+				　　　    activityId: currentId     
+				　　},
+				　success : function(data) {
+					$("#loadingInfo").hide();
+					location.reload();
+				　}
+			}); 
+		})
+		/*点击提示是否删除的取消*/
+		$("#no").on("click",function(){
+			$("#deletePop").hide();
+		})
+	</script>
+</html>

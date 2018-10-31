@@ -1,0 +1,131 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+html {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+body {
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	position: fixed;
+}
+.red {
+	width: 7.893333rem;
+    height: 9.853333rem;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-left: -3.94665rem;
+    margin-top: -4.92665rem;
+}
+.notes{
+	width: 7.093333rem;
+    height: 3.853333rem;
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    margin-left: -3.640665rem;
+    margin-top: -4.92665rem;
+    color: white;
+}
+.notes .prizeName{
+	margin-left: 0.3rem;
+	font-size: 0.38rem;
+}
+.notes .prizeToall{
+	margin-left: 0.9rem;
+	font-size: 0.38rem;
+}
+.notes .prizeTime{
+	margin-left: 0.9rem;
+	font-size: 0.38rem;
+}
+.notes .prizeName1{
+	margin-left: 0.4rem;
+}
+.notes hr{
+	margin-top: 0.2rem;
+}
+.notes .prizeToall1{
+	margin-left: 1.3rem;
+}
+.notes .prizeTime1{
+	margin-left: 0.5rem;
+}
+.bill{
+	margin-top: 0.3rem;
+	border-bottom: 1px dashed yellow;
+}
+.bigbill{
+	height: 2.853333rem;
+	overflow-y: auto;
+}
+.personalCenter img {
+	width: 4.6rem;
+	height: 1.4rem;
+	position: absolute;
+	top: 70%;
+	left: 50%;
+	margin-left: -2.3rem;
+	margin-top: 0.7rem;
+}
+.personalCenter p {
+	width: 4.6rem;
+	height: 1.4rem;
+	position: absolute;
+	top: 71%;
+	left: 59%;
+	margin-left: -2.3rem;
+	margin-top: 0.7rem;
+	z-index: 3;
+	font-size: 0.7rem;
+	font-family: "Tahoma";
+	font-weight: bold;
+	color: #680416;
+}
+.prompt{
+	width: 8rem;
+	height: 0.626666rem;
+	position: absolute;
+	top: 90%;
+	left: 50%;
+	margin-left:-4rem ;
+	margin-top:-0.3133rem ;
+	color: white;
+	text-align: center;
+}
+.bigbonus{
+    text-align: center;
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    z-index: 3;
+    font-size: 1.2rem;
+    color: #FE1815;
+}
+.blink1{
+	width: 3.666666rem;
+	height: 3.666666rem;
+	margin-top: 0.5rem;
+}
+.blink2{
+	width: 3.666666rem;
+	height: 3.666666rem;
+	position: absolute;
+	margin-left: 7rem;
+	margin-top: 5.5rem;
+	z-index: 3;
+}
+.blink3{
+	width: 2.666666rem;
+	height: 2.666666rem;
+	position: absolute;
+	margin-left: 3.5rem;
+	margin-top: -4.5rem;
+	z-index: 3;
+}

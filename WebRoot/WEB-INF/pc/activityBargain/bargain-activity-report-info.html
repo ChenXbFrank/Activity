@@ -1,0 +1,445 @@
+<!--[arg _res,user,basePath,staticPath,activityId,shareBargain,shareBargainWxuserList,goodsState,state,nickName,startTime,endTime,shareBargainWxuser;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-report.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jedate.min.js"></script>
+		<script type="text/javascript">
+			var basePath = "${basePath}";			//获取basePath
+		</script>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<!--页面弹窗-->
+		<div id="popup" style="display: none;">
+			<div class="fade"></div>
+			<!--收货人信息-->
+			<div class="succ-pop" style="display: none;">
+				<div class="font-infos">
+					<div class="pop-title">
+						收货人信息
+					</div>
+					<div class="name-tel clearfloat">
+						<div class="receiver">收货人：<span></span></div>
+						<div class="tel">联系电话：<span></span></div>
+					</div>
+					<div class="address">收货地址：<span></span></div>
+					<div class="btn">
+						<input type="button" class="cancel" value="取消" />
+						<input type="button" value="下一步" class="confirm" id="receiver-yes" />
+					</div>
+				</div>
+			</div>
+			<!--运单信息-->
+			<div class="billInfos" style="display: none;">
+				<div class="font-infos">
+					<div class="pop-title">
+						填写运单信息
+					</div>
+					<label for="">物流公司：</label>
+					<div class="outer">
+						<input id="bargaining-situations1" type="text" style="background-image: url('${staticPath}/img/more01.png')" />
+						<ul class="select" id="express" style="display: none;">
+						</ul>
+					</div>
+					<div class="billNumber">运单编号：<input type="text" /></div>
+					<div class="delivery-time">发货时间：<input type="text" class="datainp" placeholder="请选择" readonly id="date" /></div>
+					<div class="btn">
+						<input type="button" class="cancel" value="取消" />
+						<input type="button" value="完成" class="confirm" id="bill-yes" />
+					</div>
+				</div>
+			</div>
+			<!--发货成功-->
+			<div class="delivery-success" style="display: none;">
+				<div class="success-outer">
+					<div class="pop-title">发货成功！</div>
+					<input type="button" value="确定" id="delivery-success-yes" />
+				</div>
+
+			</div>
+		</div>
+
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+			<p class="currentLocation">
+				您的当前位置：
+				<a href="${basePath}/goHomePage">首页></a>
+				<a href="${basePath}/activityForm">活动报表></a>
+				<a href="${basePath}/shareBargainConfig/shareBargainReport">砍价活动</a>
+				<a>>砍价详情</a>
+			</p>
+			<ul class="title-pic">
+				<li>
+					<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+				</li>
+				<li>
+					<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+		<div class="container">
+			<label for='name'>昵称：</label>
+			<input type="text" id='name' value="${nickName}" />
+			<label for="bargaining-situations">砍价情况：</label>
+			<div class="outer">
+				<input id="bargaining-situations" type="text" readonly="readonly" value="${state}" style="background-image: url('${staticPath}/img/more01.png')" />
+				<ul class="select" id="bargain-select" style="display: none;">
+					<li>全部</li>
+					<li>砍价未成功</li>
+					<li>砍价成功</li>
+				</ul>
+			</div>
+			<label for="delivery-situations">发货情况：</label>
+			<div class="outer">
+				<input id="delivery-situations" type="text" value="${goodsState}" readonly="readonly" style="background-image: url('${staticPath}/img/more01.png')" />
+				<ul class="select" id="delivery-select" style="display: none;">
+					<li>全部</li>
+					<li>已发货</li>
+					<li>未发货</li>
+				</ul>
+			</div>
+			<input type="button" value="查询" class="search" id="search" />
+			<input type="button" value="导出" class="export" id="export" />
+			<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>序号</td>
+							<td>名称</td>
+							<td>头像</td>
+							<td>参与时间</td>
+							<td>砍价情况</td>
+							<!-- <td>状态</td>
+							<td>发货情况</td> -->
+							<td>操作</td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+					</table>
+				</div>
+
+			</div>
+			<div class="page-break">
+				<div class="page-btn">
+					<span class="manager-first-but">上一页</span>
+					<span id="admin-page">1</span>
+					<span class="manager-second-but">下一页</span>
+				</div>
+				<div class="skip">
+					<span>跳转至</span>
+					<input type="text" id="input-page" />&nbsp;页&nbsp;
+					<span class="skip-btn">跳转</span>
+				</div>
+				<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+			</div>
+			<div style="display: none;">
+				<table>
+					<tr class="admin-obj">
+						<td class="index"></td>
+						<td class="iddata"><span></span><input type="hidden" class="actvityuserid" value="" /></td>
+						<td>
+							<div class="headPic"><img src="" /></div>
+						</td>
+						<td class="jionTime"></td>
+						<td class='bargain-status'><span></span><img class="smallImg" src="${staticPath}/img/more03.png" />
+							<div class="box-outer" style="display: none;">
+								<div class="box">
+									<div class="box-inner">
+										<ul>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</td>
+						<!-- <td class="state"></td>
+						<td class="goodState"></td> -->
+						<!-- <td class="render"></td> -->
+						<td class="more_href" >
+						<a>查看明细</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+			</div>
+			<!-- <input type="text" value="${shareBargainWxuser.getId()}" class="shareBargainWxuserId" /> -->
+	</body>
+	<script type="text/javascript" src="${staticPath}/js/activityBargain/bargain-report.js"></script>
+	<script type="text/javascript">
+	
+		
+		$(document).on("click", function() {
+			$(".box-outer").hide();
+			$(".smallImg").attr("src", "${staticPath}/img/more03.png");
+		});
+		var actvityuserid;
+		var boolen = false;
+		$(".smallImg").on("click", function(event) {
+			event.stopPropagation();
+			$(this).attr("src", "${staticPath}/img/more02.png");
+			$(this).parent().parent().siblings().find(".smallImg").attr("src", "${staticPath}/img/more03.png");
+			$(this).parent().find(".box-outer").show();
+			$(this).parent().parent().siblings().find(".box-outer").hide();
+			boolen = true;
+			$(this).on("click", function() {
+				if(boolen) {
+					$(this).attr("src", "${staticPath}/img/more03.png");
+					$(this).parent().find(".box-outer").hide();
+					boolen = false;
+				} else {
+					$(this).attr("src", "${staticPath}/img/more02.png");
+					$(this).parent().find(".box-outer").show();
+					boolen = true;
+				}
+			});
+			actvityuserid = $(this).parent().parent().find(".iddata").find(".actvityuserid").val();
+			$(".box-inner ul").html("");
+			$("#loadingInfo").show();
+			$.ajax({
+				type: 'POST',
+				url: '${basePath}/shareBargainConfig/getShareActivityMoreInfo',
+				data: {
+					actvityuserid: actvityuserid
+				},
+				success: function(data) {
+					$("#loadingInfo").hide();
+					var len = data.helpByFriendList.length;
+					for(var i = 0; i < len; i++) {
+						$(".box-inner ul").append("<li>" +
+							"<span class='index-line'></span>" +
+							"<span class='circle'></span>" +
+							"<span class='userName'>" + decodeURI(data.helpByFriendList[i].NICKNAME) + "</span>" +
+							"<span class='cutMoney'>砍掉" + data.helpByFriendList[i].BARGAIN_MONEY + "元</span>" +
+							"</li>")
+					};
+					if(len == 1) {
+						$(".box ul li:last-child .index-line").css({ "height": "0px" });
+					}
+				},
+				error: function(data) {
+					$("#loadingInfo").hide();
+					alert("网络异常，请稍后再试")
+				}
+			});
+		});
+		$(".box-outer").on("click", function(event) {
+			event.stopPropagation();
+		});
+		
+		/* 分页查询 */
+		$(function() {
+			adminAjax(1);
+			$(".manager-second-but").click(function() { //点击下一页
+				var total = Number($("#admin-total").text());
+				var page = Number($("#admin-page").text());
+				if(total > page) {
+					adminAjax(page + 1);
+				}
+			});
+
+			$(".manager-first-but").click(function() { //点击上一页
+				var page = Number($("#admin-page").text());
+				if(page > 1) {
+					adminAjax(page - 1);
+				}
+			});
+			$("#input-page").on("keyup", function(e) {
+				if(e.keyCode == 13) {
+					$(".skip-btn").click();
+				}
+			});
+
+			$(".skip-btn").click(function() {
+				var page = Number($("#input-page").val());
+				if(page == 0) {
+					page = page + 1;
+				}
+				adminAjax(page);
+			})
+			$("#search").click(function() {
+				var name = $("#name").val();
+				var activityId = '${activityId}';
+				var state = $("#bargaining-situations").val();
+				var goodsState = $("#delivery-situations").val();
+				if(goodsState == "全部" || goodsState == "") {
+					goodsState = "";
+				} else if(goodsState == "已发货") {
+					goodsState = "1";
+				} else if(goodsState == "未发货") {
+					goodsState = "2";
+				} else {
+					alert("发货状况有错。。。")
+				}
+				if(state == "砍价未成功") {
+					state = "1";
+				} else if(state == "砍价成功") {
+					state = "7";
+				} else if(state == "全部" || state == "") {
+					state = "";
+				}
+				$("#loadingInfo").show();
+				$.ajax({
+					data: {
+						nickName: name,
+						activityId: activityId,
+						state: state,
+						goodsState: goodsState,
+						startTime: "",
+						endTime: "",
+						currentPage: 1
+					},
+
+					type: "GET",
+					dataType: "JSON",
+					url: "${basePath}/shareBargainConfig/shareBargainInfoPage",
+					success: function(data) {
+						$("#loadingInfo").hide();
+						if(data != false) {
+							checkLoad(data);
+							$("#input-page").val("");
+						} else {
+							$(".table-tbody table").html("");
+							$("#admin-curent").text("1/1");
+							$("#admin-total").text('1');
+							$("#admin-page").text('1');
+						}
+					},
+					error: function() {
+						$("#loadingInfo").hide();
+						alert("网络连接异常，请稍后再试");
+					}
+				});
+			});
+		})
+
+		/* 分页查询 */
+		function checkLoad(data) {
+			$(".table-tbody table").html("");
+			$("#admin-curent").text(data.currentPage + "/" + data.totalPages);
+			$("#admin-total").text(data.totalPages);
+			$("#admin-page").text(data.currentPage);
+			for(var i = 0; i < data.allAdmins.length; i++) {
+				var adminObj = $(".admin-obj:eq(0)").clone(true);
+				var adminArray = data.allAdmins[i];
+				//alert(adminArray.id)
+				adminObj.find(".index").text(i + 1);
+				adminObj.find(".iddata span").text(decodeURI(adminArray.nickName));
+				adminObj.find(".iddata .actvityuserid").val(adminArray.id);
+				adminObj.find(".headPic img").attr("src", adminArray.headimgurl);
+				adminObj.find(".jionTime").text(adminArray.create_time);
+				adminObj.find(".more_href a").attr("href", "${basePath}/shareBargainConfig/shareWxUserWinInfo?shareWxUserId=" + adminArray.id);
+				/* 砍价是否成功 */
+				if(adminArray.state == "1") {
+					adminObj.find(".bargain-status span").text("砍价未成功");
+					//adminObj.find(".more_href").html('');
+				} else {
+					adminObj.find(".bargain-status span").text("砍价成功");
+					//adminObj.find(".more_href").show();
+				}
+				/*发货情况  */
+				if(adminArray.state == "1") {
+					adminObj.find(".state").text("已经领取");
+				} else if(adminArray.state == "2") {
+					adminObj.find(".state").text("未填写地址");
+				} else if(adminArray.state == "3") {
+					adminObj.find(".state").text("已填写地址");
+				
+				} else if(adminArray.state == "4") {
+					adminObj.find(".state").text("已发货");
+				} else if(adminArray.state == "5") {
+					adminObj.find(".state").text("未发货");
+				} else if(adminArray.state == "6") {
+					adminObj.find(".state").text("已支付");
+				}
+
+				if(adminArray.goodstate == "1") {
+					adminObj.find(".goodState").text("已发货");
+					/* adminObj.find(".render").hide();
+					adminObj.find(".render1").show(); */
+				} else {
+					adminObj.find(".goodState").text("未发货");
+					/*  adminObj.find(".render").show(); 
+					 adminObj.find(".render1").hide(); */
+				}
+
+				/* 操作 */
+				if(adminArray.state == "6") {
+					adminObj.find(".render").text("立即发货");
+				} else {
+					 adminObj.find(".render").text(""); 
+				}
+
+				$(".table-tbody table").append(adminObj);
+			}
+		}
+
+		function adminAjax(page) {
+			var name = $("#name").val();
+			var activityId = '${activityId}';
+			var state = $("#bargaining-situations").val();
+			var goodsState = $("#delivery-situations").val();
+			if(goodsState == "全部" || goodsState == "") {
+				goodsState = "";
+			} else if(goodsState == "已发货") {
+				goodsState = "1";
+			} else if(goodsState == "未发货") {
+				goodsState = "2";
+			} else {
+				alert("发货状况有错")
+			}
+			if(state == "砍价未成功") {
+				state = "1";
+			} else if(state == "砍价成功") {
+				state = "7";
+			} else if(state == "全部" || state == "") {
+				state = "";
+			}
+			$("#loadingInfo").show();
+			$.ajax({
+				data: {
+					nickName: name,
+					activityId: activityId,
+					state: state,
+					goodsState: goodsState,
+					startTime: "",
+					endTime: "",
+					currentPage: page
+				},
+				type: "GET",
+				dataType: "JSON",
+				url: "${basePath}/shareBargainConfig/shareBargainInfoPage",
+				success: function(data) {
+					$("#loadingInfo").hide();
+					checkLoad(data);
+				},
+				error: function() {
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+
+			$("#export").click(function() {
+				location.href = "${basePath}/shareBargainConfig/getShareInfoExcel?activityId=${activityId}";
+			});
+		}
+	</script>
+	<script type="text/javascript" src="${staticPath}/js/common/expressCommon.js"></script>
+	
+</html>

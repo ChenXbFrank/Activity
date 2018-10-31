@@ -1,0 +1,289 @@
+<!--[arg user,basePath,staticPath,scratchCardList,activityName,state,endTime,startTime;]-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>防伪溯源大数据平台-活动中心</title>
+<link rel="stylesheet" type="text/css"
+	href="${staticPath}/css/common/jquery-ui.css" />
+<link rel="stylesheet" type="text/css"
+	href="${staticPath}/css/common/jquery-ui.min.css" />
+<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+<script type="text/javascript"
+	src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+<script type="text/javascript"
+	src="${staticPath}/js/common/jquery-ui.min.js"></script>
+<script type="text/javascript"
+	src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+<link rel="stylesheet" type="text/css"
+	href="${staticPath}/css/activityBargain/bargain-accraditation.css" />
+<link rel="stylesheet" type="text/css"
+	href="${staticPath}/css/activityReport/activity-report-oneActivity.css" />
+	<script type="text/javascript"
+	src="${staticPath}/js/activityReport/activity-report-oneActivity.js"></script>
+</head>
+<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+	<div class="head clearfloat"
+		style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+		<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+		<div class="title">防伪溯源大数据平台-活动中心</div>
+		<p class="currentLocation">
+			您的当前位置：<a href="${basePath}/goHomePage">首页></a><a
+				href="${basePath}/activityForm">活动报表></a><a href="">拼团报表</a>
+		</p>
+		<ul class="title-pic">
+			<li><a href="${basePath}/goHomePage"><img
+					src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+			<li><a href="${basePath}/exit"><img
+					src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a></li>
+		</ul>
+	</div>
+	<div class="container">
+		<label for='name' id="activityName">活动名称：</label> <input type="text"
+			id='name' value="${activityName}"/> <label for="bargaining-situations">活动状态：</label>
+		<div class="outer">
+			<input id="bargaining-situations" type="text" readonly="readonly" value="${state}"
+				style="background-image: url('${staticPath}/img/more.png')" />
+			<ul class="select" style="display: none;">
+				<li>全部</li>
+				<li>通过</li>
+				<li>驳回</li>
+				<li>申请中</li>
+			</ul>
+		</div>
+		<label for='name'>创建时间：</label>
+					<input type='text' id="startTime"  readonly="readonly" value="${startTime}" style="background-image: url('${staticPath}/img/more.png')"/>
+					<div class='line'></div>
+					<input type='text' id="endTime"  readonly="readonly" value="${endTime}" style="background-image: url('${staticPath}/img/more.png')" />
+		<input type="button" value="查询" id="search" />
+		<input type="button" value="导出" class="export" id="export"/>
+		<div id="table-outer">
+			<div class="table-thead">
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>序号</td>
+						<td>活动名称</td>
+						<td>申请人名称</td>
+						<td>申请人电话</td>
+						<td>活动创建时间</td>
+						<td>审核时间</td>
+						<td>审核人名称</td>
+						<td>活动状态</td>
+						<td>更多</td>
+					</tr>
+				</table>
+			</div>
+			<div class="table-tbody">
+				<table border="0" cellpadding="0" cellspacing="0">
+					<!--[ loop(activity:scratchCardList){  ]-->
+					<tr>
+						<td>${activity_index+1}</td>
+						<td>${activity.getActivityName()}</td>
+						<td>${activity.getApplyUserName()}</td>
+						<td>${activity.getApplyPhone()}</td>
+						<td>${activity.getCreateTime()}</td>
+						<td>${activity.getComfirmTime()}</td>
+						<td>${activity.getComfirmuserName()}</td>
+						<!-- 	/*活动状态：0申请中   1审批通过  2 已驳回  */ -->
+						<!--[ if(activity.getState()==0){  ]-->
+						<td>申请中</td>
+						<!--[ }else if(activity.getState()=='1'){  ]-->
+						<td>通过</td>
+						<!--[ }else{  ]-->
+						<td>驳回</td>
+						<!--[ }  ]-->
+						<td><a
+							href="${basePath}/scratchCardConfig/scratchCardReport?activityId=${activity.getScratchcardId()}&activityName=${activity.getActivityName()}">更多</a></td>
+					</tr>
+					<!--[ }  ]-->
+				</table>
+			</div>
+		</div>
+		<div class="page-break">
+			<div class="page-btn">
+				<span class="manager-first-but">上一页</span>
+				<span id="admin-page">1</span>
+				<span class="manager-second-but">下一页</span>
+			</div>
+			<div class="skip">
+				<span>跳转至</span>
+				<input type="text" id="input-page" />&nbsp;页&nbsp;
+				<span class="skip-btn">跳转</span>
+			</div>
+			<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+		</div>
+			<div style="display: none;">
+			<table>			
+				<tr class="admin-obj">
+					<td class="index"></td>
+					<td class="activity_name"></td>
+					<td class="applay_name"></td>
+					<td class="applay_phone"></td>
+					<td class="create_time"></td>
+					<td class="check_time"></td>
+					<td class="check_name"></td>
+					<td class="activity_status"></td>
+					<td class="more_href"><a>更多</a></td>
+				</tr>
+			</table>
+		</div>
+</body>
+<script type="text/javascript">
+	 $(function(){
+			adminAjax( 1 );
+			$(".manager-second-but").click(function(){//点击下一页
+				var total = Number( $("#admin-total").text() );
+				var page = Number( $("#admin-page").text() );
+				if( total > page ){
+					adminAjax( page + 1 );
+				}
+			});
+			
+			$(".manager-first-but").click(function(){//点击上一页
+				var page = Number( $("#admin-page").text() );
+				if( page > 1 ){
+					adminAjax( page - 1 );
+				}
+			});
+			$("#input-page").on("keyup",function(e){
+				if(e.keyCode==13){
+					$(".skip-btn").click();
+				}
+			});
+			
+			$(".skip-btn").click(function(){
+				var page = Number( $("#input-page").val() );
+				if(page==0){
+					page=page+1;
+				}
+				adminAjax( page );
+			})
+			$("#search").click(function(){
+				var name=$("#name").val();
+				var startTime=$("#startTime").val();
+				var endTime=$("#endTime").val();
+				var bargaining_situations=$("#bargaining-situations").val();
+				if(bargaining_situations=="申请中"){
+					bargaining_situations=0;
+				}else if(bargaining_situations=="通过"){
+					bargaining_situations=1;
+				}else if(bargaining_situations=="驳回"){
+					bargaining_situations=2;
+				}else if(bargaining_situations=="全部"){
+					bargaining_situations="";
+				}
+				//还需写个时间
+				$("#loadingInfo").show();
+				$.ajax({
+					data : { 
+						activityName : name,
+						startTime:startTime,
+						endTime:endTime,
+						currentPage : 1,
+						state:bargaining_situations
+						},
+					
+					type:"GET",
+					dataType : "JSON",
+					url:"${basePath}/groupPurchaseConfig/getGroupPurchaseInfoPage",
+					success : function(data){
+						$("#loadingInfo").hide();
+						if( data != false ){
+							checkLoad( data );
+							$("#input-page").val("");
+						} else {
+							$(".table-tbody table").html("");
+							$("#admin-curent").text( "1/1" );
+							$("#admin-total").text( '1' );
+							$("#admin-page").text( '1' );
+						}
+					},
+					error : function(){
+						$("#loadingInfo").hide();
+						alert("网络连接异常，请稍后再试");
+					}
+				});
+			});
+		})
+		
+		/* 分页查询 */
+		function checkLoad( data ){
+				$(".table-tbody table").html("");
+				$("#admin-curent").text( data.currentPage + "/" + data.totalPages );
+				$("#admin-total").text( data.totalPages );
+				$("#admin-page").text( data.currentPage );
+				console.log(data);
+				for( var i = 0; i < data.allAdmins.length; i++ ){
+					var adminObj = $(".admin-obj:eq(0)").clone(true);
+					var adminArray = data.allAdmins[i];
+					/* adminObj.attr("data-id",adminArray.id); */
+					adminObj.find(".index").text(i+1);
+					adminObj.find(".activity_name").text( adminArray.activity_name );
+					adminObj.find(".applay_name").text( adminArray.applyusername );
+					adminObj.find(".applay_phone").text( adminArray.applyphone);
+					adminObj.find(".create_time").text( adminArray.create_time);
+					adminObj.find(".check_time").text( adminArray.comfirmtime);
+					adminObj.find(".check_name").text( adminArray.comfirmusername);
+					if(adminArray.state=="0"){
+						adminObj.find(".activity_status").text( "申请中");
+					}else if(adminArray.state=="1"){
+						adminObj.find(".activity_status").text( "通过");
+					}else if(adminArray.state=="2"){
+						adminObj.find(".activity_status").text( "驳回");
+					}
+					adminObj.find(".more_href a").attr("href","${basePath}/groupPurchaseConfig/purchaseMoreReport?activityId="+adminArray.id+"&activityName="+adminArray.activity_name);
+					
+					$(".table-tbody table").append( adminObj );
+				}
+			}
+		 
+		function adminAjax( page ){
+			var name=$("#name").val();
+			var startTime=$("#startTime").val();
+			var endTime=$("#endTime").val();
+			var bargaining_situations=$("#bargaining-situations").val();
+			if(bargaining_situations=="申请中"){
+				bargaining_situations=0;
+			}else if(bargaining_situations=="通过"){
+				bargaining_situations=1;
+			}else if(bargaining_situations=="驳回"){
+				bargaining_situations=2;
+			}else if(bargaining_situations=="全部"){
+				bargaining_situations="";
+			}
+			$("#loadingInfo").show();
+			$.ajax({
+				data : { currentPage : page,
+						activityName : name,
+						startTime:startTime,
+						endTime:endTime,
+						currentPage : page,
+						state:bargaining_situations
+				},
+				type:"GET",
+				dataType : "JSON",
+				url:"${basePath}/groupPurchaseConfig/getGroupPurchaseInfoPage",
+				success : function(data){
+					$("#loadingInfo").hide();
+					console.log(data);
+					checkLoad( data );
+				},
+				error : function(){
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+		}
+		$("#export").click(function(){
+			location.href="${basePath}/groupPurchaseConfig/exportPurchaseExcel";
+		});	
+</script>
+</html>

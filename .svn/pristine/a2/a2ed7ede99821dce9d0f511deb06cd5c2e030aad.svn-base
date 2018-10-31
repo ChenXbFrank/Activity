@@ -1,0 +1,22 @@
+ @media all and (max-width: 900px) {
+ 	.imgUp {
+ 		margin-right: 0vw;
+ 	}
+ 	#zwb_upload {
+ 		width: 50px;
+ 	}
+ 	#yulan {
+ 		width: 50px;
+ 	}
+ 	#zwb_upload1 {
+ 		width: 50px;
+ 		font-size: 8px;
+ 	}
+ 	#yulan1 {
+ 		width: 50px;
+ 		font-size: 8px;
+ 	}
+ 	.sharePic {
+ 		margin-right: 0vw;
+ 	}
+ }

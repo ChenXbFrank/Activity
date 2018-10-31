@@ -1,0 +1,176 @@
+#export{
+	width: 8vw;
+	margin-top:2vw;
+	font-size:1vw;
+}
+#threshold{
+	width: 10vw;
+    height: 2vw;
+    margin-top: 1vw;
+    border-color: #d0d0d0;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+    margin-top: 3vw;
+	margin-left: 2vw;
+}  
+#search00{
+	margin-left:4vw;
+}
+#search{
+	margin-left:4vw;
+}  
+#table-outer {
+    width: 80vw;
+    /* margin-top: 1vw; */
+}
+.limit{
+	margin-top:1vw;
+}
+#all{
+	width:5vw;
+	margin-left: 25vw;
+}
+#join{
+	width:7vw;
+	margin-left: 3vw;
+}
+#allcheck{
+	margin-left: 25vw;
+}
+.mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.6);
+	z-index: 998;
+	left: 0;
+	top: 0;
+}
+
+.popUp-window {
+	position: fixed;
+	width: 36.6vw;
+	height: 21.2vw;
+	margin-left: -18.3vw;
+	margin-top: -10.6vw;
+	background: white;
+	left: 50%;
+	right: 0;
+	top: 40%;
+	bottom: 0;
+	z-index: 1000;
+	box-shadow: 0px 0px 60px rgba(121, 36, 7, 0.5);
+	text-align: center;
+}
+
+.popUp-window .close {
+	position: absolute;
+	top: 1.2vw;
+	right: 1.2vw;
+}
+
+.popUp-window .infos {
+	font-size: 1.6vw;
+	color: #1300000;
+	margin-top: 6.6vw;
+}
+
+.popUp-window input[type="button"] {
+	width: 13.2vw;
+	height: 3.7vw;
+	border: none;
+	color: #ffffff;
+	border-radius: 3px;
+	font-size: 1.8vw;
+}
+
+;
+.popUp-window .btn-left {
+	background: #A7A7A7;
+	margin-top: 4.4vw;
+}
+
+.popUp-window .btn-right {
+	background: #F4A42E;
+	margin-left: 5.1vw;
+	margin-top: 4.4vw;
+}
+
+.img {
+	width: 14.8vw;
+	height: 11.9vw;
+	margin: 2vw auto 1.3vw;
+	position: relative;
+}
+
+.img img {
+	width: 100%;
+	height: 100%;
+	margin-top: -1vw;
+}
+
+.img .mask-img {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(2, 2, 2, 0.6);
+	line-height: 14vw;
+	font-size: 1.2vw;
+	color: white;
+	margin-top: -1vw;
+}
+.prompt {
+	text-align: center;
+	width: 20vw;
+	height: 8vw;
+	background: rgba(255, 255, 255, 1);
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-left: -10vw;
+	margin-top: -4vw;
+	z-index: 9999;
+	font-size: 1vw;
+}
+
+.prompt p {
+	margin-top: 1.6vw;
+}
+.prompt .yes {
+	width: 5vw;
+	height: 2vw;
+	margin-top: 2vw;
+	background: #F19032;
+	border: none;
+	color: white;
+	font-size: 1vw;
+	border-radius: 4px;
+}
+.prompt1 {
+	text-align: center;
+	width: 20vw;
+	height: 8vw;
+	background: rgba(255, 255, 255, 1);
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-left: -10vw;
+	margin-top: -4vw;
+	z-index: 9999;
+	font-size: 1vw;
+}
+               
+.prompt1 p {
+	margin-top: 1.6vw;
+}
+.prompt1 .yes1 {
+	width: 5vw;                            
+	height: 2vw;
+	margin-top: 2vw;
+	background: #F19032;
+	border: none;
+	color: white;
+	font-size: 1vw;
+	border-radius: 4px;
+}

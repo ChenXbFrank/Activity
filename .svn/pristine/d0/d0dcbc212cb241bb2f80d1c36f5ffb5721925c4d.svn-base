@@ -1,0 +1,106 @@
+<!--[arg basePath,staticPath,integralActivityList,openid,PublicNumberId,wxUser,integralId,qrcode,shareBargainNewId;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的</title>
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/index/style.css"/>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/index/mine.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>		
+		<script type="text/javascript" src="${staticPath}/js/index/my.integral.js"></script>
+	</head>
+
+	<body>
+		<div class="bg" style="background-image: url('${staticPath}/New_img/index/canyubj.png')">
+			<div class="Popup chnegg" style="display:none">
+			<div class="main-small" style="background-image: url('${staticPath}/New_img/Bargain-activities/ok-bg.png')" >
+				<div class="Pbox">
+				<p>积分不足</p>
+			</div>
+			<img class="h5-img" src="${staticPath}/New_img/Bargain-activities/true.png" alt="" />
+			</div>
+		</div>
+			<div class="main" >
+				<div class="headPortrait" >
+					<img src="${wxUser.getHeadImgUrl()}" alt="" />
+				</div>
+				<div class="name">
+					<p>${wxUser.getNickName()}</p>
+				</div>
+				<div class="integralDisplay">
+					<p>您的积分:<span>${wxUser.getSurplusTotalIntegral()}</span></p>
+				</div>
+				<div class="refresh">
+					<p>刷新</p>
+				</div>
+			</div>
+			<div class="footer">
+				<!--[loop(integralActivity:integralActivityList){]-->
+					<div class="outerFrame">
+						<img src="/activityUploadPath/static/pc${integralActivity.getBackgroundImg()}" alt="" />
+						<div class="activeName">
+							<p >${integralActivity.getActivityName()}</p>
+						</div>
+						<span class="condition"><span>${integralActivity.getNeedIntegral()}</span>积分/局</span>
+						<button onclick="nowJoin('${integralActivity.getActivityId()}','${integralActivity.getActivityNumber()}','${integralActivity.getId()}');" class="immediately">立即参与</button>
+						
+					</div>
+				<!--[}]-->
+			</div>
+			<input type="hidden" value="${openid}" id="openid"> 
+			<input type="hidden" value="${PublicNumberId}" id="publicNumberId"> 
+			<input type="hidden" value="${wxUser.getId()}" id="getid"> 
+			<input type="hidden" value="${integralId}" id="integralId"> 
+			<input type="hidden" value="${qrcode}" id="qrcode"> 
+			<input type="hidden" value="${shareBargainNewId}" id="shareBargainNewId"> 
+			<input type="hidden" value="${wxUser.getSurplusTotalIntegral()}" id="zong"> 
+			<input type="hidden" value="${integralActivity.getNeedIntegral()}" id="xu"> 
+		</div>
+		<script>
+		var zong=parseInt($("#zong").val());
+		var xu=parseInt($("#xu").val());
+		$(".name p").html(decodeURI('${wxUser.getNickName()}'));
+		function nowJoin(activityid,activityNumber,id){
+			if(zong>=xu){
+				location.href="${basePath}/integral/JoinActivity?openid="+$("#openid").val()+"&exchangeActivityId="+activityid+"&integralActivityId="+id+"&integralId="+$("#integralId").val()+"&SPNId="+$("#publicNumberId").val()+"&activityNumber="+activityNumber+"&wxUserId="+$("#getid").val()+"&qrcode="+$("#qrcode").val()+"&shareBargainNewId="+$("#shareBargainNewId").val();
+			}else{
+				$(".chnegg").show();
+			}
+			
+		}
+		$(".h5-img").click(function(){
+			$(".chnegg").hide();
+		})
+		/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			/* $(".title img").css({"width":'9.5rem',"height":"7rem"})
+			$(".rule-name p").css({"bottom":"3%"}) */
+		$(".integralDisplay").css({"margin-top":"0.08rem"}) 
+			//alert("huaweishouji")
+		}
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".footer").css({"margin-top":"2.5rem"})
+			$(".name p").css({"top":"22%"})
+			$(".integralDisplay").css({"margin-top":"-0.1rem"})
+			//alert("pingguo6666")
+		}
+		
+		
+		$(".refresh").click(function(){
+			location.reload();
+		})
+		</script>
+	</body>
+
+</html>

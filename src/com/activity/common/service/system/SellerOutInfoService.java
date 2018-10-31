@@ -1,0 +1,332 @@
+package com.activity.common.service.system;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.activity.common.model.activity.ActivitySellerOutInfo;
+import com.activity.common.model.bigDataPlatform.SellerOutInfo;
+import com.activity.common.utils.system.Tools;
+import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.ICallback;
+import com.jfinal.plugin.activerecord.Record;
+
+import oracle.jdbc.OracleTypes;
+
+/**
+ * 发货信息服务层 包含对数据层操作
+ */
+public class SellerOutInfoService {
+	private static SellerOutInfoService sellerOutInfoService = new SellerOutInfoService();
+
+	private SellerOutInfoService() {
+	}
+
+	public static SellerOutInfoService getService() {
+		return sellerOutInfoService;
+	}
+
+	/**
+	 * 根据UserCode查询属于当前人接收的运单  入库
+	 */
+	public List<SellerOutInfo> getSoiByUserCode(String userCode,int pageNumber,String outNo,String name,String startTime2, String endTime2) {
+		String sq=" select * from(select a.*,rownum row_num from( ";
+		String sql = PropKit.use("database.properties").get("querySoiByUserCode");
+		String name2 = name.replaceAll(" ", "");
+		if(!name2.equals("")&&name2!=null){
+			sql += " AND a.productname like '%" + name2 + "%'";
+		}
+		String outNo2 = outNo.replaceAll(" ", "");
+		if(!outNo2.equals("")&&outNo2!=null){
+			sql += " AND a.inno ='" + outNo2 + "' ";
+		}
+		if(!startTime2.equals("") && !endTime2.equals("")){
+			sql += " and (to_char(a.outdate,'yyyy-mm-dd') >= '"+startTime2+"') and (to_char(a.outdate,'yyyy-mm-dd') <= '"+endTime2+"')";
+		}
+		sql +=" group by a.inno, a.sellername,a.sellerId"
+				+ ", a.degree,a.spec,a.volume,a.productname,a.brandsname  order  by  outdate desc ,outno";
+		//currentPageNumber  这是当前页
+		//分页  参数要usercode  ROWNUM：截止的条数     rn：开始的条数
+		String sql2 = sq+sql+"  ) a) b where b.row_num between ? and ?";
+		int a=0;
+		int b=0;
+		String pageCount = PropKit.use("system.properties").get("pageCount");
+		int page = Integer.parseInt(pageCount);
+		if(pageNumber==1){
+			a=1;
+			b=page;
+		}else{
+			a=(pageNumber-1)*page+1;
+			b=pageNumber*page;
+		}
+		System.out.println("用户ID"+userCode);
+		System.out.println("SQL语句"+sql2);
+		List<Record> soiView = Db.find(sql2, userCode, a, b);
+		List<SellerOutInfo> soiList = new ArrayList<SellerOutInfo>();
+		for (Record cord : soiView) {
+			SellerOutInfo soi = new SellerOutInfo();
+			soi.mapping(cord, soi);
+			soiList.add(soi);
+		}
+		return soiList;
+	}
+	
+	/**
+	 * 根据sellerId查询属于当前人发出去的运单      出库
+	 */
+	public List<SellerOutInfo> getSendSellerInfoByUserId(String userId,int pageNumber,String outNo,String name,String startTime2, String endTime2) {
+		String sq=" select * from(select a.*,rownum row_num from( ";
+		String sql = PropKit.use("database.properties").get("querySendSoiByUserCode");
+		String name2 = name.replaceAll(" ", "");
+		if(!name2.equals("")&&name2!=null){
+			sql += " AND a.productname like '%" + name2 + "%'";
+		}
+		String outNo2 = outNo.replaceAll(" ", "");
+		if(!outNo2.equals("")&&outNo2!=null){
+			sql += " AND a.outno ='" + outNo2 + "' ";
+		}
+		if(!startTime2.equals("") && !endTime2.equals("")){
+			sql += " and (to_char(a.outdate,'yyyy-mm-dd') >= '"+startTime2+"') and (to_char(a.outdate,'yyyy-mm-dd') <= '"+endTime2+"')";
+		}
+		sql +="group by a.outno, a.sellername,a.sellerId,a.recsellername,  "
+				+ " a.degree,a.spec,a.volume,a.productname,a.brandsname order  by  outdate desc ,outno ";
+		//currentPageNumber  这是当前页
+		//分页  参数要usercode  ROWNUM：截止的条数     rn：开始的条数
+		String sql2 = sq+sql+"   ) a) b where b.row_num between ? and ?";
+		int a=0;
+		int b=0;
+		String pageCount = PropKit.use("system.properties").get("pageCount");
+		int page = Integer.parseInt(pageCount);
+		if(pageNumber==1){
+			a=1;
+			b=page;
+		}else{
+			a=(pageNumber-1)*page+1;
+			b=pageNumber*page;
+		}
+		System.out.println("用户ID"+userId);
+		System.out.println("SQL语句"+sql2);
+		List<Record> soiView = Db.find(sql2, userId, a, b);
+		List<SellerOutInfo> soiList = new ArrayList<SellerOutInfo>();
+		for (Record cord : soiView) {
+			SellerOutInfo soi = new SellerOutInfo();
+			soi.mapping(cord, soi);
+			soiList.add(soi);
+		}
+		return soiList;
+	}
+	
+	/**
+	 * 查询所有的接收到的货页数    入库
+	 */
+	public int getSellerPage(String userCode,int pageNumber,String outNo,String name,String startTime2, String endTime2) {
+		//带分页
+		String sql = PropKit.use("database.properties").get("getSoiByUserCodeCountRK");
+		String name2 = name.replaceAll(" ", "");
+		if(!name2.equals("")&&name2!=null){
+			sql += " AND a.productname like '%" + name2 + "%'";
+		}
+		String outNo2 = outNo.replaceAll(" ", "");
+		if(!outNo2.equals("")&&outNo2!=null){
+			sql += " AND a.inno ='" + outNo2 + "' ";
+		}
+		if(!startTime2.equals("") && !endTime2.equals("")){
+			sql += " and (to_char(a.outdate,'yyyy-mm-dd') >= '"+startTime2+"') and (to_char(a.outdate,'yyyy-mm-dd') <= '"+endTime2+"')";
+		}
+		List<Record> list = Db.find(sql, userCode);
+		String count =null;
+		for (Record cord : list) {
+			count = cord.getBigDecimal("countNum").toString();
+		}
+		System.out.println("**查询入库总页数的sql："+sql);
+		//每页10条       这里处理的是所以数据的总页数
+		int totalPageSize = Tools.getSize(Integer.parseInt(count));
+		return totalPageSize;
+	}
+	
+	/**
+	 * 查询所有的发出去的货页数    出库
+	 */
+	public int getSendSellerPage(String userTargetId,int pageNumber,String outNo,String name,String startTime2, String endTime2) {
+		//带分页
+		String sql = PropKit.use("database.properties").get("getSendSoiByUserIdCount");
+		String name2 = name.replaceAll(" ", "");
+		if(!name2.equals("")&&name2!=null){
+			sql += " AND a.productname like '%" + name2 + "%'";
+		}
+		String outNo2 = outNo.replaceAll(" ", "");
+		if(!outNo2.equals("")&&outNo2!=null){
+			sql += " AND a.outno ='" + outNo2 + "' ";
+		}
+		if(!startTime2.equals("") && !endTime2.equals("")){
+			sql += " and (to_char(a.outdate,'yyyy-mm-dd') >= '"+startTime2+"') and (to_char(a.outdate,'yyyy-mm-dd') <= '"+endTime2+"')";
+		}
+		List<Record> list = Db.find(sql, userTargetId);
+		String count =null;
+		for (Record cord : list) {
+			count = cord.getBigDecimal("countNum").toString();
+		}
+		System.out.println("**查询出库总页数的sql："+sql);
+		//每页10条       这里处理的是所以数据的总页数
+		int totalPageSize = Tools.getSize(Integer.parseInt(count));
+		return totalPageSize;
+	}
+	
+
+	/**
+	 * 根据条件查询运单 
+	 * @param UserCode
+	 * @return
+	 */
+	public List<SellerOutInfo> querySoiByUserCode(String userCode,String name,String startTime2, String endTime2) {
+		String sql = PropKit.use("database.properties").get("querySoiByUserCode");
+		String name2 = name.replaceAll(" ", "");
+		if(!name2.equals("")&&name2!=null){
+			sql += " AND a.productname like '%" + name2 + "%'";
+		}
+		if(!startTime2.equals("") && !endTime2.equals("")){
+			sql += " and (to_char(a.outdate,'yyyy-mm-dd') >= '"+startTime2+"') and (to_char(a.outdate,'yyyy-mm-dd') <= '"+endTime2+"')";
+		}
+		sql +="group by a.outno, a.sellername,a.sellerId,a.recsellername,  "
+				+ " a.degree,a.spec,a.volume,a.productname,a.brandsname order  by  outdate desc ,outno ";
+		List<Record> soiView = Db.find(sql, userCode);
+		List<SellerOutInfo> soiList = new ArrayList<SellerOutInfo>();
+		for (Record cord : soiView) {
+			SellerOutInfo soi = new SellerOutInfo();
+			soi.mapping(cord, soi);
+			soiList.add(soi);
+		}
+		return soiList;
+	}
+	
+	/**
+	 * 根据sellerId查询属于当前人发出的运单
+	 * 
+	 * @param UserCode
+	 * @return
+	 */
+	public List<SellerOutInfo> getSendSoiByUserCode(String sellerId) {
+		String sql = PropKit.use("database.properties").get("getSendSoiByUserCode");
+		List<Record> soiView = Db.find(sql, sellerId);
+		List<SellerOutInfo> soiList = new ArrayList<SellerOutInfo>();
+		for (Record cord : soiView) {
+			SellerOutInfo soi = new SellerOutInfo();
+			soi.mapping(cord, soi);
+			soiList.add(soi);
+		}
+		return soiList;
+	}
+	
+	/**
+	 * 根据sellerId查询属于当前人发出的运单
+	 * 
+	 * @param UserCode
+	 * @return
+	 */
+	public List<SellerOutInfo> querySendSoiByUserCode(String sellerId,String name,String startTime2, String endTime2) {
+		String sql = PropKit.use("database.properties").get("querySendSoiByUserCode");
+		String name2 = name.replaceAll(" ", "");
+		if(!name2.equals("")&&name2!=null){
+			sql += " AND a.productname like '%" + name2 + "%'";
+		}
+		if(!startTime2.equals("") && !endTime2.equals("")){
+			sql += " and (to_char(a.outdate,'yyyy-mm-dd') >= '"+startTime2+"') and (to_char(a.outdate,'yyyy-mm-dd') <= '"+endTime2+"')";
+		}
+		sql += " group by a.outno, a.sellername,a.sellerId,a.recsellername,"
+				+ " a.degree,a.spec,a.volume,a.productname,a.brandsname order  by  outdate desc ,outno ";
+		List<Record> soiView = Db.find(sql, sellerId);
+		List<SellerOutInfo> soiList = new ArrayList<SellerOutInfo>();
+		for (Record cord : soiView) {
+			SellerOutInfo soi = new SellerOutInfo();
+			soi.mapping(cord, soi);
+			soiList.add(soi);
+		}
+		return soiList;
+	}
+	
+	/**
+	 * 根据二维码瓶码查询属于到运单(会有多个运单)
+	 * 
+	 * @param UserCode
+	 * @return
+	 */
+	public List<SellerOutInfo> getSoiByqrcode(String qrcode) {
+		String sql = PropKit.use("database.properties").get("getSoiByqrcode");
+		List<Record> soiView = Db.find(sql, qrcode);
+		SellerOutInfo soimodel = new SellerOutInfo();
+		List<SellerOutInfo> sellList=new ArrayList<>();
+		for (Record cord : soiView) {
+			SellerOutInfo soi = new SellerOutInfo();
+			soi.mapping(cord, soi);
+			soimodel = soi;
+			sellList.add(soimodel);
+		}
+		return sellList;
+	}
+	
+	/**
+	 * 根据二维码瓶码查询属于到运单(会有多个运单)
+	 * 
+	 * @param UserCode
+	 * @return
+	 */
+	public List<SellerOutInfo> getSoiByqrcodeRK(String qrcode) {
+		String sql = PropKit.use("database.properties").get("getSoiByqrcodeRK");
+		List<Record> soiView = Db.find(sql, qrcode);
+		SellerOutInfo soimodel = new SellerOutInfo();
+		List<SellerOutInfo> sellList=new ArrayList<>();
+		for (Record cord : soiView) {
+			SellerOutInfo soi = new SellerOutInfo();
+			soi.mapping(cord, soi);
+			soimodel = soi;
+			sellList.add(soimodel);
+		}
+		return sellList;
+	}
+	
+	
+	/**
+	 * 根据瓶身内码查询外码
+	 */
+	public String getWcodeByNcode(String ncode) {
+		Record record = new Record();
+		Db.execute(new ICallback() {
+	        @Override
+	        public Object call(Connection conn) throws SQLException {
+	            CallableStatement proc = conn.prepareCall("{call plsdbflat.pack_public.querynwmbyncode(?,?)}");
+				proc.setString(1, ncode);
+				proc.registerOutParameter(2, OracleTypes.VARCHAR);
+				proc.execute();
+	            record.set("wcode",proc.getObject(2));
+				return proc;
+	        }
+	    });
+		return record.get("wcode");
+	};
+	
+	/**
+	 * 根据活动ID查询该活动相关的信息
+	 */
+	public List<ActivitySellerOutInfo> getSellerInfoByActivityId(String activityId) {
+		String sql = PropKit.use("database.properties").get("getSellerInfoByActivityId");
+		return ActivitySellerOutInfo.dao.find(sql, activityId);
+	}
+
+	/**
+	 * 根据运单号查询该条运单的信息
+	 */
+	public SellerOutInfo getSellerOutInfoByOutRecordId(String recordId) {
+		String sql = PropKit.use("database.properties").get("getSellerOutInfoByOutRecordId");
+		List<Record> soiView = Db.find(sql, recordId);
+		SellerOutInfo soimodel = new SellerOutInfo();
+		for (Record cord : soiView) {
+			SellerOutInfo soi = new SellerOutInfo();
+			soi.mapping(cord, soi);
+			soimodel = soi;
+		}
+		return soimodel;
+	}
+}

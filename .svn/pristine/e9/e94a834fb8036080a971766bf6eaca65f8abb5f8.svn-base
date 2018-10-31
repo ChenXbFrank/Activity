@@ -1,0 +1,341 @@
+<!--[arg _res,user,basePath,staticPath,robRed,sellerInfoList,rrpList;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/jzRedConfig/jz-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/jzRedConfig/jz-my-one-activity-info.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/jzRedConfig/jz-activity-approve-info.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+		</style>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：
+					<a href="${basePath}/goHomePage">首页></a>
+					<a href="${basePath}/activity">审批活动>
+						<a href="${basePath}/robRedConfig/allMyActvity">抢红包活动</a>
+						<a href="javascript:void(0);">>抢红包活动审批</a>
+					</a>
+				</p>
+				<ul class="title-pic">
+					<li>
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li>
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+
+				<div class="left">
+					<div class="activity-pic" id="divPreview">
+						<img id="pic" src="/activityUploadPath${robRed.getMoblecBackGroundImg()}" alt="" />
+					</div>
+				</div>
+				<div class="excels">
+					<p class="setUp">活动内容设置</p>
+					<label for="active-name">抢红包活动名称：</label> <input type="text" id="active-name" value="${robRed.getActivityName()}" />
+					<label for="active-status">状态：</label> <input type="text" id="active-status" value="申请状态" />
+					<div class="red-time">
+						<label for="">抢红包活动时间：</label>
+						<span class="startTime">${robRed.getStartTime()}</span>
+						<div class='line'></div>
+						<span>${robRed.getEndTime()}</span>
+					</div>
+					<div class="list-bill">
+						<div class="bill-title">
+							运单信息：
+						</div>
+						<div id="table-outer1">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+										<td>发货时间</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<!--[ loop(sellerInfo:sellerInfoList){  ]-->
+									<tr>
+										<td>${sellerInfo.getOutNo()}</td>
+										<td>${sellerInfo.getOutSellerName()}</td>
+										<td>${sellerInfo.getProductName()}</td>
+										<td>${sellerInfo.getDeep()}</td>
+										<td>${sellerInfo.getVolume()}</td>
+										<td>${sellerInfo.getSpec()}</td>
+										<td>${sellerInfo.getBoxSize()}</td>
+										<td>${sellerInfo.getBandName()}</td>
+										<td>${sellerInfo.getOutDate()}</td>
+									</tr>
+									<!--[ }  ]-->
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div>
+						<p class="prizeSet">奖品设置</p>
+						<div class="big">
+							<!--[ if(robRed.getPattern()=='1') { ]-->
+							<div class="awards1">
+								<input name="Pattern" type="radio" value="1" class="Pattern1" checked="checked" disabled="disabled" />
+								<lable for="">模式一(奖项红包):</lable>
+								<br /> <span class="explain1">(设置奖项以及对应金额)</span>
+
+							</div>
+							<div class="surface1">
+								<div id="table-outer2">
+									<div class="table-thead">
+										<table border="0" cellpadding="0" cellspacing="0">
+											<tr>
+												<td>奖项</td>
+												<td>奖项金额</td>
+												<td>获奖人数</td>
+												<td>小计</td>
+												<td>获奖概率</td>
+											</tr>
+										</table>
+									</div>
+									
+									
+									<div class="table-tbody">
+										<table border="0" cellpadding="0" cellspacing="0">
+											<!--[ loop(rrpLists:rrpList){  ]-->
+											<!--[ if(rrpLists.getPrizeProject()=='积分') { ]-->
+											<!-- 积分 -->
+											<tr>
+												<td>${rrpLists.getPrizeProject()}</td>
+												<td>${rrpLists.getWinningIntegral()} 分
+												</td>
+												<td>${rrpLists.getGetPrizeNumber()} 人</td>
+												<td>——</td>
+												<td>${rrpLists.getRedWinningProbability()}%</td>
+											</tr>
+											<!--[}else{ ]-->
+											<!-- 奖项 -->
+											<tr>
+											<!--  <input type='text' value="${rrpLists.getPrizeProject()}"   />  -->
+												<td>${rrpLists.getPrizeProject()}</td>
+												<td>${rrpLists.getPrizeProjectMoney()} 元
+												</td>
+												<td>${rrpLists.getGetPrizeNumber()} 人</td>
+												<td>${rrpLists.getSubTotal()}元</td>
+												<td>${rrpLists.getRedWinningProbability()}%</td>
+											</tr>
+											<!--[ }  ]-->
+											<!--[ }  ]-->
+										</table>
+									</div>
+								</div>
+
+								<div class="interpret">
+									<label for="" class="totalAmount">金额合计：</label><br/>
+									<span>奖项金额：<span class="bonus">${rrpLists.getPrizeProjectTotalMoney()}元</span></span><br /> <label for="" class="probabilityTotal">概率合计：</label>
+									<br />
+									<p>奖项中奖率:<span class="zhongjiangG">${rrpLists.getProbabilityTotal()}%</span>；积分中奖率:<span class="prizeProbability">${rrpLists.getIntegralWinningProbability()}%</span>；剩余:<span class="shenx">${rrpLists.getSurplusProbability()}%</span>为“谢谢惠顾”</p>
+								</div>
+							</div>
+							<!-- <input type='text'  value="${rrpLists.getIntegralWinningProbability()}" id="qq" /> -->
+							
+							<!--[ }else if(robRed.getPattern()=='2') { ]-->
+							<div class="awards2">
+								<input name="Pattern" type="radio" value="2" class="Pattern2" onclick="getRadio()" disabled="disabled" checked="checked" />
+								<lable for="">模式二(随机红包):</lable>
+								<br /> <span class="explain2">(xx人瓜分红包总额) </span>
+							</div>
+						</div>
+						<div class="surface2">
+							<!--[ loop(rrp:rrpList){  ]-->
+							<!-- <label id="frequency">一次扫码抢红包次数：</label>
+							<input type=radio class="qqe" name="shu" value="1" checked="checked" /> -->
+							<!-- <span>1次</span> -->
+						<!-- 	<span>${rrp.getScanRodRedNum()}</span>次 -->
+							<div id="table-outer4">
+								<div class="table-thead">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>红包总额</td>
+											<td>中奖人数</td>
+											<td>中奖概率</td>
+											<td>编辑</td>
+										</tr>
+									</table>
+								</div>
+								<div class="table-tbody">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>${rrp.getPrizeProjectMoney()}元</td>
+											<td>${rrp.getGetPrizeNumber()}人</td>
+											<td class="bonusProbability1"> ${rrp.getRedWinningProbability()}</td>
+											<td>一一</td>
+										</tr>
+
+									</table>
+								</div>
+							</div>
+							<!--[ }  ]-->
+							<div class="interpret1">
+								<label for="" class="totalAmount">金额合计：</label><br/>
+								<span>奖项金额：<span class="bonus1">${rrp.getPrizeProjectTotalMoney()}元</span></span><br /> <label for="" class="probabilityTotal">概率合计：</label><br />
+								<p>奖项中奖率:<span class="zhongjiangG1">${rrp.getProbabilityTotal()}%</span>；剩余:<span class="shenx1">${rrp.getSurplusProbability()}%</span>为“谢谢惠顾”</p>
+							</div>
+						</div>
+						<!--[ } ]-->
+						<div class="productInfos">
+							<label for="textarea">活动建议：</label>
+							<textarea id="textarea" maxlength="30" placeholder="字数限制：30字以内"></textarea>
+						</div>
+						<input type="hidden" value="${robRed.getRedId()}" id="activityId" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="btn">
+			<div class="submitBtn" id="pass">通过</div>
+			<div class="submitBtn" id="reject">驳回</div>
+			<div class="submitBtn" id="back">返回</div>
+		</div>
+
+		</div>
+		</div>
+		</div>
+		<div id="popup" style="display:none">
+			<div class="fade"></div>
+			<!--审核成功-->
+			<div class="delivery-success">
+				<div class="success-outer">
+					<div class="pop-title">审核成功！</div>
+					<input type="button" value="确定" id="delivery-success-yes" />
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+	/* alert($("#qq").val()) */
+	if('${rrpLists.getIntegralWinningProbability()}'=="" || '${rrpLists.getIntegralWinningProbability()}'==0){
+		$(".prizeProbability").html('0.00'+'%')
+	}
+		/*活动状态：0申请中   1审批通过  2 已驳回  */
+		$("#pass").on("click", function() {
+			var remake = $("#textarea").val();
+			var activityId = $("#activityId").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/jzRedConfig/saveRedRobApprove",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {　　　
+					remake: remake,
+					　　　activityId: activityId,
+					state: 1　　
+				},
+				　success: function(data) {
+					$("#loadingInfo").hide();
+					$("#popup").show();
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+						location.href = "${basePath}/jzRedConfig/redRobApprove";
+					})　　
+				},
+			});
+		})
+		$("#reject").on("click", function() {
+			var remake = $("#textarea").val();
+			var activityId = $("#activityId").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/jzRedConfig/saveRedRobApprove",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {　　　
+					remake: remake,
+					　　　activityId: activityId,
+					state: 2　　
+				},
+				　success: function(data) {
+					$("#loadingInfo").hide();
+					$("#popup").show();
+					$(".pop-title").html("已成功驳回！");
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+						location.href = "${basePath}/jzRedConfig/redRobApprove";
+					})
+
+					　　
+				},
+			});
+		});
+		$("#back").on("click", function() {
+			history.back(-1);
+		});
+	</script>
+
+</html>

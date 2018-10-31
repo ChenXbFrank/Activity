@@ -1,0 +1,1072 @@
+<!--[arg _res,user,basePath,staticPath,activityList,soiList,belongActivityId,userTargetId,proList,getId;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/billCommon.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload2.css">
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/integralConfig/intergral-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/integralConfig/media-intergral-edit.css" />
+		<script src="${staticPath}/js/upload/upload.min.js"></script>
+		<script type="text/javascript">
+			var basePath = "${basePath}";			//获取basePath
+		</script>
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+			#bargaining-situation {
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+		</style>
+	</head>
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<!--提示数据丢失-->
+		<div id="popup1" style="display:none">
+			<div class="fade"></div>
+			<div class="delivery-success1">
+				<div class="success-outer1">
+					<div class="pop-title">已填数据可能会丢失。</div>
+					<input type="button" value="确定" id="yes" class="btn-button" />
+					<input type="button" value="取消" id="no" class="btn-button" />
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：
+					<a href="${basePath}/goHomePage" class="backHome">首页></a>
+					<a href="${basePath}/activityApply" class="backOne">活动申请></a>
+					<a href="javascript:void(0);" class="back">积分兑换申请</a>
+				</p>
+				<ul class="title-pic">
+					<li class="backHome">
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li class="exit">
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+				<div class="left">
+					<div class="activity-pic" id="divPreview">
+						<img id="pic" src="/activityUploadPath/upload/jifenduihuan-bg.png" alt="" />
+					</div>
+					<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+					<div class="upload">
+						<input type="button" value="上传图片" />
+					</div>
+				</div>
+				<div id="popup" style="display: none">
+					<div class="fade"></div>
+					<!--申请成功-->
+					<div class="delivery-success">
+						<div class="success-outer">
+							<div class="pop-title">申请成功！</div>
+							<input type="button" value="确定" id="delivery-success-yes" />
+						</div>
+					</div>
+				</div>
+				<div id="popup-upPic" style="display: none">
+					<div class="fade"></div>
+					<!--图片上传弹窗-->
+					<div class="delivery-success">
+						<div class="close" id="closePic">
+							<img src="${staticPath}/img/close-icon.png" alt="" />
+						</div>
+						<div class="upBtn">
+							<div class="upBtn-inner">
+								<input type="hidden" name="filePath" id="callbackPath2">
+								<a id="zwb_upload"> <input type="file" class="add" multiple>选择图片
+								</a> <input type="button" value="确定上传" id="yulan" />
+							</div>
+						</div>
+						<hr>
+						<div class="imgsBox">
+							<ul>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="excels">
+					<p class="setUp">积分关联签到：</p>
+					<label for="active-name">签到获得积分：</label> <input type="text" id="active-name" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;" />积分/天<br />
+					<label for="active-name">活动所需积分：</label> <input type="text" id="needIntegral" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;" />积分/次<br />
+					<div class="list-bill">
+						<div class="bill-title">
+							奖品配置：<img src="${staticPath}/img/home - add.png" alt="" id='otherPic9' class='addPic' />&nbsp;&nbsp;<span style="color:red">(温馨提示:1.概率由当前权重除以所有权重,即权重越大中奖概率越大。2.要配8个奖品数量)</span>
+						</div>
+						<div id="table-outer1">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>序号</td>
+										<td>奖品名称</td>
+										<td>奖品类型</td>
+										<td>奖品权重</td>
+										<td>操作</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+								</table>
+							</div>
+						</div>
+					</div>
+							<!-- 奖品设置弹窗 -->
+		<div class="popUp" id="otherProduct3" style="display:none">
+			<div class="mask"></div>
+			<div class="popUp-otherProduct-window otherProduct-window" style="background-image:url('${staticPath}/img/integralConfig/0.png')">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" id="otherPro-close" />
+				<div class="list-bill">
+					<div class="kuang">
+						<p class="yund">添加奖品：</p>
+						<div class="addPic">
+							<div class="addPic-left">
+								<label for="bargaining-situation">奖品类型：</label>
+								<div class="outer">
+									<input id="bargaining-situation" type="text" readonly="readonly" style="background-image: url('${staticPath}/img/more01.png')" />
+									<ul class="select" style="display: none;">
+										<li>实物</li>
+										<li>积分</li>
+										<li>红包</li>
+										<li>谢谢惠顾</li>
+									</ul>
+								</div><br>
+								<label class="proName">奖品名称：</label>
+								<input type="text" id="proName3" class="proName" maxlength="6" placeholder="6个字以内" /><br />
+								<label>奖品权重：</label>
+								<input type="text" id="proNum3" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;" /><br />
+								<!-- <label>中奖概率：</label>
+								<span id="probability">10%</span> -->
+							</div>
+							<div class="addPic-right">
+								<!-- 下拉框是实物 -->
+								<div class="matter">
+									<p>奖品图片：</p>
+									<div class="addPic-upload" id="addPic-upload">
+										<img id="pic3" src="${staticPath}/img/default.png" alt="" />
+									</div>
+									<p class="picInfo3">(上传图片大小不高于500kb,图片格式为jpg,png,gif)</p>
+									<div class="upload3">
+										<input type="button" value="上传图片" />
+									</div>
+								</div>
+								<!-- 下拉框是红包 -->
+								<div class="redBag" style="display:none">
+									<label>红包金额：</label>
+									<input type="text" id="money" oninput="clearNoNum(this)" />元
+								</div>
+								<!-- 下拉框是积分 -->
+								<div class="integral" style="display:none">
+									<label>积分值：</label>
+									<input type="text" id="integral" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;" />分
+								</div>
+								<!-- 下拉框是谢谢惠顾 -->
+								<div class="thanks" style="display:none">
+								</div>
+							</div>
+
+						</div>
+						<div class="btn billConfirm" id="bill-btn3">
+							<input type="button" value="取消" class="bb" id="otherPic-cancel" />
+							<input type="button" value="保存" class="bb" id="otherPic-save3" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+					<div>
+						<p class="prizeSet">积分关联产品：</p>
+						<div class="big">
+							<div class="awards1">
+								<input name="Pattern" type="radio" value="1" class="Pattern1" checked="checked" />
+								<lable for="">代理产品:</lable>
+								<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="otherPic1" /> <img src="${staticPath}/img/integralConfig/add.png" alt="" class='addPic' id="otherPic2" style="display: none" /> <br />
+							</div>
+							<div class="awards2">
+								<input name="Pattern" type="radio" value="2" class="Pattern2" />
+								<lable for="">其他产品:</lable>
+								<img src="${staticPath}/img/integralConfig/add.png" alt="" class='addPic' id="otherPic" /> <br />
+							</div>
+						</div>
+						<div class="surface1">
+							<div id="table-outer2">
+								<div class="table-thead">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>序号</td>
+											<td>产品名称</td>
+											<td>规格(mL/瓶)</td>
+											<td>度数(°)</td>
+											<td>容量(mL)</td>
+											<td>总数</td>
+											<td>兑换积分</td>
+											<!-- <td>编辑</td> -->
+										</tr>
+									</table>
+								</div>
+								<div class="table-tbody">
+									<table border="0" cellpadding="0" cellspacing="0">
+
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="surface2" style="display: none;">
+							<div id="table-outer4">
+								<div class="table-thead">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>序号</td>
+											<td>产品名称</td>
+											<td>产品数量</td>
+											<td>积分兑换</td>
+											<td>产品介绍</td>
+											<td>操作</td>
+										</tr>
+									</table>
+								</div>
+								<div class="table-tbody">
+									<table border="0" cellpadding="0" cellspacing="0">
+
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="popUp" id="billPop1" style="display: none">
+			<div class="mask"></div>
+			<div class="popUp-window bill-window">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close guan" id="bill-close" />
+				<div class="list-bill">
+					<div class="kuang">
+						<p class="yund">产品中心</p>
+						<div class="qwe qwe1">
+							<lable class="jp">货品名称：</lable>
+							<input type="text" id="search2 " class="qsearch" value="" />
+							<button class="chazhao2  qchazhao">搜索</button>
+						</div>
+						<div id="table-outer3">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0" id="yourTableID3">
+									<tr>
+										<td>序号</td>
+										<td>产品名称</td>
+										<td>规格(瓶/箱)</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>选择</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0" id="zong">
+									<!--[loop(product:proList){]-->
+									<tr>
+										<td>${product_index+1}</td>
+										<td class="list">${product.getProductName()}</td>
+										<td>${product.getSpec()}</td>
+										<td>${product.getDegree()}</td>
+										<td>${product.getVolume()}</td>
+										<td class="checkbox"><input class="popo" type="checkbox" name="${product.getSellerId()}" value="${product.getProductId()}" /></td>
+									</tr>
+									<!--[}]-->
+								</table>
+							</div>
+						</div>
+						<div class="btn billConfirm" id="bill-btn">
+							<input type="button" value="确定" class="bb " id="ok" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="submitBtn"><input type="button" value="提交申请" /></div>
+
+
+		<!-- 其他产品弹窗 -->
+		<div class="popUp" id="otherProduct" style="display: none">
+			<div class="mask"></div>
+			<div class="popUp-otherProduct-window otherProduct-window" style="background-image: url('${staticPath}/img/integralConfig/0.png')">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" id="otherPro-close" />
+				<div class="list-bill">
+					<div class="kuang">
+						<p class="yund">添加其他产品：</p>
+						<div class="addPic">
+							<div class="addPic-left">
+								<div class="addPic-upload" id="addPic-upload">
+									<img id="pic1" src="${staticPath}/img/default.png" alt="" />
+								</div>
+								<p class="picInfo1">(上传图片大小不高于500kb,图片格式为jpg,png,gif)</p>
+								<div class="upload1">
+									<input type="button" value="上传图片" />
+								</div>
+							</div>
+							<div class="addPic-right">
+								<label>产品名称：</label><input type="text" id="proName" maxlength="6" placeholder="6个字以内" /><br /> <label>产品数量：</label><input type="text" id="proNum" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;" />个<br /> <label>兑换积分：</label><input type="text" id="exchangeIntegral" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;" />积分/个<br /> <label>产品介绍：</label>
+								<textarea rows="" cols="" maxlength="30" placeholder="字数限制：30字以内" id="proIntroduce"></textarea>
+							</div>
+						</div>
+						<div class="btn billConfirm" id="bill-btn1">
+							<input type="button" value="取消" class="bb" id="otherPic-cancel" />
+							<input type="button" value="保存" class="bb" id="otherPic-save" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="popup-upPic1" style="display: none">
+			<div class="fade"></div>
+			<!--图片上传弹窗-->
+			<div class="delivery-success">
+				<div class="close" id="closePic1">
+					<img src="${staticPath}/img/close-icon.png" alt="" />
+				</div>
+				<div class="upBtn">
+					<div class="upBtn-inner">
+						<input type="hidden" name="filePath" id="callbackPath1">
+						<a id="zwb_upload1"> <input type="file" class="add" multiple>选择图片
+						</a> <input type="button" value="确定上传" id="yulan1" />
+					</div>
+				</div>
+				<hr>
+				<div class="imgsBox">
+					<ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- 查看其他产品弹窗 -->
+		<div class="popUp" id="lookOtherProduct" style="display: none">
+			<div class="mask"></div>
+			<div class="popUp-otherProduct-window otherProduct-window" style="background-image: url('${staticPath}/img/integralConfig/0.png')">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" id="lookOtherPro-close" />
+				<div class="list-bill">
+					<div class="kuang">
+						<p class="yund">添加其他产品：</p>
+						<div class="addPic">
+							<div class="addPic-left">
+								<div class="addPic-upload" id="addPic-upload">
+									<img id="pic1" class="pic1" src="" alt="" />
+								</div>
+							</div>
+							<div class="addPic-right">
+								<label>产品名称：<span class="no1"></span></label><br /> <label>产品数量：<span
+								class="no2"></span>个
+							</label><br /> <label>兑换积分：<span class="no3"></span>积分/个
+							</label><br /> <label>产品介绍：<span class="no4"></span></label>
+							</div>
+						</div>
+						<div class="btn billConfirm" id="bill-btn2">
+							<input type="button" value="返回" class="bb" id="lookBack" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+				<!--积分奖品图片上传弹窗-->
+		<div id="popup-upPic3" style="display:none">
+			<div class="fade"></div>
+			<div class="delivery-success">
+				<div class="close" id="closePic3">
+					<img src="${staticPath}/img/close-icon.png" alt="" />
+				</div>
+				<div class="upBtn">
+					<div class="upBtn-inner">
+						<input type="hidden" name="filePath" id="callbackPath3">
+						<a id="zwb_upload3">
+							<input type="file" class="add" multiple>选择图片
+						</a>
+						<input type="button" value="确定上传" id="yulan3" />
+					</div>
+				</div>
+				<hr>
+				<div class="imgsBox">
+					<ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" class="belong" value="${belongActivityId}" />
+		<div class="tishi4" style="display:none">
+			<div class="mask4"></div>
+			<div class="prompt">
+				<p>请将信息填写完整。</p>
+				<button class="yes4">确定</button>
+			</div>
+		</div>
+		<div class="tishi6" style="display:none">
+			<div class="mask4"></div>
+			<div class="prompt">
+				<p>您当前设置的奖品个数不足。</p>
+				<button class="yes6">确定</button>
+			</div>
+		</div>
+	</body>
+	<script src="${staticPath}/js/common/editCloseReminder.js"></script>
+	<script type="text/javascript" src="${staticPath}/js/integralConfig/integral-edit.js"></script>
+	<script>
+		/*积分模式一、模式二,单选事件以及什么时候添加其他产品的时候生效*/
+		var pattern = "1";
+		$("input[name='Pattern']").on("click", function() {
+			$(this).attr("checked", "checked").parent().siblings().find(
+				"input[name='Pattern']").attr("checked", false);
+			if($(".Pattern1").attr("checked")) {
+				$(".surface1").show();
+				$(".surface2").hide();
+				$("#otherPic").attr("src",
+					"${staticPath}/img/integralConfig/add.png");
+				$("#otherPic1").show();
+				$("#otherPic2").hide();
+				pattern = "1";
+			} else {
+				$(".surface1").hide();
+				$(".surface2").show();
+				$("#otherPic").attr("src",
+					"${staticPath}/img/home - add.png");
+				$("#otherPic1").hide();
+				$("#otherPic2").show();
+				pattern = "2";
+			}
+			if(pattern == "2") {
+				$("#otherPic").on("click", function() {
+					$("#proName").val("");
+					$("#proNum").val("");
+					$("#exchangeIntegral").val("");
+					$("#proIntroduce").val("");
+					$("#otherProduct").show();
+				})
+			} else {
+				$("#otherPic").off("click");
+			}
+		})
+		$(".upload").on("click", function() {
+			$("#popup-upPic").show();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/upload/getUserAllImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {},
+				success: function(data) {
+					//console.log(data);
+					$("#loadingInfo").hide();
+					$('#popup-upPic .imgsBox ul').html("");
+					for(var i = 0; i < data.length; i++) {
+						var li = $("<li></li>");
+						li.appendTo($('#popup-upPic .imgsBox ul'));
+						var img = $("<img src=" + '/activityUploadPath' + data[i].IMG_URL + " />");
+						img.appendTo(li);
+						var deleteImg = $("<div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div>");
+						deleteImg.appendTo(li);
+					}
+				}
+			});
+		})
+		$("#closePic").on("click", function() {
+			$("#popup-upPic").hide();
+		});
+		$("#popup-upPic .imgsBox ul li").on("click", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			$("#pic").attr("src", imgSrc);
+		})
+		$("#zwb_upload").bindUpload({
+			url: "${basePath}/upload/loadImg", //上传服务器地址
+			callbackPath: "#callbackPath2", //绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+			// ps:值返回上传成功的 默认id为#callbackPath  保存容器为位置不限制,id需要加上#号,class需要加上.
+			// 返回格式为:
+			// 原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径....
+			num: 1, //上传数量的限制 默认为空 无限制
+			type: "jpg|png|gif", //上传文件类型 默认为空 无限制
+			size: 0.488, //上传文件大小的限制,默认为5单位默认为mb
+		});
+		$("#zwb_upload .add").on("click", function() {
+			$("#callbackPath2").val("");
+		})
+		var address = ""; //传给后台的图片数据
+		$("#yulan").on("click", function() {
+			var imgPic = $("#callbackPath2").val();
+			var urlArr = imgPic.split(",");
+			address = urlArr[1];
+			var aa = "/activityUploadPath" + address;
+			//动态创建li img放在图片库的最前面
+			if(address != undefined) {
+				$("#popup-upPic .imgsBox ul").prepend(
+					" <li><img src=" + aa + " /><div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div></li>");
+				$("#callbackPath2").val("");
+			}
+		});
+		/* 点击图片库中的删除图标 */
+		function deleteImg(obj) {
+			event.stopPropagation(); //阻止冒泡
+			var deleteSrc = $(obj).parent().find("img").attr("src");
+			var srcUrl = deleteSrc.substring(19, deleteSrc.length);
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/upload/deleteImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {
+					"srcUrl": srcUrl
+				},
+				success: function(data) {
+					$("#loadingInfo").hide();
+					if(data == true) {
+						$(obj).parent().remove();
+					} else {
+						alert("删除图片失败");
+					}
+				},
+				error: function() {
+					$("#loadingInfo").hide();
+					alert("交互失败！");
+				}
+
+			});
+		}
+		$("#popup-upPic .imgsBox ul").on("click", "li", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			$("#pic").attr("src", imgSrc);
+		})
+
+		$(".upload1").on("click", function() {
+			$("#popup-upPic1").show();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/upload/getUserAllImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {},
+				success: function(data) {
+					$("#loadingInfo").hide();
+					//console.log(data);
+					$('#popup-upPic1 .imgsBox ul').html("");
+					for(var i = 0; i < data.length; i++) {
+						var li = $("<li></li>");
+						li.appendTo($('#popup-upPic1 .imgsBox ul'));
+						var img = $("<img src=" + '/activityUploadPath' + data[i].IMG_URL + " />");
+						img.appendTo(li);
+						var deleteImg = $("<div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div>");
+						deleteImg.appendTo(li);
+					}
+				}
+			});
+		})
+		$("#closePic1").on("click", function() {
+			$("#popup-upPic1").hide();
+		});
+		$("#popup-upPic1 .imgsBox ul li").on("click", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			$("#pic1").attr("src", imgSrc);
+		})
+		$("#zwb_upload1").bindUpload({
+			url: "${basePath}/upload/loadImg", //上传服务器地址
+			callbackPath: "#callbackPath1", //绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+			// ps:值返回上传成功的 默认id为#callbackPath  保存容器为位置不限制,id需要加上#号,class需要加上.
+			// 返回格式为:
+			// 原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径....
+			num: 1, //上传数量的限制 默认为空 无限制
+			type: "jpg|png|gif", //上传文件类型 默认为空 无限制
+			size: 0.488, //上传文件大小的限制,默认为5单位默认为mb
+		});
+		$("#zwb_upload1 .add").on("click", function() {
+			$("#callbackPath1").val("");
+		})
+		var address = ""; //传给后台的图片数据
+		$("#yulan1").on(
+			"click",
+			function() {
+				var imgPic = $("#callbackPath1").val();
+				var urlArr = imgPic.split(",");
+				address = urlArr[1];
+				var aa = "/activityUploadPath" + address;
+				//动态创建li img放在图片库的最前面
+				if(address != undefined) {
+					$("#popup-upPic1 .imgsBox ul").prepend(
+						" <li><img src=" + aa + " /><div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div></li>");
+					$("#callbackPath1").val("");
+				}
+			});
+		var imgSrc;
+		$("#popup-upPic1 .imgsBox ul").on("click", "li", function() {
+			 imgSrc = $(this).find("img").attr("src");
+			$("#pic1").attr("src", imgSrc);
+		})
+		
+		
+		$(".upload3").on("click", function() {
+			$("#popup-upPic3").show();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/upload/getUserAllImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {},
+				success: function(data) {
+					$("#loadingInfo").hide();
+					$('#popup-upPic3 .imgsBox ul').html("");
+					for(var i = 0; i < data.length; i++) {
+						var li = $("<li></li>");
+						li.appendTo($('#popup-upPic3 .imgsBox ul'));
+						var img = $("<img src=" + '/activityUploadPath' + data[i].IMG_URL + " />");
+						img.appendTo(li);
+						var deleteImg=$("<div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div>");
+						deleteImg.appendTo(li);
+					}
+				}
+			});
+		})
+		$("#closePic3").on("click", function() {
+			$("#popup-upPic3").hide();
+		});
+		$("#popup-upPic3 .imgsBox ul li").on("click", function() {
+			var imgSrc3 = $(this).find("img").attr("src");
+			$("#pic3").attr("src", imgSrc3);
+		})
+		$("#zwb_upload3").bindUpload({
+			url: "${basePath}/upload/loadImg", //上传服务器地址
+			callbackPath: "#callbackPath3", //绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+			// ps:值返回上传成功的 默认id为#callbackPath  保存容器为位置不限制,id需要加上#号,class需要加上.
+			// 返回格式为:
+			// 原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径....
+			num: 1, //上传数量的限制 默认为空 无限制
+			type: "jpg|png|gif", //上传文件类型 默认为空 无限制
+			size: 0.488, //上传文件大小的限制,默认为5单位默认为mb
+		});
+		$("#zwb_upload3 .add").on("click", function() {
+			$("#callbackPath3").val("");
+		})
+		var address1 = ""; //传给后台的图片数据
+
+		$("#yulan3").on("click", function() {
+			var imgPic = $("#callbackPath3").val();
+			var urlArr = imgPic.split(",");
+			address1 = urlArr[1];
+			var aa = "/activityUploadPath" + address1;
+			//动态创建li img放在图片库的最前面
+			if(address1 != undefined) {
+				$("#popup-upPic3 .imgsBox ul").prepend(" <li><img src=" + aa + " /><div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div></li>");
+				$("#callbackPath3").val("");
+			}
+
+		});
+		$("#popup-upPic3 .imgsBox ul").on("click", "li", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			$("#pic3").attr("src", imgSrc);
+		})
+		
+		/*点击加号出现运单信息 */
+		$("#otherPic1").click(function() {
+			$("#billPop1").show();
+		})
+		$(".guan,#ok").click(function() {
+			$("#billPop1").hide();
+		})
+		$(".qchazhao").click(function() {
+			var name = $(".qsearch").val();
+			//	alert(name);
+			$(".list").each(function() {
+				var itemName = $(this).text();
+				//alert(itemName)
+				if(itemName.indexOf(name) > -1) {
+					$(this).parent().show();
+				} else {
+					$(this).parent().hide();
+				}
+			})
+		})
+		//积分关联的活动查询名称
+		$("#chazhao2").click(function() {
+			var name = $("#searchTwo").val();
+			//	alert(name);
+			$(".activity-name").each(function() {
+				var itemName = $(this).text();
+				//alert(itemName)
+				if(itemName.indexOf(name) > -1) {
+					$(this).parent().parent().show();
+				} else {
+					$(this).parent().parent().hide();
+				}
+			})
+		})
+		$("#chazhao3").click(function() {
+			var name = $("#search3").val();
+			//	alert(name);
+			$(".activity-name").each(function() {
+				var itemName = $(this).text();
+				//alert(itemName)
+				if(itemName.indexOf(name) > -1) {
+					$(this).parent().parent().show();
+				} else {
+					$(this).parent().parent().hide();
+				}
+			})
+		})
+		var big = {};
+		var newArr = [];
+		var resultArr = [];
+		var resultArr2 = [];
+		var activityData;
+		function aaa(url, id, name, img, remark) {
+			$(".activities1").html('');
+			$("#billPop").hide();
+			$("#billPop7").show();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}" + url,
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {},
+				success: function(data) {
+					$("#loadingInfo").hide();
+					activityData = data;
+					big = {};
+					big.id = id;
+					big.name = name;
+					big.img = img;
+					big.remark = remark;
+					//console.log(big)
+					$(".tenActivityId").val(id);
+					$(".tenActivityName").val(name);
+					//alert(name)
+					$(".activities1").html("");
+					var ul = $("<ul></ul>");
+					$(".activities1").append(ul);
+					for(var i = 0; i < data.length; i++) {
+						var imgurl = "${staticPath}" + data[i].activityImg;
+						//alert(imgurl);
+						var li = $("<li><a href='javascript:void(0);'  >" +
+							"<input type='checkbox' class='checkBox' />" +
+							"<div class='img'>" +
+							"<img src=" + imgurl + " alt='' class='img1'/>" +
+							"</div>" +
+							"<p class='activity-name'>" +
+							data[i].activityName +
+							"</p>" +
+							"<input type='hidden' value='" + data[i].activityId + "'class='smallId'  />" +
+							"</a></li>");
+						ul.append(li);
+						//console.log(data);
+					}
+					//单个复选框反选
+					$(".activities1 ul li input[type='checkbox']").each(
+						function() {
+							$("this").prop("checked", false);
+							for(var i in resultArr) {
+								if(resultArr[i].activityId == $(this)
+									.parent().find(".smallId")
+									.val()) {
+									$(this).prop("checked", true);
+									break;
+								}
+							}
+						});
+				}
+			});
+		}
+
+		$("#addInfo").click(function() {
+			$("#table-outer1 .table-tbody table tr").length = 0;
+			var surviving = [];
+			for(var i in resultArr) {
+				if(resultArr[i].id != big.id) {
+					surviving.push(resultArr[i]);
+				};
+			}
+			resultArr = surviving;
+			newArr = [];
+			$(".activities1  ul li input[type='checkbox']:checked").each(function() {
+				for(var i = 0; i < activityData.length; i++) {
+					var smallId = $(this).parent().find(".smallId").val();
+					if(smallId == activityData[i].activityId) {
+						newArr.push(activityData[i]);
+						break;
+					}
+				}
+			})
+			for(var i = 0; i < newArr.length; i++) {
+				newArr[i].id = big.id;
+				newArr[i].name = big.name;
+				newArr[i].img = big.img;
+				newArr[i].remark = big.remark;
+			}
+			for(var i in newArr) {
+				resultArr.push(newArr[i]);
+			}
+			//console.log(resultArr);
+			CreateTableIntegralAssociated(resultArr.length, resultArr);
+			$("#billPop").hide();
+			$("#billPop7").hide();
+		})
+
+		$(".submitBtn input[type='button']").click(function() {
+			//alert("45656"+imgSrc)
+			if(addAwards.length <8 ){
+				$(".tishi6").show();
+			}else{
+				window.onbeforeunload = null;
+				$("#table-outer1 .table-tbody table tr").find(
+					"input[type='text']").each(function(i,value) {
+						resultArr[i].joinNumber = $(this).val();
+				})
+				//console.log(resultArr+'111');
+				function objTransform(jsonobj) {
+					return JSON.stringify(jsonobj);
+				}
+				//console.log(addAwards);
+				/*活动名称*/
+				var integralconfig = {};
+				var integral = $("#active-name").val();
+				var pattern = $('input:radio:checked').val();
+				var picsrc = $("#pic").attr("src").substring(19,$("#pic").attr("src").length);
+			/* 活动所需积分/次 */
+				var needIntegral=$("#needIntegral").val();
+				/*积分关联产品里的代理产品*/
+				var Waybill = [];
+				for(var i = 0; i < $("#table-outer2 .table-tbody tr").length; i++) {
+					var trobj1 = {};
+					for(var j = 0; j < $(
+							"#table-outer2 .table-tbody tr").eq(i)
+						.find("td").length - 1; j++) {
+						trobj1.orderNumber = $(
+								"#table-outer2 .table-tbody tr")
+							.eq(i).find("td").eq(0).html();
+						trobj1.productname = $(
+								"#table-outer2 .table-tbody tr")
+							.eq(i).find("td").eq(1).html();
+						trobj1.specifications = $(
+								"#table-outer2 .table-tbody tr")
+							.eq(i).find("td").eq(2).html();
+						trobj1.degrees = $(
+								"#table-outer2 .table-tbody tr")
+							.eq(i).find("td").eq(3).html();
+						trobj1.capacity = $(
+								"#table-outer2 .table-tbody tr")
+							.eq(i).find("td").eq(4).html();
+						trobj1.exchange = $(
+								"#table-outer2 .table-tbody tr")
+							.eq(i).find("td").eq(5).find(
+								"input").val();
+						
+						trobj1.getProductId = $(
+								"#table-outer2 .table-tbody tr")
+							.eq(i).find("td").eq(5).find(
+								"input").attr("name");
+						//console.log(trobj);
+					}
+					Waybill.push(trobj1);
+				}
+				//console.log(Waybill);
+				/*积分关联活动数据*/
+				var addAwardsAjax = [];
+				for(var i = 0; i < addAwards.length; i++) {
+					var addAwardsAjaxObj = {};
+					if(addAwards[i].type == "实物") {
+						addAwardsAjaxObj.type = "1";
+					} else if(addAwards[i].type == "积分") {
+						addAwardsAjaxObj.type = "2";
+					} else if(addAwards[i].type == "红包") {
+						addAwardsAjaxObj.type = "3";
+					} else if(addAwards[i].type == "谢谢惠顾") {
+						addAwardsAjaxObj.type = "4";
+					}
+					addAwardsAjaxObj.name = addAwards[i].name;
+					addAwardsAjaxObj.weight = addAwards[i].weight;
+					addAwardsAjaxObj.probability = addAwards[i].probability;
+					addAwardsAjaxObj.picture = addAwards[i].picture.substring(19, addAwards[i].picture.length);
+					
+					addAwardsAjaxObj.money = addAwards[i].money;
+					addAwardsAjaxObj.integral = addAwards[i].integral;
+					addAwardsAjax.push(addAwardsAjaxObj);
+				}
+				console.log(addAwardsAjax)
+				/*添加其他产品*/
+				var otherproductsArr = [];
+				var otherproducts = {};
+				otherproducts.productname = $("#proName").val();
+				otherproducts.productnumber = $("#proNum").val();
+				otherproducts.productpoints = $("#exchangeIntegral")
+					.val();
+				otherproducts.productintroduce = $("#proIntroduce")
+					.val();
+				otherproducts.picsrc = $("#pic1")
+					.attr("src")
+					.substring(19, $("#pic1").attr("src").length);
+				//console.log(otherproducts.productintroduce)
+				otherproductsArr.push(otherproducts);
+
+				//给积分关联产品其他里面的数组对象添加序号
+				for(var i in addOtherProducts) {
+					addOtherProducts[i].orderNumber = i + 1;
+					/* addOtherProducts[i].total=""; */
+				}
+				//console.log(addOtherProducts);
+				for(var i in billLists) {
+					billLists[i].orderNumber = i + 1;
+					billLists[i].exchange = $("#table-outer2 .table-tbody table tr").eq(i).find(".exchange").val();
+					billLists[i].productNumber = $("#table-outer2 .table-tbody table tr").eq(i).find(".total").val();
+					/* billLists[i].productNumber=""; */
+					billLists[i].productImg = "";
+					billLists[i].productIntroduce = "";
+					billLists[i].agent = "1";
+				}
+				//console.log(billLists);
+				var intergralProduct = []; //最终传给后台积分关联产品数据
+				intergralProduct = billLists.concat(addOtherProducts);
+				for(var i in intergralProduct) {
+					intergralProduct[i].productImg = intergralProduct[i].productImg.substring(19, intergralProduct[i].productImg.length);
+				}
+				//console.log(intergralProduct);
+				var belongActivityId = $(".belong").val();
+
+				//积分的验证
+				var activeName = $("#active-name").val();
+
+				function relevanceName() {
+					if(activeName == "") {
+						return false;
+					} else {
+						return true;
+					}
+				}
+				//关联活动的验证,false表示不通过
+				function relevanceActivity() {
+					if(addAwards.length <= 0) {
+						return false;
+					} else {
+						for(var i in resultArr) {
+							if(resultArr[i].joinNumber == "") {
+								return false
+							}
+						}
+						return true;
+					}
+				}
+				//积分关联产品验证，false表示不通过
+				function relevancProduct() {
+					if(intergralProduct.length <= 0) {
+						return false;
+					} else {
+						for(var i in intergralProduct) {
+							var obj = intergralProduct[i];
+							//console.log(obj);
+							var productNumber = obj.productNumber;
+							var exchange = obj.exchange;
+							if(productNumber == "" || exchange == "") {
+								return false;
+							}
+						}
+						return true;
+					}
+				}
+				var needIntegral=$("#needIntegral").val();
+				if(relevanceName() == true && relevanceActivity() == true && relevancProduct() == true && needIntegral!='' && addAwards.length >=8) {
+					$(this).attr("disabled", true);
+					$("#loadingInfo").show();
+					$.ajax({
+						url: "${basePath}/integralConfig/integralActivitySave",
+						type: "POST",
+						dataType: "JSON",
+						async: "false",
+						data: {
+							"integral": integral,
+							"pattern": pattern,
+							"picsrc": picsrc,
+							"addAwards": objTransform(addAwardsAjax),
+							"needIntegral":needIntegral,
+							"otherproducts": objTransform(intergralProduct),
+							"belongActivityId": belongActivityId
+						},
+						success: function(data) {
+							$("#loadingInfo").hide();
+							/* console.log(newArr)
+							console.log(otherproducts) */
+							if(data.result == "true") {
+								$(this).removeAttr("disabled");
+								//alert("申请成功！");
+								$("#popup").show();
+								$("#delivery-success-yes").on("click", function() {
+									$("#popup").hide();
+									location.href = "${basePath}/activityApply";
+								})
+							} else {
+								$(this).attr("disabled", "disabled");
+							}
+						}
+
+					});
+				} else {
+					$(".tishi4").show();
+					$(".mask4").show();
+				}
+			}
+
+
+		});
+		$(".tishi6 .yes6").click(function(){
+			$(".tishi6").hide();
+		})
+	</script>
+
+</html>

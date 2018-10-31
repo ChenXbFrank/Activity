@@ -1,0 +1,380 @@
+<!--[arg basePath,staticPath,url,systemHttp,sellerPublicNumber,oneMoneyShop,oneMoneyPrize,groupWxUserList,oneMoneyGroupWxUser,oneMoneyWxUser,joinNum,sellerNumberId,winGroupWxUser,mywin,oneMoneyWxUserWinning,allPay,sellerPublicNumber;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>一元购邀请</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/oneMoneyShop/oneMoneyShop-Invitation.css" />
+		<style type="text/css">
+			@font-face {
+				font-family: 'fonts';
+				src: url("${staticPath}/font2/iconfont.eot");
+				src: url("${staticPath}/font2/iconfont.ttf");
+				src: url("${staticPath}/font2/iconfont.woff");
+			}
+		</style>
+	</head>
+	<!--分享弹窗-->
+	<body style="background-image:  url('/activityUploadPath${oneMoneyShop.getMobleBackgroundImg()}')">
+		
+			<div class="title1">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+		<div class="bg-mask share" style="display: none;">
+			<img src="${staticPath}/New_img/oneMoneyShop/tanchuang.png" alt="" />
+			<p>还差<span class="sum0">5</span>人，赶紧邀请好友来组队啊</p>
+			<p>满员立即开抢哦！</p>
+		</div>
+		<!--实物弹窗-->
+		<div class="bg-mask prize" style="display: none;">
+			<img src="${staticPath}/img/oneMoneyShop/img/guangbi01.png" alt="" class="close" />
+			<div class="coloured" >
+				<img src="${staticPath}/New_img/oneMoneyShop/ok.png" alt="" />
+				<p>${oneMoneyPrize.getPrizeName()}</p>
+				<img src="${staticPath}/New_img/oneMoneyShop/tianxie_dizhi.png" alt="" class="dizhi" />
+				<p style="display:none">请前往个人中心查看奖品</p>
+			</div>
+		</div>
+		<!--抢购失败-->
+		<div class="bg-mask fail" style="display: none;">
+			<img src="${staticPath}/img/oneMoneyShop/img/guangbi01.png" alt="" class="close" />
+			<div class="coloured1" >
+				<img src="${staticPath}/img/oneMoneyShop/img/1yuanimg.png" alt="" />
+				<p>抱歉！您1元抢购失败</p>
+				<p class="oi">本次1元购获得者：<span>${winGroupWxUser.getNickName()}</span></p>
+			</div>
+		</div>
+		<!--活动规则-->
+		<div class="bg-mask rule" style="display: none;">
+		<div class="main_rule">
+			<img src="${staticPath}/img/oneMoneyShop/img/guangbi01.png" alt="" class="close" />
+			<div class="rule-bg" style="background-image: url(${staticPath}/New_img/oneMoneyShop/huodong_bg.png);">
+				<div class="text">
+					<p>1.购买${sellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关注‘${sellerPublicNumber.getPublicNumberName()}’微信公众账号,接收活动中奖第一资讯;</p>
+					<p>2.关注后，再次扫描二维码,进入活动页面;</p>
+					<p>3.刮开二维码银色覆盖区域,输入正确的验证码,获取参与活动机会;</p>
+					<p>4.点击“立即抢购”微信支付1元,即可参与一元购活动;</p>
+					<p>5.点击“邀请好友组队”,即可邀请好友和您共同组队参与一元购活动;</p>
+					<p>6.活动时间：${oneMoneyShop.getStartTime()}---${oneMoneyShop.getEndTime()}；</p>
+					<p>7.若活动时间内,组队人数达到标准后一元购组队成功,即可根据提示填写收货地址,完成一元购活动;</p>
+					<p>8.若活动时间结束,组队人数未达到标准,即一元购活动失败;</p>
+					<p>9.若想继续参加活动,可前往就近商店购买正品五粮液,扫码即可获得参与机会;</p>
+					<p>10.如有疑问,请咨询【${sellerPublicNumber.getPublicNumberName()}】微信公众服务号即可,我们将第一时间回复解决您的问题;</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+		<div class="main-big">
+			<div class="count-down" style="background-image: url(${staticPath}/New_img/oneMoneyShop/daojishi.png);">
+				<div class="circular">距</div>
+				<div class="end">抢购结束</div>
+				<div class="timespan">还有 <span class="no1"></span> 天 <span class="no2"></span> 时 <span class="no3"></span> 分 <span class="no4"></span> 秒</div>
+			</div>
+		</div>
+		<div class="main-xia">
+			<div class="count-down-box" style="background-image: url(${staticPath}/New_img/oneMoneyShop/small_bg.png);">
+			<div class="product">
+				<img src="/activityUploadPath${oneMoneyPrize.getPrizeImg()}" />
+			</div>
+			<div class="right">
+				<div class="alcohol-name">
+					<p>${oneMoneyPrize.getPrizeName()}</p>
+					<p>${oneMoneyPrize.getDeep()}度&nbsp;&nbsp;${oneMoneyPrize.getVolume()}mL</p>
+				</div>
+				<div class="number">
+					<p><span>开抢人数：</span><span>&#xe877;</span><span>${oneMoneyShop.getOpenPrizeNumber()}人</span></p>
+				</div>
+				<div class="purchase-price">
+					<div class="head-portrait">
+						<img src="${oneMoneyGroupWxUser.getHeadImgUrl()}" alt="" class="dd" />
+						<!--[loop(qcg:groupWxUserList){]-->
+						<!--[if(qcg.getPayState() == '1'){]-->
+						<img src="${qcg.getHeadImgUrl()}" alt="" />
+						<!--[}else{]-->
+						<span class="ff">
+							<div>未支付</div>
+							<img src="${qcg.getHeadImgUrl()}" alt="" />
+						</span>
+						<!--[ }  ]-->
+						<!--[}]-->
+					</div>
+					<p class="start">活动正在进行，还差<span class="sum"></span>人可开抢</p>
+				</div>
+				<div class="immediately">
+					<img src="${staticPath}/New_img/oneMoneyShop/yaoqing.png" alt="" class="inviting-teammate" style="display: none;"/>
+					<img src="${staticPath}/New_img/oneMoneyShop/huiyao.png" alt="" class="inviting-teammate-huiyao" style="display: none;"/>
+					<img src="${staticPath}/New_img/oneMoneyShop/chakan.png" alt="" class="award-winning" style="display: none;" />
+					<img src="${staticPath}/img/oneMoneyShop/img/hao.png" alt="" class="ok" style="display: none;" />
+					<img src="${staticPath}/New_img/oneMoneyShop/weihuojiang.png" alt="" class="award-winning0" style="display: none;" />
+				</div>
+			</div>
+		</div>
+		
+		
+		</div>
+
+		<div class="rule-name">
+			<img src="${staticPath}/New_img/oneMoneyShop/huodongguize.png" alt=""  />
+		</div>
+		
+	
+	
+		<input type="hidden" value="${oneMoneyShop.getOpenPrizeNumber()}" id="one" />
+		<input type="hidden" value="${joinNum}" id="two" />
+		<input type="hidden" value="${oneMoneyWxUserWinning.getState()}" id="State" />
+		<input type="hidden" value="${mywin}" id="mywin" />
+		<input type="hidden" value="${allPay}" id="allPay" />
+		<input type="hidden" value="${oneMoneyWxUserWinning.getId()}" id="oneMoneyWinningId" />
+		<!-- 标题 -->
+		<input type="hidden" value="${oneMoneyShop.getActivityName()}" id="shareTitle" />
+		<!-- 描述 -->
+		<input type="hidden" value="一元购活动" id="shareDetail" />
+		<!-- 图片 -->
+		<input type="hidden" value="${oneMoneyPrize.getPrizeImg()}" id="shareImg" />
+	</body>
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script>
+	window.onpageshow = function(event){
+		if (event.persisted) {
+		window.location.reload();
+		}
+		}
+	/* 华为 */
+	if(screen.height<=640 && screen.width<=360){
+		$(".main-big").css({"padding-top":"5.9rem"})
+		$(".rule-bg").css({"margin-top":"2rem"})
+		
+		//alert("huaweishouji")
+	}
+	/* 苹果x */
+	if(screen.height==812 && screen.width==375){
+		$(".main-big").css({"padding-top":"7rem"})
+		$(".rule-name").css({"margin-top":"1rem"})
+		$(".award-winning").css({"margin-top":"0.5rem"})
+		//alert("pingguo6666")
+	}
+	var Maximum = parseFloat($("#one").val()); //原价
+	var Minimum = parseFloat($("#two").val()); //最低价
+	var  sum = Maximum - Minimum;
+	$(".sum").html(sum);
+	$(".sum0").html(sum);
+	if(sum!=0){
+		$(".inviting-teammate").show();
+	}else{
+		$(".inviting-teammate").hide();
+		 $(".award-winning0").show(); 
+	}
+	/*如果凑齐人数时点击查看获奖button出来*/
+	if(sum==0 && ($("#allPay").val()=='true')){
+		$(".award-winning").show();
+		$(".award-winning0").hide();
+		$(".inviting-teammate").hide();
+		$(".start").html("恭喜您成功组队,已经满员!可点击下方按钮，查看获奖情况")
+	}else{
+		
+	}
+	/*计算剩余人数  */
+	$(".oi span").text(decodeURI($(".oi span").html()));
+	$(function() {
+		if($("#State").val() == "3") {
+			$(".dizhi").hide();
+		}
+	})
+	/* 填写地址 */
+	$(".dizhi").click(function() {
+		var oneMoneyWinningId = $("#oneMoneyWinningId").val();
+		$.ajax({
+			type: "GET",
+			url: "${basePath}/index/WxConfig",
+			async: false,
+			dataType: "json",
+			data: {
+				"locationUrl": location.href
+			},
+			success: function(config) {
+				wx.config({
+					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					appId: config.appId, // 必填，公众号的唯一标识
+					timestamp: config.timestamp, // 必填，生成签名的时间戳
+					nonceStr: config.nonceStr, // 必填，生成签名的随机串
+					signature: config.signature, // 必填，签名，见附录1
+					jsApiList: ['openAddress'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+				});
+			}
+		});
+		wx.ready(function() {
+			wx.openAddress({
+				success: function(res) {
+					var provice = res.provinceName;
+					var city = res.cityName;
+					var counties = res.countryName;
+					var detail = res.detailInfo;
+					var tel = res.telNumber;
+					var name = res.userName;
+					var address = provice + city + counties + detail;
+					$.ajax({
+						type: "GET",
+						url: "${basePath}/oneMoneyShop/address",
+						async: false,
+						dataType: "json",
+						data: {
+							"oneMoneyWinningId": oneMoneyWinningId,
+							"name": name,
+							"tel": tel,
+							"address": address
+						},
+						success: function(data) {
+							$(".dizhi").hide();
+							$(".coloured p:nth-child(4)").show();
+						},
+						error: function() {
+							alert("error");
+						}
+					});
+				},
+				cancel: function(esg) {
+
+				},
+				fail: function(res) {
+
+				}
+			});
+		});
+	})
+	/* 关闭分享 */
+	$(".share").click(function() {
+		$(".share").hide();
+	})
+	/* 分享 */
+	$(".inviting-teammate").click(function() {
+		$(".share").show();
+	})
+				var shareTitle = $("#shareTitle").val();
+		var shareDetail = $("#shareDetail").val();
+		var shareImg = $("#shareImg").val();
+		$.ajax({
+			type: "GET",
+			url: "${basePath}/oneMoneyShop/WxShareConfig",
+			async: true,
+			dataType: "json",
+			data: {
+				"locationUrl": location.href
+			},
+			success: function(config) {
+				wx.config({
+					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					appId: config.appId, // 必填，公众号的唯一标识
+					timestamp: config.timestamp, // 必填，生成签名的时间戳
+					nonceStr: config.nonceStr, // 必填，生成签名的随机串
+					signature: config.signature, // 必填，签名，见附录1
+					jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline']
+					// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+				});
+				wx.ready(function() {
+					//分享朋友
+					wx.onMenuShareAppMessage({
+						title: shareTitle, // 分享标题
+						desc: shareDetail, // 分享描述
+						link: '${url}', // 分享链接
+						imgUrl: 'http://${systemHttp}/activityUploadPath' + shareImg, // 分享图标
+						trigger: function(res) {
+
+						},
+						success: function() {
+							// 用户确认分享后执行的回调函数
+							$(".share").hide();
+						},
+						cancel: function() {
+							// 用户取消分享后执行的回调函数
+							//alert("分享失败");
+							$(".shibai").css({
+								"display": "block"
+							})
+						}
+					});
+					//分享朋友圈
+					wx.onMenuShareTimeline({
+						title: shareTitle, // 分享标题
+						link: '${url}', // 分享链接
+						imgUrl: 'http://${systemHttp}/activityUploadPath' + shareImg, // 分享图标
+						success: function() {
+							//alert("分享成功");
+							$(".chnegg").css({
+								"display": "block"
+							})
+						},
+						cancel: function() {
+							// 用户取消分享后执行的回调函数
+							//alert("分享失败");
+							$(".shibai").css({
+								"display": "block"
+							})
+						}
+					});
+				});
+			}
+		});
+
+	/*点击获奖情况*/
+	$(".award-winning").click(function() {
+		if($("#mywin").val() == "1" || $("#mywin").val() == "2") {
+			$(".prize").show();
+		} else if($("#mywin").val() == "0") {
+			$(".fail").show();
+		}
+	})
+	$(function() {
+		var starttime = new Date("${oneMoneyShop.getEndTime()}");
+		var countdownTimer = setInterval(function() {
+			var nowtime = new Date();
+			var time = starttime - nowtime;
+			var day = parseInt(time / 1000 / 60 / 60 / 24);
+			var hour = parseInt(time / 1000 / 60 / 60 % 24);
+			var minute = parseInt(time / 1000 / 60 % 60);
+			var seconds = parseInt(time / 1000 % 60);
+			$(".no1").html(day)
+			$(".no2").html(hour)
+			$(".no3").html(minute)
+			$(".no4").html(seconds)
+			/*当活动时间结束触发事件*/
+			if(day <= 0 && hour <= 0 && minute <= 0 && seconds <= 0) {
+				clearInterval(countdownTimer);
+				$(".no1").html(0)
+				$(".no2").html(0)
+				$(".no3").html(0)
+				$(".no4").html(0)
+				$(".inviting-teammate").hide();
+				$(".award-winning0").hide();
+				$(".inviting-teammate-huiyao").show();
+				$(".start").html("活动时间已结束！");
+				$(".ok").hide();
+			} else {
+
+			}
+		}, 1000);
+	})
+		/*点击活动规则*/
+				$(".rule-name").click(function() {
+					$(".rule").show();
+				})
+				/*点击关闭按钮关闭实物奖品*/
+				$(".close").click(function() {
+					$(".prize").hide();
+					$(".rule").hide();
+					$(".fail").hide();
+				})
+
+	
+	
+	
+	
+
+	</script>
+
+</html>

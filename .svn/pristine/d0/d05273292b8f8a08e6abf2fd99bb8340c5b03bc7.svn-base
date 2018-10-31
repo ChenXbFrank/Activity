@@ -1,0 +1,98 @@
+<!--[arg user,basePath,staticPath,activityId,activityName,list;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-report.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-activity-report-info.css" />
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>  
+			<p class="currentLocation">
+				您的当前位置：
+				<a href="${basePath}/goHomePage">首页></a>
+				<a href="${basePath}/activityForm">活动报表></a>
+				<a href="${basePath}/robRedConfig/redRobReport">开酒瓶活动报表></a>
+				<a href="${basePath}/openWineConfig/openWineReport?activityId=${activityId}&activityName=${activityName}">${activityName}活动报表></a>
+				<a href="">查看明细</a>
+			</p>
+			<ul class="title-pic">
+				<li>
+					<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+				</li>
+				<li>
+					<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+		<div class="container">
+			<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>奖项</td>
+							<td>获得红包</td>
+							<td>创建时间</td>
+							<td>提现状态</td>
+							
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<!--[ loop(rrwuLi:list){  ]-->
+						<tr>
+
+							<td>${rrwuLi.getPrizeProject()}</td>
+							<!--[ if(rrwuLi.getPrizeProject() !='谢谢惠顾'){  ]-->
+							<!--[ if(rrwuLi.getPrizeProject() =='积分'){  ]-->
+							<td>${rrwuLi.getWinningMoney()}积分</td>
+							<!--[ }else{  ]-->
+							<td>${rrwuLi.getWinningMoney()}元</td>
+							<!--[ }  ]-->
+							<!--[ }else{  ]-->
+							<td>--</td>
+							<!--[ }  ]-->
+							<td>${rrwuLi.getCreateTime()}</td>
+							<!--[ if(rrwuLi.getState() =='9'){  ]-->
+							<td>已提现</td>
+							<!--[ }else{  ]-->
+							<td>未提现</td>
+							<!--[ }  ]-->
+						</tr>
+						<!--[ }  ]-->
+					</table>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$("#search").on("click", function() {
+			var name = $("#name").val();
+			var startTime = $("#startTime").val();
+			var endTime = $("#endTime").val();
+			var bargaining_situations = $("#bargaining-situations").val();
+			location.href = "${basePath}/shareBargainConfig/searchShareActivtyByCondition?activityName=" + name + "&state=" + bargaining_situations + "&startTime=" + startTime + "&endTime=" + endTime;
+		})
+	</script>
+
+</html>

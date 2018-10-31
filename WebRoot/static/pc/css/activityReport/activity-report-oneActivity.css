@@ -1,0 +1,90 @@
+body {
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+
+/*table±íÍ·¹Ì¶¨  */
+
+#table-outer {
+	width: 90vw;
+}
+
+#table-outer table {
+	width: 90vw;
+}
+
+#table-outer .table-tbody {
+	width: 90vw;
+	height: 32vw;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#table-outer table tr>td {
+	width: 10vw;
+	height: 3vw;
+	font-size: 0.8vw;
+}
+
+#table-outer .table-thead table tr>td {
+	height: 3vw;
+}
+
+#table-outer table tr>td:nth-child(9) {
+	width: 10vw;
+}
+
+#area-input,
+#startTime,
+#endTime,
+#applay-name {
+	width: 10vw;
+	height: 2vw;
+	margin-top: 1vw;
+	border-color: #d0d0d0;
+	background-repeat: no-repeat;
+	background-position: right center;
+	background-size: contain;
+}
+
+.select {
+	width: 10vw;
+	border: 1px solid #d0d0d0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	right: 0;
+	border-radius: 4px;
+	background: white;
+}
+
+.select li {
+	list-style: none;
+	width: 100%;
+	height: 2.2vw;
+	text-align: left;
+	line-height: 2.2vw;
+}
+
+#outer {
+	position: relative;
+	display: inline-block;
+}
+
+.line {
+	width: 2.5vw;
+	height: 1px;
+	background: #c4c4c4;
+	display: inline-block;
+	margin-left: 1vw;
+	margin-right: 1vw;
+}
+
+/* label {
+	margin-left: 1vw;
+} */
+
+/* #activityName {
+	margin-left: 6vw;
+} */

@@ -1,0 +1,635 @@
+<!--[arg _res,user,basePath,staticPath,soiList,srList,belongActivityId,userTargetId;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload2.css">
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/oneMoneyShopConfig/oneMoneyShop-edit.css" />
+		<script src="${staticPath}/js/upload/upload.min.js"></script>
+		<script type="text/javascript">
+			var basePath = "${basePath}";			//获取basePath
+		</script>
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+		</style>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<!--提示数据丢失-->
+		<div id="popup1" style="display:none">
+			<div class="fade"></div>
+			<div class="delivery-success1">
+				<div class="success-outer1">
+					<div class="pop-title">已填数据可能会丢失。</div>
+					<input type="button" value="确定" id="yes" class="btn-button" />
+					<input type="button" value="取消" id="no" class="btn-button" />
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">
+					您的当前位置：
+					<a href="${basePath}/goHomePage" class="backHome">首页></a>
+					<a href="${basePath}/activityApply" class="backOne">活动申请></a>
+					<a href="javascript:void(0);" class="back">一元购活动申请</a>
+				</p>
+				<ul class="title-pic">
+					<li class="backHome">
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li class="exit">
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+				<div class="tishi3" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt">
+						<p>您当前奖品还有剩余，请修改奖品设置！</p>
+						<button class="yes3">确定</button>
+
+					</div>
+				</div>
+
+				<div class="tishi4" style="display:none">
+					<div class="mask4"></div>
+					<div class="prompt">
+						<p>请将信息填写完整。</p>
+						<button class="yes4">确定</button>
+
+					</div>
+				</div>
+				<div class="tishi5" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt">
+						<p>请先选择运单信息。</p>
+						<button class="yes5">确定</button>
+					</div>
+				</div>
+				<div class="tishi6" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt">
+						<p>您当前设置的奖品个数不足。</p>
+						<button class="yes6">确定</button>
+					</div>
+				</div>
+				<div class="tishi1" style="display:none">
+					<div class="mask"></div>
+					<div class="prompt9">
+						<p>提醒：此操作将清空您活动产品参数</p>
+						<hr />
+						<h5>是否确定继续删除？</h5>
+						<button class="yes1">是</button>
+						<button class="no1">否</button>
+					</div>
+				</div>
+				<div class="left">
+			
+					<!--首页背景图片-->
+					<div>
+						<p class="shouji">手机背景图</p>
+						<div class="activity-pic" id="divPreview">
+							<img class="pic" src="/activityUploadPath/upload/yiyuangou-bg.png" alt="" id="picBg" />
+						</div>
+						<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+						<div class="upload">
+							<input type="button" value="上传图片" />
+						</div>
+					</div>
+				
+
+				</div>
+				<div id="popup" style="display:none">
+					<div class="fade"></div>
+					<!--申请成功-->
+					<div class="delivery-success">
+						<div class="success-outer">
+							<div class="pop-title">申请成功！</div>
+							<input type="button" value="确定" id="delivery-success-yes" />
+						</div>
+					</div>
+				</div>
+
+				<div id="popup-upPic" style="display: none">
+					<div class="fade"></div>
+					<!--图片上传弹窗-->
+					<div class="delivery-success">
+						<div class="close" id="closePic">
+							<img src="${staticPath}/img/close-icon.png" alt="" />
+						</div>
+						<div class="upBtn">
+							<div class="upBtn-inner">
+								<input type="hidden" name="filePath" id="callbackPath2">
+								<a id="zwb_upload"> <input type="file" class="add" multiple>选择图片
+								</a> <input type="button" value="确定上传" id="yulan" />
+							</div>
+						</div>
+						<hr>
+						<div class="imgsBox">
+							<ul>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="excels">
+					<p class="setUp">活动内容设置:</p>
+					<label for="active-name">一元购活动名称：</label> <input type="text" id="active-name" onblur="activityNameValidate()" maxlength="6" placeholder="6个字以内" /><span class="activity-volidate volidate">*必填</span>
+					<br />
+					<label for="start-person-number">一元购开奖人数：</label> <input type="text" id="start-person-number" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="activityPersonValidate()" /><span class="person-volidate volidate">*必填</span>
+					<span class="start-infos">(即：达到此人数后，随机抽取1位幸运消费者)</span>
+					<br />
+					<label for="">一元购活动时间：</label> <input type='text' id="startTime" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" onblur="timeValidate()" />
+					<div class='line'></div>
+					<input type='text' id="endTime" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" onblur="timeValidate()" /><span class="time-volidate volidate">*必选</span><br />
+					<div class="list-bill">
+						<div class="bill-title">
+							运单信息：<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="addBill" onclick="addBillCommon({url : 'accumulateFabulousConfig/sellInfo', clickSendOrSell : 'sell', openTips : tips})"/>接受的货
+							<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="sendBill" onclick="addBillCommon({url : 'accumulateFabulousConfig/sendSellInfo', clickSendOrSell : 'send', openTips : tips})"/>发出的货
+							<span class="bill-volidate volidate">*必选</span>
+							<div class="BigSum">
+								<p>
+									总瓶数:<span class="sum" id="sum">0</span>瓶
+								</p>
+							</div>
+
+						</div>
+						<div id="table-outer1">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+										<td>发货时间</td>
+										<td>发货状态</td>
+										<td>编辑</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div>
+						<div class="bill-title">
+							<div class="prizeSetTitle">
+								<span class="prizeSet">选择活动产品:</span><img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="otherPic" /><span class="award-volidate volidate">*必选</span>
+								<div class="BigSum">
+									<p>
+										奖品总数:<span class="sum" id="awardTotal">0</span>个<span class="reminder" style="display:none">(提示：您还需设置<span id="needAwardNum">6</span>个奖品，剩余奖品数量<span id="residueAwardNum"></span>个！)</span>
+									</p>
+								</div>
+							</div>
+							<div id="table-outer2">
+								<div class="table-thead">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>产品名称</td>
+											<td>规格(瓶/箱)</td>
+											<td>箱数(箱)</td>
+											<td>度数(°)</td>
+											<td>容量(mL)</td>
+											<td>操作</td>
+										</tr>
+									</table>
+								</div>
+								<div class="table-tbody">
+									<table border="0" cellpadding="0" cellspacing="0">
+									</table>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="submitBtn"><input type="button" value="提交申请" /></div>
+		<!--运单信息-->
+		<div class="popUp" id="billPop" style="display: none">
+			<div class="mask"></div>
+			<div class="popUp-window bill-window" style="background-image:url('${staticPath}/img/integralConfig/0.png')">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" id="bill-close" />
+				<div class="list-bill">
+					<div class="kuang">
+						<p class="yund">运单中心</p>
+						<div class="qwe qwe1">
+							<lable class="jp">货品名称：</lable>
+							<input type="text" id="search2" value="" /> <label for="">发货时间：</label>
+							<input type='text' id="startTime2" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" />
+							<div class='line'></div>
+							<input type='text' id="endTime2" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" /> 
+							<button class="chazhao2">搜索</button>
+						</div>
+						<div id="table-outer3">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0" id="yourTableID3">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+										<td>发货时间</td>
+										<td>发货状态</td>
+										<td><input type="checkbox" id="checkAll" />选择</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0" id="zong">
+									<!--[loop(soi : soiList) {]-->
+									<tr>
+										<td>${soi.getOutNo()}</td>
+										<td>${soi.getRecsellerName()}</td>
+										<td>${soi.getProductName()}</td>
+										<td>${soi.getDegree()}</td>
+										<td>${soi.getVolume()}</td>
+										<td class="alcoholTotal">${soi.getSpec()}</td>
+										<td class="caseNumber">${soi.getBoxCode()}</td>
+										<td>${soi.getBrandsName()}</td>
+										<td>${soi.getOutDate()}</td>
+										<!--[ if(soi.getSellerId()==userTargetId) { ]-->
+										<td>发出的货</td>
+										<!--[ } else { ]-->
+										<td>接收的货</td>
+										<!--[ } ]-->
+										<td class="checkbox"><input type="checkbox" name="${soi.getSellerId()}" value="${soi.getRecordId()}" /></td>
+									</tr>
+									<!--[}]-->
+								</table>
+							</div>
+						</div>
+						<!-- 运单弹窗分页开始 -->
+						<div class="page-break">
+							<div class="page-btn">
+								<span class="manager-first-but">上一页</span>
+								<span id="admin-page">1</span>
+								<span class="manager-second-but">下一页</span>
+							</div>
+							<div class="skip">
+								<span>跳转至</span>
+								<input type="text" id="input-page" />&nbsp;页&nbsp;
+								<span class="skip-btn">跳转</span>
+							</div>
+							<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+						</div>
+						<!-- 运单弹窗分页结束 -->
+						<div class="btn billConfirm" id="bill-btn">
+							<input type="button" value="确定" class="bb " />
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- 奖品设置弹窗 -->
+		<div class="popUp" id="otherProduct" style="display:none">
+			<div class="mask"></div>
+			<div class="popUp-otherProduct-window otherProduct-window" style="background-image:url('${staticPath}/img/integralConfig/0.png')">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" id="otherPro-close" />
+				<div class="list-bill">
+					<div class="kuang">
+						<p class="jiangp">奖品中心</p>
+						<div class="qwe">
+							<lable class="jp">奖品名称：</lable><input type="text" id="search1" value="" />
+							<button class="chazhao">搜索</button>
+						</div>
+						<div id="table-outer4">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>奖品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>选择</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<!--[loop(sr : srList) {]-->
+									<tr>
+										<td class="list-item">${sr.getProductName()}</td>
+										<td>${sr.getDegree()}</td>
+										<td>${sr.getVolume()}</td>
+										<td>${sr.getSpec()}</td>
+										<td><input type="radio" name="radio" value="${sr.getProductId()}" /></td>
+									</tr>
+									<!--[}]-->
+								</table>
+							</div>
+						</div>
+
+						<div class="btn" id="award-btn">
+							<input type="button" value="确定" class="bbb" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" class="belong" value="${belongActivityId}" />
+	</body>
+	<script src="${staticPath}/js/common/editCloseReminder.js"></script>
+	<script type="text/javascript" src="${staticPath}/js/common/billCommon.js"></script>
+	<script type="text/javascript" src="${staticPath}/js/oneMoneyShopConfig/oneMoneyShop-edit.js"></script>
+	<script>
+		/* 点击图片库中的删除图标 */
+		function deleteImg(obj) {
+			event.stopPropagation(); //阻止冒泡
+			var deleteSrc = $(obj).parent().find("img").attr("src");
+			var srcUrl = deleteSrc.substring(19, deleteSrc.length);
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/upload/deleteImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: { "srcUrl": srcUrl },
+				success: function(data) {
+					$("#loadingInfo").hide();
+					console.log(data);
+					if(data == true) {
+						$(obj).parent().remove();
+					} else {
+						alert("删除图片失败");
+					}
+				},
+				error: function() {
+					$("#loadingInfo").hide();
+					alert("交互失败！");
+				}
+			});
+		}
+		var uploadParent;
+		$(".upload").on("click", function() {
+			uploadParent=$(this).parent();
+			$("#popup-upPic").show();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/upload/getUserAllImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {},
+				success: function(data) {
+					$("#loadingInfo").hide();
+					console.log(data);
+					$('#popup-upPic .imgsBox ul').html("");
+					for(var i = 0; i < data.length; i++) {
+						var li = $("<li></li>");
+						li.appendTo($('#popup-upPic .imgsBox ul'));
+						var img = $("<img src=" + '/activityUploadPath' + data[i].IMG_URL + " />");
+						img.appendTo(li);
+						var deleteImg = $("<div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div>");
+						deleteImg.appendTo(li);
+					}
+				}
+			});
+		})
+		$("#closePic").on("click", function() {
+			$("#popup-upPic").hide();
+		});
+		$("#popup-upPic .imgsBox ul li").on("click", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			$("#pic").attr("src", imgSrc);
+		}) 
+		$("#zwb_upload").bindUpload({
+			url: "${basePath}/upload/loadImg", //上传服务器地址
+			callbackPath: "#callbackPath2", //绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+			// ps:值返回上传成功的 默认id为#callbackPath  保存容器为位置不限制,id需要加上#号,class需要加上.
+			// 返回格式为:
+			// 原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径....
+			num: 1, //上传数量的限制 默认为空 无限制
+			type: "jpg|png|gif", //上传文件类型 默认为空 无限制
+			size: 0.488, //上传文件大小的限制,默认为5单位默认为mb
+		});
+		$("#zwb_upload .add").on("click", function() {
+			$("#callbackPath2").val("");
+		})
+		var address = ""; //传给后台的图片数据
+		$("#yulan").on("click", function() {
+			var imgPic = $("#callbackPath2").val();
+			var urlArr = imgPic.split(",");
+			address = urlArr[1];
+			var aa = "/activityUploadPath" + address;
+			//动态创建li img放在图片库的最前面
+			if(address != undefined) {
+				$("#popup-upPic .imgsBox ul").prepend(" <li><img src=" + aa + " /><div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div></li>");
+				$("#callbackPath2").val("");
+			}
+		});
+		$("#popup-upPic .imgsBox ul").on("click", "li", function() {
+			var imgSrc = $(this).find("img").attr("src");
+			uploadParent.find(".pic").attr("src", imgSrc);
+		})
+		$(".submitBtn input[type='button']").click(function() {
+			window.onbeforeunload = null;
+			var oneMoneyShopObj = {}; //转盘的上面一块的信息
+			oneMoneyShopObj.activityName = $("#active-name").val();
+			oneMoneyShopObj.scanWinningNum = $("#start-person-number").val(); //一元购开奖人数
+			oneMoneyShopObj.startTime = $("#startTime").val();
+			oneMoneyShopObj.endTime = $("#endTime").val();
+			oneMoneyShopObj.picSrc = $("#picBg").attr("src").substring(19, $("#picBg").attr("src").length);
+		
+			oneMoneyShopObj.belongId = $(".belong").val();
+			oneMoneyShopObj.total = $("#awardTotal").html();
+			/* 点击下一步验证信息 */
+			var oneMoneyShopObjVoli = false;
+			for(var i in oneMoneyShopObj) {
+				if(oneMoneyShopObj[i] == "") {
+					oneMoneyShopObjVoli = true;
+					break;
+				};
+			};
+			var billListsVoli = true;
+			if(billLists.length != 0) {
+				billListsVoli = false;
+			}
+			var addAwardsVoli = true;
+			if(addAwards.length != 0) {
+				addAwardsVoli = false;
+			}
+			//console.log(oneMoneyShopObj);
+			//console.log(billLists);
+			//console.log(addAwards);
+			if(oneMoneyShopObjVoli == false && billListsVoli == false && addAwardsVoli == false) {
+
+				$(this).attr("disabled", true);
+				$("#loadingInfo").show();
+				$.ajax({
+					url: "${basePath}/oneMoneyShopConfig/oneMoneySave",
+					type: "POST",
+					dataType: "JSON",
+					async: "false",
+					data: {
+						"oneMoneyObj": objTransform(oneMoneyShopObj),
+						"billLists": objTransform(billLists),
+						"addAwards": objTransform(addAwards)
+					},
+					success: function(data) {
+						$("#loadingInfo").hide();
+						if(data.result == "true") {
+							$(this).removeAttr("disabled");
+							//alert("申请成功！");
+							$("#popup").show();
+							$("#delivery-success-yes").on("click", function() {
+								$("#popup").hide();
+								location.href = "${basePath}/activityApply";
+							})
+						} else {
+							$(this).attr("disabled", "disabled");
+						}
+					}
+				});
+			} else {
+				$(".tishi4").show();
+				$(".tishi4 .yes4").on("click", function() {
+					$(".tishi4").hide();
+				})
+			}
+
+		});
+
+		$("#award-btn").on("click", function() {
+			/*验证是否择单选框*/
+			var otherProductCheckedLength = $("#otherProduct input[type='radio']:checked").length;
+			if(otherProductCheckedLength > 0) {
+				addAwards.length = 0;
+				var award = new Object();
+				$("#otherProduct input[type='radio']:checked").each(function(index, value) {
+					award.getProductId = $(this).val();
+					award.name = $(this).parent().parent().find("td").eq(0).html(); //奖品名称
+					award.deep = $(this).parent().parent().find("td").eq(1).html(); //度数
+					award.volume = $(this).parent().parent().find("td").eq(2).html(); //容量
+					award.spec = $(this).parent().parent().find("td").eq(3).html(); //规格
+				});
+				award.boxCount = (parseInt($("#sum").html()) / parseInt(award.spec)).toFixed(2);
+				addAwards.push(award);
+				console.log(addAwards);
+				createTableOtherNew(addAwards.length, addAwards);
+				awardValidate();
+				
+				/*此处和后台交互获取图片 */
+				$("#loadingInfo").show();
+				$.ajax({
+					url: "${basePath}/oneMoneyShopConfig/getProductImg",
+					type: "POST",
+					dataType: "JSON",
+					async: "false",
+					data: {
+						"productId": addAwards[0].getProductId,
+					},
+					success: function(data) {
+						$("#loadingInfo").hide();
+						console.log(data);
+						addAwards[0].img = data.Img;
+						var platform = data.platform;
+						$("#productPic").attr("src", platform + addAwards[0].img);
+					},
+					error: function() {
+						$("#loadingInfo").hide();
+						alert("网络异常");
+					}
+				});
+
+				$("#otherProduct").hide();
+				table2();
+			} else {
+				$(".tishi4").show();
+			}
+		});
+		$(".yes4").on("click", function() {
+			$(".tishi4").hide();
+		})
+		
+		function tips() {
+			if($("#table-outer2 .table-tbody tr").length==0){
+				$("#billPop").show(); //弹窗遮罩显示出来
+			}else{
+				$(".tishi1").show();
+				$(".tishi1 .yes1").on("click",function(){
+					$(".tishi1").hide();
+					$("#billPop").show();
+					$("#table-outer2 .table-tbody table").html("");  //清空表格
+					awardValidate();
+					addAwards=[];//清空奖品设置数组中的数据
+				});
+				$(".tishi1 .no1").on("click",function(){
+					$(".tishi1").hide();
+				})
+			}
+		}
+	</script>
+
+</html>

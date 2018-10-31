@@ -1,0 +1,303 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+body{
+	background-size:cover;
+	background-repeat:no-repeat;
+}
+.main{
+	font-size:1vw;
+}
+.main input[type="button"]{
+	font-size:1vw;
+}
+input[type='text']{
+		border-radius: 4px;
+		border:none;
+		border:1px solid #d0d0d0;
+		text-indent: 10px;
+		width: 10vw;
+		height: 2vw;
+	}
+label{
+	margin-left: 10vw;
+}
+.main{
+	margin-top:1vw;
+}
+
+.table-tbody table {
+	border-left: 1px solid #D4D4D4;
+}
+
+table tr {
+	height: 2vw;
+}
+
+.table-thead tr {
+	height: 2.6vw;
+}
+
+.table-thead tr td {
+	background: #6291ca;
+	text-align: center;
+	color: white;
+}
+
+.table-tbody {
+	height: 30vw;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.table-tbody table td {
+	border-right: 1px solid #D4D4D4;
+	border-bottom: 1px solid #D4D4D4;
+	text-align: center;
+}
+
+
+/* table閿熸暀璁规嫹閿熸枻鎷峰ご閿熸枻鎷烽敓鏂ゆ嫹寮� */
+
+#table-outer {
+	width: 80vw;
+	margin: 0 auto;
+	margin-top: 1vw;
+	/* border-bottom: 1px solid #D4D4D4; */
+}
+
+#table-outer table {
+	width: 80vw;
+}
+
+#table-outer .table-tbody {
+	width: 80vw;
+	height: 30vw;
+}
+
+#table-outer table tr>td {
+	width: 10vw;
+}
+table tr td {
+	word-break:break-all;
+	font-size:1vw;
+}
+#startTime,#endTime{
+		width:12vw;
+		height: 2vw;
+		margin-top:1vw;
+		border-color: #d0d0d0; 
+		border-right:none;
+		background-repeat:no-repeat;
+		background-position:right center;
+		background-size:contain;
+	}
+.line{
+	width: 2.5vw;
+    height: 1px;
+    background: #c4c4c4;
+    display: inline-block;
+    margin-left: 1.2vw;
+    margin-right: 1.2vw; 
+}
+.cha{
+	margin-left:2vw;
+	margin-top:1vw;
+	width: 4vw;
+    height: 2vw;
+    border-radius: 4px;
+    background: #fcb212;
+    border:none;
+    color:white;
+}
+
+/* 分页查询样式 */
+
+.page-break{
+	margin-left:10vw;
+	margin-top:1vw;
+	height:2vw;
+	line-height:2vw;
+}
+.page-btn{
+	float:left;
+	font-size:1vw;
+	border:1px solid #D4D4D4;
+}
+.page-btn span:nth-child(2){
+	display:inline-block;
+	text-align:center;
+	width:3vw;
+}
+.page-btn span:nth-child(1){
+	border-right:1px solid #D4D4D4;
+}
+.page-btn span:nth-child(3){
+	border-left:1px solid #D4D4D4;
+}
+.page-btn span:nth-child(1),.page-btn span:nth-child(3){
+	display:inline-block;
+	width:5vw;
+	text-align:center;
+	font-size:0.8vw;
+}
+.page-btn span:hover,.skip .skip-btn:hover{
+	cursor:default;
+}
+.skip{
+	float:left;
+	font-size:1vw;
+	margin-left:2vw;
+}
+.skip input[type="text"]{
+	width:4vw;
+	height:2vw;	
+}
+.skip .skip-btn{
+	font-size:1vw;
+	border:1px solid #D4D4D4;
+	display:inline-block;
+	width:4vw;
+	text-align:center;
+}
+.page-show{
+	font-size:1vw;
+	float:left;
+	margin-left:2vw;
+}
+#table-outer .handle .delete{
+	color:red;
+	display:inline-block;
+	margin-right:1vw;
+}
+#table-outer .handle .modify{
+	color:blue;
+}
+#table-outer .handle .delete:hover,#table-outer .handle .modify:hover{
+	cursor:pointer;
+}
+/*物流管理里的添加物流信息弹窗*/
+.mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.6);
+	z-index: 998;
+	left: 0;
+	top: 0;
+}
+
+.popUp-otherProduct-window {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 1000;
+	margin-top: -14vw;
+	margin-left: -24vw;
+}
+.otherProduct-window {
+	width: 50vw;
+	height: 34vw;
+	font-size: 1vw;
+}
+.close {
+    position: absolute;
+    top: 1.2vw;
+    right: 1.2vw;
+    width: 2vw;
+    height: 2vw;
+}
+.list-bill {
+    margin-top: 1.5vw;
+}
+.otherProduct-window .kuang {
+    width: 44vw;
+    margin: 0 auto;
+    height: 26vw;
+}
+.yund {
+    color: #f5a32f;
+    font-size: 2vw;
+    font-weight: bold;
+     margin-bottom: 1.8vw;
+}
+#otherProduct .billConfirm {
+    margin: 5vw auto 0vw;
+    width: 44vw;
+    height: 2.9vw;
+}
+#otherPic-save {
+    float: right;
+    background: #f19032;
+}
+#otherPic-cancel {
+    float: left;
+    background: #c3c3c3;
+}
+.popUp-window .bb, .otherProduct-window .bb {
+    width: 15vw;
+    margin-left: 0px;
+    display: inline-block;
+    font-size: 1.2vw;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    text-align: center;
+    height: 3vw;
+}
+/*添加物流信息弹窗中物流名称和备注*/
+.nameAndRemark{
+	margin-top:3vw;
+	font-size:1vw;
+}
+.nameAndRemark .label{
+	margin-left:2vw;
+}
+.nameAndRemark textarea{
+	vertical-align:top;
+	font-size:1vw;
+	width:30vw;
+	height:10vw;
+}
+.nameAndRemark input[type="text"]{
+	width:25vw;
+}
+/*提示数据丢失弹窗*/
+.fade {
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 2, 2, 0.6);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9000;
+}
+.delivery-success1 {
+    text-align: center;
+    width: 20vw;
+    height: 8vw;
+    background: rgba(255, 255, 255, 1);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -10vw;
+    margin-top: -4vw;
+    z-index: 9999;
+    font-size: 1vw;
+}
+.success-outer1 {
+    width: 18vw;
+    height: 6vw;
+    margin: 1vw auto 0px;
+}
+.delivery-success1 input[type="button"] {
+    width: 5vw;
+    height: 2vw;
+    margin-top: 2vw;
+    background: #fcb213;
+    border: none;
+    color: white;
+    font-size: 1vw;
+    border-radius: 4px;
+}

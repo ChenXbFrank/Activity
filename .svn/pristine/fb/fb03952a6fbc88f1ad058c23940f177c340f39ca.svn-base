@@ -1,0 +1,1068 @@
+﻿<!--[arg basePath,staticPath,prize1,prize2,prize3,prize4,prize5,prize6,prize7,prize8,integralId,wxUserId,openid,belongPublicNumberId,surplusTotalIntegral,needIntegral,sellerPublicNumber;]-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+		<meta content="Discover the rich set of features in CanvasFlip. Explore everything about rapid prototyping, sharing and analyzing the UX of prototypes on the tool. Know more." name="description">
+		<meta name="robots" content="index, follow">
+		<meta name="googlebot" content="index, follow">
+		<meta name="keywords" content="features,rapid prototyping,sharing,analyzing,prototypes">
+		<meta name="author" content="CANVASFLIP.COM">
+		<meta name="copyright" content="CANVASFLIP.COM">
+		<title>积分转转转</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link href="${staticPath}/css/Integral-turn/layer.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/loading.css" />
+		<style>
+*, :after, :before {
+			    margin: 0;
+			    padding: 0;
+			    box-sizing: border-box;
+			}
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				width: 100%;
+				height:100%;
+				background-size: 100% 100%;
+				background-repeat:no-repeat;
+				position: fixed;
+				}
+			main{padding-top: 3em;}
+			table {
+				    border-spacing: 0;
+		    border-collapse: collapse;
+		    text-align: center;
+		    margin-left: 0.1rem;
+		    margin-top: 0.18rem;
+			}
+			.draw {
+				width: 8.666666rem;
+    			height: 9rem;
+				margin:4rem auto;
+				padding:0.68rem;
+				background-image: url(${staticPath}/New_img/Integral-turn/bg.png);
+				background-repeat: no-repeat;
+				background-size: 100%;
+			}
+			
+			.draw .item {
+				width: 2.3rem;
+				height: 2.3rem;
+				background-image: url(${staticPath}/New_img/Integral-turn/bg1.png);
+				background-repeat: no-repeat;
+				background-size: 96%;
+			}
+			
+			.draw .item.active {
+				background-image: url(${staticPath}/New_img/Integral-turn/bg2.png);
+				background-repeat: no-repeat;
+				background-size: 100%;
+			}
+			
+			
+			
+			.draw .img img {
+				width: 1.106666rem;
+				height: 0.986666rem;
+				vertical-align: top;
+				margin-left:0.4rem;
+				/* border:1px solid red; */
+			}
+			
+			.draw .gap {
+				width: 0.066666rem;
+			}
+			
+			.draw .gap-2 {
+				height: 0.066666rem;
+			}
+			
+			.draw .name {
+				display: block;
+				margin-top: 0.133333rem;
+				font-size: 0.186666rem;
+			}
+			
+			.draw .draw-btn {
+				display: block;
+				height: 2.3rem;
+				line-height: 2.3rem;
+				font-size: 0.333333rem;
+				font-weight: 700;
+				text-decoration: none;
+				background-image: url(${staticPath}/New_img/Integral-turn/bg3.png);
+				background-repeat: no-repeat;
+				background-size: 96%;
+			}
+			#info9 img,#info8 img,#info7 img,#info6 img,#info5 img,#info4 img,#info3 img,#info2 img,#info1 img{
+				width: 6.693333rem;
+				height: 5.76rem;
+			}
+			.tanchu{
+				width: 100%;
+				height: 100%;
+				position: fixed;
+				background: rgba(2, 2, 2, 0.8);
+				z-index: 9000000;
+				left: 0;
+				top: 0;
+			}
+			
+			#info10 .bg_tan,#info9 .bg_tan,#info8 .bg_tan,#info7 .bg_tan,#info6 .bg_tan,#info5 .bg_tan,#info4 .bg_tan,#info3 .bg_tan,#info2 .bg_tan{
+				width: 6.373333rem;
+				height: 6.373333rem;
+				 margin-top:2rem; 
+			}
+		 	#info9 .liji,#info8 .liji,#info7 .liji,#info6 .liji,#info5 .liji,#info4 .liji,#info3 .liji,#info2 .liji{
+				width: 2.733333rem;
+				height: 0.826666rem;
+			} 
+			#info9 .zaichou,#info8 .zaichou,#info7 .zaichou,#info6 .zaichou,#info5 .zaichou,#info4 .zaichou,#info3 .zaichou,#info2 .zaichou{
+				width: 2.733333rem;
+				height: 0.826666rem;
+			} 
+			.bg_contain{
+				width: 100%;
+				display: -webkit-flex;
+				display: flex;
+				justify-content: center ;
+			}
+		 	.anniu{
+				width: 100%;
+				display: -webkit-flex;
+				display: flex;
+				justify-content: center ;
+				margin-top: -1.5rem;
+			} 
+			.footer{
+				margin-top: 10rem; 
+				width: 100%;
+				display: -webkit-flex;
+				display: flex;
+				justify-content: space-around ;
+			}
+			.footer img{
+				width: 3.333333rem;
+				height: 0.96rem;
+			}
+			#info10 .close,#info9 .close,#info8 .close,#info7 .close,#info6 .close,#info5 .close,#info4 .close,#info3 .close,#info2 .close{
+				width: 0.613333rem;
+				height: 0.613333rem;
+				margin-left:8.5rem;
+				margin-top:2rem;
+			}
+			.guanbi{
+				width: 0.613333rem;
+				height: 0.613333rem;
+				position: absolute;
+				top: 1.5rem;
+				left:8.4rem; 
+			}
+			#info9 .wenzi,#info8 .wenzi,#info7 .wenzi,#info6 .wenzi,#info5 .wenzi,#info4 .wenzi,#info3 .wenzi,#info2 .wenzi{
+				width:100%;
+				text-align: center;
+				margin-top:-2.5rem;
+				font-size:0.42rem;
+			}
+			#info9 p,#info8 p,#info7 p,#info6 p,#info5 p,#info4 p,#info3 p,#info2 p{
+				color:#5B9DFF;
+			}
+			#info10 .wenzi{
+				width:100%;
+				text-align: center;
+				color:#5B9DFF;
+				margin-top:-3.2rem;
+				font-size:0.42rem;
+			}
+			
+			.rule .rule-bg{
+	width:9rem ;
+	height:14.533333rem ;
+	position: absolute;
+	top: 46%;
+	left: 50%;
+	margin-left:-4.5rem ;
+	margin-top: -6.2511rem;
+}
+.text{
+	width:80%;
+	position: absolute;
+	top: 3.2rem; 
+	left:1rem;
+	color:white;
+	font-size:0.38rem;
+}
+
+.rule-info{
+	width: 2rem;
+	height: 0.426666rem;
+	color: black;
+	display: inline-block;
+	position: absolute;
+	top:13%;
+	left:50% ;
+	margin-left:-1rem;
+	margin-top: -0.2133rem;
+	font-size: 0.42rem;
+	font-weight: bolder;
+}
+.bg-mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.8);
+	z-index: 9000000;
+	left: 0;
+	top: 0;
+}
+.draw .name{
+	width:2.1rem;
+	font-size:0.32rem;
+	display: inline-block;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.shengyu{
+	margin-top: -13.8rem;
+	width:100%;
+	text-align: center;
+	color:white;
+	font-size:0.42rem;
+}
+.suoxu{
+	width:100%;
+	position: absolute;
+	 top:60%;
+	left:0 ; 
+	color:white;
+	font-size:0.42rem;
+	
+}
+		</style>
+	</head>
+
+	<body style="background-image: url(${staticPath}/New_img/Integral-turn/bj.png);">
+		<div class="draw" id="lottery">
+				<table>
+					<tr>
+						<td class="item lottery-unit lottery-unit-0">
+							<div class="img">
+								<img src="" alt="">
+							</div>
+							<span class="name">${prize1.getName()}</span>
+						</td>
+						<td class="gap"></td>
+						<td class="item lottery-unit lottery-unit-1">
+							<div class="img">
+								<img src="" alt="">
+							</div>
+							<span class="name">${prize2.getName()}</span>
+						</td>
+						<td class="gap"></td>
+						<td class="item lottery-unit lottery-unit-2">
+							<div class="img">
+								<img src="" alt="">
+							</div>
+							<span class="name">${prize3.getName()}</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="gap-2" colspan="5"></td>
+					</tr>
+					<tr>
+						<td class="item lottery-unit lottery-unit-7">
+							<div class="img">
+								<img src="" alt="">
+							</div>
+							<span class="name">${prize8.getName()}</span>
+						</td>
+						<td class="gap"></td>
+						<td class="">
+							<a class="draw-btn" href="javascript:"></a>
+							<p class="suoxu">-${needIntegral}积分</p>
+						</td>
+						<td class="gap"></td>
+						<td class="item lottery-unit lottery-unit-3">
+							<div class="img">
+								<img src="" alt="">
+							</div>
+							<span class="name">${prize4.getName()}</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="gap-2" colspan="5"></td>
+					</tr>
+					<tr>
+						<td class="item lottery-unit lottery-unit-6">
+							<div class="img">
+								<img src="" alt="">
+							</div>
+							<span class="name">${prize7.getName()}</span>
+						</td>
+						<td class="gap"></td>
+						<td class="item lottery-unit lottery-unit-5">
+							<div class="img">
+								<img src="" alt="">
+							</div>
+							<span class="name">${prize6.getName()}</span>
+						</td>
+						<td class="gap"></td>
+						<td class="item lottery-unit lottery-unit-4">
+							<div class="img">
+								<img src="" alt="">
+							</div>
+							<span class="name">${prize5.getName()}</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="shengyu">
+				<p>当前积分:${surplusTotalIntegral}分</p>
+			</div>
+			<div class="footer">
+				<img src="${staticPath}/New_img/Integral-turn/huodong.png" alt="" class="huo_gui"/>
+				<img src="${staticPath}/New_img/Integral-turn/jiangp.png" alt="" class="jilu"/>
+			</div>
+	<!--活动规则-->
+		<div class="bg-mask rule " style="display: none;">
+			<img src="${staticPath}/New_img/Integral-turn/rule_bg.png" alt="" class="rule-bg"/>
+				<img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="guanbi"/>
+				<div class="text">
+				<p>1.参与活动，签到获得积分参与活动，每次抽奖将消耗${needIntegral}积分;</p>
+				<p>2.点击立即抽奖参与活动，获得积分，红包;</p>
+				<p>3.获得积分，红包，可在“中奖纪录”内查看详情，若需要红包提现，请前往“个人中心-我的红包”提现即可，查看积分详情前往“个人中心-我的积分”查看即可;</p>
+				<p>4.如有疑问，请咨询【${sellerPublicNumber.getPublicNumberName()}】微信公众服务号，我们将第一时间回复解决您的问题。</p>
+				</div>
+				
+		</div>		
+	<div id='info9' class="tanchu" style = "display : none">
+	 <img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="close"/>
+	
+	   <div class='bg_contain'>
+	   		<img src="${staticPath}/New_img/Integral-turn/jiang_bg.png" alt="" class="bg_tan"/>
+	   </div>
+	  <div class="anniu">
+	  		<img src="${staticPath}/New_img/Integral-turn/liji.png" alt="" class="liji" onclick="demo()"/>
+	  		<img src="${staticPath}/New_img/Integral-turn/zaichou.png" alt="" class="zaichou" onclick="zaichou()" style="display:none"/>
+	  </div>
+	   <div class="wenzi">
+	 	<p></p>
+	 </div>
+	</div>
+	<div id='info8' class="tanchu" style = "display : none">
+	    <img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="close"/>
+	    <div class='bg_contain'>
+	   		<img src="${staticPath}/New_img/Integral-turn/jiang_bg.png" alt="" class="bg_tan"/>
+	   </div>
+	    <div class="anniu">
+	  		<img src="${staticPath}/New_img/Integral-turn/liji.png" alt="" class="liji" onclick="demo()"/>
+	  		<img src="${staticPath}/New_img/Integral-turn/zaichou.png" alt="" class="zaichou" onclick="zaichou()" style="display:none"/>
+	  </div>
+	  <div class="wenzi">
+	 		<p></p>
+		 </div>
+	</div>
+	<div id='info7' class="tanchu" style = "display : none">
+	    <img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="close"/>
+	   
+	   <div class='bg_contain'>
+	   		<img src="${staticPath}/New_img/Integral-turn/jiang_bg.png" alt="" class="bg_tan"/>
+	   </div>
+	   <div class="anniu">
+	  		<img src="${staticPath}/New_img/Integral-turn/liji.png" alt="" class="liji" onclick="demo()"/>
+	  		<img src="${staticPath}/New_img/Integral-turn/zaichou.png" alt="" class="zaichou" onclick="zaichou()" style="display:none"/>
+	  </div>
+	   <div class="wenzi">
+	 		<p></p>
+		 </div>
+	</div>
+	<div id='info6' class="tanchu" style = "display : none">
+	   <img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="close"/>
+	   
+	   <div class='bg_contain'>
+	   		<img src="${staticPath}/New_img/Integral-turn/jiang_bg.png" alt="" class="bg_tan"/>
+	   </div>
+	   <div class="anniu">
+	  		<img src="${staticPath}/New_img/Integral-turn/liji.png" alt="" class="liji" onclick="demo()"/>
+	  		<img src="${staticPath}/New_img/Integral-turn/zaichou.png" alt="" class="zaichou" onclick="zaichou()" style="display:none"/>
+	  </div>
+	   <div class="wenzi">
+	 		<p></p>
+		</div>
+	</div>
+	<div id='info5' class="tanchu" style = "display : none">
+	  <img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="close"/>
+	   
+	  <div class='bg_contain'>
+	   		<img src="${staticPath}/New_img/Integral-turn/jiang_bg.png" alt="" class="bg_tan"/>
+	   </div>
+	    <div class="anniu">
+	  		<img src="${staticPath}/New_img/Integral-turn/liji.png" alt="" class="liji" onclick="demo()"/>
+	  			<img src="${staticPath}/New_img/Integral-turn/zaichou.png" alt="" class="zaichou" onclick="zaichou()" style="display:none"/>
+	  </div>
+	  <div class="wenzi">
+	 		<p></p>
+		</div>
+	</div>
+	<div id='info4' class="tanchu" style = "display : none">
+	  <img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="close"/>
+	 
+		<div class='bg_contain'>
+	   		<img src="${staticPath}/New_img/Integral-turn/jiang_bg.png" alt="" class="bg_tan"/>
+	   </div>
+	   <div class="anniu">
+	  		<img src="${staticPath}/New_img/Integral-turn/liji.png" alt="" class="liji" onclick="demo()"/>
+	  		<img src="${staticPath}/New_img/Integral-turn/zaichou.png" alt="" class="zaichou" onclick="zaichou()" style="display:none"/>
+	  </div>
+	   <div class="wenzi">
+	 		<p></p>
+		</div>
+	</div>
+	<div id='info3' class="tanchu" style = "display : none">
+	  <img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="close"/>
+	  
+	   <div class='bg_contain'>
+	   		<img src="${staticPath}/New_img/Integral-turn/jiang_bg.png" alt="" class="bg_tan"/>
+	   </div>
+	    <div class="anniu">
+	  		<img src="${staticPath}/New_img/Integral-turn/liji.png" alt="" class="liji" onclick="demo()"/>
+	  	<img src="${staticPath}/New_img/Integral-turn/zaichou.png" alt="" class="zaichou" onclick="zaichou()" style="display:none"/>
+	  </div>
+	   <div class="wenzi">
+	 		<p></p>
+		</div>
+	</div>
+	<div id='info2' class="tanchu" style = "display : none">
+	 <img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="close"/>
+	  
+	   <div class='bg_contain'>
+	   		<img src="${staticPath}/New_img/Integral-turn/jiang_bg.png" alt="" class="bg_tan"/>
+	   </div>
+	    <div class="anniu">
+	  		<img src="${staticPath}/New_img/Integral-turn/liji.png" alt="" class="liji" onclick="demo()"/>
+	  			<img src="${staticPath}/New_img/Integral-turn/zaichou.png" alt="" class="zaichou" onclick="zaichou()" style="display:none"/>
+	  </div>
+	   <div class="wenzi">
+	 		<p></p>
+		</div>
+	</div>
+	<div id='info10' class="tanchu" style = "display : none">
+	 <img src="${staticPath}/New_img/Integral-turn/close.png" alt="" class="close"/>
+	  
+	   <div class='bg_contain'>  
+	   		<img src="${staticPath}/New_img/Integral-turn/jifenbuzu.png" alt="" class="bg_tan"/>
+	   </div>
+	   <div class="wenzi">
+	 		<p>参与积分活动</p>
+	 		<p>需要消耗${needIntegral}积分</p>
+	 		<!-- <p>亲，您的积分不足哦</p> -->
+		</div>
+	</div>
+	<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+			<!--Import Copyright -->
+	<input type="hidden" value="${wxUserId}" id="wxUserId"/>
+	<input type="hidden" value="${integralId}" id="integralId"/>	
+	<input type="hidden" value="${openid}" id="openId"/>	
+	<input type="hidden" value="${belongPublicNumberId}" id="belongPublicNumberId"/>
+	<input type="hidden" value="${prize1.getType()}" id="a"/>
+	<input type="hidden" value="${prize2.getType()}" id="b"/>
+	<input type="hidden" value="${prize3.getType()}" id="c"/>
+	<input type="hidden" value="${prize4.getType()}" id="d"/>
+	<input type="hidden" value="${prize5.getType()}" id="e"/>
+	<input type="hidden" value="${prize6.getType()}" id="f"/>
+	<input type="hidden" value="${prize7.getType()}" id="g"/>
+	<input type="hidden" value="${prize8.getType()}" id="h"/>
+	
+	<input type="hidden" value="${prize1.getName()}" id="aa"/>
+	<input type="hidden" value="${prize2.getName()}" id="bb"/>
+	<input type="hidden" value="${prize3.getName()}" id="cc"/>
+	<input type="hidden" value="${prize4.getName()}" id="dd"/>
+	<input type="hidden" value="${prize5.getName()}" id="ee"/>
+	<input type="hidden" value="${prize6.getName()}" id="ff"/>
+	<input type="hidden" value="${prize7.getName()}" id="gg"/>
+	<input type="hidden" value="${prize8.getName()}" id="hh"/>
+	
+	<input type="hidden" value="${prize1.getInfo()}" id="aaa"/>
+	<input type="hidden" value="${prize2.getInfo()}" id="bbb"/>
+	<input type="hidden" value="${prize3.getInfo()}" id="ccc"/>
+	<input type="hidden" value="${prize4.getInfo()}" id="ddd"/>
+	<input type="hidden" value="${prize5.getInfo()}" id="eee"/>
+	<input type="hidden" value="${prize6.getInfo()}" id="fff"/>
+	<input type="hidden" value="${prize7.getInfo()}" id="ggg"/>
+	<input type="hidden" value="${prize8.getInfo()}" id="hhh"/>
+	
+	<input type="hidden" value="${surplusTotalIntegral}" id="surplusTotalIntegral"/>
+	<input type="hidden" value="${needIntegral}" id="needIntegral"/>
+		<!--弹窗layer-->
+		<script src="${staticPath}/js/Integral-turn/layer.js"></script>
+		<script type="text/javascript">
+		 
+		/* 华为 */
+		if(screen.height<=640 || screen.width<=360){
+			$(".suoxu").css({"top":"60%"});
+			$(".draw").css({"margin-top":"4rem"})
+			$(".footer").css({"margin-top":"9rem"})
+		}
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".suoxu").css({"top":"63%"});
+			$(".text").css({"top":"5rem"});
+			$(".draw").css({"margin-top":"6rem"})
+		}
+		/* 苹果6puls */
+		if(screen.height==736 && screen.width==414){
+			$(".suoxu").css({"top":"59%"});
+		}
+		var surplusTotalIntegral=parseFloat($("#surplusTotalIntegral").val());
+		var needIntegral=parseFloat($("#needIntegral").val()); 
+		if(surplusTotalIntegral<needIntegral){
+			 $(".draw-btn").css({"background-image":"url(${staticPath}/New_img/Integral-turn/hui_liji.png)"}) 
+		}
+		
+		
+		
+	/* 	var integralId=$("#integralId").val();
+		var openId=$("#openId").val();
+		var wxUserId=$("#wxUserId").val();
+		var belongPublicNumberId=$("#belongPublicNumberId").val(); */
+		var a=$("#a").val();
+		var b=$("#b").val();
+		var c=$("#c").val();
+		var d=$("#d").val();
+		var e=$("#e").val();
+		var f=$("#f").val();
+		var g=$("#g").val();
+		var h=$("#h").val();
+		
+		var aa=$("#aa").val();
+		var bb=$("#bb").val();
+		var cc=$("#cc").val();
+		var dd=$("#dd").val();
+		var ee=$("#ee").val();
+		var ff=$("#ff").val();
+		var gg=$("#gg").val();
+		var hh=$("#hh").val();
+		
+		var aaa=$("#aaa").val();
+		var bbb=$("#bbb").val();
+		var ccc=$("#ccc").val();
+		var ddd=$("#ddd").val();
+		var eee=$("#eee").val();
+		var fff=$("#fff").val();
+		var ggg=$("#ggg").val();
+		var hhh=$("#hhh").val();
+		/* 中奖弹窗关闭 */
+		$("#info9 .close,#info8 .close,#info7 .close,#info6 .close,#info5 .close,#info4 .close,#info3 .close,#info2 .close").click(function(){
+			location.reload();
+		})
+		/* 积分不足关闭 */
+		$("#info10 .close").click(function(){
+			$("#info10").hide();
+			 $(".draw-btn").css({"background-image":"url(${staticPath}/New_img/Integral-turn/hui_liji.png)"}) 
+		})
+		/* 关闭活动规则 */
+		$(".guanbi").click(function(){
+			$(".rule").hide();
+		})
+		/* 点击活动规则 */
+		$(".huo_gui").click(function(){
+			$(".rule").show();
+		})
+		/* 点击中奖记录 */
+		$(".jilu").click(function(){
+			 location.href="${basePath}/integral/winRecord?openid="+'${openid}'+"&belongPublicNumberId="+'${belongPublicNumberId}'+"&integralId="+'${integralId}'; 
+		})
+			var cishu;
+		/* 立即查看 */
+			function demo(){
+				 location.href="${basePath}/integral/winRecord?openid="+'${openid}'+"&belongPublicNumberId="+'${belongPublicNumberId}'+"&integralId="+'${integralId}'; 
+				/*  location.reload(); 
+				$(".bg_contain").hide();
+				$(".layui-m-layer .layui-m-layer-msg").hide() */
+			}
+		/* 再抽一次 */
+			function zaichou(){
+				location.reload(); 
+				/*  location.href="${basePath}/integral/winRecord?openid="+'${openid}'+"&belongPublicNumberId="+'${belongPublicNumberId}'+"&integralId="+'${integralId}';  */
+				/*  
+				$(".bg_contain").hide();
+				$(".layui-m-layer .layui-m-layer-msg").hide() */
+			}
+			var lottery = {
+				index: -1, //当前转动到哪个位置，起点位置
+				count: 0, //总共有多少个位置
+				timer: 0, //setTimeout的ID，用clearTimeout清除
+				speed: 20, //初始转动速度
+				times: 0, //转动次数
+				cycle: 50, //转动基本次数：即至少需要转动多少次再进入抽奖环节
+				prize: -1, //中奖位置
+				init: function(id) {
+					if($('#' + id).find('.lottery-unit').length > 0) {
+						$lottery = $('#' + id);
+						$units = $lottery.find('.lottery-unit');
+						this.obj = $lottery;
+						this.count = $units.length;
+						$lottery.find('.lottery-unit.lottery-unit-' + this.index).addClass('active');
+					};
+				},
+				roll: function() {
+					var index = this.index;
+					var count = this.count;
+					var lottery = this.obj;
+					$(lottery).find('.lottery-unit.lottery-unit-' + index).removeClass('active');
+					index += 1;
+					if(index > count - 1) {
+						index = 0;
+					};
+					$(lottery).find('.lottery-unit.lottery-unit-' + index).addClass('active');
+					this.index = index;
+					return false;
+				},
+				stop: function(index) {
+					this.prize = index;
+					return false;
+				}
+			};
+			
+			
+			$(function(){ 
+				　　if(a=='1'){
+					$(".lottery-unit-0 .img img").attr("src","/activityUploadPath${prize1.getPicture()}")
+					$(".lottery-unit-0 .name").html(aa)
+				}else if(a=='2'){
+					$(".lottery-unit-0 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+					$(".lottery-unit-0 .name").html(aaa+"积分")
+				}else if(a=='3'){
+					$(".lottery-unit-0 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+					$(".lottery-unit-0 .name").html("现金红包")
+				}else if(a=='4'){
+					$(".lottery-unit-0 .img img").attr("src","${staticPath}/New_img/Integral-turn/xiexie.png")
+					$(".lottery-unit-0 .name").html(aa)
+				};
+				if(b=='1'){
+					$(".lottery-unit-1 .img img").attr("src","/activityUploadPath${prize2.getPicture()}")
+					$(".lottery-unit-1 .name").html(bb)
+				}else if(b=='2'){
+					$(".lottery-unit-1 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+					$(".lottery-unit-1 .name").html(bbb+"积分")
+				}else if(b=='3'){
+					$(".lottery-unit-1 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+					$(".lottery-unit-1 .name").html("现金红包")
+				}else if(b=='4'){
+					$(".lottery-unit-1 .img img").attr("src","${staticPath}/New_img/Integral-turn/xiexie.png")
+					$(".lottery-unit-1 .name").html(bb)
+				};
+				if(c=='1'){
+					$(".lottery-unit-2 .img img").attr("src","/activityUploadPath${prize3.getPicture()}")
+					$(".lottery-unit-2 .name").html(cc)
+				}else if(c=='2'){
+					$(".lottery-unit-2 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+					$(".lottery-unit-2 .name").html(ccc+"积分")
+				}else if(c=='3'){
+					$(".lottery-unit-2 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+					$(".lottery-unit-2 .name").html("现金红包")
+				}else if(c=='4'){
+					$(".lottery-unit-2 .img img").attr("src","${staticPath}/New_img/Integral-turn/xiexie.png")
+					$(".lottery-unit-2 .name").html(cc)
+				};
+				if(d=='1'){
+					$(".lottery-unit-3 .img img").attr("src","/activityUploadPath${prize4.getPicture()}")
+					$(".lottery-unit-3 .name").html(dd)
+				}else if(d=='2'){
+					$(".lottery-unit-3 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+					$(".lottery-unit-3 .name").html(ddd+"积分")
+				}else if(d=='3'){
+					$(".lottery-unit-3 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+					$(".lottery-unit-3 .name").html("现金红包")
+				}else if(d=='4'){
+					$(".lottery-unit-3 .img img").attr("src","${staticPath}/New_img/Integral-turn/xiexie.png")
+					$(".lottery-unit-3 .name").html(dd)
+				};
+				if(e=='1'){
+					$(".lottery-unit-4 .img img").attr("src","/activityUploadPath${prize5.getPicture()}")
+					$(".lottery-unit-4 .name").html(ee)
+				}else if(e=='2'){
+					$(".lottery-unit-4 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+					$(".lottery-unit-4 .name").html(eee+"积分")
+				}else if(e=='3'){
+					$(".lottery-unit-4 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+					$(".lottery-unit-4 .name").html("现金红包")
+				}else if(e=='4'){
+					$(".lottery-unit-4 .img img").attr("src","${staticPath}/New_img/Integral-turn/xiexie.png")
+					$(".lottery-unit-4 .name").html(ee)
+				};
+				if(f=='1'){
+					$(".lottery-unit-5 .img img").attr("src","/activityUploadPath${prize6.getPicture()}")
+					$(".lottery-unit-5 .name").html(ff)
+				}else if(f=='2'){
+					$(".lottery-unit-5 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+					$(".lottery-unit-5 .name").html(fff+"积分")
+				}else if(f=='3'){
+					$(".lottery-unit-5 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+					$(".lottery-unit-5 .name").html("现金红包")
+				}else if(f=='4'){
+					$(".lottery-unit-5 .img img").attr("src","${staticPath}/New_img/Integral-turn/xiexie.png")
+					$(".lottery-unit-5 .name").html(ff)
+				};
+				if(g=='1'){
+					$(".lottery-unit-6 .img img").attr("src","/activityUploadPath${prize7.getPicture()}")
+					$(".lottery-unit-6 .name").html(gg)
+				}else if(g=='2'){
+					$(".lottery-unit-6 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+					$(".lottery-unit-6 .name").html(ggg+"积分")
+				}else if(g=='3'){
+					$(".lottery-unit-6 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+					$(".lottery-unit-6 .name").html("现金红包")
+				}else if(g=='4'){
+					$(".lottery-unit-6 .img img").attr("src","${staticPath}/New_img/Integral-turn/xiexie.png")
+					$(".lottery-unit-6 .name").html(gg)
+				};
+				if(h=='1'){
+					$(".lottery-unit-7 .img img").attr("src","/activityUploadPath${prize8.getPicture()}")
+					$(".lottery-unit-7 .name").html(hh)
+				}else if(h=='2'){
+					$(".lottery-unit-7 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+					$(".lottery-unit-7 .name").html(hhh+"积分")
+				}else if(h=='3'){
+					$(".lottery-unit-7 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+					$(".lottery-unit-7 .name").html("现金红包")
+				}else if(h=='4'){
+					$(".lottery-unit-7 .img img").attr("src","${staticPath}/New_img/Integral-turn/xiexie.png")
+					$(".lottery-unit-7 .name").html(hh)
+				}
+				
+				}); 
+			
+			function roll() {
+				lottery.times += 1;
+				lottery.roll(); //转动过程调用的是lottery的roll方法，这里是第一次调用初始化
+
+				if(lottery.times > lottery.cycle + 10 && lottery.prize == lottery.index) {
+					clearTimeout(lottery.timer);              
+					/* alert(cishu+"456456") */
+					setTimeout(
+						function(){
+							if(cishu+1==1){
+								/* alert("1等奖")
+								alert(a) */
+								if(a=='1'){
+									$("#info9 .wenzi p").html("获得"+aa)
+									$(".lottery-unit-0 .img img").attr("src","/activityUploadPath${prize1.getPicture()}")
+								}else if(a=='2'){
+									$("#info9 .wenzi p").html("获得积分"+aaa+"分")
+									$(".lottery-unit-0 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+								}else if(a=='3'){
+									$("#info9 .wenzi p").html("获得红包"+aaa+"元")
+									$(".lottery-unit-0 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+								}else if(a=='4'){
+									$("#info9 .wenzi p").hide()
+									$("#info9 .bg_contain img").attr("src","${staticPath}/New_img/Integral-turn/ganxie.png")
+									$(".liji").hide();
+									$(".zaichou").show();
+								}
+								$("#info9").show()
+						/* 		layer.open({
+					           type: 1,			           
+					           shadeClose: true,
+					           shade: false,
+					           maxmin: true, //开启最大化最小化按钮
+					           area: ['893px', '600px'],
+					           content: '$("#info9").html()'
+							}); */
+							}else if(cishu+1==2){
+								/* alert("2等奖")
+								alert(b) */
+								if(b=='1'){
+									$("#info8 .wenzi p").html("获得"+bb)
+									$(".lottery-unit-1 .img img").attr("src","/activityUploadPath${prize2.getPicture()}")
+								}else if(b=='2'){
+									$("#info8 .wenzi p").html("获得积分"+bbb+"分")
+									$(".lottery-unit-1 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+								}else if(b=='3'){
+									$("#info8 .wenzi p").html("获得红包"+bbb+"元")
+									$(".lottery-unit-1 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+								}else if(b=='4'){
+									$("#info8 .wenzi p").hide()
+									$("#info8 .bg_contain img").attr("src","${staticPath}/New_img/Integral-turn/ganxie.png")
+									$(".liji").hide();
+									$(".zaichou").show();
+								}
+								$("#info8").show()
+						/* 		layer.open({
+					           type: 1,			           
+					           shadeClose: true,
+					           shade: false,
+					           maxmin: true, //开启最大化最小化按钮
+					           area: ['893px', '600px'],
+					           content: '$("#info8").html()'
+							}); */
+							}else if(cishu+1==3){
+								/* alert("3等奖")
+								alert(c) */
+								if(c=='1'){
+									$("#info7 .wenzi p").html("获得"+cc)
+									$(".lottery-unit-2 .img img").attr("src","/activityUploadPath${prize3.getPicture()}")
+								}else if(c=='2'){
+									$("#info7 .wenzi p").html("获得积分"+ccc+"分")
+									$(".lottery-unit-2 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+								}else if(c=='3'){
+									$("#info7 .wenzi p").html("获得红包"+ccc+"元")
+									$(".lottery-unit-2 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+								}else if(c=='4'){
+									$("#info7 .wenzi p").hide()
+									$("#info7 .bg_contain img").attr("src","${staticPath}/New_img/Integral-turn/ganxie.png")
+									$(".liji").hide();
+									$(".zaichou").show();
+								}
+								$("#info7").show()
+						/* 		layer.open({
+					           type: 1,			           
+					           shadeClose: true,
+					           shade: false,
+					           maxmin: true, //开启最大化最小化按钮
+					           area: ['893px', '600px'],
+					           content: '$("#info7").html()'
+							}); */
+							}else if(cishu+1==4){
+								/* alert("4等奖") */
+						/* 		layer.open({
+					           type: 1,			           
+					           shadeClose: true,
+					           shade: false,
+					           maxmin: true, //开启最大化最小化按钮
+					           area: ['893px', '600px'],
+					           content: '$("#info6").html()'
+							}); */
+							/* alert(d) */
+								if(d=='1'){
+									$("#info6 .wenzi p").html("获得"+dd)
+									$(".lottery-unit-3 .img img").attr("src","/activityUploadPath${prize4.getPicture()}")
+								}else if(d=='2'){
+									$("#info6 .wenzi p").html("获得积分"+ddd+"分")
+									$(".lottery-unit-3 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+								}else if(d=='3'){
+									$("#info6 .wenzi p").html("获得红包"+ddd+"元")
+									$(".lottery-unit-3 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+								}else if(d=='4'){
+									$("#info6 .wenzi p").hide()
+									$("#info6 .bg_contain img").attr("src","${staticPath}/New_img/Integral-turn/ganxie.png")
+									$(".liji").hide();
+									$(".zaichou").show();
+								}
+							$("#info6").show()
+							}else if(cishu+1==5){
+								/* alert("5等奖") */
+						/* 		layer.open({
+					           type: 1,			           
+					           shadeClose: true,
+					           shade: false,
+					           maxmin: true, //开启最大化最小化按钮
+					           area: ['893px', '600px'],
+					           content: '$("#info5").html()'
+							}); */
+							/* alert(e) */
+								if(e=='1'){
+									$("#info5 .wenzi p").html("获得"+ee)
+									$(".lottery-unit-4 .img img").attr("src","/activityUploadPath${prize5.getPicture()}")
+								}else if(e=='2'){
+									$("#info5 .wenzi p").html("获得积分"+eee+"分")
+									$(".lottery-unit-4 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+								}else if(e=='3'){
+									$("#info5 .wenzi p").html("获得红包"+eee+"元")
+									$(".lottery-unit-4 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+								}else if(e=='4'){
+									$("#info5 .wenzi p").hide()
+									$("#info5 .bg_contain img").attr("src","${staticPath}/New_img/Integral-turn/ganxie.png")
+									$(".liji").hide();
+									$(".zaichou").show();
+								}
+							$("#info5").show()
+							}else if(cishu+1==6){
+								/* alert("6等奖") */
+						/* 		layer.open({
+					           type: 1,			           
+					           shadeClose: true,
+					           shade: false,
+					           maxmin: true, //开启最大化最小化按钮
+					           area: ['893px', '600px'],
+					           content: '$("#info4").html()'
+							}); */
+							/* alert(f) */
+								if(f=='1'){
+									$("#info4 .wenzi p").html("获得"+ff)
+									$(".lottery-unit-5 .img img").attr("src","/activityUploadPath${prize6.getPicture()}")
+								}else if(f=='2'){
+									$("#info4 .wenzi p").html("获得积分"+fff+"分")
+									$(".lottery-unit-5 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+								}else if(f=='3'){
+									$("#info4 .wenzi p").html("获得红包"+fff+"元")
+									$(".lottery-unit-5 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+								}else if(f=='4'){
+									$("#info4 .wenzi p").hide()
+									$("#info4 .bg_contain img").attr("src","${staticPath}/New_img/Integral-turn/ganxie.png")
+									$(".liji").hide();
+									$(".zaichou").show();
+								}
+							$("#info4").show()
+							}else if(cishu+1==7){
+								/* alert("7等奖") */
+							/* 	layer.open({
+					           type: 1,			           
+					           shadeClose: true,
+					           shade: false,
+					           maxmin: true, //开启最大化最小化按钮
+					           area: ['893px', '600px'],
+					           content: '$("#info3").html()'
+							}); */
+							/* alert(g) */
+								if(g=='1'){
+									$("#info3 .wenzi p").html("获得"+gg)
+									$(".lottery-unit-6 .img img").attr("src","/activityUploadPath${prize7.getPicture()}")
+								}else if(g=='2'){
+									$("#info3 .wenzi p").html("获得积分"+ggg+"分")
+									$(".lottery-unit-6 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+								}else if(g=='3'){
+									$("#info3 .wenzi p").html("获得红包"+ggg+"元")
+									$(".lottery-unit-6 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+								}else if(g=='4'){
+									$("#info3 .wenzi p").hide()
+									$("#info3 .bg_contain img").attr("src","${staticPath}/New_img/Integral-turn/ganxie.png")
+									$(".liji").hide();
+									$(".zaichou").show();
+								}
+							$("#info3").show()
+							}else if(cishu+1==8){
+								/* alert("8等奖") */
+						/* 		layer.open({
+					           type: 1,			           
+					           shadeClose: true,
+					           shade: false,
+					           maxmin: true, //开启最大化最小化按钮
+					           area: ['893px', '600px'],
+					           content: '$("#info2").html()'
+							}); */
+							/* alert(h) */
+								if(h=='1'){
+									$("#info2 .wenzi p").html("获得"+hh)
+									$(".lottery-unit-7 .img img").attr("src","/activityUploadPath${prize8.getPicture()}")
+								}else if(h=='2'){
+									$("#info2 .wenzi p").html("获得积分"+hhh+"分")
+									$(".lottery-unit-7 .img img").attr("src","${staticPath}/New_img/Integral-turn/jifentupian.png")
+								}else if(h=='3'){
+									$("#info2 .wenzi p").html("获得红包"+hhh+"元")
+									$(".lottery-unit-7 .img img").attr("src","${staticPath}/New_img/Integral-turn/hongbao.png")
+								}else if(h=='4'){
+									$("#info2 .wenzi p").hide()
+									$("#info2 .bg_contain img").attr("src","${staticPath}/New_img/Integral-turn/ganxie.png")
+									$(".liji").hide();
+									$(".zaichou").show();
+								}
+							$("#info2").show()
+							}
+						},1*1000
+						)
+		
+					/*alert(lottery.index+1);*/   
+					lottery.prize = -1;
+					lottery.times = 0;
+					click = false;
+					
+				} else {
+					if(lottery.times < lottery.cycle) {
+						lottery.speed -= 10;
+					} else if(lottery.times == lottery.cycle) {
+						var index = cishu | 0; //静态演示，随机产生一个奖品序号，实际需请求接口产生
+						lottery.prize = index;
+					
+
+					} else {
+						if(lottery.times > lottery.cycle + 10 && ((lottery.prize == 0 && lottery.index == 7) || lottery.prize == lottery.index + 1)) {
+							lottery.speed += 110;
+						} else {
+							lottery.speed += 20;
+						}
+					}
+					if(lottery.speed < 40) {
+						lottery.speed = 40;
+					};
+					lottery.timer = setTimeout(roll, lottery.speed); //循环调用
+					
+				}
+				return false;
+				
+			}
+
+			var isclick = false;
+
+			window.onload = function() {
+				
+				
+					$('.draw-btn').click(function() {
+						
+						 $(".draw-btn").unbind("click")
+						if(surplusTotalIntegral<needIntegral){//判断积分不足
+							
+							$("#info10").show();
+							
+						}else{
+							$.ajax({
+								url: "${basePath}/integral/startPrize",
+								type: "POST",
+								dataType: "JSON",
+								async: "false",
+								data: {
+									"wxUserId": "${wxUserId}",
+									"integralId": "${integralId}",
+									"openid":"${openid}"
+								},
+								success: function(data) {
+									
+									
+									if(data.result=='true'){
+										lottery.init('lottery');
+										cishu=data.prizeIndex;
+										
+									}else{
+										
+										/* alert("积分不足") */
+									
+									}
+								}
+							});
+						}
+					
+						
+						
+						
+						
+						if(isclick) { //click控制一次抽奖过程中不能重复点击抽奖按钮，后面的点击不响应
+							return false;
+						} else {
+							lottery.speed = 100;
+							roll(); //转圈过程不响应click事件，会将click置为false
+							isclick = true; //一次抽奖完成后，设置click为true，可继续抽奖		
+							return false;
+						}
+					});
+				
+
+			};
+			
+		</script>
+	</body>
+
+
+</html>

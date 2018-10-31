@@ -1,0 +1,964 @@
+<!--[arg basePath,staticPath,soiList,srList,belongActivityId,userTargetId;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="multipart/form-data; charset=iso-8859-1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.form.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/applay-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/media-applay-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/activity-bargain-edit.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/share-set.css" />
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+		<link rel="stylesheet" href="${staticPath}/css/upload/upload2.css">
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/media-share-set.css" />
+		<script src="${staticPath}/js/upload/upload.min.js"></script>
+		<script type="text/javascript">
+			var basePath = "${basePath}";			//获取basePath
+		</script>
+		
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+			}
+		</style>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<!--图片上传弹窗-->
+		<div id="popup-upPic" style="display:none">
+			<div class="fade"></div>
+			<div class="delivery-success-pic">
+				<div class="close" id="closePic">
+					<img src="${staticPath}/img/close-icon.png" alt="" />
+				</div>
+				<div class="upBtn">
+					<div class="upBtn-inner">
+						<input type="hidden" name="filePath" id="callbackPath2">
+						<a id="zwb_upload"> <input type="file" class="add" >选择图片
+						</a> <input type="button" value="确定上传" id="yulan" />
+					</div>
+				</div>
+				<hr>
+				<div class="imgsBox">
+					<ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!--图片上传弹窗-->
+		<div id="popup-upPic1" style="display:none">
+			<div class="fade"></div>
+			<div class="delivery-success-pic">
+				<div class="close" id="closePic1">
+					<img src="${staticPath}/img/close-icon.png" alt="" />
+				</div>
+				<div class="upBtn">
+					<div class="upBtn-inner">
+						<input type="hidden" name="filePath" id="callbackPath1">
+						<a id="zwb_upload1">
+							<input type="file" class="add" multiple>选择图片
+						</a>
+						<input type="button" value="确定上传" id="yulan1" />
+					</div>
+				</div>
+				<hr>
+				<div class="imgsBox">
+					<ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--页面弹窗-->
+		<div id="popup" style="display:none">
+			<div class="fade"></div>
+			<!--申请成功-->
+			<div class="delivery-success">
+				<div class="success-outer">
+					<div class="pop-title">申请成功！</div>
+					<input type="button" value="确定" id="delivery-success-yes" />
+				</div>
+			</div>
+		</div>
+		<div id="popup1" style="display:none">
+			<div class="fade"></div>
+			<!--提示数据丢失-->
+			<div class="delivery-success">
+				<div class="success-outer">
+					<div class="pop-title">已填数据可能会丢失。</div>
+					<input type="button" value="确定" id="yes" class="btn-button" />
+					<input type="button" value="取消" id="no" class="btn-button" />
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+				<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">您的当前位置：
+					<a href="${basePath}/goHomePage" class="backHome">首页></a>
+					<a href="${basePath}/activityApply" class="backOne">活动申请>
+						<a href="javascript:void(0);">砍价活动申请</a>
+				</p>
+				<ul class="title-pic">
+					<li class="backHome">
+						<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+					</li>
+					<li class="exit">
+						<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="section clearfloat">
+				<div class="left">
+					<!--登录背景图片-->
+					<div>
+						<p class="dengru">登录背景图</p>
+						<div class="activity-pic" id="divPreview">
+							<img class="pic" src="/activityUploadPath/upload/kanjia.png" alt="" id="picLogin" />
+						</div>
+						<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+						<div class="upload">
+							<input type="button" value="上传图片" />
+						</div>
+					</div>
+					<!--首页背景图片-->
+					<div>
+						<p class="shouji">手机背景图</p>
+						<div class="activity-pic" id="divPreview">
+							<img class="pic" src="/activityUploadPath/upload/kanjia.png" alt="" id="picBg" />
+						</div>
+						<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+						<div class="upload">
+							<input type="button" value="上传图片" />
+						</div>
+					</div>
+					<!--活动规则-->
+					<div>
+						<p class="guize">活动规则</p>
+						<div class="activity-pic" id="divPreview">
+							<img class="pic" src="/activityUploadPath/upload/kanjia.png" alt="" id="picRulebg" />
+						</div>
+						<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+						<div class="upload">
+							<input type="button" value="上传图片" />
+						</div>
+					</div>
+
+				</div>
+				<div class="excels">
+					<div class="content">活动内容配置：</div>
+					<label for="active-name">砍价活动名称：</label> <input type="text" id="active-name" onblur="activityNameValidate()" maxlength="6" placeholder="6个字以内" /><span class="activity-volidate volidate">*必填</span><br>
+					<label for="">砍价活动时间：</label>
+					<input type='text' id="startTime" readonly="readonly" onblur="timeValidate()" style="background-image: url('${staticPath}/img/more.png')" />
+					<div class='line'></div>
+					<input type='text' id="endTime" readonly="readonly" onblur="timeValidate()" style="background-image: url('${staticPath}/img/more.png')" /> <span class="time-volidate volidate">*必选</span>
+					<div class="list-bill">
+						<div class="bill-title">
+							运单信息：<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="addBill" />接受的货
+							<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="sendBill" />发出的货
+							<span class="bill-volidate volidate">*必选</span>
+						</div>
+						<div id="table-outer1">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+										<td>发货时间</td>
+										<td>收发货状态</td>
+										<td>编辑</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div class="list-award">
+						<div class="award-title">
+							奖品信息：<img src="${staticPath}/img/home - add.png" alt="" class='addPic' id="addAward" /><span class="award-volidate volidate">*必选</span>
+						</div>
+						<div id="table-outer2">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>奖品名称</td>
+										<td>奖品总数(个)</td>
+										<td>剩余数量(个)</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>原价(元)</td>
+										<td>最低价(元)</td>
+										<td>砍价区间(元)</td>
+										<td>编辑</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="productInfos">
+						<label for="textarea">奖品信息介绍：</label>
+						<textarea maxlength="30" placeholder="字数限制：30字以内" id="textarea" onblur="introduceValidate()"></textarea>
+						<span class="introduce-volidate volidate">*必填</span>
+					</div>
+					<div class="parting-line"></div>
+					<div class="main clearfloat">
+						<div class="main-left">
+							<div class="content commonStyle">分享内容配置：</div>
+							<div class="commonStyle">
+								<label for="">分享标题:</label>
+								<input type='text' class="shareTitle" id="shareTitle" onblur="shareTitleValidate()" maxlength="6" placeholder="6个字以内" />
+								<span class="shareTitle-volidate volidate">*必填</span>
+							</div>
+							<div class="commonStyle">
+								<label for="">分享描述：</label>
+								<textarea id="shareDetail" maxlength="30" placeholder="字数限制：30字以内" onblur="shareDetailValidate()"></textarea>
+								<span class="shareDetail-volidate volidate">*必填</span>
+							</div>
+						</div>
+
+						<div class="commonStyle imgUp">
+							<div class="sharePic">
+								<label for="">分享图片：</label><br>
+								<span class="sharePic-volidate volidate">*必传</span>
+							</div>
+							<div class="pic-box">
+								<div class="addPic-upload" id="addPic-upload">
+									<img id="pic1" src="${staticPath}/img/default.png" alt="" />
+								</div>
+								<p class="picInfo1">(上传图片大小不高于500kb,图片格式为jpg,png,gif)</p>
+								<div class="upload1">
+									<input type="button" value="上传图片" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<input value="${belongActivityId}" id="belongActivityId" type="hidden" />
+
+		<div class="submitBtn"><input type="button" value="提交申请" /></div>
+		</div>
+		<!--奖品信息弹窗-->
+		<div class="popUp" id='awardPop' style="display: none;">
+			<div class="mask"></div>
+			<div class="popUp-window">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" id="award-close" />
+				<div class="kuang">
+					<p class="jiangp">奖品中心</p>
+					<div class="qwe">
+						<lable class="jp">奖品名称：</lable><input type="text" id="search1" value="" />
+						<button class="chazhao">搜索</button>
+					</div>
+					<div id="table-outer4">
+						<div class="table-thead">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>奖品名称</td>
+									<td>度数(°)</td>
+									<td>容量(mL)</td>
+									<td>规格(瓶/箱)</td>
+									<td>选择</td>
+								</tr>
+							</table>
+						</div>
+						<div class="table-tbody">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<!--[loop(sr : srList) {]-->
+								<tr>
+									<td class="list-item">${sr.getProductName()}</td>
+									<td>${sr.getDegree()}</td>
+									<td>${sr.getVolume()}</td>
+									<td>${sr.getSpec()}</td>
+									<td><input type="radio" name="radio" value="${sr.getProductId()}" /></td>
+								</tr>
+								<!--[}]-->
+							</table>
+						</div>
+					</div>
+					<div>
+						<label for="awardNumber">砍价奖品总数：</label> <input class="awardNumber" type="text" id="awardNumber" oninput='this.value=this.value.replace(/\D/gi,"")' onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;" />
+						<div class="price">
+							<label for="">砍价商品原价：</label> <input type="text" oninput="clearNoNum(this)" id="oldPrice" onblur="clearNoNum(this)" />元
+							<label for="" class="text-right">砍价商品最低价：</label> <input type="text" oninput="clearNoNum(this)" id="lowPrice" onblur="clearNoNum(this)" />元
+						</div>
+						<label for="">每次砍价区间：</label> <input id="bargaining-low" type="text" oninput="clearNoNum(this)" onblur="clearNoNum(this)" />
+						<div class='line'></div>
+						<input id="bargaining-high" type="text" oninput="clearNoNum(this)" onblur="clearNoNum(this)" />元
+					</div>
+
+					<div class="btn" id="award-btn">
+						<input type="button" value="确定" class="bbb" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--运单信息-->
+		<div class="popUp" id="billPop" style="display: none">
+			<div class="mask"></div>
+			<div class="popUp-window bill-window">
+				<img src="${staticPath}/img/close-icon.png" alt="" class="close" id="bill-close" />
+				<div class="list-bill">
+					<div class="kuang">
+						<p class="yund">运单中心</p>
+						<div class="qwe qwe1">
+							<lable class="jp">货品名称：</lable><input type="text" id="search2" value="" />
+							<label for="">发货时间：</label>
+							<input type='text' id="startTime2" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" />
+							<div class='line'></div>
+							<input type='text' id="endTime2" readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" />
+							<button class="chazhao2">搜索</button>
+						</div>
+						<div id="table-outer3">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0" id="yourTableID3">
+									<tr>
+										<td>发货单号</td>
+										<td>渠道商</td>
+										<td>货品名称</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>品牌名称</td>
+										<td>发货时间</td>
+										<td>收发货状态</td>
+										<td><input type="checkbox" id="checkAll" />选择</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<!--[loop(soi : soiList) {]-->
+									<tr>
+										<td>${soi.getOutNo()}</td>
+										<td>${soi.getRecsellerName()}</td>
+										<td>${soi.getProductName()}</td>
+										<td>${soi.getDegree()}</td>
+										<td>${soi.getVolume()}</td>
+										<td>${soi.getSpec()}</td>
+										<td>${soi.getBoxCode()}</td>
+										<td>${soi.getBrandsName()}</td>
+										<td>${soi.getOutDate()}</td>
+										<!--[ if(soi.getSellerId()==userTargetId) { ]-->
+											<td>发出的货</td>
+										<!--[ } else { ]--> 
+											<td>接收的货</td>
+										<!--[ } ]--> 
+										<td class="checkbox"><input type="checkbox"
+											name="${soi.getSellerId()}" value="${soi.getRecordId()}" /></td>
+									</tr>
+									<!--[}]-->
+								</table>
+							</div>
+						</div>
+						<!-- 运单弹窗分页开始 -->
+						<div class="page-break">
+							<div class="page-btn">
+								<span class="manager-first-but">上一页</span>
+								<span id="admin-page">1</span>
+								<span class="manager-second-but">下一页</span>
+							</div>
+							<div class="skip">
+								<span>跳转至</span>
+								<input type="text" id="input-page" />&nbsp;页&nbsp;
+								<span class="skip-btn">跳转</span>
+							</div>
+							<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+						</div>
+						<!-- 运单弹窗分页结束 -->
+						<div class="btn billConfirm" id="bill-btn">
+							<input type="button" value="确定" class="bb" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+	</body>
+	<script src="${staticPath}/js/common/editCloseReminder.js"></script>
+	<script type="text/javascript" src="${staticPath}/js/activityBargain/activity-bargain-edit.js"></script>
+	<script type="text/javascript">
+		/* 点击图片库中的删除图标 */
+		function deleteImg(obj){
+			event.stopPropagation();//阻止冒泡
+			var deleteSrc=$(obj).parent().find("img").attr("src");
+			var srcUrl=deleteSrc.substring(19,deleteSrc.length);
+			$("#loadingInfo").show();
+			$.ajax({
+				url : "${basePath}/upload/deleteImg",
+				type : "POST",
+				dataType : "JSON",
+				async : "false",
+				data : {"srcUrl":srcUrl},
+				success : function(data) {
+					$("#loadingInfo").hide();
+					if(data==true){
+						$(obj).parent().remove();
+					}else{
+						alert("删除图片失败");
+					}
+				},
+				error:function(){
+					$("#loadingInfo").hide();
+					alert("交互失败！");
+				}
+				
+			});
+		}
+		$(function() {
+			//上传图片库
+			var uploadParent;
+			$(".upload").on("click", function() {
+				uploadParent=$(this).parent();
+				$("#popup-upPic").show();
+				$("#loadingInfo").show();
+				$.ajax({
+					url: "${basePath}/upload/getUserAllImg",
+					type: "POST",
+					dataType: "JSON",
+					async: "false",
+					data: {},
+					success: function(data) {
+						$("#loadingInfo").hide();
+						$('#popup-upPic .imgsBox ul').html("");
+						for(var i = 0; i < data.length; i++) {
+							var li = $("<li></li>");
+							li.appendTo($('#popup-upPic .imgsBox ul'));
+							var img = $("<img src=" + '/activityUploadPath' + data[i].IMG_URL + " />");
+							img.appendTo(li);
+							var deleteImg=$("<div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div>");
+							deleteImg.appendTo(li);
+						}
+					}
+				});
+			})
+			$("#closePic").on("click", function() {
+				$("#popup-upPic").hide();
+			});
+			$("#zwb_upload").bindUpload({
+				url: "${basePath}/upload/loadImg", //上传服务器地址
+				callbackPath: "#callbackPath2", //绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+				// ps:值返回上传成功的 默认id为#callbackPath  保存容器为位置不限制,id需要加上#号,class需要加上.
+				// 返回格式为:
+				// 原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径....
+				num: 1, //上传数量的限制 默认为空 无限制
+				type: "jpg|png|gif", //上传文件类型 默认为空 无限制
+				size: 0.488, //上传文件大小的限制,默认为5单位默认为mb
+			});
+			$("#zwb_upload .add").on("click", function() {
+				$("#callbackPath2").val("");
+			})
+			var address = ""; //传给后台的图片数据
+
+			$("#yulan").on("click", function() {
+				var imgPic = $("#callbackPath2").val();
+				var urlArr = imgPic.split(",");
+				address = urlArr[1];
+				var aa = "/activityUploadPath" + address;
+				//动态创建li img放在图片库的最前面
+				if(address != undefined) {
+					$("#popup-upPic .imgsBox ul").prepend(" <li><img src=" + aa + " /><div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div></li>");
+					$("#callbackPath2").val("");
+				}
+
+			});
+			$("#popup-upPic .imgsBox ul").on("click", "li", function() {
+				var imgSrc = $(this).find("img").attr("src");
+				uploadParent.find(".pic").attr("src", imgSrc);
+			})
+
+			$(".upload1").on("click", function() {
+				$("#popup-upPic1").show();
+				$("#loadingInfo").show();
+				$.ajax({
+					url: "${basePath}/upload/getUserAllImg",
+					type: "POST",
+					dataType: "JSON",
+					async: "false",
+					data: {},
+					success: function(data) {
+						$("#loadingInfo").hide();
+						$('#popup-upPic1 .imgsBox ul').html("");
+						for(var i = 0; i < data.length; i++) {
+							var li = $("<li></li>");
+							li.appendTo($('#popup-upPic1 .imgsBox ul'));
+							var img = $("<img src=" + '/activityUploadPath' + data[i].IMG_URL + " />");
+							img.appendTo(li);
+							var deleteImg=$("<div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div>");
+							deleteImg.appendTo(li);
+						}
+					}
+				});
+			})
+			$("#closePic1").on("click", function() {
+				$("#popup-upPic1").hide();
+				sharePicValidate();
+			});
+			$("#popup-upPic1 .imgsBox ul li").on("click", function() {
+				var imgSrc = $(this).find("img").attr("src");
+				$("#pic1").attr("src", imgSrc);
+			})
+			$("#zwb_upload1").bindUpload({
+				url: "${basePath}/upload/loadImg", //上传服务器地址
+				callbackPath: "#callbackPath1", //绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+				// ps:值返回上传成功的 默认id为#callbackPath  保存容器为位置不限制,id需要加上#号,class需要加上.
+				// 返回格式为:
+				// 原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径....
+				num: 1, //上传数量的限制 默认为空 无限制
+				type: "jpg|png|gif", //上传文件类型 默认为空 无限制
+				size: 0.488, //上传文件大小的限制,默认为5单位默认为mb
+			});
+			$("#zwb_upload1 .add").on("click", function() {
+				$("#callbackPath1").val("");
+			})
+			var address1 = ""; //传给后台的图片数据
+
+			$("#yulan1").on("click", function() {
+				var imgPic = $("#callbackPath1").val();
+				var urlArr = imgPic.split(",");
+				address1 = urlArr[1];
+				var aa = "/activityUploadPath" + address1;
+				//动态创建li img放在图片库的最前面
+				if(address1 != undefined) {
+					$("#popup-upPic1 .imgsBox ul").prepend(" <li><img src=" + aa + " /><div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div></li>");
+					$("#callbackPath1").val("");
+				}
+
+			});
+			$("#popup-upPic1 .imgsBox ul").on("click", "li", function() {
+				var imgSrc = $(this).find("img").attr("src");
+				$("#pic1").attr("src", imgSrc);
+			})
+
+
+			$(".submitBtn input[type='button']").on("click", function() {
+				window.onbeforeunload = null;
+				var shareTitle = $("#shareTitle").val();
+				var shareDetail = $("#shareDetail").val();
+				var activityId = $("#activityId").val();
+				var TbShareBargain = {};
+				TbShareBargain.ActivityName = $("#active-name").val();
+				TbShareBargain.StartTime = $("#startTime").val();
+				TbShareBargain.EndTime = $("#endTime").val();
+				TbShareBargain.Introduce = $("#textarea").val();
+				TbShareBargain.BelongActivityId = $("#belongActivityId").val();
+				TbShareBargain.src = $("#pic").attr("src").substring(19, $("#pic").attr("src").length);
+				//console.log(TbShareBargain);
+				activityNameValidate();
+				timeValidate();   
+				introduceValidate();
+				billValidate();
+				awardValidate();
+				mutualbills.length = 0; //每次点击提交审核将交互的运单信息内容清空
+				//从运单信息的中循环遍历获取交互需要的数据
+				for(var i in billLists) {
+					var mutualbillObj = {};
+					mutualbillObj.SELLEROUTINFO_RECORDID = billLists[i].recordId;
+					mutualbillObj.OUTNO = billLists[i].outNo;
+					mutualbillObj.SELLERID = billLists[i].sellerId;
+					mutualbills.push(mutualbillObj);
+				};
+				for(var i in awardlists) {
+					var mutualAwardObj = {};
+					mutualAwardObj.PRODUCTID = awardlists[i].getProductId;
+					mutualAwardObj.PRZIE_NUMBER = awardlists[i].awardAll;
+					mutualAwardObj.PRZIE_SURPLUS_NUMBER = awardlists[i].remainingawardNum;
+					mutualAwardObj.ORIGINAL_PRICE = awardlists[i].oldPrice;
+					mutualAwardObj.LOW_PRICE = awardlists[i].lowPrice;
+					mutualAwardObj.BARGAIN_SECTION = awardlists[i].bargainingInterval;
+					mutualAwardObj.BARGAIN_NUMBER = awardlists[i].bargainingTimes;
+					mutualAwardObj.PRIZE_NAME = awardlists[i].getProductName;
+					mutualawards.push(mutualAwardObj);
+				};
+
+				console.log(mutualawards);
+				/* 点击下一步验证信息 */
+				var TbShareBargainVoli = false;
+				for(var i in TbShareBargain) {
+					if(TbShareBargain[i] == "") {
+						if(i != "src") {
+							TbShareBargainVoli = true;
+						}
+					};
+
+				};
+				var mutualbillsVoli = false;
+				for(var i in mutualbills) {
+					if(mutualbills[i] == "") {
+						return true;
+					}
+				}
+				var mutualawardsVoli = false;
+				if(mutualawards.length==0){
+					mutualawardsVoli = true;
+				}
+				if(TbShareBargainVoli == false && mutualbillsVoli == false && mutualawardsVoli == false && $("#shareTitle").val() != "" && $("#shareDetail").val() != "" && $("#pic1").attr("src").indexOf("upload") > -1) {
+					$(this).attr("disabled", true);
+					var activityId = "";
+					$("#loadingInfo").show();
+					$.ajax({
+						url: "${basePath}/shareBargainConfig/shareBargainConfigSave",
+						type: "POST",
+						dataType: "JSON",
+						async: "false",
+						data: {
+							"shareBargain": objTransform(TbShareBargain),
+							"mutualbills": objTransform(mutualbills),
+							"mutualawards": objTransform(mutualawards),
+							"shareTitle": shareTitle,
+							"shareDetail": shareDetail,
+							"activityId": activityId,
+							"address": $("#pic1").attr("src").substring(19, $("#pic1").attr("src").length)
+						},
+						success: function(data) {
+							$("#loadingInfo").hide();
+							if(data.result == "true") {
+								$(this).removeAttr("disabled");
+								//alert("申请成功！");
+								$("#popup").show();
+								$("#popup .pop-title").html("申请成功");
+								$("#delivery-success-yes").on("click", function() {
+									$("#popup").hide();
+									location.href = "${basePath}/activityApply";
+								})
+
+							} else {
+								$(this).attr("disabled", "disabled");
+							}
+
+						}
+					});
+				} else {
+					//alert("请将信息填写完整！");
+					$("#popup").show();
+					$(".pop-title").html("请将信息填写完整！");
+					$("#delivery-success-yes").on("click", function() {
+						$("#popup").hide();
+					})
+				}
+			})
+
+		})
+		$(".chazhao").click(function() {
+			var name = $("#search1").val();
+			$(".list-item").each(function() {
+				var itemName = $(this).text();
+				if(itemName.indexOf(name) > -1) {
+					$(this).parent().show();
+				} else {
+					$(this).parent().hide();
+				}
+			})
+		});
+		
+		var clickSendOrSell;  //表示点击的是接收的货(sell)还是发出的货(send)
+		//查询之后，动态创建运单的表格
+		function CreateTableBill(rowCount, content) {
+			/*动态创建表格之前先将除表头外的信息清空*/
+			$('#table-outer3 .table-tbody table').html("");
+			for(var i = 0; i < rowCount; i++) {
+				var tr = $("<tr></tr>");
+				tr.appendTo($('#table-outer3 .table-tbody table'));
+				var td1 = $('<td>' + content[i].OUTNO + '</td>');
+				var td2 = $('<td>' + content[i].RECSELLERNAME + '</td>');
+				var td3 = $('<td>' + content[i].PRODUCTNAME + '</td>');
+				var td4 = $('<td>' + content[i].DEGREE + '</td>');
+				var td5 = $('<td>' + content[i].VOLUME + '</td>');
+				var td6 = $('<td>' + content[i].SPEC + '</td>');
+				var td7 = $('<td>' + content[i].BOXCODE + '</td>');
+				var td8 = $('<td>' + content[i].BRANDSNAME + '</td>');
+				var td9 = $('<td>' + content[i].OUTDATE + '</td>');
+				if(clickSendOrSell=="sell"){
+					var td10 = $('<td>接受的货</td>');
+				}else if(clickSendOrSell=="send"){
+					var td10 = $('<td>发出的货</td>');
+				}
+				var td11 = $("<td class='checkbox'><input type='checkbox' name=" + content[i].SELLERID + " value=" + content[i].RECORDID + " onClick='isSelectedCheckbox(this)' /></td>");
+				td1.appendTo(tr);
+				td2.appendTo(tr);
+				td3.appendTo(tr);
+				td4.appendTo(tr);
+				td5.appendTo(tr);
+				td6.appendTo(tr);
+				td7.appendTo(tr);
+				td8.appendTo(tr);
+				td9.appendTo(tr);
+				td10.appendTo(tr);
+				td11.appendTo(tr);
+			}
+		};
+		/*运单搜索*/
+		$(".chazhao2").on("click",function() {
+				//运单号
+				var BillProductName=$("#search2").val();
+				var startTime2=$("#startTime2").val();
+				var endTime2=$("#endTime2").val();
+				var searchUrlAddress;
+				if(clickSendOrSell=="send"){
+					searchUrlAddress="accumulateFabulousConfig/sendSellInfo";
+				}else if(clickSendOrSell=="sell"){
+					searchUrlAddress="accumulateFabulousConfig/sellInfo";
+				}
+				$("#loadingInfo").show();
+				$.ajax({
+					url: "${basePath}/"+searchUrlAddress,
+					type: "POST",
+					dataType: "JSON",
+					async: "false",
+					data: {
+						pageNumber: 1,
+						name:BillProductName,
+						startTime2:startTime2,
+						endTime2:endTime2
+					},
+					success: function(data) {
+						$("#loadingInfo").hide();
+						checkLoad(data);
+						isSelected();
+						isCheckAll();
+					}
+				});
+			});
+			
+			
+			
+			/* 弹窗分页 */
+			$(".manager-second-but").click(function() { //点击下一页
+				var total = Number($("#admin-total").text());
+				var page = Number($("#admin-page").text());
+				if(total > page) {
+					if(clickSendOrSell=="send"){
+						adminAjax(page + 1,"accumulateFabulousConfig/sendSellInfo");
+					}else if(clickSendOrSell=="sell"){
+						adminAjax(page + 1,"accumulateFabulousConfig/sellInfo");
+					}
+					
+				}
+			});
+
+			$(".manager-first-but").click(function() { //点击上一页
+				var page = Number($("#admin-page").text());
+				if(page > 1) {
+					if(clickSendOrSell=="send"){
+						adminAjax(page - 1,"accumulateFabulousConfig/sendSellInfo");
+					}else if(clickSendOrSell=="sell"){
+						adminAjax(page - 1,"accumulateFabulousConfig/sellInfo");
+					}
+				}
+			});
+			$("#input-page").on("keyup", function(e) {
+				if(e.keyCode == 13) {
+					$(".skip-btn").click();
+				}
+			});
+
+			$(".skip-btn").click(function() {
+				var page = Number($("#input-page").val());
+				if(page == 0) {
+					page = page + 1;
+				}
+				if(clickSendOrSell=="send"){
+					adminAjax(page ,"accumulateFabulousConfig/sendSellInfo");
+				}else if(clickSendOrSell=="sell"){
+					adminAjax(page,"accumulateFabulousConfig/sellInfo");
+				}
+			})
+		
+
+		/* 分页查询 */
+		function checkLoad(data) {
+			$("#table-outer3 .table-tbody table").html("");
+			$("#admin-curent").text(data.pageNumber + "/" + data.totalPageSize);
+			$("#admin-total").text(data.totalPageSize);
+			$("#admin-page").text(data.pageNumber);
+			var rowCount = data.soiList.length;
+			for(var i = 0; i < rowCount; i++) {
+				CreateTableBill(rowCount, data.soiList);
+				//针对表格3当表格的高度大于外框的高度，让其生成滚动条，负责取消滚动条
+				var tbodyOuterHeight = $("#table-outer3 .table-tbody").height();
+				var tbodyHeight = $("#table-outer3 .table-tbody table").height();
+				if(tbodyOuterHeight < tbodyHeight) {
+					$("#table-outer3").css({
+						"border-bottom": "1px solid #d0d0d0",
+					})
+				} else {
+					$("#table-outer3").css({
+						"border-bottom": "none",
+					})
+				}
+			} 
+		}
+
+		function adminAjax(page,urlAddress) {
+			var BillProductName=$("#search2").val();
+			var startTime2=$("#startTime2").val();
+			var endTime2=$("#endTime2").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				data: {
+					pageNumber: page,
+					name:BillProductName,
+					startTime2:startTime2,
+					endTime2:endTime2
+				},
+				type: "GET",
+				dataType: "JSON",
+				url: "${basePath}/"+urlAddress,
+				success: function(data) {
+					$("#loadingInfo").hide();
+					checkLoad(data);
+					isSelected();
+					isCheckAll();
+				},
+				error: function() {
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+		}
+		
+		
+		
+		/*发出去的货点击事件*/
+		$("#sendBill").on("click", function() {
+			billListsCopy = deepCopy(billLists);
+			clickSendOrSell="send";
+			var BillProductName=$("#search2").val();
+			var startTime2=$("#startTime2").val();
+			var endTime2=$("#endTime2").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				data: {
+					pageNumber: 1,
+					name:BillProductName,
+					startTime2:startTime2,
+					endTime2:endTime2
+				},
+				type: "GET",
+				dataType: "JSON",
+				url: "${basePath}/accumulateFabulousConfig/sendSellInfo",
+				success: function(data) {
+					$("#loadingInfo").hide();
+					checkLoad(data);
+					isSelected();
+					isCheckAll();
+				},
+				error: function() {
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+			clearText();
+		});
+		
+		
+		/*收到的货点击事件*/
+		$("#addBill").on("click", function() {
+			billListsCopy = deepCopy(billLists);
+			clickSendOrSell="sell";
+			var BillProductName=$("#search2").val();
+			var startTime2=$("#startTime2").val();
+			var endTime2=$("#endTime2").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				data: {
+					pageNumber: 1,
+					name:BillProductName,
+					startTime2:startTime2,
+					endTime2:endTime2
+				},
+				type: "GET",
+				dataType: "JSON",
+				url: "${basePath}/accumulateFabulousConfig/sellInfo",
+				success: function(data) {
+					$("#loadingInfo").hide();
+					checkLoad(data);
+					isSelected();
+					isCheckAll();
+				},
+				error: function() {
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+			clearText();
+		});
+		/*
+		 * 当奖品设置表格中有数据没有数据时，将数据弹窗弹出，当有数据时，则弹出提示信息，点击提示信息的确定将清空数据，点击取消隐藏提示信息
+		 */
+		function clearText(){
+			$("#billPop").show(); //弹窗遮罩显示出来
+			$("#search2").val("");
+			$("#startTime2").val("");
+			$("#endTime2").val("");
+			$("#input-page").val("");
+		}
+	</script>
+
+</html>

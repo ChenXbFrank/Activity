@@ -1,0 +1,37 @@
+.btn{
+	width:32vw;
+	margin:2vw auto 0;
+	text-aligin:center;
+	font-size:1vw;
+}
+.submitBtn {
+	width: 10vw;
+	height: 2.7vw;
+	color: white;
+	background: #f19032;
+	text-align: center;
+	line-height: 2.7vw;
+	border-radius: 4px;
+	display:inline-block; 
+}
+.submitBtn:hover{
+	cursor:pointer;
+}
+.name,.times{
+	margin-top:1vw;
+}
+.excels .line {
+    width: 1vw;
+    height: 2px;
+    margin-left: 1.2vw;
+    margin-right: 1.2vw;
+    vertical-align:middle;
+}
+.awardIntroduce{
+	display:inline-block;
+	width:50vw;
+}
+.shareDetail{
+	display:inline-block;
+	width:22vw;
+}

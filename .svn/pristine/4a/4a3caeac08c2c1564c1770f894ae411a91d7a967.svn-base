@@ -1,0 +1,14 @@
+.nameAndStatus{
+	margin-top:1vw;
+}
+.comfirmAdvise{
+	display:inline-block;
+	width:30vw;
+}
+.submitBtn{
+	font-size:1vw;
+	margin-left:44.5vw;
+}
+.productInfos{
+	margin-top:1vw;
+}

@@ -1,0 +1,268 @@
+<!--[arg basePath,staticPath;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-report.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-activity-report.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/syetem/cancel.css" />
+	</head>
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+			<p class="currentLocation">
+				您的当前位置：
+				<a href="${basePath}/goHomePage">首页></a>
+				<a href="${basePath}/activityForm">核销</a>
+			</p>
+			<ul class="title-pic">
+				<li>
+					<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+				</li>
+				<li>
+					<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+			<div class="tishi" style="display: none">
+					<div class="mask"></div>
+					<div class="prompt">
+						<p>请将信息填写完整！</p>
+						<button class="yes">确定</button>
+					</div>
+				</div>
+				<div class="tishi1" style="display: none">
+					<div class="mask"></div>
+					<div class="prompt1">
+						<p>密码少于6位，请重新填写！</p>
+						<button class="yes1">确定</button>
+					</div>
+				</div>
+		<div class="container">
+			<p>添加核销账号</p>
+			<div>
+				<label for='name' id="personName">手机号：</label> <input type="text" id='cell_phone_number' value="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/><label for='name' id="personName">密码：</label> <input type="text" id='password' value="" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')" minlength="6" maxlength="16" placeholder="请输入6-8位数字加英文字母字符"/>地址：</label> <input type="text" id='address_' value=""  maxlength="72" /><input type="button" value="添加" id="search00" />
+			</div>
+			<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>序号</td>
+							<td>手机号码</td>
+							<td>密码</td>
+							<td>地址</td>
+							<td>操作</td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+					</table>
+				</div>
+			</div>
+			<div class="page-break">
+			<div class="page-btn">
+				<span class="manager-first-but">上一页</span>
+				<span id="admin-page">1</span>
+				<span class="manager-second-but">下一页</span>
+			</div>
+			<div class="skip">
+				<span>跳转至</span>
+				<input type="text" id="input-page" />&nbsp;页&nbsp;
+				<span class="skip-btn">跳转</span>
+			</div>
+			<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+		</div>
+		<div style="display: none;">
+			<table>
+				<tr class="admin-obj">
+					<td class="index"></td>
+					<td class="wx_name"></td>
+					<td class="headPicture">
+						<div class="headPic">
+							<img src="" />
+						</div>
+					</td>
+					<td class="sinNum"></td>
+					<td class="spnName"></td>
+					<td class="more_href" onclick='deleteTr(this)' style="color:#e11e1e;cursor:pointer">移出</td>
+					
+				</tr>
+			</table>
+		</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+	$(".wx_name").each(function() {
+		$(this).text(decodeURI($(this).html()));
+	});
+	/* 添加点击事件 */
+	$("#search00").click(function(){
+		 var password = $("#password").val();
+		 var cell_phone_number = $("#cell_phone_number").val();
+		 var address_ = $("#address_").val();
+		 if(password=='' || cell_phone_number=="" || address_==""){
+			$(".tishi").show();
+		 }else  if(password.length < 6 && cell_phone_number!='' && address_!=''){
+			 $(".tishi1").show();
+		   } else{
+			 var tr = $("<tr class='ersan'></tr>");
+				tr.appendTo($('#table-outer .table-tbody table'));
+
+				var td1 = $('<td>' +  "等奖" +
+					'</td>');
+				var td2 = $('<td >' + cell_phone_number +
+					'</td>');
+				var td3 = $('<td >' + password +
+					'</td>');
+				var td4 = $('<td>'+address_ +
+					'</td>');
+				var td5 = $("<td class='deleteTd'  ><span style='color:blue;cursor:pointer'>修改</span> &nbsp <span style='color:#e11e1e;cursor:pointer' onclick='deleteTr(this)'>移除</span></td>");
+				td1.appendTo(tr);
+				td2.appendTo(tr);
+				td3.appendTo(tr);
+				td4.appendTo(tr);
+				td5.appendTo(tr);
+		 }
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+	
+		
+			
+		
+		 
+	})
+	/* 关闭事件 */
+	$(".yes").click(function(){
+		$(".tishi").hide();
+	})
+	$(".yes1").click(function(){
+		$(".tishi1").hide();
+	})
+	
+	function deleteTr(obj){
+		/*刪除对应的数组项*/
+			var index = $(obj).parent().parent('tr').index();
+			$(obj).parent().parent('tr').remove();
+	}
+	
+	
+	/*动态添加奖品tr*/
+/* 	var level = 1;
+	var levelCaps = "";
+	$(".add img").click(function() {
+		level++;
+		if(level == 2) {
+			levelCaps = "二";
+		} else if(level == 3) {
+			levelCaps = "三";
+		} else if(level == 4) {
+			levelCaps = "四";
+		} else if(level == 5) {
+			levelCaps = "五";
+		} else if(level == 6) {
+			levelCaps = "六";
+		} else if(level == 7) {
+			levelCaps = "七";
+			$(this).off("click");
+		}
+	 */
+/* 		 $(function(){
+			alert("1111");
+			$.ajax({
+				data: {
+					pageNumber: 1
+				},
+				type: "GET",
+				dataType: "JSON",
+				url: "${basePath}/scanCount/loadPortInfo",
+				success: function(data) {
+					alert("789456");
+					//checkLoad(data);
+				},
+				error: function() {
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+		}) */ 
+/* 		$(function() {
+		adminAjax(1);
+		$(".manager-second-but").click(function() { //点击下一页
+			var total = Number($("#admin-total").text());
+			var page = Number($("#admin-page").text());
+			if(total > page) {
+				adminAjax(page + 1);
+			}
+		});
+
+		$(".manager-first-but").click(function() { //点击上一页
+			var page = Number($("#admin-page").text());
+			if(page > 1) {
+				adminAjax(page - 1);
+			}
+		});
+		$("#input-page").on("keyup", function(e) {
+			if(e.keyCode == 13) {
+				$(".skip-btn").click();
+			}
+		});
+
+		$(".skip-btn").click(function() {
+			if($("#input-page").val()>$("#admin-total").html()){
+				$("#input-page").val($("#admin-total").html())
+			}
+			var page = Number($("#input-page").val());
+			if(page == 0) {
+				page = page + 1;
+			}
+			adminAjax(page);
+		});
+	}); */
+	
+/*  	function adminAjax(page) {
+		var name = $("#name").val();
+		$.ajax({
+			data: {
+				pageNumber: page,
+				nickName : name
+			},
+			type: "GET",
+			dataType: "JSON",
+			url: "${basePath}/scanCount/loadPortInfo",
+			success: function(data) {
+				checkLoad(data);
+			},
+			error: function() {
+				alert("网络连接异常，请稍后再试");
+			}
+		});
+	};  */
+	
+	/* 分页查询 */
+
+	
+
+	/* 导出 */
+	$("#export").click(function() {
+		var name = $("#name").val();
+		location.href = "${basePath}/scanCount/exportInfo?nickName=" + name;
+	}); 
+	</script>
+
+</html>

@@ -1,0 +1,210 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body,
+html {
+	width: 100%;
+	height: 100%;
+}
+.bg {
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	position: relative;
+}
+.title{
+	width: 5.72rem;
+	height:0.8rem;
+	line-height:0.8rem;
+	text-align:center;
+	vertical-align:center;
+	position: absolute;
+	top:7%;
+	left:50%;
+	margin-left:-2.86rem;
+	margin-top:-0.4rem;
+	
+}
+.title img{
+	max-width:100%;
+	max-height:100%;
+	vertical-align:middle;
+}
+.main{
+	width: 100%;
+	display: -webkit-flex;
+	display: flex;
+	justify-content: center ;
+}
+
+.small-bg {
+	width: 8.4rem;
+	height: 6.493333rem;
+	background-size: 8.4rem 6.493333rem;
+	background-repeat: no-repeat;
+	margin-top:6.5rem;
+}
+ .small-bg .pic-tu {
+	width: 4rem;
+	height: 3.5rem;
+	margin-top:0.5rem;  
+	text-align: center;
+	
+}
+.small-bg .pic-tu img{
+	max-width:100%;
+	max-height:100%;
+	vertical-align:middle;
+	line-height:3.5rem;
+}
+.text {
+	width: 4.3rem;
+	color: #F86538;
+	margin-left: 4rem;
+	margin-top: -3.566666rem;
+	font-family: "Î¢ÈíÑÅºÚ";
+	font-size: 0.32rem;
+	
+}
+.text p:nth-child(1){
+	width: 4.3rem;
+	padding-top: 0.5rem;
+	font-size: 0.39rem;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	
+}
+.text p:nth-child(2){
+	width: 4.3rem;
+	padding-top: 0.5rem;
+	font-size: 0.39rem;
+	
+}
+.text p:nth-child(3){
+	width: 4.3rem;
+	padding-top: 0.5rem;
+	font-size: 0.39rem;
+	
+}
+.kuang {
+	width: 3.386666rem;
+	height:0.786666rem;
+	margin-left:-1.5rem;
+	margin-top:1rem;
+	
+}
+.wuliu{
+	width: 2rem;
+    height: 1.8rem;
+    color: white;
+    font-size: 0.4rem;
+ 	margin-left:1.9rem;
+	margin-top:-1.4rem;
+}
+h4 {
+    width: 3rem;
+    height: 0.413333rem;
+ 	color: #F86538;
+    font-size: 0.46rem;
+  	margin-left:-1.2rem;
+	 margin-top:1.7rem; 
+}
+.bg-mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.8);
+	z-index: 9000000;
+	left: 0;
+	top: 0;
+}
+.main-small{
+	width: 8.533333rem;
+	height: 5.4rem;
+	background-size: 8.533333rem 5.4rem;
+	background-repeat: no-repeat;
+	margin-top:4rem;
+	margin-left:0.75rem;
+}
+/* .Pbox{
+	margin-top: 1rem;
+} */
+.Pbox p:nth-child(1){
+	width: 8.506666rem;
+	height: 0.533333rem;
+	font-size: 0.5rem;
+	font-family: "ºÚÌå";
+	padding-top: 1rem;
+	color:white;
+	text-align: center;
+}
+.Pbox p:nth-child(2){
+	width: 8.506666rem;
+	height: 0.533333rem;
+	font-size: 0.5rem;
+	font-family: "ºÚÌå";
+	margin-top: 0.3rem;
+	color:white;
+	text-align: center;
+}
+.Pbox p:nth-child(3){
+	width: 8.506666rem;
+	height: 0.533333rem;
+	font-size: 0.5rem;
+	font-family: "ºÚÌå";
+	margin-top: 0.3rem;
+	color:white;
+	text-align: center;
+}
+.h5-img{
+	width: 3.6rem;
+	height: 0.666666rem;
+	margin-top:0.5rem;
+	margin-left:2.48rem;
+}
+
+/* */
+/* 
+.text .kuang {
+	width: 6.013333rem;
+	height: 1.5rem;
+	position: absolute;
+	top: 9.8rem;
+	left: 28%;
+	margin-left: -0.75rem;
+	margin-top: -3.005rem;
+	
+}
+.addressAndPay{
+	width:1rem;
+	height:1rem;
+	background-color:black;
+	  position: absolute;
+	
+}
+.small-bg h4 {
+    width: 3rem;
+    height: 0.413333rem;
+    color: white;
+    font-size: 0.4rem;
+    position: absolute;
+    top: 91.5%;
+    left: 50%;
+    margin-left: -1.5rem;
+    margin-top: -0.206666rem;
+}
+.text .wuliu{
+	width: 2rem;
+    height: 1.8rem;
+    color: white;
+    font-size: 0.4rem;
+    position: absolute;
+    top: 76%;
+    left: 86%;
+    margin-left: -1.5rem;
+    margin-top: -0.206666rem;
+} */

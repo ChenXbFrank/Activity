@@ -1,0 +1,32 @@
+<!--[arg user,basePath,staticPath;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>二维码失效</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/index/QRCodeInvalid.css" />
+		<style>
+			.bg{
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	position: relative;
+}
+		
+		</style>
+	</head>
+
+	<body>
+		<div class="bg" style="background-image: url(${staticPath}/New_img/fireStorm/tishi.jpg);">
+		
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,220 @@
+package com.activity.common.service.JzRed;
+
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import com.activity.common.model.activity.ActivityCode;
+import com.activity.common.model.activity.ActivitySellerOutInfo;
+import com.activity.common.model.centerObjcet.wx.WxUserInfo;
+import com.activity.common.model.jzRed.JzRed;
+import com.activity.common.model.jzRed.JzRedWxUser;
+import com.activity.common.model.publicNumber.SellerPublicNumber;
+import com.activity.common.service.system.ActivitySellerOutInfoService;
+import com.activity.common.service.system.IndexService;
+import com.activity.common.service.system.SellerPublicNumberService;
+import com.activity.common.service.system.WxService;
+import com.activity.common.utils.date.DateUitils;
+import com.activity.common.utils.emoji.EmojiUtils;
+import com.activity.common.utils.wxInterface.WxConfigUitils;
+import com.jfinal.core.JFinal;
+import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
+
+/**
+ * 尖庄红包活动服务类
+ * @author tangh
+ *
+ */
+public class JzRedService {
+	private static JzRedService jzRedService = new JzRedService();
+	private JzRedService() {}
+	public static JzRedService getService() {return jzRedService;}
+	
+	WxService wxService = WxService.getService();
+	DateUitils uitils = DateUitils.getUitils();
+	ActivitySellerOutInfoService activitySellerOutInfoService = ActivitySellerOutInfoService.getService();
+	IndexService indexService = IndexService.getService();
+	
+	
+	/**
+	 * 1.根据运单中的活动ID，找到活动 2.判断活动是否属于时间内 3.返回需要跳转的地址或公众号
+	 * 
+	 * @param turntableActivityID
+	 * @param qrcode
+	 * @return
+	 */
+	public String JzRedActivity(JzRed jzRed, String qrcode) {
+		DateUitils.getUitils();
+		Date startDate = DateUitils.strToDateYMD(jzRed.getStartTime());
+		Date endDate = DateUitils.strToDateYMD(jzRed.getEndTime());
+		boolean startTime = DateUitils.isDateBefore(startDate);
+		boolean endTime = DateUitils.isDateBefore(endDate);
+		String redirect = "";
+		// 判断活动是否审批通过
+		if (jzRed.getState().toString().equals("1")) {
+			if (startTime) {
+				// 活动未开始
+			} else {
+				// 活动已经开始
+				if (endTime) {
+					/**
+					 * 1.进入这里代表当前人可参加当前活动 2.获取活动发起者经销商公众号配置
+					 */
+					// 活动发起人的userCode
+					String userCode = jzRed.getAcitivityLaunchUserCode();
+					// 活动发起人的公众号信息
+					List<SellerPublicNumber> sellerPublicNumberList = SellerPublicNumberService.getService()
+							.getPublicNumberByUsercode(userCode);
+					SellerPublicNumber spn = new SellerPublicNumber();
+					for (SellerPublicNumber spnErgodic : sellerPublicNumberList) {
+						spn = spnErgodic;
+					}
+					// 重定向
+					redirect = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + spn.getAppId()
+							+ "&redirect_uri=http%3a%2f%2f"+ PropKit.use("system.properties").get("http")
+							+ JFinal.me().getContextPath() + "%2fjzRed%2findex%3factivityId%3d"
+							+ jzRed.getId() + "%26qrcode%3d" + qrcode + "%26sellerPublicNumberId%3d" + spn.getId() 
+							+ "&response_type=code&scope=snsapi_userinfo&state=wx"
+							+ "&connect_redirect=1#wechat_redirect";
+				}
+			}
+		}
+		return redirect;
+	}
+	
+	/**
+	 * 验证二维码是否进入活动
+	 * @param sellerPublicNumber
+	 * @param qrcode
+	 * @param openid
+	 * @param accessToken
+	 * @param robRedActivityId
+	 * @return
+	 */
+	public synchronized Map<String, Object> robRed(SellerPublicNumber sellerPublicNumber,String qrcode,String openid,String accessToken,String robRedActivityId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// 查询当前二维码是否已参加活动
+		String queryActivityCode = PropKit.use("database.properties").get("getCodeByCodeAndActivity");
+		Record recActivityCode = Db.findFirst(queryActivityCode,qrcode,robRedActivityId);
+		ActivityCode ac = null;
+		if(recActivityCode!=null){
+			ac = new ActivityCode().mapping(recActivityCode, new ActivityCode());
+		}
+		boolean rest = false;
+		if (ac!=null) {// 说明有活动
+			if (ac.getOpenId().equals(openid)) {
+				// 自己进来查看，可以查看，但不用新建一个二维码失效记录
+				rest = true;
+			} else {
+				rest = false;
+			}
+		} else {
+			rest = true;
+		}
+		WxUserInfo wxuser = WxConfigUitils.getWxConfigUitils().getPublicUser(openid, sellerPublicNumber.getAppId(), sellerPublicNumber.getAppSecret());
+		if(rest){
+			//判断扫码进入是否是第一次进入，还是当前用户已经参加后又扫码进入
+			JzRedWxUser jzwxuser = getJzRedWxUserByOpenidAndQrCode(openid, qrcode);
+			//根据ID查询红包活动
+			String queryRobRed = PropKit.use("database.properties").get("getJzRedById");
+			Record rec = Db.findFirst(queryRobRed,robRedActivityId);
+			JzRed jzred = new JzRed().mapping(rec, new JzRed());
+			if(jzwxuser==null){
+				jzwxuser = new JzRedWxUser();
+				jzwxuser.setId(newId());
+				wxService.noSaveWxUser(wxuser,openid,sellerPublicNumber,newId());
+				if (wxuser.getSubscribe().equals("1")) {
+					// 判断名称是否包含表情符号
+					Boolean emoji = EmojiUtils.containsEmoji(wxuser.getNickname());
+					if (emoji) {
+						try {
+							wxuser.setNickname(java.net.URLEncoder.encode(wxuser.getNickname(), "UTF-8"));
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				//保存抢红包活动用户参加记录
+				new JzRedWxUser().set("RED_WXUSER_ID", jzwxuser.getId()).set("ACTIVITY_NAME", jzred.getActivityName()).set("STARTTIME", jzred.getStartTime())
+					.set("ENDTIME", jzred.getEndTime()).set("RED_ID", jzred.getId()).set("OPENID", openid).set("NICKNAME", wxuser.getNickname())
+					.set("HEADIMGURL", wxuser.getHeadimgurl()).set("BELONG_PUBLICNUMBER_ID", sellerPublicNumber.getId()).set("CREATE_TIME", uitils.newDate()).set("SCAN_CODE", qrcode)
+					.save();
+				if(rest){
+					// 查询出所属运单
+					Map<String, Object> map1 = activitySellerOutInfoService.getActivitySellerOutInfoByQrcode(qrcode);
+					//这是开启活动的运单
+					ActivitySellerOutInfo activitySellerInfo = (ActivitySellerOutInfo) map1.get("activitySellerInfo");
+					int i = indexService.insertAtcitityCode(newId(), qrcode, activitySellerInfo.getSellerOutInfoRecordId().toString(), sellerPublicNumber.getId(), 
+							sellerPublicNumber.getPublicNumberName(), jzwxuser.getId(), openid, wxuser.getNickname(), wxuser.getHeadimgurl(),PropKit.use("system.properties").get("RobRed"),"1", jzred.getId(),jzred.getActivityName());
+					if(i==1){
+						//将参与人数+1
+						int joinNumebrUpdate = updateJzRedNumber(jzred.getId(),Integer.parseInt(jzred.getJoinPropleNumber())+1+"");
+						if(joinNumebrUpdate==0){
+							rest = false;
+						}
+					}
+				}
+			}
+			map.put("scanWinningNumber", jzwxuser.getScanRedNumber());
+			map.put("qrcode", qrcode);
+			map.put("jzRed", jzred);
+			map.put("openid", openid);
+			map.put("mch_billno", "wly"+uitils.RandomNumber());
+			map.put("jzwxuserid", jzwxuser.getId());
+			map.put("sellerPublicNumber", sellerPublicNumber);
+			map.put("wxUserInfo", wxuser);
+			map.put("url","0");
+		}else{
+			// 二维码已经使用
+			map.put("url","1");
+		}
+		map.put("rest", rest);
+		return map;
+	}
+	
+	/**
+	 * 只修改用户参与数量
+	 * @param openid
+	 * @param scanCode
+	 * @return
+	 */
+	public int updateJzRedNumber(String activityId,String joinedNum){
+		String sql = PropKit.use("database.properties").get("updateJzRedNumber");
+		return Db.update(sql,joinedNum,activityId);
+	}
+	
+	/**
+	 * 根据openid和所扫码scanCode查询是否已经参加活动
+	 * @param openid
+	 * @param scanCode
+	 * @return
+	 */
+	public JzRedWxUser getJzRedWxUserByOpenidAndQrCode(String openid,String scanCode){
+		String sql = PropKit.use("database.properties").get("getJzRedWxUserByOpenidAndQrCode");
+		return JzRedWxUser.dao.findFirst(sql,openid,scanCode);
+	}
+	
+	/**
+	 * 生成ID 当前毫秒数
+	 * 
+	 * @param args
+	 */
+	public static String newId() {
+		return UUID.randomUUID().toString().replaceAll("-", "") + newDateByYMD();
+	}
+	
+	/**
+	 * 新建时间并格式转换 年月日
+	 */
+	public static String newDateByYMD() {
+		Date date = new Date();
+		SimpleDateFormat time = new SimpleDateFormat("yyyyMMddHHmmss");
+		return time.format(date);
+	}
+}

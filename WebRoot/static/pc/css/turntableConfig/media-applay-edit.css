@@ -1,0 +1,8 @@
+@media all and (max-width: 900px){
+ 	.bill-window{
+		height: 43vw;
+	}
+	.popUp-window {
+		height: 43vw;
+	}
+}

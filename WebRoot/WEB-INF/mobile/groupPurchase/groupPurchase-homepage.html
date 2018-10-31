@@ -1,0 +1,200 @@
+<!--[arg basePath,staticPath,qrcode,groupPurchase,groupPurchasePrize,openid,wxUserInfo,groupPurchaseWxUserId,sellerPublicNumber,groupPurchaseWxUser;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta charset="utf-8"> <meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="yes" name="apple-touch-fullscreen">
+		<title>拼团首页</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/groupPurchase/groupPurchase-homepage.css" />
+	</head>
+	<body style="background-image: url('/activityUploadPath${groupPurchase.getMobleBackgroundImg()}');">
+	<div class="title1">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+		<div class="bg-mask end0" id="end" style="display: none;background-image: url('/activityUploadPath${groupPurchase.getMobleBackgroundImg()}');">
+				<div class=erweima>
+					<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+				</div>
+				<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+		</div>
+		
+		<div class="bg-mask Rule" style="display: none;">
+			<div class="rule-bg" style="background-image: url(${staticPath}/New_img/groupPurchase/huodongguize_bg.png);">
+			<div class="text">
+					<p>1.购买${sellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关</p>
+					<p>注‘玖孚科技’微信公众账号,接收活动中奖第一资讯;</p>
+					<p>2.关注后，再次扫描二维码,进入活动页面</p>
+					<p>3.刮开二维码银色覆盖区域,输入正确的验证码,获取参与活</p>
+					<p>动机会</p>
+					<p>4.点击“去拼团”开启拼团活动</p>
+					<p>5.活动时间：${groupPurchase.getStartTime()}---${groupPurchase.getEndTime()}；</p>
+					<p>6.点击“邀请好友拼团”,即可邀请好友和您拼团参与拼团活动</p>
+					<p>7.若活动时间内,组队人数达到标准后拼团成功,即可根据提</p>
+					<p>示支付拼团价格并填写收货地址,完成拼团活动</p>
+					<p>8.若活动时间结束,组队人数未达到标准,即拼团活动失败</p>
+					<p>9.若想继续参加活动,可前往就近商店购买正品五粮液,扫码</p>
+					<p>即可获得参与机会</p>
+					<p>10.如有疑问，请咨询【${sellerPublicNumber.getPublicNumberName()}】微信公众服务号即</p>
+					<p>可,我们将第一时间回复解决您的问题</p>
+				</div>
+				<img src="${staticPath}/img/groupPurchase/img/guanbi-icon.png" alt="" class="close1"/>
+			</div>
+		</div>
+		<div class="count-down">
+			<p>——距拼团结束还有<span class="no1"></span> 天 <span class="no2"></span> 时 <span class="no3"></span> 分 <span class="no4"></span> 秒——</p>
+		</div>
+		<div class="product">
+			<img src="/activityUploadPath${groupPurchasePrize.getPrizeImg()}" />
+		</div>
+		<div class="collage-diagram">
+			<img src="${staticPath}/New_img/groupPurchase/ointuanjia.png" alt="" />
+			<h1>￥<span>${groupPurchase.getGroupPrice()}</span></h1>
+			<p class="name">${groupPurchasePrize.getPrizeName()}</p>
+			<p class="specifications">${groupPurchasePrize.getDeep()}度&nbsp;&nbsp;${groupPurchasePrize.getVolume()}mL</p>
+			<p class="tuan_sum"><span>${groupPurchase.getOpenPrizeNumber()}</span>人团</p>
+		</div>
+		
+		<div class="league-table" >
+			<img src="${staticPath}/New_img/groupPurchase/qupintuan.png" alt="" id="purchasePay"/>
+		</div>
+		<div class="rule">
+			<img src="${staticPath}/New_img/oneMoneyShop/huodongguize.png" alt=""  />
+		</div>
+		<input type="hidden" id="sellerId" value="${sellerPublicNumber.getId()}"/>
+		<input type="hidden" id="qrcode" value="${qrcode}"/>
+		<input type="hidden" id="openid" value="${openid}"/>
+		<input type="hidden" id="groupPurchaseId" value="${groupPurchase.getId()}"/>
+		<input type="hidden" id="groupPurchaseWxUserId" value="${groupPurchaseWxUserId}"/>
+		<input type="hidden" value="${wxUserInfo.getSubscribe()}" id="subscribe"/>
+	</body>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script>
+	/* 华为 */
+	if(screen.height<=640 && screen.width<=360){
+		/* $(".title img").css({"width":'9.5rem',"height":"7rem"})
+		$(".rule-name p").css({"bottom":"3%"}) */
+		$(".miaoshu").css({"top":"86%"})
+
+		$(".beijing").css({"margin-top":"6rem"})
+		$(".rule img").css({"top":"13.5rem"})
+		//alert("huaweishouji")
+	}
+	/* 苹果x */
+	if(screen.height==812 && screen.width==375){
+		//alert("jinlail")
+		$(".count-down").css({"margin-top":"6.4rem"})
+		$(".rule img").css({"top":"16rem"}) 
+		$(".erweima").css({"margin-top":"1rem"})
+		$(".rule-bg").css({"margin-top":"2rem"})
+		//alert("pingguo6666")
+	}
+	
+	
+	
+	
+	
+		/* 公众号 */
+		var subscribe=$("#subscribe").val();
+		//alert($("#subscribe").val())
+		if(subscribe==1){
+			$(".end0").css({"display":"none"})
+		}else if(subscribe==0){
+			$(".end0").css({"display":"block"})
+		}
+		$(".close1").click(function(){
+			$(".Rule").hide();
+		})
+		/*点击活动规则*/
+		$(".rule").click(function(){
+			$(".Rule").show();
+		});
+	 	$(function() {
+			var starttime = new Date("${groupPurchase.getEndTime()}");
+			var countdownTimer = setInterval(function() {
+				var nowtime = new Date();
+				var time = starttime - nowtime;
+				var day = parseInt(time / 1000 / 60 / 60 / 24);
+				var hour = parseInt(time / 1000 / 60 / 60 % 24);
+				var minute = parseInt(time / 1000 / 60 % 60);
+				var seconds = parseInt(time / 1000 % 60);
+				$(".no1").html(day)
+				$(".no2").html(hour)
+				$(".no3").html(minute)
+				$(".no4").html(seconds)
+				/*当活动时间结束触发事件*/
+				if(day <= 0 && hour <= 0 && minute <= 0 && seconds <= 0) {
+					clearInterval(countdownTimer);
+					$(".no1").html(0)
+					$(".no2").html(0)
+					$(".no3").html(0)
+					$(".no4").html(0)
+				} else {
+
+				}
+			}, 1000);
+		})
+	 	
+	 	//去拼团  支付
+	 	$("#purchasePay").click(function(){
+	 		  $("#purchasePay").unbind("click") 
+			var sellerNumberId=$("#sellerId").val();
+			var openid=$("#openid").val();
+			var qrcode=$("#qrcode").val();
+			var groupPurchaseId=$("#groupPurchaseId").val();
+			var groupPurchaseWxUserId=$("#groupPurchaseWxUserId").val();
+			$.ajax({
+				type: "GET",
+				url: "${basePath}/index/WxConfig",
+				async: true,
+				dataType: "json",
+				data: {"locationUrl":location.href},
+				success: function(config){
+					wx.config({
+			              debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			              appId : config.appId, // 必填，公众号的唯一标识
+			              timestamp : config.timestamp, // 必填，生成签名的时间戳
+			              nonceStr : config.nonceStr, // 必填，生成签名的随机串
+			              signature : config.signature,// 必填，签名，见附录1
+			              jsApiList : ['chooseWXPay']// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			         });
+					wx.ready(function(){
+						$.ajax({
+							type: "GET",
+							url: "${basePath}/groupPurchase/groupPay",
+							async: false,
+							dataType: "json",
+							data: {"groupPurchaseWxUserId":groupPurchaseWxUserId,"sellerNumberId":sellerNumberId,"openid":openid},
+							success: function(data){
+								//alert(data.result);
+								if(data.result == "true"){
+									wx.chooseWXPay({
+									    timestamp: data.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+									    nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+									    package: data.prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+									    signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+									    paySign: data.paySign, // 支付签名
+									    success: function (res) {
+									    //	alert("支付成功");
+										    // 支付成功后的回调函数
+											location.href="${basePath}/groupPurchase/inviteFriend?groupPurchaseWxUserId="+groupPurchaseWxUserId+"&groupPurchaseId="+groupPurchaseId+"&sellerNumberId="+sellerNumberId+"&qrcode="+qrcode+"&openId="+openid;
+									    }
+									});
+								}else{
+									// alert("已支付-请勿重新支付"); 
+									 location.reload();
+								}
+						}
+				});
+			});
+		}
+	});
+	 	});
+	</script>
+</html>

@@ -1,0 +1,188 @@
+<!--[arg basePath,staticPath;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="HandheldFriendly" content="true">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" href="${staticPath}/css/activeLogin/activeLogin.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/jquery.slider.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/scroll.css" /> 
+		<style>
+			@font-face {
+				font-family: 'fonts';
+				src: url("${staticPath}/font/iconfont.eot");
+				src: url("${staticPath}/font/iconfont.ttf");
+				src: url("${staticPath}/font/iconfont.woff");
+			}
+			.ui-slider-wrap .ui-slider-btn {
+				background: #fff url('${staticPath}/img/slider.png') no-repeat center;
+				background-size:1.02vw 1.02vw !important;
+			}
+			.ui-slider-wrap .ui-slider-btn.success {
+				background-image: url('${staticPath}/img/success.png');
+				background-size:1.02vw 1.02vw !important;
+				/* height:1.02vw !important;  */
+			}
+			/* 没拖动时div*/
+			.ui-slider-wrap{
+				width:21vw !important;	
+			 	height:3vw !important; 
+				margin-left:2.41vw !important; 
+				margin-top:2.19vw !important; 
+			/* 	background-color: red !important; */
+			}
+			/*滑动条字体 */
+			.ui-slider-wrap .ui-slider-no-select{
+				width:20vw !important;
+				height:3vw !important;
+				font-size:0.95vw !important;
+				line-height: 3vw !important;
+				/* left:20px !important; */
+			}
+			/* 滑动通过后图标*/
+			.ui-slider-wrap .ui-slider-btn.success {
+				width:2.49vw !important;
+				height:3vw !important;
+				left:18.51vw !important;
+			}
+			/*还没滑动时图标 */
+			.ui-slider-wrap .ui-slider-btn{
+				width:2.49vw !important;
+				height:3vw !important;
+			}
+			.ui-slider-bg{
+				 width:21vw !important;   
+				 height:3vw !important;
+				/* background-color: rgb(15, 108, 174) !important; */
+			}
+      </style>
+	</head>
+	<body> 
+		<div class="bg" style="background-image:url('${staticPath}/img/activeLogin/bg.png')">
+		<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+			<div class="text">
+				<p>防伪溯源大数据平台-活动中心</p>
+			</div>
+			<div class="LoginBox1" style="background-image:url('${staticPath}/img/activeLogin/box (1).png')">
+			<div class="PasswordLogin">
+					<p>账户登录</p>
+				</div>
+				<!-- <div class="VerifyLogin">
+					<p>验证码登录</p>
+				</div> -->
+			<div style="display: block;" class="PasswordBox">
+					<div class="user"><input class="userCode" type="text" style="padding-left:10px; width: 21vw;" placeholder=" 请输入登入账号" /></div>
+					<div class="password"><input id="password" type="password" style="padding-left:10px;width: 21vw;" placeholder=" 请输入登入密码" /></div>
+					<span id="showinfo"></span>
+					<div class="btn">
+						<button>确定</button>
+					</div>
+			</div>
+	<!-- 		<div style="display: none;" class="VerifyBox">
+					<div class="idBox"><input type="text" placeholder=" &nbsp 请输入手机号码" /></div>
+					<div id="slider1" class="slider"></div>
+					<div class="commandBox">
+						<input class="yan" type="text" placeholder=" &nbsp 请输入验证码" />
+						<form style="visibility:hidden"  method="post" name="myform"> 
+    						<input type="button" class="button2" value="获取验证码"  name="phone" onclick="showtime(60)"> 
+						</form> 
+					</div>
+					<div class="btn1">
+						<button>确定</button>
+					</div>
+				</div> -->
+		</div>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script src="${staticPath}/js/common/jquery.slider.min.js"></script>
+		<script src="${staticPath}/js/activeLogin/activeLogin.js"></script>
+	</body>
+	<script type="text/javascript">
+	/* 在frame外 */
+	if(window.top.location.href!=location.href){         
+	    window.top.location.href=location.href;
+	} 
+	$(function() {
+		if (window.history && window.history.pushState) {
+		　$(window).on('popstate', function (){
+		　　window.history.pushState('forward', null, '#');
+		　　window.history.forward(1);
+		　});
+		}
+		window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+		window.history.forward(1);
+	})
+	$(".btn").click(function (){
+		var userCode = $(".userCode").val();
+		var password = $("#password").val();
+		$("#loadingInfo").show();
+		$.ajax({
+			type: 'POST',
+			url: '${basePath}/loginValidate',
+			data:  {"userCode":userCode,"password":password},
+			success: function(date) {
+				$("#loadingInfo").hide();
+				//登陆成功否则失败
+				if(date.record){
+					$("#showinfo").html("");
+					location.href="${basePath}/goHomePage";
+				}else{
+					$("#showinfo").html(date.information);
+				}
+			}
+		});
+	})
+	$("#password").on("keydown",function(e){
+		if(e.keyCode == 13){
+			$(".btn").click();
+			e.preventDefault();
+			//ajaxmethod();
+		}
+	})
+	$("#slider1").slider({
+		callback: function(result) {
+			
+			if(result==true&&$(".ui-slider-wrap .ui-slider-btn").css({"margin-left":"/* 26.83vw */"})){
+				$("form").css({"visibility":"visible"});
+				$("form").click(function(){
+					/* $(".commandBox input:nth-child(2)").html("获取验证码") */
+				})
+			}
+		}
+	});
+
+	// 还原
+	$("#reset1").click(function() {
+		$("#slider1").slider("restore");
+	});
+
+	$("#reset2").click(function() {
+		$("#slider2").slider("restore");
+	});
+	function showtime(t){ 
+	    document.myform.phone.disabled=true; 
+	    for(i=1;i<=t;i++) { 
+	        window.setTimeout("update_p(" + i + ","+t+")", i * 1000); 
+	    } 
+	} 
+	 
+	function update_p(num,t) { 
+	    if(num == t) { 
+	        document.myform.phone.value =" 重新发送 "; 
+	        document.myform.phone.disabled=false; 
+	    } 
+	    else { 
+	        printnr = t-num; 
+	        document.myform.phone.value = " (" + printnr +")秒后重新发送"; 
+	    } 
+	} 
+	</script>
+</html>

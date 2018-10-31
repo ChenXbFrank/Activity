@@ -1,0 +1,38 @@
+<!--[arg basePath,staticPath,oneMoneyGroupWxUser;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>一元购活动</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/oneMoneyShop/oneMoneyShop-Invitation.css" />
+		<style type="text/css">
+			@font-face {
+				font-family: 'fonts';
+				src: url("${staticPath}/font2/iconfont.eot");
+				src: url("${staticPath}/font2/iconfont.ttf");
+				src: url("${staticPath}/font2/iconfont.woff");
+			}
+		</style>
+	</head>
+	<!--分享弹窗-->
+	<body>
+		<!--抢购失败-->
+		<div class="bg-mask fail">
+			<div class="coloured1" >
+				<img src="${staticPath}/img/oneMoneyShop/img/1yuanimg.png" alt="" />
+				<p>抱歉！您1元抢购失败</p>
+				<p>本次1元购获得者：<span>${oneMoneyGroupWxUser.getNickName()}</span></p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script>
+		$(".coloured1 span").text(decodeURI($(".coloured1 span").html()));
+	</script>
+
+</html>

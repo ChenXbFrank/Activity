@@ -1,0 +1,570 @@
+	a,
+	button,
+	input {
+		outline: none;
+	}
+	
+	.jedatebox {
+		z-index: 10000 !important;
+	}
+	
+	* {
+		padding: 0;
+		margin: 0;
+		font-size: 0.8vw;
+	}
+	
+	img {
+		border: none;
+	}
+	
+	ul li {
+		list-style: none;
+	}
+	
+	html,
+	body {
+		width: 100%;
+	}
+	
+	body {
+		overflow: auto;
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+	
+	input[type='text'] {
+		border-radius: 4px;
+		border: none;
+		text-indent: 10px;
+	}
+	
+	.container {
+		width: 83vw;
+		margin: 0px auto;
+		font-size: 1vw;
+		overflow: auto;
+	}
+	
+	input[type="button"] {
+		width: 4vw;
+		height: 2vw;
+		border-radius: 4px;
+		background: #fcb212;
+		border: none;
+		color: white;
+	}
+	
+	.search {
+		margin-top: 1vw;
+		margin-left: 2vw;
+	}
+	
+	#name,
+	#bargaining-situations,
+	#pay-situations,
+	#delivery-situations,
+	#bargaining-situations1 {
+		width: 10vw;
+		height: 2vw;
+		margin-top: 1vw;
+		border-color: #d0d0d0;
+		background-repeat: no-repeat;
+		background-position: right center;
+		background-size: contain;
+	}
+	
+	label {
+		margin-left: 2vw;
+	}
+	
+	.select {
+		width: 10vw;
+		border: 1px solid #d0d0d0;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		right: 0;
+		border-radius: 4px;
+		background: white;
+	}
+	
+	.select li {
+		list-style: none;
+		width: 100%;
+		height: 2.2vw;
+		text-align: left;
+		line-height: 2.2vw;
+	}
+	
+	.bargain-status {
+		position: relative;
+	}
+	
+	.smallImg {
+		position: absolute;
+		right: 0.625vw;
+		top: 46%;
+	}
+	
+	.smallImg:hover {
+		cursor: pointer;
+	}
+	
+	.outer {
+		position: relative;
+		display: inline-block;
+	}
+	
+	.table-tbody table {
+		border-left: 1px solid #D4D4D4;
+	}
+	
+	table tr {
+		height: 3vw;
+	}
+	
+	.table-thead tr {
+		height: 50px;
+	}
+	
+	.table-thead tr td {
+		background: #6291ca;
+		text-align: center;
+		color: #000000;
+	}
+	
+	.table-tbody {
+		overflow-y: auto;
+		overflow-x: hidden;
+		height: 34vw;
+		position: relative;
+	}
+	.table-tbody table td {
+		border-right: 1px solid #D4D4D4;
+		border-bottom: 1px solid #D4D4D4;
+		text-align: center;
+	}
+	
+	.headPic {
+		height: 2vw;
+		line-height: 2vw;
+		vertical-align: middle;
+	}
+	
+	#table-outer table tr>td:nth-child(3) img {
+		max-width: 100%;
+		max-height: 100%;
+		vertical-align: middle;
+	}
+	
+	.box-outer {
+		position: absolute;
+		top: 2.4vw;
+	}
+	
+	.box {
+		position: relative;
+		z-index: 1000;
+		width: 15vw;
+		background-color: #f9f9f9;
+		box-shadow: 0px 0px 16px rgba(93, 93, 93, 0.2);
+		font-size: 0.8vw;
+		color: #545353;
+	}
+	
+	.box:before {
+		position: absolute;
+		content: "";
+		width: 0;
+		height: 0;
+		left: 5.2vw;
+		bottom: 14vw;
+		border-bottom: 10px solid #D4D4D4;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+	}
+	
+	.box:after {
+		position: absolute;
+		content: "";
+		width: 0;
+		height: 0;
+		left: 5.26vw;
+		bottom: 14vw;
+		border-bottom: 9px solid #f9f9f9;
+		border-left: 9px solid transparent;
+		border-right: 9px solid transparent;
+	}
+	
+	.box .box-inner {
+		width: 100%;
+		height: 14vw;
+		overflow-y: auto;
+	}
+	
+	.box ul li {
+		width: 100%;
+		height: 2.6vw;
+		line-height: 2.6vw;
+		position: relative;
+	}
+	
+	.box .circle {
+		position: absolute;
+		display: inline-block;
+		width: 0.73vw;
+		height: 0.73vw;
+		background: #E5E5E5;
+		border-radius: 50%;
+		left: 1vw;
+		top: 50%;
+		margin-top: -0.36vw;
+	}
+	
+	.box .index-line {
+		position: absolute;
+		display: inline-block;
+		height: 2.6vw;
+		width: 2px;
+		left: 1.35vw;
+		background: #E5E5E5;
+	}
+	
+	.box ul li:first-child .index-line {
+		height: 1.3vw;
+		top: 1.3vw;
+	}
+	
+	.box ul li:last-child .index-line {
+		height: 1.3vw;
+		top: 0px;
+	}
+	
+	.box .userName {
+		display: inline-block;
+		width: 3vw;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		vertical-align: middle;
+		margin-left: 1vw;
+	}
+	
+	.box .cutMoney {
+		margin-left: 2vw;
+		vertical-align: middle;
+	}
+	
+	.render {
+		color: #fcb212;
+	}
+	
+	.render:hover {
+		cursor: default
+	}
+	/*ï¿½ï¿½É«ï¿½ï¿½ï¿½Ö²ï¿½*/
+	
+	.fade {
+		width: 100%;
+		height: 100%;
+		background: rgba(2, 2, 2, 0.6);
+		position: fixed;
+		left: 0;
+		top: 0;
+		z-index: 9000;
+	}
+	/*ÌîÐ´ÊÕ»õÐÅÏ¢µ¯´°*/
+	
+	.succ-pop {
+		width: 50vw;
+		height: 30vw;
+		background: rgba(255, 255, 255, 1);
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		margin-left: -25vw;
+		margin-top: -15vw;
+		z-index: 9999;
+		font-size: 1vw;
+	}
+	
+	.font-infos {
+		width: 40vw;
+		margin: 2vw auto 0px;
+	}
+	
+	.pop-title {
+		font-size: 1.6vw;
+	}
+	
+	.name-tel {
+		margin-top: 3vw;
+		font-size: 1.2vw;
+	}
+	
+	.name-tel .receiver {
+		float: left;
+	}
+	
+	.name-tel .tel {
+		float: right;
+	}
+	
+	.clearfloat:after {
+		width: 0;
+		height: 0;
+		visibility: hidden;
+		clear: both;
+		display: block;
+		content: "";
+	}
+	
+	.succ-pop .address {
+		margin-top: 3vw;
+		font-size: 1.2vw;
+	}
+	
+	.btn {
+		position: absolute;
+		text-align: center;
+		bottom: 1vw;
+		left: 56%;
+		margin-left: -17vw;
+	}
+	
+	.btn input[type="button"] {
+		width: 14vw;
+		height: 3vw;
+	}
+	
+	.btn .cancel {
+		background: #adabac;
+		border: none;
+		color: white;
+		font-size: 1.6vw;
+	}
+	
+	.btn .confirm {
+		margin-left: 1vw;
+		background: #fcb213;
+		border: none;
+		color: white;
+		font-size: 1.6vw;
+	}
+	/*ÌîÐ´ÔËµ¥ÐÅÏ¢µ¯´°*/
+	
+	.billInfos {
+		width: 50vw;
+		height: 30vw;
+		background: rgba(255, 255, 255, 1);
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		margin-left: -25vw;
+		margin-top: -15vw;
+		z-index: 9999;
+		font-size: 1vw;
+	}
+	
+	.company {
+		margin-top: 50px;
+	}
+	
+	.company input[type="text"] {
+		width: 14vw;
+		height: 3vw;
+		border: 1px solid #d0d0d0;
+	}
+	
+	.billNumber {
+		margin-top: 3vw;
+	}
+	
+	.billNumber input[type="text"] {
+		width: 14vw;
+		height: 2vw;
+		border: 1px solid #d0d0d0;
+	}
+	
+	.delivery-time {
+		margin-top: 3vw;
+	}
+	
+	.delivery-time input[type="text"] {
+		border: 1px solid #d0d0d0;
+	}
+	
+	.billInfos #bargaining-situations1 {
+		width: 14vw;
+	}
+	
+	.billInfos .outer ul {
+		width: 14vw;
+	}
+	
+	.datainp {
+		width: 14vw;
+		height: 2vw;
+		border: 1px #ccc solid;
+	}
+	/*ÌîÐ´³É¹¦ÐÅÏ¢µ¯´°*/
+	
+	.delivery-success {
+		width: 30vw;
+		height: 14vw;
+		background: rgba(255, 255, 255, 1);
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		margin-left: -15vw;
+		margin-top: -7vw;
+		z-index: 9999;
+		font-size: 1.2vw;
+	}
+	
+	.success-outer {
+		width: 20vw;
+		height: 16vw;
+		margin: 2vw auto 0px;
+	}
+	
+	.delivery-success input[type="button"] {
+		width: 10vw;
+		height: 3vw;
+		margin-top: 3vw;
+		background: #fcb213;
+		border: none;
+		color: white;
+		font-size: 1.4vw;
+	}
+	
+	#bargaining-situations1 {
+		border: 1px solid #d0d0d0;
+	}
+	
+	#table-outer .table-thead table {
+		width: 83vw;
+	}
+	
+	#table-outer .table-tbody table {
+		width: 83vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:first-child {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(2) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(3) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(4) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(5) {
+		width: 6vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(6) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(7) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(8) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(9) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(10) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(11) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-tbody table tr>td:nth-child(12) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:first-child {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(2) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(3) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(4) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(5) {
+		width: 6vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(6) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(7) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(8) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(9) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(10) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(11) {
+		width: 8vw;
+	}
+	
+	#table-outer .table-thead table tr>td:nth-child(12) {
+		width: 8vw;
+	}
+	
+	#table-outer {
+		width: 83vw;
+		margin-top: 1vw;
+		font-size: 0.8vw;
+	}
+	
+	#table-outer .table-tbody {
+		width: 83vw;
+		height: 32vw;
+	}
+	
+	.export {
+		margin-left: 79vw;
+		margin-top: 1vw;
+	}
+	
+	.headPic img {
+		height: 2vw;
+		line-height: 2vw;
+		vertical-align: middle;
+	}

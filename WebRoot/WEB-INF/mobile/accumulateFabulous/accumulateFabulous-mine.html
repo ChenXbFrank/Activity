@@ -1,0 +1,192 @@
+<!--[arg basePath,staticPath,systemHttp,url,accumulateCommentWxUser,accumulate,sellerPublicNumber,isEnd;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<title>我的集赞活动</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/accumulateFabulous/accumulateFabulous-mine.css" />
+		
+	</head>
+	<div class="bg-mask tanchuang" style="display: none;">
+		<img src="${staticPath}/New_img/accmulate/fenxiang-tanchaun.png" alt="" />
+		
+		<img src="${staticPath}/New_img/accmulate/iknow.png" alt="" />
+	</div>
+	
+	
+	<div class="rule-page bg-mask" style="display: none " >
+		<h3>活动规则</h3>
+			<div class="text">
+					<p>1.购买${sellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关注‘${sellerPublicNumber.getPublicNumberName()}’微信公众账号,接收活动中奖第一资讯;</p>
+					<p>2.关注后，再次扫描二维码,进入活动页面;</p>
+					<p>3.活动时间:${accumulate.getStartTime()}--${accumulate.getEndTime()};</p>
+					<p>4.刮开二维码银色覆盖区域,输入正确的验证码,获取参与活动机会;</p>
+					<p>5.点击“发表评论”后,编辑和上传图片及文字,成功发起集赞活动;</p>
+					<p>6.点击“分享集赞”即可将您的集赞页面分享给好友,并邀请好友帮忙点赞;</p>
+					<p>7.若活动时间结束,获得实物奖品,公众号将推送‘填写收货地址’链接.请务必及时填写真实有效的收货信息;</p>
+					<p>8.若活动时间结束,公众号没有推送任何获奖消息,即为集赞未中奖;</p>
+					<p>9.若想继续参加活动,可前往就近商店购买正品五粮液,扫码即可获得参与机会;</p>
+					<p>10.如有疑问,请咨询【${sellerPublicNumber.getPublicNumberName()}】微信公众服务号即可,我们将第一时间回复解决您的问题;</p>
+			</div>
+			<img src="${staticPath}/img/accumulateFabulous/img/guanbi-icon.png" alt="" class="close rule-close"/>
+		</div>
+	<body >
+		<div class="bg" style="background-image: url('/activityUploadPath${accumulate.getMobleBackgroundImg()}');">
+			<div class="title1">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+			<div class=main>
+				<div class="pic">
+					<img src="/activityUploadPath${accumulate.getProductImg()}" alt="" />
+				</div>
+				<div class="starProducts">
+					<div class="title">
+						<h5>明星产品</h5>
+					</div>
+					<div class="descriptiveText">
+						<p>${accumulate.getProductIntroduction()}
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="fenxiang-text">
+				<p>分享朋友集赞，超值好礼等您来拿!</p>
+			</div>
+			<div class="footer-main">
+				<img src="${staticPath}/New_img/accmulate/huodongguize.png" alt="" class="rule" / >
+				<img src="${staticPath}/New_img/accmulate/fenfen.png" alt="" class="share" / >
+				<img src="${staticPath}/New_img/accmulate/huifen.png" alt="" class="share0"  style="display:none"/ >
+				<img src="${staticPath}/New_img/accmulate/paipai.png" alt="" class="ranking" / >
+				
+			</div>
+		</div>
+
+		<!-- 标题 -->
+		<input type="hidden" value="${accumulate.getActivityName()}" id="shareTitle" />
+		<!-- 描述 -->
+		<input type="hidden" value="${accumulate.getProductIntroduction()}" id="shareDetail" />
+		<!-- 图片 -->
+		<input type="hidden" value="${accumulate.getProductImg()}" id="shareImg" />
+		<input type="hidden" value="${accumulateCommentWxUser.getId()}" id="accumulateCommentWxUserId"/>
+		<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+		<script>
+		
+		/* 华为 */
+		if(screen.height<=640 && screen.width<=360){
+			
+			$(".main").css({"margin-top":"5rem"})
+			$(".fenxiang-text").css({"margin-top":"1.5rem"})
+			$(".text").css({"margin-top":"0.3rem"})
+			$(".footer-main").css({"margin-top":"-0.5rem"})
+		}
+		/* 苹果x */
+		if(screen.height==812 && screen.width==375){
+			$(".main").css({"margin-top":"7rem"})
+			$(".fenxiang-text").css({"margin-top":"2rem"})
+		}
+		
+		if('${isEnd}'=='false'){
+			$(".share0").show();
+			$(".share").hide();
+			$(".fenxiang-text").html('活动已结束,感谢你的参与')
+		}   
+		
+		$(".wx-name").text(decodeURI($(".wx-name").html()));
+		$(".descriptiveText p").text(decodeURI($(".descriptiveText p").html()));
+			/*  */
+			if('${accumulateCommentWxUser.getHelpNumber()}'==0){
+				$(".setLike-pic").hide();
+			}
+			/**/
+			$(".rule").click(function(){
+				$(".rule-page").show();
+			});
+			/* 点击分享集赞 */
+			$(function() {
+				var shareTitle = $("#shareTitle").val();
+				var shareDetail = $("#shareDetail").val();
+				var shareImg = $("#shareImg").val();
+				$.ajax({
+					type : "GET",
+					url : "${basePath}/accumulateFabulous/WxShareConfig",
+					async : true,
+					dataType : "json",
+					data : {
+						"locationUrl" : location.href
+					},
+					success : function(config) {
+						wx.config({
+							debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+							appId : config.appId, // 必填，公众号的唯一标识
+							timestamp : config.timestamp, // 必填，生成签名的时间戳
+							nonceStr : config.nonceStr, // 必填，生成签名的随机串
+							signature : config.signature,// 必填，签名，见附录1
+							jsApiList : [ 'onMenuShareAppMessage','onMenuShareTimeline' ]
+						// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+						});
+						wx.ready(function() {
+							//分享朋友
+							wx.onMenuShareAppMessage({
+										title : shareTitle, // 分享标题
+										desc : shareDetail, // 分享描述
+										link : '${url}', // 分享链接
+										imgUrl : 'http://${systemHttp}/activityUploadPath'+shareImg, // 分享图标
+										trigger : function(res) {
+
+										},
+										success : function() {
+											// 用户确认分享后执行的回调函数
+										},
+										cancel : function() {
+											// 用户取消分享后执行的回调函数
+											//alert("分享失败");
+											$(".shibai").css({"display":"block"})
+										}
+									});
+							//分享朋友圈
+							wx.onMenuShareTimeline({
+										title : shareTitle, // 分享标题
+										link : '${url}', // 分享链接
+										imgUrl : 'http://${systemHttp}/activityUploadPath'+shareImg, // 分享图标
+										success : function() {
+											//alert("分享成功");
+											$(".chnegg").css({"display":"block"})
+										},
+										cancel : function() {
+											// 用户取消分享后执行的回调函数
+											//alert("分享失败");
+											$(".shibai").css({"display":"block"})
+										}
+									});
+						});
+					}
+				});
+				})
+			/*点击分享集赞*/
+			$(".share").click(function(){
+				$(".tanchuang").show();
+		
+			})
+			/*点击关闭活动规则*/
+			$(".rule-close").click(function(){
+				$(".rule-page").hide();
+			});
+			/*点击关闭分享集赞*/
+			$(".tanchuang img:nth-child(2)").click(function(){
+				$(".tanchuang").hide();
+			});
+			/* 点击集赞排名 */
+			$(".ranking").click(function(){
+				var accumulateCommentWxUserId = $("#accumulateCommentWxUserId").val();
+				location.href="${basePath}/accumulateFabulous/accumulateRank?accumulateCommentWxUserId="+accumulateCommentWxUserId;
+			});
+
+		</script>
+	</body>
+</html>

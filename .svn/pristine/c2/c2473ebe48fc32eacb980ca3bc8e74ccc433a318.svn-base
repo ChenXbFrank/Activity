@@ -1,0 +1,342 @@
+<!--[arg user,basePath,staticPath,activityId,activityName,purchaseWxUserWinningList,purchaseWxUserId;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/activityBargain/bargain-report.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/groupPurchaseConfig/groupPurchaseConfig-activity-report-info.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jedate.min.js"></script>
+		<script type="text/javascript">
+			var basePath = "${basePath}";			//获取basePath
+		</script>
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+		<!--页面弹窗-->
+		<div id="popup" style="display: none;">
+			<div class="fade"></div>
+			<!--收货人信息-->
+			<div class="succ-pop" style="display: none;">
+				<div class="font-infos">
+					<div class="pop-title">
+						收货人信息
+					</div>
+					<div class="name-tel clearfloat">
+						<div class="receiver">收货人：<span></span></div>
+						<div class="tel">联系电话：<span></span></div>
+					</div>
+					<div class="address">收货地址：<span></span></div>
+					<div class="btn">
+						<input type="button" class="cancel" value="取消" />
+						<input type="button" value="下一步" class="confirm" id="receiver-yes" />
+					</div>
+				</div>
+			</div>
+			<!--运单信息-->
+			<div class="billInfos" style="display: none;">
+				<div class="font-infos">
+					<div class="pop-title">
+						填写运单信息
+					</div>
+					<label for="">物流公司：</label>
+					<div class="outer">
+						<input id="bargaining-situations1" type="text" style="background-image: url('${staticPath}/img/more01.png')" />
+						<ul class="select" id="express" style="display: none;">
+						</ul>
+					</div>
+					<div class="billNumber">运单编号：<input type="text" /></div>
+					<div class="delivery-time">发货时间：<input type="text" class="datainp" placeholder="请选择" readonly id="date" /></div>
+					<div class="btn">
+						<input type="button" class="cancel" value="取消" />
+						<input type="button" value="完成" class="confirm" id="bill-yes" />
+					</div>
+				</div>
+			</div>
+			<!--发货成功-->
+			<div class="delivery-success" style="display: none;">
+				<div class="success-outer">
+					<div class="pop-title">发货成功！</div>
+					<input type="button" value="确定" id="delivery-success-yes" />
+				</div>
+
+			</div>
+		</div>
+		<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+			<p class="currentLocation">
+				您的当前位置：
+				<a href="${basePath}/goHomePage">首页></a>
+				<a href="${basePath}/activityForm">活动报表></a>
+				<a href="${basePath}/groupPurchaseConfig/purchaseReport">拼团报表></a>
+				<a href="${basePath}/groupPurchaseConfig/purchaseMoreReport?activityId=${activityId}&activityName=${activityName}">拼团活动报表></a>
+				<a href="">查看明细</a>
+			</p>
+			<ul class="title-pic">
+				<li>
+					<a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a>
+				</li>
+				<li>
+					<a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="container">
+			<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>奖品名称</td>
+							<td>奖品类型</td>
+							<td>中奖人昵称</td>
+							<td>中奖人头像</td>
+							<td>收件人</td>
+							<td>收件人电话</td>
+							<td>收件人地址</td>
+							<td>发货人</td>
+							<td>物流公司</td>
+							<td>运单号</td>
+							<td>状态</td>
+							<td>操作</td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+					
+						<!--[ loop(purchaseWin:purchaseWxUserWinningList){  ]-->
+						<tr>
+							<td>${purchaseWin.getPrizeProject()}</td>
+							<td>实物</td>
+							<td class="nickName">${purchaseWin.getNickName()}</td>
+							<td><span class="headPic"><img src="${purchaseWin.getHeadImgUrl()}" /></span></td>
+							<td>${purchaseWin.getAddresseeName()}</td>
+							<td>${purchaseWin.getAddresseePhone()}</td>
+							<td>${purchaseWin.getAddresseeAddress()}</td>
+							<td>${purchaseWin.getLssueUserName()}</td>
+							<td>${purchaseWin.getDeliverCompany()}</td>
+							<td>${purchaseWin.getDeliverNumber()}</td>
+							<!--[if(purchaseWin.getState() == '1'){]-->
+							<td>已经领取</td>
+							<!--[}else if(purchaseWin.getState() == '2'){]-->
+							<td>未填写地址</td>
+							<!--[}else if(purchaseWin.getState() == '3'){]-->
+							<td>地址已填写</td>
+							<!--[}else if(purchaseWin.getState() == '4'){]-->
+							<td>已发货</td>
+							<!--[}else if(purchaseWin.getState() == '5'){]-->
+							<td>未发货</td>
+							<!--[}else if(purchaseWin.getState() == '6'){]-->
+							<td>已支付</td>
+							<!--[}else{]-->
+							<td></td>
+							<!--[}]-->
+							<!--[if(purchaseWin.getState() == '3'){]-->
+							<td><span class="render">立即发货</span>
+								<input type="hidden" value="${purchaseWin.getAddresseeName()}" class="receiverName" />
+								<input type="hidden" value="${purchaseWin.getAddresseePhone()}" class="receiverPhone" />
+								<input type="hidden" value="${purchaseWin.getAddresseeAddress()}" class="receiverAddress" />
+								<input type="hidden" value="${purchaseWin.getId()}" class="purchaseWxUserWinningId" /></td>
+							<!--[}else{]-->
+							<td>——</td>
+							<!--[}]-->
+						</tr>
+						<!--[ } ]-->
+					</table>
+				</div>
+			</div>
+			
+			<div class="page-break">
+				<div class="page-btn">
+					<span class="manager-first-but">上一页</span>
+					<span id="admin-page">1</span>
+					<span class="manager-second-but">下一页</span>
+				</div>
+				<div class="skip">
+					<span>跳转至</span>
+					<input type="text" id="input-page" />&nbsp;页&nbsp;
+					<span class="skip-btn">跳转</span>
+				</div>
+				<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+			</div>
+			<div style="display: none;">
+				<table>			
+					<tr class="admin-obj">
+						<td class="prizeName"></td>
+						<td class="PrizeType">实物</td>
+						<td class="nickName"></td>
+						<td><span class="headPic"><img src="" /></span></td>
+						<td class="addressName"></td>
+						<td class="phone"></td>
+						<td class="address"></td>
+						<td class="deliverName"></td>
+						<td class="deliverCompany"></td>
+						<td class="deliverNumber"></td>
+						<td class="status"></td>
+						<td class="controll"><span class="render">立即发货</span>
+						<input type="hidden" class="purchaseWxUserWinningId" />
+						<input type="hidden" class="receiverName" />
+						<input type="hidden" class="receiverPhone" />
+						<input type="hidden" class="receiverAddress" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="${staticPath}/js/groupPurchaseConfig/groupPurchaseConfig-activity-report-info.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$("#bill-yes").on("click", function() {
+				var company = $("#bargaining-situations1").val();
+				var billNumber = $(".billNumber input[type='text']").val();
+				var sendTime = $(".datainp").val();
+				$("#loadingInfo").show();
+				$.ajax({
+					url: "${basePath}/groupPurchaseConfig/saveIssueGoods",
+					type: "POST",
+					dataType: "JSON",
+					async: "false",
+					data: {
+						"purchaseWxUserWinningId": purchaseWxUserWinningId,
+						"deliverCompany": company,
+						"deliverNumber": billNumber,
+						"sendTime": sendTime
+					},
+					success: function(data) {
+						$("#loadingInfo").hide();
+						$(".billInfos").hide();
+						$(".succ-pop").hide();
+						$(".delivery-success").show();
+					},
+					error: function() {
+						$("#loadingInfo").hide();
+						alert("error");
+					}
+				});
+
+			});
+		});
+		
+		
+		$(function(){
+			adminAjax( 1 );
+			$(".manager-second-but").click(function(){//点击下一页
+				var total = Number( $("#admin-total").text() );
+				var page = Number( $("#admin-page").text() );
+				if( total > page ){
+					adminAjax( page + 1 );
+				}
+			});
+			
+			$(".manager-first-but").click(function(){//点击上一页
+				var page = Number( $("#admin-page").text() );
+				if( page > 1 ){
+					adminAjax( page - 1 );
+				}
+			});
+			$("#input-page").on("keyup",function(e){
+				if(e.keyCode==13){
+					$(".skip-btn").click();
+				}
+			});
+			
+			$(".skip-btn").click(function(){
+				var page = Number( $("#input-page").val() );
+				if(page==0){
+					page=page+1;
+				}
+				adminAjax( page );
+			})
+		})
+		
+		/* 分页查询 */
+		function checkLoad( data ){
+				$(".table-tbody table").html("");
+				$("#admin-curent").text( data.currentPage + "/" + data.totalPages );
+				$("#admin-total").text( data.totalPages );
+				$("#admin-page").text( data.currentPage );
+				//console.log(data);
+				for( var i = 0; i < data.list.length; i++ ){
+					var adminObj = $(".admin-obj:eq(0)").clone(true);
+					var adminArray = data.list[i];
+					adminObj.find(".prizeName").text(adminArray.prizeName);
+					adminObj.find(".PrizeType").text("实物");
+					adminObj.find(".nickName").html(decodeURI(adminArray.nickName));
+					adminObj.find(".headPic img").attr("src",adminArray.headImg);
+					adminObj.find(".addressName").text(adminArray.receiver);
+					adminObj.find(".phone").text(adminArray.recePhone);
+					adminObj.find(".address").text(adminArray.receAddress);
+					adminObj.find(".deliverName").text(adminArray.sender);
+					adminObj.find(".deliverCompany").text(adminArray.company);
+					adminObj.find(".deliverNumber").text(adminArray.sellerNo);
+					/*状态值*/
+					if(adminArray.state=="1"){
+						adminObj.find(".status").text("已经领取");
+					}else if(adminArray.state=="2"){
+						adminObj.find(".status").text("未填写地址 ");
+					}else if(adminArray.state=="3"){
+						adminObj.find(".status").text("地址已填写");
+					}else if(adminArray.state=="4"){
+						adminObj.find(".status").text("已发货");
+					}else if(adminArray.state=="5"){
+						adminObj.find(".status").text("未发货");
+					}else if(adminArray.state=="6"){
+						adminObj.find(".status").text("已支付");
+					}
+					/*当状态为3已填写地址时，给发货（render）绑定点击事件，否则取消点击事件*/
+					if(adminArray.state=="3"){
+						adminObj.find(".controll span").text("立即发货").css("color","#fcb212"); 
+						adminObj.find(".controll .purchaseWxUserWinningId").val(adminArray.id);
+						adminObj.find(".controll .receiverName").val(adminArray.receiver);
+						adminObj.find(".controll .receiverPhone").val(adminArray.recePhone);
+						adminObj.find(".controll .receiverAddress").val(adminArray.receAddress);
+					}else{
+						adminObj.find(".controll span").text("——").css("color","black");
+					}
+					$(".table-tbody table").append( adminObj );   
+				}
+			}
+		 
+		/*和后台交互数据，并加载*/
+		function adminAjax( page ){
+			var name=$("#name").val();
+			$("#loadingInfo").show();
+			$.ajax({
+				data : { 
+						pageNumber : page,
+					    purchaseWxUserId:"${purchaseWxUserId}"
+				},
+				type:"GET",
+				dataType : "JSON",
+				url:"${basePath}/groupPurchaseConfig/groupUser",
+				success : function(data){
+					$("#loadingInfo").hide();
+					checkLoad( data );
+				},
+				error : function(){
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+		}
+		
+	</script>
+	<script type="text/javascript" src="${staticPath}/js/common/expressCommon.js"></script>
+</html>

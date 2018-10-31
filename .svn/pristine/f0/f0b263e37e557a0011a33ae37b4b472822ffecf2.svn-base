@@ -1,0 +1,463 @@
+<!--[arg basePath,staticPath,sellerPublicNumber,oneMoneyWxUser,oneMoneyShop,oneMoneyPrize,oneMoneyGroupWxUser,sellerNumberId,openid,qrcode,joined,fulled,payState,sellerPublicNumber,out_trade_no;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>一元购活动</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/oneMoneyShop/oneMoneyShop-group.css" />
+		<style type="text/css">
+			@font-face {
+				font-family: 'fonts';
+				src: url("${staticPath}/font2/iconfont.eot");
+				src: url("${staticPath}/font2/iconfont.ttf");
+				src: url("${staticPath}/font2/iconfont.woff");
+			}
+		</style>
+	</head>
+	<body style="background-image: url('/activityUploadPath${oneMoneyShop.getMobleBackgroundImg()}')">
+
+			<div class="title1">
+				<img src="/activityUploadPath${sellerPublicNumber.getLogo()}" alt=""  />
+			</div>
+		<div class="bg-mask " id="end" style="display: none;background-image: url('/activityUploadPath${oneMoneyShop.getMobleBackgroundImg()}');">
+			<div class=erweima>
+				<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+			</div>
+			<img src="${staticPath}/image/breakEgg/font.png" alt="" class="miaoshu"/>
+			
+		</div>
+		<!--活动规则-->
+		<div class="bg-mask rule" style="display: none;">
+		<div class="main_rule">
+			<img src="${staticPath}/img/oneMoneyShop/img/guangbi01.png" alt="" class="close" />
+			<div class="rule-bg" style="background-image: url(${staticPath}/New_img/oneMoneyShop/huodong_bg.png);">
+				<div class="text">
+					<p>1.购买${sellerPublicNumber.getCompany()}产品,扫描瓶身或盒身上的二维码,关注‘${sellerPublicNumber.getPublicNumberName()}’微信公众账号,接收活动中奖第一资讯;</p>
+					<p>2.关注后，再次扫描二维码,进入活动页面;</p>
+					<p>3.刮开二维码银色覆盖区域,输入正确的验证码,获取参与活动机会;</p>
+					<p>4.点击“立即抢购”微信支付1元,即可参与一元购活动;</p>
+					<p>5.点击“邀请好友组队”,即可邀请好友和您共同组队参与一元购活动;</p>
+					<p>6.活动时间：${oneMoneyShop.getStartTime()}---${oneMoneyShop.getEndTime()}；</p>
+					<p>7.若活动时间内,组队人数达到标准后一元购组队成功,即可根据提示填写收货地址,完成一元购活动;</p>
+					<p>8.若活动时间结束,组队人数未达到标准,即一元购活动失败;</p>
+					<p>9.若想继续参加活动,可前往就近商店购买正品五粮液,扫码即可获得参与机会;</p>
+					<p>10.如有疑问,请咨询【${sellerPublicNumber.getPublicNumberName()}】微信公众服务号即可,我们将第一时间回复解决您的问题;</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="main-big">
+			<div class="count-down" style="background-image: url(${staticPath}/New_img/oneMoneyShop/daojishi.png);">
+				<div class="circular">距</div>
+				<div class="end">抢购结束</div>
+				<div class="timespan">还有 <span class="no1"></span> 天 <span class="no2"></span> 时 <span class="no3"></span> 分 <span class="no4"></span> 秒</div>
+			</div>
+		</div>
+		<div class="main-xia">
+			<div class="count-down-box" style="background-image: url(${staticPath}/New_img/oneMoneyShop/small_bg.png);">
+			<div class="product">
+				<img src="/activityUploadPath${oneMoneyPrize.getPrizeImg()}" />
+			</div>
+			<div class="right">
+				<div class="alcohol-name">
+					<p>${oneMoneyPrize.getPrizeName()}</p>
+					<p>${oneMoneyPrize.getDeep()}度&nbsp;&nbsp;${oneMoneyPrize.getVolume()}mL</p>
+				</div>
+				<div class="number">
+					<p class="first">
+						<p class="namea">${oneMoneyGroupWxUser.getNickName()}</p>
+					</p>
+					<p class="ranks">邀请您,加入他的<span>抢购队伍</span></p>
+				</div>
+				<div class="purchase-price">
+					<p>拒绝产品原价</p>
+					<p>抢购价：</p>
+					<p>￥<span>${oneMoneyShop.getGroupMoney()}</span></p>
+				</div>
+				<p class="start" style="display:none">活动时间已结束！</p>
+				<div class="immediately">
+					<img src="${staticPath}/New_img/oneMoneyShop/lijijiaru.png" alt="" class="join" style="display:block"/>
+					<img src="${staticPath}/New_img/oneMoneyShop/huili.png" alt="" class="join-huili" style="display:none"/>
+					<img src="${staticPath}/New_img/oneMoneyShop/chengcanyu.png" alt="" class="already" style="display:none" />
+					<img src="${staticPath}/New_img/oneMoneyShop/manyuan.png" alt="" class="full" style="display:none" />
+					<img src="${staticPath}/New_img/oneMoneyShop/lijizhifu.png" alt="" class="zhifu" style="display:none" />
+				</div>
+			</div>
+		</div>
+		
+		
+		</div>
+
+		<div class="rule-name">
+			<img src="${staticPath}/New_img/oneMoneyShop/huodongguize.png" alt=""  />
+		</div>
+	
+
+		<input type="hidden" id="openid" value="${openid}" />
+		<input type="hidden" id="joined" value="${joined}" />
+		<input type="hidden" id="qrcode" value="${qrcode}" />
+		<input type="hidden" id="oneMoneyId" value="${oneMoneyShop.getId()}" />
+		<input type="hidden" id="sellerNumberId" value="${sellerNumberId}" />
+		<input type="hidden" id="fulled" value="${fulled}" />
+		<input type="hidden" id="oneMoneyWxUserId" value="${oneMoneyWxUser.getId()}" />
+		<input type="hidden" id="payState" value="${payState}" />
+	</body>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script>
+	window.onpageshow = function(event){
+		if (event.persisted) {
+		window.location.reload();
+		}
+		}
+	/* 华为 */
+	if(screen.height<=640 && screen.width<=360){
+		$(".main-big").css({"padding-top":"5.9rem"})
+		$(".rule-bg").css({"margin-top":"2rem"})
+		$(".erweima").css({"margin-top":"-1rem"})
+		//alert("huaweishouji")
+	}
+	/* 苹果x */
+	if(screen.height==812 && screen.width==375){
+		$(".main-big").css({"padding-top":"7rem"})
+		$(".rule-name").css({"margin-top":"1rem"})
+		$(".award-winning").css({"margin-top":"0.5rem"})
+		$(".erweima").css({"margin-top":"2rem"})
+		//alert("pingguo6666")
+	}
+		
+	
+		$(".namea").text(decodeURI($(".namea").html()));
+		$(function() {
+			var starttime = new Date("${oneMoneyShop.getEndTime()}");
+			var countdownTimer = setInterval(function() {
+				var nowtime = new Date();
+				var time = starttime - nowtime;
+				var day = parseInt(time / 1000 / 60 / 60 / 24);
+				var hour = parseInt(time / 1000 / 60 / 60 % 24);
+				var minute = parseInt(time / 1000 / 60 % 60);
+				var seconds = parseInt(time / 1000 % 60);
+				$(".no1").html(day)
+				$(".no2").html(hour)
+				$(".no3").html(minute)
+				$(".no4").html(seconds)
+				/*当活动时间结束触发事件*/
+				if(day <= 0 && hour <= 0 && minute <= 0 && seconds <= 0) {
+					clearInterval(countdownTimer);
+					$(".no1").html(0)
+					$(".no2").html(0)
+					$(".no3").html(0)
+					$(".no4").html(0)
+					$(".start").show();
+					$(".join").hide()
+					$(".join-huili").hide();
+					$(".inviting-teammate").hide();
+					$(".already").hide();
+					$(".full").hide();
+					$(".zhifu").hide();
+					//$(".ok").show();
+				} else {
+		
+				}
+			}, 1000);
+		})
+					/* $(".join").show() */
+					if($("#fulled").val() == "0") { //未满员
+						if($("#joined").val() == "1") { //已参加
+							if($("#payState").val() == "1") { //已支付
+								$(".already").show();
+								$(".join").hide();
+								$(".full").hide();
+								$(".zhifu").hide();
+								$(".first").html("本次活动中奖信息请关注公");
+								$(".ranks").html("众号通知,祝您中奖!");
+								$(".namea").hide();
+								$(".ranks").css({
+									"color": "#FFF231"
+								});
+								$(".first").css({
+									"color": "#FFF231"
+								});
+							} else {
+								$(".already").hide();
+								$(".zhifu").show();
+								$(".full").hide();
+								$(".join").hide();
+								$(".zhifu").click(function() { //直接加入
+									var sellerNumberId = $("#sellerNumberId").val();
+									var openid = $("#openid").val();
+									var qrcode = $("#qrcode").val();
+									var oneMoneyId = $("#oneMoneyId").val();
+									var oneMoneyWxUserId = $("#oneMoneyWxUserId").val();
+									$.ajax({
+										type: "GET",
+										url: "${basePath}/index/WxConfig",
+										async: true,
+										dataType: "json",
+										data: {
+											"locationUrl": location.href
+										},
+										success: function(config) {
+											wx.config({
+												debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+												appId: config.appId, // 必填，公众号的唯一标识
+												timestamp: config.timestamp, // 必填，生成签名的时间戳
+												nonceStr: config.nonceStr, // 必填，生成签名的随机串
+												signature: config.signature, // 必填，签名，见附录1
+												jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+											});
+											wx.ready(function() {
+												$.ajax({
+													type: "GET",
+													url: "${basePath}/oneMoneyShop/joinGroupPay",
+													async: false,
+													dataType: "json",
+													data: {
+														"oneMoneyWxUserId": oneMoneyWxUserId,
+														"sellerNumberId": sellerNumberId,
+														"openid": openid,
+														"out_trade_no":'${out_trade_no}'
+													},
+													success: function(data) {
+														if(data.result == "true") {
+															wx.chooseWXPay({
+																timestamp: data.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+																nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+																package: data.prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+																signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+																paySign: data.paySign, // 支付签名
+																success: function(res) {
+																	// 支付成功后的回调函数
+																	// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+																	//alert("支付成功-等待收货-请到公众号菜单个人中心查看运单号");
+																	$(".already").show();
+																	$(".join").hide();
+																	$(".first").html("本次活动中奖信息请关注公");
+																	$(".ranks").html("众号通知,祝您中奖!");
+																	$(".ranks").css({
+																		"color": "#FFF231"
+																	});
+																	$(".first").css({
+																		"color": "#FFF231"
+																	});
+																	$(".namea").hide();
+																	location.href = "${basePath}/oneMoneyShop/successJoin?oneMoneyWxUserId=" + oneMoneyWxUserId + "&openid=" + openid + "&sellerNumberId=" + sellerNumberId + "&qrcode=" + qrcode;
+																}
+															});
+														} else {
+															alert("参团失败，该团已满！");
+															
+														}
+													}
+												});
+											});
+										}
+									});
+								});
+							}
+						} else { //未参加
+							$(".join").click(function() { //直接加入
+								$(".join").unbind("click")
+								//alert($("#payState").val())
+								var sellerNumberId = $("#sellerNumberId").val();
+								var openid = $("#openid").val();
+								var qrcode = $("#qrcode").val();
+								var oneMoneyId = $("#oneMoneyId").val();
+								var oneMoneyWxUserId = $("#oneMoneyWxUserId").val();
+								$.ajax({
+									type: "GET",
+									url: "${basePath}/index/WxConfig",
+									async: true,
+									dataType: "json",
+									data: {
+										"locationUrl": location.href
+									},
+									success: function(config) {
+										wx.config({
+											debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+											appId: config.appId, // 必填，公众号的唯一标识
+											timestamp: config.timestamp, // 必填，生成签名的时间戳
+											nonceStr: config.nonceStr, // 必填，生成签名的随机串
+											signature: config.signature, // 必填，签名，见附录1
+											jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+										});
+										wx.ready(function() {
+											$.ajax({
+												type: "GET",
+												url: "${basePath}/oneMoneyShop/joinGroupPay",
+												async: false,
+												dataType: "json",
+												data: {
+													"oneMoneyWxUserId": oneMoneyWxUserId,
+													"sellerNumberId": sellerNumberId,
+													"openid": openid,
+													"out_trade_no":'${out_trade_no}'
+												},
+												success: function(data) {
+													//alert($("#payState").val())
+													if(data.result=='nofollow'){
+														//alert("meiguanzhu")
+														$("#end").show();
+													}else{
+														if(data.result == "true") {
+															wx.chooseWXPay({
+																timestamp: data.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+																nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+																package: data.prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+																signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+																paySign: data.paySign, // 支付签名
+																success: function(res) {
+																	// 支付成功后的回调函数
+																	// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+																	//alert("支付成功-等待收货-请到公众号菜单个人中心查看运单号");
+																	$(".already").show();
+																	$(".join").hide();
+																	$(".first").html("本次活动中奖信息请关注公");
+																	$(".ranks").html("众号通知,祝您中奖!");
+																	$(".ranks").css({
+																		"color": "#FFF231"
+																	});
+																	$(".first").css({
+																		"color": "#FFF231"
+																	});
+																	$(".namea").hide();
+																	location.href = "${basePath}/oneMoneyShop/successJoin?oneMoneyWxUserId=" + oneMoneyWxUserId + "&openid=" + openid + "&sellerNumberId=" + sellerNumberId + "&qrcode=" + qrcode;
+																}
+															});
+														} else {
+															alert("参团失败，该团已满！");
+															
+														}
+													}
+										
+												}
+											});
+										});
+									}
+								});
+							});
+						}
+					} else { //满了
+						if($("#joined").val() == "1") { //已参加
+							if($("#payState").val() == "1") { //已支付
+								$(".already").show();
+								$(".join").hide();
+								$(".full").hide();
+								$(".zhifu").hide();
+								$(".first").html("本次活动中奖信息请关注公");
+								$(".ranks").html("众号通知,祝您中奖!");
+								$(".namea").hide();
+								$(".ranks").css({
+									"color": "#FFF231"
+								});
+								$(".first").css({
+									"color": "#FFF231"
+								});
+							} else {
+								//alert("123")
+								$(".zhifu").click(function() { //直接加入
+									//alert("369")
+									var sellerNumberId = $("#sellerNumberId").val();
+									var openid = $("#openid").val();
+									var qrcode = $("#qrcode").val();
+									var oneMoneyId = $("#oneMoneyId").val();
+									var oneMoneyWxUserId = $("#oneMoneyWxUserId").val();
+									$.ajax({
+										type: "GET",
+										url: "${basePath}/index/WxConfig",
+										async: true,
+										dataType: "json",
+										data: {
+											"locationUrl": location.href
+										},
+										success: function(config) {
+											wx.config({
+												debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+												appId: config.appId, // 必填，公众号的唯一标识
+												timestamp: config.timestamp, // 必填，生成签名的时间戳
+												nonceStr: config.nonceStr, // 必填，生成签名的随机串
+												signature: config.signature, // 必填，签名，见附录1
+												jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+											});
+											wx.ready(function() {
+												$.ajax({
+													type: "GET",
+													url: "${basePath}/oneMoneyShop/joinGroupPay",
+													async: false,
+													dataType: "json",
+													data: {
+														"oneMoneyWxUserId": oneMoneyWxUserId,
+														"sellerNumberId": sellerNumberId,
+														"openid": openid,
+														"out_trade_no":'${out_trade_no}'
+													},
+													success: function(data) {
+														if(data.result == "nofollow"){
+															//alert("没关注")
+															$("#end").show();
+														}else{
+															if(data.result == "true") {
+																wx.chooseWXPay({
+																	timestamp: data.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+																	nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+																	package: data.prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+																	signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+																	paySign: data.paySign, // 支付签名
+																	success: function(res) {
+																		// 支付成功后的回调函数
+																		// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+																		//alert("支付成功-等待收货-请到公众号菜单个人中心查看运单号");
+																		$(".already").show();
+																		$(".join").hide();
+																		$(".first").html("本次活动中奖信息请关注公");
+																		$(".ranks").html("众号通知,祝您中奖!");
+																		$(".ranks").css({
+																			"color": "#FFF231"
+																		});
+																		$(".first").css({
+																			"color": "#FFF231"
+																		});
+																		$(".namea").hide();
+																		location.href = "${basePath}/oneMoneyShop/successJoin?oneMoneyWxUserId=" + oneMoneyWxUserId + "&openid=" + openid + "&sellerNumberId=" + sellerNumberId + "&qrcode=" + qrcode;
+																	}
+																});
+															} else {
+																alert("参团失败，该团已满！");
+																
+															}
+														}
+												
+													}
+												});
+											});
+										}
+									});
+								});
+								$(".already").hide();
+								$(".zhifu").show();
+								$(".full").hide();
+								$(".join").hide();
+							}
+						} else { //提示已经满了
+							$(".already").hide();
+							$(".zhifu").hide();
+							$(".full").show();
+							$(".join").hide();
+						}
+					}
+		/*点击活动规则*/
+		$(".rule-name").click(function() {
+			$(".rule").show();
+		});
+		/*点击关闭按钮关闭实物奖品*/
+		$(".close").click(function() {
+			$(".rule").hide();
+		});
+		
+	</script>
+
+</html>

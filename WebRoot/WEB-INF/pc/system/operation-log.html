@@ -1,0 +1,199 @@
+<!--[arg basePath,staticPath;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>防伪溯源大数据平台-活动中心</title>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+        <script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+        <script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+		<link rel="stylesheet" href="${staticPath}/css/syetem/operation-log.css" />
+	</head>
+
+	<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+	<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+	<div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+				<div class="title">防伪溯源大数据平台-活动中心</div>
+				<p class="currentLocation">您的当前位置：<a href="${basePath}/goHomePage">首页></a><a href="${basePath}/system">系统设置></a><a href="javascript:void(0);">操作日志</a></p>
+				<ul class="title-pic">
+					<li><a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+					<li><a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a></li>
+				</ul>
+		</div>
+		<div class="main">
+			<label for='name'>操作人ID：</label>
+			<input type="text" id='userId' value=""/>
+			<label for='name'>操作时间：</label>
+					<input type='text' id="startTime"  readonly="readonly"  style="background-image: url('${staticPath}/img/more.png')"/>
+					<div class='line'></div>
+					<input type='text' id="endTime"  readonly="readonly" style="background-image: url('${staticPath}/img/more.png')" />
+					<input type='button' value="查询" class="cha" id="search"/>
+		</div>
+		
+			
+				<div id="table-outer">
+				<div class="table-thead">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>序号</td>
+							<td>操作人</td>
+							<td>操作功能</td>
+							<td>操作时间</td>
+						
+						</tr>
+					</table>
+				</div>
+				<div class="table-tbody">
+					<table border="0" cellpadding="0" cellspacing="0">
+					</table>
+				</div>
+			</div>
+		<div class="page-break">
+			<div class="page-btn">
+				<span class="manager-first-but">上一页</span>
+				<span id="admin-page">1</span>
+				<span class="manager-second-but">下一页</span>
+			</div>
+			<div class="skip">
+				<span>跳转至</span>
+				<input type="text" id="input-page" />&nbsp;页&nbsp;
+				<span class="skip-btn">跳转</span>
+			</div>
+			<div class="page-show">当前&nbsp;<span id="admin-curent"></span>&nbsp;页，共&nbsp;<span id="admin-total"></span>&nbsp;页</div>
+		</div>
+			<div style="display: none;">
+			<table>			
+				<tr class="admin-obj">
+					<td class="index"></td>
+					<td class="control-person"></td>
+					<td class="control-fuc"></td>
+					<td class="control-time"></td>
+				</tr>
+			</table>
+		</div>
+			 <script type="text/javascript" src="${staticPath}/js/syetem/operation-log.js"></script> 
+	</body>
+	<script type="text/javascript">
+	$(function(){
+		adminAjax( 1 );
+		$(".manager-second-but").click(function(){//点击下一页
+			var total = Number( $("#admin-total").text() );
+			var page = Number( $("#admin-page").text() );
+			if( total > page ){
+				adminAjax( page + 1 );
+			}
+		});
+		
+		$(".manager-first-but").click(function(){//点击上一页
+			var page = Number( $("#admin-page").text() );
+			if( page > 1 ){
+				adminAjax( page - 1 );
+			}
+		});
+		$("#input-page").on("keyup",function(e){
+			if(e.keyCode==13){
+				$(".skip-btn").click();
+			}
+		});
+		
+		$(".skip-btn").click(function(){
+			var page = Number( $("#input-page").val() );
+			if(page==0){
+				page=page+1;
+			}
+			adminAjax( page );
+		})
+		$("#search").click(function(){
+			var name = $("#userId").val();
+			var startTime=$("#startTime").val();
+			var endTime=$("#endTime").val();
+			//还需写个时间
+			$("#loadingInfo").show();
+			$.ajax({
+				data : { 
+					userId : name,
+					startTime:startTime,
+					endTime:endTime,
+					currentPage : 1
+					},
+				
+				type:"GET",
+				dataType : "JSON",
+				url:"${basePath}/log/getLogPageInfos",
+				success : function(data){
+					$("#loadingInfo").hide();
+					if( data != false ){
+						checkLoad( data );
+						$("#input-page").val("");
+					} else {
+						$(".table-tbody table").html("");
+						$("#admin-curent").text( "1/1" );
+						$("#admin-total").text( '1' );
+						$("#admin-page").text( '1' );
+					}
+				},
+				error : function(){
+					$("#loadingInfo").hide();
+					alert("网络连接异常，请稍后再试");
+				}
+			});
+		});
+	})
+	
+	/* 分页查询 */
+	function checkLoad( data ){
+			$(".table-tbody table").html("");
+			$("#admin-curent").text( data.currentPage + "/" + data.totalPages );
+			$("#admin-total").text( data.totalPages );
+			$("#admin-page").text( data.currentPage );
+			console.log(data);
+			for( var i = 0; i < data.allAdmins.length; i++ ){
+				var adminObj = $(".admin-obj:eq(0)").clone(true);
+				var adminArray = data.allAdmins[i];
+				/* adminObj.attr("data-id",adminArray.id); */
+				adminObj.find(".index").text(i+1);
+				adminObj.find(".control-person").text( adminArray.use_usercode );
+				adminObj.find(".control-fuc").text( adminArray.use_function );
+				adminObj.find(".control-time").text( adminArray.use_time);
+				$(".table-tbody table").append( adminObj );
+			}
+		}
+		 
+	function adminAjax( page ){
+		var name = $("#userId").val();
+		var startTime=$("#startTime").val();
+		var endTime=$("#endTime").val();
+		$("#loadingInfo").show();
+		$.ajax({
+			data : { currentPage : page,
+				startTime:startTime,
+				endTime:endTime,
+				userId:name
+			},
+			type:"GET",
+			dataType : "JSON",
+			url:"${basePath}/log/getLogPageInfos",
+			success : function(data){
+				$("#loadingInfo").hide();
+				checkLoad( data );
+			},
+			error : function(){
+				$("#loadingInfo").hide();
+				alert("网络连接异常，请稍后再试");
+			}
+		});
+	}
+	
+	</script>
+
+</html>

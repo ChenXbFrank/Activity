@@ -1,0 +1,119 @@
+package com.activity.common.controller.moblie.base;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.ClientProtocolException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.activity.common.model.publicNumber.SellerPublicNumber;
+import com.activity.common.model.system.SystemUser;
+import com.activity.common.utils.date.DateUitils;
+import com.activity.common.utils.wxInterface.AccessTokenUtils;
+import com.activity.common.utils.wxInterface.AuthUtil;
+import com.jfinal.core.Controller;
+import com.jfinal.plugin.ehcache.CacheKit;
+import net.sf.json.JSONObject;
+
+public class BaseController extends Controller {
+	 private final static Logger log = LoggerFactory.getLogger(BaseController.class);
+	// 工具类
+	DateUitils uitils = DateUitils.getUitils();
+
+	/**
+	 * 获取openid和返回openid
+	 */
+	public synchronized String getOpenid(SellerPublicNumber spn) {
+		String code = getPara("code");
+		String openid = (String) this.getSession().getAttribute(spn.getAppId());
+		if(openid == null || openid.equals("")){
+			if (!StringUtils.isEmpty(code)) {
+				//将Code放入缓存 15秒内再次处理该code认为微信中转
+				String wxCode = CacheKit.get("wxCode", code);
+				//是否存在当前记录
+				if(!code.equals(wxCode)){
+					CacheKit.put("wxCode", code, code);
+					String appid = spn.getAppId();
+					String appSecret = spn.getAppSecret();
+//					SnsAccessToken snsAccessToken = SnsAccessTokenApi.getSnsAccessToken(appid, appSecret, code);
+//					openid = snsAccessToken.getOpenid();
+					//以下是服务器测试  本地测试就不需要这些了
+					String url="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid
+							+ "&secret="+appSecret
+							+ "&code="+code
+							+ "&grant_type=authorization_code";
+					JSONObject jsonObject =null;
+					try {
+						jsonObject = AuthUtil.doGetJson(url);
+					} catch (ClientProtocolException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					log.error("****获取的jsonObject***"+jsonObject);
+					openid = jsonObject.getString("openid");
+					log.error("****获取的openid***"+openid);
+					getSession().setAttribute(appid, openid);
+					if (StringUtils.isEmpty(openid)) {
+						openid = getRequest().getRemoteAddr();
+						getSession().setAttribute(appid, openid);
+					}
+				}else{
+					renderError(404);
+				}
+			}else{
+				renderError(404);
+			}
+		}
+		// 判读openid是否包含英文字母。ip地址不包含英文字母
+		if (openid.matches(".*[a-zA-z].*")) {
+		} else {
+			// 不包含英文字母
+			getSession().setAttribute(spn.getAppId(), "");
+		}
+		return openid;
+	}
+
+	/**
+	 * 获取AccessToken对象中的accessToken
+	 */
+	public String getAccessToken(String appid,String appSecret) {
+//		String accessToken = AccessTokenApi.getAccessToken().getAccessToken();
+//		return accessToken;
+		log.error("***appid为***"+appid);
+		String accessToken = AccessTokenUtils.getAccessToken(appid, appSecret);
+		log.error("***获取的token***"+accessToken);
+		return accessToken;
+	}
+
+	/**
+	 * 获取当前登陆人
+	 */
+	public SystemUser CacheLoginUser() {
+		// 获取session的对象
+		SystemUser user = (SystemUser) getSession().getAttribute("loginUser");
+		return user;
+	}
+
+	/**
+	 * 生成ID 当前毫秒数
+	 * 
+	 * @param args
+	 */
+	public static String newId() {
+		return UUID.randomUUID().toString().replaceAll("-", "") + newDateByYMD();
+	}
+
+	/**
+	 * 新建时间并格式转换 年月日
+	 */
+	public static String newDateByYMD() {
+		Date date = new Date();
+		SimpleDateFormat time = new SimpleDateFormat("yyyyMMddHHmmss");
+		return time.format(date);
+	}
+
+}

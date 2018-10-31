@@ -1,0 +1,547 @@
+<!--[arg basePath,staticPath,systemHttp,sellerPublicNumber,openWineWxUser,openWine,openid,wxUserInfo,openWineWxUserId,shareUrl,isEnd,follow;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>【五粮红】码上有好运</title>
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/openWin/five_grain_red_index.css"/>
+		<link rel="stylesheet" href="${staticPath}/css/common/loading.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/openWin/five_grain_red_index.js"></script>
+	</head>
+	<body> 
+		<div class="bg-mask" id="end" style="display: none;background-image: url('/activityUploadPath${openWine.getMobleBackgroundImg()}');">
+			<div class=erweima>
+				<img src="/activityUploadPath${sellerPublicNumber.getPublicNumberQrcodeImg()}" alt="" />
+			</div>
+			<img src="${staticPath}/img/openWin/follow.png" alt="" class="miaoshu"/>
+		</div>
+		<!-- 加载中 -->
+		<div class="mask load" style="display:none">
+			<img src="${staticPath}/New_img/fireStorm/timg.gif" alt="" class="load-pic" />
+		</div>
+		<div class="outer" style="background-image: url('/activityUploadPath${openWine.getMobleBackgroundImg()}');">
+			<audio id="bg-music" preload="auto" src="${staticPath}/img/openWin/travle.mp3" loop="loop"></audio>
+			<div class="music">
+	   		 <i class="icon-music open" num="1" style="background-image: url('${staticPath}/img/openWin/icon-muisc.png');"></i>
+	   		 <i class="music-span" style="background-image: url('${staticPath}/img/openWin/music-span.png');"></i>
+			</div>
+			<button class="rule" style="background-image: url('${staticPath}/img/openWin/hdjn.png');"></button>
+			<div class="contain">
+				<ul class="index_nine">
+					<li class="nine">
+						<img src="${staticPath}/img/openWin/red.png" class="wine" alt="" />
+						<img src="${staticPath}/img/openWin/water.png" class="water" alt="" />
+						<img src="${staticPath}/img/openWin/syzx.png" class="font_info" alt="" />
+					</li>
+					<li class="nine">
+						<img src="${staticPath}/img/openWin/red.png" class="wine" alt="" />
+						<img src="${staticPath}/img/openWin/water.png" class="water" alt="" />
+						<img src="${staticPath}/img/openWin/myzx.png" class="font_info" alt="" />
+					</li>
+					<li class="nine">
+						<img src="${staticPath}/img/openWin/red.png" class="wine" alt="" />
+						<img src="${staticPath}/img/openWin/water.png" class="water" alt="" />
+						<img src="${staticPath}/img/openWin/xhzx.png" class="font_info" alt="" />
+					</li>
+					<li class="nine">
+						<img src="${staticPath}/img/openWin/red.png" class="wine" alt="" />
+						<img src="${staticPath}/img/openWin/water.png" class="water" alt="" />
+						<img src="${staticPath}/img/openWin/sxzx.png" class="font_info" alt="" />
+					</li>
+					<li class="nine">
+						<img src="${staticPath}/img/openWin/red.png" class="wine" alt="" />
+						<img src="${staticPath}/img/openWin/water.png" class="water" alt="" />
+						<img src="${staticPath}/img/openWin/szzx.png" class="font_info" alt="" />
+					</li>
+					<li class="nine">
+						<img src="${staticPath}/img/openWin/red.png" class="wine" alt="" />
+						<img src="${staticPath}/img/openWin/water.png" class="water" alt="" />
+						<img src="${staticPath}/img/openWin/kyzx.png" class="font_info" alt="" />
+					</li>
+					<li class="nine">
+						<img src="${staticPath}/img/openWin/red.png" class="wine" alt="" />
+						<img src="${staticPath}/img/openWin/water.png" class="water" alt="" />
+						<img src="${staticPath}/img/openWin/qqzx.png" class="font_info" alt="" />
+					</li>
+					<li class="nine">
+						<img src="${staticPath}/img/openWin/red.png" class="wine" alt="" />
+						<img src="${staticPath}/img/openWin/water.png" class="water" alt="" />
+						<img src="${staticPath}/img/openWin/qdzx.png" class="font_info" alt="" />
+					</li>
+					<li class="nine">
+						<img src="${staticPath}/img/openWin/red.png" class="wine" alt="" />
+						<img src="${staticPath}/img/openWin/water.png" class="water" alt="" />
+						<img src="${staticPath}/img/openWin/tjzx.png" class="font_info" alt="" />
+					</li>
+				</ul>
+				<div class="btns clearfix">
+					<button class="my_award" style="background-image: url('${staticPath}/img/openWin/JPicon.png');"></button>
+					<button class="share" style="background-image: url('${staticPath}/img/openWin/share.png');"></button>
+				</div>
+			</div>
+		</div>
+		<!--遮罩-->
+		<div class='award_mask' style="display:none">
+			<!--中奖弹窗-->
+			<div class="award_background" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<div class="award_info" style="background-image: url('${staticPath}/img/openWin/kaijiu.png');">
+					<div class="money_info">
+						<span>¥</span>
+						<span id="money"></span>
+						<span>元</span>
+					</div>
+					<!-- <button class="secondGetMoney" id='get_money' style="background-image: url('${staticPath}/img/openWin/tixian_btn.png');"></button> -->
+				</div>
+				<div class="newAddBtn">
+					<img src="${staticPath}/img/openWin/JT.gif" alt="" class='finger' />
+					<button id='nowShare' class="nowShare" style="background-image: url('${staticPath}/img/openWin/ljfx.png');"></button>
+					<button class="firstGetMoney" id='get_money' style="background-image: url('${staticPath}/img/openWin/ljtx.png');"></button>
+				</div>
+				<img src="${staticPath}/img/openWin/tishi.png" alt="" class='shareInfoImg' />
+			</div>
+			
+			<!--活动规则-->
+			<div class="rule_background" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<!-- <div class="rule_info" style="background-image: url('${staticPath}/img/openWin/HDkuang.png');">
+					<h4>活动规则</h4>
+					<div class="rule_content">
+						<p>1.活动时间：</p>
+						<p>2018年08月01日-2018年10月31日。</p>
+						<p>2.参与方式：</p>
+						<p>1）请打开产品包装盒，找到产品瓶盖处二维码，使用手机微信扫描该二维码进入活动抽奖页面；</p>
+						<p>2）请在活动页面内九个五粮红酒瓶中任选其中一个，点击抽取红包；</p>
+						<p>3）点击分享朋友圈，即可再获取抽奖机会一次</p>
+						<p>4）点击“立即提现”至微信账户余额</p>
+						<p>3.活动注意事项</p>
+						<p>1）中奖后未直接提现，可在我的奖品中查看立即提现或在个人中心-我的红包中查看立即提现。</p>
+						<p>2）如有疑问，请联系五粮红微信公众号。</p>
+						<p>3）本活动最终解释权归宜宾金瓯酒业有限公司（五粮红全国运营中心）所有。</p>
+					</div>
+				</div> -->
+				<div class="rule_info_img" style="background-image: url('${staticPath}/img/openWin/gz.png');">
+				</div>
+			</div>
+			<!--我的奖品-->
+			<div class="myAward_bg" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<h2 class="myAward_title">我的奖品</h2>
+				<div class="myAward_info" style="background-image: url('${staticPath}/img/openWin/jpBJ.png');">
+					<ul class="myAward_infos_title">
+						<li>中奖时间</li>
+						<li>活动奖品</li>
+						<li>领取状态</li>
+					</ul>
+					<div class="noAwardInfo" style="display: none;">您还暂时没有奖品信息哦~</div>
+					<div class="my_award_info">
+					</div>
+					<div class="person_center" style="background-image: url('${staticPath}/img/openWin/GRicon.png');"></div>
+					<p class="warm_info">温馨提示：前往个人中心查看详情</p>
+				</div>
+			</div>
+			<!--分享成功未抽奖页面-->
+			<div class="share_success" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<img src="${staticPath}/img/openWin/success.png" alt="" class="success_pic" />
+			</div>
+			<!--分享成功已抽奖页面-->
+			<div class="share_success_second" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<img src="${staticPath}/img/openWin/second.png" alt="" class="success_pic" />
+			</div>
+			<!--提现成功-->
+			<div class="get_money_success" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<img src="${staticPath}/img/openWin/money.png" alt="" class="success_pic" />
+			</div>
+			<!--提现失败-->
+			<div class="get_money_fail" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<img src="${staticPath}/img/openWin/fail.png" alt="" class="success_pic" />
+			</div>
+			<!--活动结束-->
+			<div class="finish" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<img src="${staticPath}/img/openWin/finish.png" alt="" class="success_pic" />
+			</div>
+			<!--活动抽奖次数用完-->
+			<div class="run_out" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<img src="${staticPath}/img/openWin/run_out.png" alt="" class="success_pic" />
+			</div>
+			<!--谢谢惠顾-->
+			<div class="thank" style="display:none">
+				<img class="close" src="${staticPath}/img/openWin/close.png" alt="" />
+				<img src="${staticPath}/img/openWin/thank.png" alt="" class="success_pic" />
+				<div class="newAddBtn">
+					<img src="${staticPath}/img/openWin/JT.gif" alt="" class='finger' />
+					<button class="nowShare" style="background-image: url('${staticPath}/img/openWin/ljfx.png');"></button>
+				</div> 
+				<img src="${staticPath}/img/openWin/tishi.png" alt="" class='shareInfoImg' />
+			</div>
+		</div>
+		<!--点击分享-->
+		<div class='award_mask_share' style="display:none">
+			<div class="sharePage" style="background-image: url('${staticPath}/img/openWin/jt_word.png')">
+			</div>
+		</div>
+		<!--分享提示-->
+		<div class='share_award_info' style="display:none" >
+			<div class="shareInfo" style="background-image: url('${staticPath}/img/openWin/dian.png')">
+			</div>
+		</div>
+	<!--音效-->
+	<audio id="audio" src="${staticPath}/img/openWin/yinxiao.mp3"></audio>
+	</body>
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript">
+	/* window.onpageshow = function(event){
+		if (event.persisted) {
+		window.location.reload();
+		}
+	}  */
+	
+	var audio = document.getElementById("audio");
+	var awardId="";//中奖弹窗出来的id，在提现的时候传给后台
+	var awardMoney="";//中奖金额
+	var follow="${follow}";//表示是否关注，0表示未关注，1表示已关注
+	var isAudio="0";//0表示不播放，1表示要播放
+	var isEnd="${isEnd}";//isEnd为true表示活动未结束
+	/*点击立即提现*/
+	function nowGet(getMoneyId,moneyNum,obj){
+		$(obj).unbind("click");//阻止二次点击
+		if(follow==1){
+			$(".outer").show();
+			$("#end").hide();
+			if(Number(moneyNum)>=0.3){
+				$(".load").show();
+				 $.ajax({
+						url: "${basePath}/openWine/nowSendRedPackage",
+						type: "POST",
+						dataType: "JSON",
+						async: "false",
+						data: {
+							"openid": '${openid}',
+							"sellerPublicNumberId":'${sellerPublicNumber.getId()}',
+							"mch_billno":getMoneyId
+						},
+						success: function(data) {
+							$(".load").hide();
+							if(data=="1"){
+								$(".myAward_bg,.award_background,.share_success,.share_success_second,.finish,.run_out,.get_money_fail").hide();
+								$(".award_mask,.get_money_success").show();
+							}
+						}
+					}); 	
+			}else{
+				$(".myAward_bg,.award_background").hide();
+				$(".award_mask,.get_money_fail").show();
+			} 
+		}else{
+			$(".outer,.award_mask,.myAward_bg,.award_background").hide();
+			$("#end").show();
+		}
+	};
+	
+	$(function(){
+		/*点击我的奖品*/
+		$(".my_award").on("click",function(){
+			$(".load").show();
+			 $.ajax({
+					url: "${basePath}/openWine/lookWinInfo",
+					type: "POST",
+					dataType: "JSON",
+					async: "false",
+					data: {
+						"openid": '${openid}',
+						"openWineWxUserId":'${openWineWxUserId}'
+					},
+					success: function(data) {
+						$(".load").hide();
+						$(".award_mask,.myAward_bg").show();
+						$(".my_award_info").html("");
+						for(var i=0;i<data.list.length;i++){
+							var div_line=$("<div class='line'></div>");
+							if(data.list[i].STATE=="9"){
+								var ul_outer=$("<ul class=\"myAward_infos_content\">"
+										+"<li>"+data.list[i].CREATE_TIME+"</li>"
+										+"<li>"+data.list[i].WINNING_MONEY+"元</li>"
+										+"<li>已提现</li>"  
+									+"</ul>");
+							}else{
+								var ul_outer;
+								if(data.list[i].WINNING_MONEY=="0"){
+									ul_outer=$("<ul class=\"myAward_infos_content\">"
+											+"<li>"+data.list[i].CREATE_TIME+"</li>"
+											+"<li>"+"谢谢惠顾"+"</li>"
+											+"<li>已领取</li>"  
+										+"</ul>");
+								}else{
+									ul_outer=$("<ul class=\"myAward_infos_content\">"
+											+"<li>"+data.list[i].CREATE_TIME+"</li>"
+											+"<li>"+data.list[i].WINNING_MONEY+"元</li>"
+											+"<li><input type=\"button\" class=\"withdraw\" onclick=\"nowGet('"+data.list[i].ID+"','"+data.list[i].WINNING_MONEY+"',this);\" style=\"background-image: url(${staticPath}/img/openWin/tixian_btn.png)\" /></li>"  
+										+"</ul>");
+								}
+								 
+							}
+							div_line.appendTo($(".my_award_info"));
+							ul_outer.appendTo($(".my_award_info"));
+						}
+					}
+				}); 
+			
+			
+			
+			
+		});
+		
+		/*酒瓶抖动效果*/
+		$(".nine").on("click",function(){
+			$(".nine").unbind("click");//阻止二次点击
+			if(isEnd=="true"){ //判断活动是否结束，true表示未结束
+				/*判断是否可以抽奖,可以抽奖则执行下面的代码todo*/
+				var that=$(this);
+				var joinTypeCode="${openWineWxUser.getJoinTypeScode()}"; //1表示扫码进来抽奖
+				var joinTypeShare="${openWineWxUser.getJoinTypeShare()}";  //1表示分享成功未抽奖
+				//都为joinTypeCode=0表示第一次抽奖结束;shareNum为0表示未分享,为1表示已分享
+				var shareNum='${openWineWxUser.getIsShare()}';
+				/* alert("shareNum:"+shareNum);
+				alert("joinTypeCode:"+joinTypeCode);
+				alert("joinTypeShare:"+joinTypeShare); */
+				if(shareNum=="0"){//0表示未分享
+					if(joinTypeCode=="1"){
+						getAward(that,"/openWine/openLuckDraw",joinTypeCode,joinTypeShare,shareNum)
+					}else{
+						//第一次抽奖结束，提示分享可以抽奖
+						$(".share_award_info").show();
+					}
+				}else{//表示已分享
+					
+					if(joinTypeCode=="1"){
+						getAward(that,"/openWine/openLuckDraw",joinTypeCode,joinTypeShare,shareNum)
+					}else{
+						if(joinTypeShare=="1"){
+							getAward(that,"/openWine/openShareLuckDraw",joinTypeCode,joinTypeShare,shareNum)
+						}else{
+							$(".award_mask,.run_out").show(); 
+						}
+						
+					}
+				}
+			}else{
+				//活动已经结束
+				$(".award_mask,.finish").show();
+			}
+			
+		});
+		/*中奖页面点击立即提现*/
+		$("#get_money")	.on("click",function(){
+			var thisObj=this;
+			nowGet(awardId,awardMoney,thisObj);
+		});
+		
+	});
+	
+	/*扫码和分享对应接口的方法  */
+	function getAward(obj,url,joinTypeCode,joinTypeShare,shareNum){
+	 $.ajax({
+			url: "${basePath}"+url,
+			type: "POST",
+			dataType: "JSON",
+			async: "false",
+			data: {
+				"openWineId": '${openWine.getId()}',
+				"openid": '${openid}',
+				"openWineWxUserId":'${openWineWxUserId}',
+				"sellerPublicNumberId":"${sellerPublicNumber.getId()}"
+			},
+			success: function(data) {
+				awardId=data.openWineWinningId;
+				awardMoney=data.openWineWinInfo.REDMONEY;
+				var isHasAnimation=$(".wine").hasClass("animation_class");
+				if(!isHasAnimation){
+					obj.find(".wine").addClass("animation_class");
+					setTimeout(function(){
+						obj.find(".wine").removeClass("animation_class");
+						/*弹出中奖弹窗, 0表示谢谢惠顾 */
+						
+						 if(shareNum=="0"){//0表示未分享
+							if(data.openWineWinInfo.REDMONEY=="0"){
+								$(".thank,.award_mask").show();
+							}else{
+								//$(".secondGetMoney").hide();
+								$("#money").html(data.openWineWinInfo.REDMONEY);
+								$(".award_background,.award_mask").show();
+							}
+						}else{//表示已分享
+							if(joinTypeCode=="1"){
+								if(data.openWineWinInfo.REDMONEY=="0"){
+									$(".thank,.award_mask").show();
+								}else{
+									$("#money").html(data.openWineWinInfo.REDMONEY);
+									//$(".secondGetMoney").hide();
+									$(".award_background,.award_mask").show();
+								}
+							}else{
+								if(joinTypeShare=="1"){
+									if(data.openWineWinInfo.REDMONEY=="0"){
+										$(".thank .newAddBtn,.thank .shareInfoImg").hide();
+										$(".thank,.award_mask").show();
+									}else{
+										//$(".secondGetMoney").show();
+										$("#money").html(data.openWineWinInfo.REDMONEY);
+										$(".award_background .newAddBtn .nowShare ,.award_background .shareInfoImg").hide();
+										$(".award_background,.award_mask").show();
+										$(".award_background .newAddBtn .firstGetMoney").css({
+											'margin-left':'-2.2rem',
+										});
+										$(".award_background .finger").css({
+											'margin-left':'1.5rem',
+										});
+										
+									}
+								}
+								
+							}
+							
+						}
+					
+					},1000);
+				} 
+			}
+		}); 
+	 /*音效*/
+	 audio.play();
+	
+	}
+	/*分享*/
+	$.ajax({
+		type : "GET",
+		url : "${basePath}/openWine/wxShareConfig",
+		async : false,
+		dataType : "json",
+		data : {
+			"locationUrl" : location.href
+		},
+		success : function(config) {
+			wx.config({
+				debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+				appId : config.appId, // 必填，公众号的唯一标识
+				timestamp : config.timestamp, // 必填，生成签名的时间戳
+				nonceStr : config.nonceStr, // 必填，生成签名的随机串
+				signature : config.signature,// 必填，签名，见附录1
+				jsApiList : [ 'onMenuShareAppMessage','onMenuShareTimeline' ]
+			// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			});
+			wx.ready(function() {
+				//分享朋友
+				wx.onMenuShareAppMessage({
+							title : '【五粮红】码上有好运，4999红包免费抢！', // 分享标题
+							desc : '五粮红一开，好运连连来', // 分享描述
+							link : '${shareUrl}', // 分享链接
+							// http://www.joffro.com/activityUploadPath/upload/openWin_share.jpg
+							imgUrl : 'http://${systemHttp}/activityUploadPath/upload/openWineShare.png', // 分享图标
+							trigger : function(res) {
+
+							},
+							success : function() {
+								 // 用户确认分享后执行的回调函数
+								$.ajax({
+									url: "${basePath}/openWine/sharedSuccess",
+									type: "POST",
+									dataType: "JSON",
+									async: "false",
+									data: {
+										"openWineWxUserId":'${openWineWxUserId}'
+									},
+									success: function(data) {
+										$(".award_mask_share,.share_award_info").hide();
+										if(data.result=="end"){
+											//活动已经结束
+											$(".award_mask,.finish").show();
+										}else{
+											var isShare="${openWineWxUser.getIsShare()}";  //isShare为0表示未分享，1表示已经分享
+											if(isShare=="0"){
+												$(".award_mask,.share_success").show();
+												$(".get_money_fail").hide();
+											}else{
+												$(".award_mask,.share_success_second").show();
+											}
+										}
+									}
+								});  
+								
+							},
+							cancel : function() {
+								// 用户取消分享后执行的回调函数
+								
+							}
+						});
+				//分享朋友圈
+				wx.onMenuShareTimeline({
+					title : '【五粮红】码上有好运，4999红包免费抢！', // 分享标题
+					desc : '五粮红一开，好运连连来', // 分享描述
+					link : '${shareUrl}', // 分享链接
+					imgUrl : 'http://${systemHttp}/activityUploadPath/upload/openWineShare.png', // 分享图标
+					trigger : function(res) {
+
+					},
+					success : function() {
+						 // 用户确认分享后执行的回调函数
+						$.ajax({
+							url: "${basePath}/openWine/sharedSuccess",
+							type: "POST",
+							dataType: "JSON",
+							async: "false",
+							data: {
+								"openWineWxUserId":'${openWineWxUserId}'
+							},
+							success: function(data) {
+								$(".award_mask_share,.share_award_info").hide();
+								if(data.result=="end"){
+									//活动已经结束
+									$(".award_mask,.finish").show();
+								}else{
+									var isShare="${openWineWxUser.getIsShare()}";  //isShare为0表示未分享，1表示已经分享
+									if(isShare=="0"){
+										$(".award_mask,.share_success").show();
+										$(".get_money_fail").hide();
+									}else{
+										$(".award_mask,.share_success_second").show();
+									}
+								}
+							}
+						});  
+						
+					},
+					cancel : function() {
+						// 用户取消分享后执行的回调函数
+						
+					}
+				});
+			});
+		}
+	});
+	
+	$(".person_center").on("click",function(){
+		if(follow==0){
+			$(".outer,.award_mask,.myAward_bg,.award_background").hide();
+			$("#end").show();
+		}else{
+			$(".outer").show();
+			$("#end").hide();
+			location.href = "${basePath}/personalCenter/ActivityPresonalCenter?openid=" + '${openid}' + "&BPN=" +'${sellerPublicNumber.getId()}';
+		}
+	});
+	</script>
+</html>

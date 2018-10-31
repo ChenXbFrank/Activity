@@ -1,0 +1,9 @@
+项目名称：	十个活动
+项目框架：	Jfinal+BSL+ehcache（底层框架+模板引擎+二级缓存）   
+数 据 库：	Oracle11g
+项目环境：	JDK1.8+Tomcat7.0
+开发公司：	成都玖孚科技(www.joffro.com)
+
+1.在系统system.properties配置文件中修改数据库连接，用户，密码。
+2.在系统log4j.properties配置文件中修改log4j.appender.file.File值为log日志路径。
+3.系统说有操作数据库语句保存在database.properties中，通过PropKit.use("database.properties").get("getUserByCode");方式获取。

@@ -1,0 +1,341 @@
+<!--[arg basePath,staticPath,groupPurchase,sellInfoList,prizeList,activityId;]-->
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>防伪溯源大数据平台-活动中心</title>
+<link rel="stylesheet" type="text/css"
+	href="${staticPath}/css/common/jquery-ui.css" />
+<link rel="stylesheet" type="text/css"
+	href="${staticPath}/css/common/jquery-ui.min.css" />
+<script type="text/javascript"
+	src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+<script type="text/javascript"
+	src="${staticPath}/js/common/jquery-ui.min.js"></script>
+<script type="text/javascript"
+	src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script>
+<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+<link rel="stylesheet" href="${staticPath}/css/upload/upload2.css">
+<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+<link rel="stylesheet" type="text/css" href="${staticPath}/css/robRedConfig/red-edit.css" />
+<!-- <link rel="stylesheet" type="text/css" href="${staticPath}/css/integralConfig/intergral-edit.css" />   -->
+<link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/turntable-edit.css" />
+<!-- <link rel="stylesheet" type="text/css" href="${staticPath}/css/turntableConfig/turntable-approval-info.css" /> -->	
+<link rel="stylesheet" type="text/css" href="${staticPath}/css/groupPurchaseConfig/groupPurchaseConfig-edit.css" /> 	
+<script src="${staticPath}/js/upload/upload.min.js"></script>
+<style>
+.ui-icon, .ui-widget-content .ui-icon {
+	background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+}
+
+.ui-widget-header .ui-icon {
+	background-image: url("${staticPath}/img/ui-icons_444444_256x240.png");
+}
+
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon, .ui-button:hover .ui-icon,
+	.ui-button:focus .ui-icon {
+	background-image: url("${staticPath}/img/ui-icons_555555_256x240.png");
+}
+
+.ui-state-active .ui-icon, .ui-button:active .ui-icon {
+	background-image: url("${staticPath}/img/ui-icons_ffffff_256x240.png");
+}
+
+.ui-state-highlight .ui-icon, .ui-button .ui-state-highlight.ui-icon {
+	background-image: url("${staticPath}/img/ui-icons_777620_256x240.png");
+}
+
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {
+	background-image: url("${staticPath}/img/ui-icons_cc0000_256x240.png");
+}
+
+.ui-button .ui-icon {
+	background-image: url("${staticPath}/img/ui-icons_777777_256x240.png");
+}
+.btn{
+	width:32vw;
+	margin:9vw auto 0;
+	text-aligin:center;
+}
+.submitBtn {
+	width: 10vw;
+	height: 2.7vw;
+	color: white;
+	background: #f19032;
+	text-align: center;
+	line-height: 2.7vw;
+	border-radius: 4px;
+	display:inline-block; 
+}
+.productInfos{
+	margin-top:-9vw;
+}
+.productInfos textarea{
+	vertical-align:top;
+	border-radius:4px;
+	width:20vw;
+	height:4vw;
+	font-size:1vw;
+}
+.groupPurchaseConfig-name{
+	margin-top:1vw;
+}
+.groupPurchaseConfig-time{
+	margin-top:1vw;
+}
+.groupPurchaseConfig-all{
+	margin-top:1vw;
+}
+
+</style>
+</head>
+
+<body style="background-image: url('${staticPath}/img/newVersionImg/bg-new.png')">
+<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+	<div class="container">
+		<div class="head clearfloat"
+			style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+			<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+			<div class="title">防伪溯源大数据平台-活动中心</div>
+			<p class="currentLocation">
+				您的当前位置： <a href="${basePath}/goHomePage" class="back">首页></a> 
+				<a href="${basePath}/activityApply" class="back">活动审批></a>
+				<a href="${basePath}/groupPurchaseConfig/goApproveList" class="back">拼团活动审批></a>
+				<a href="javascript:void(0);" class="back">${groupPurchase.getActivityName()}审批</a>
+			</p>
+			<ul class="title-pic">
+				<li><a href="${basePath}/goHomePage"><img
+						src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+				<li><a href="${basePath}/exit"><img
+						src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a>
+				</li>
+			</ul>
+		</div>
+		<div class="section clearfloat">
+			<div id="popup" style="display:none">
+			    <div class="fade"></div>
+			    <!--审核成功-->
+			    <div class="delivery-success" >
+			    	<div class="success-outer">
+			    		<div class="pop-title">审核成功！</div>
+			    	    <input type="button" value="确定" id="delivery-success-yes" />
+			    	</div>
+			    </div>
+			</div>
+
+
+			<div class="left">
+			
+			<!--登录背景图片-->
+					<div>
+						<p class="dengru">登录背景图</p>
+						<div class="activity-pic" id="divPreview">
+							<img id="pic" src="/activityUploadPath${groupPurchase.getMobleBackgroundImg()}" alt="" />
+						</div>
+					</div>
+					<br/>
+				<!--首页背景图片-->
+					<div>
+						<p class="shouji">手机背景图</p>
+						<div class="activity-pic" id="divPreview">
+							<img id="pic" src="/activityUploadPath${groupPurchase.getMobleBackgroundImg()}" alt="" />
+						</div>
+					</div>
+					<br/>
+					<!--活动规则-->
+					<div>
+						<p class="guize">活动规则</p>
+						<div class="activity-pic" id="divPreview">
+							<img id="pic" src="/activityUploadPath${groupPurchase.getMobleBackgroundImg()}" alt="" />
+						</div>
+					</div>
+			</div>
+			<div class="excels">
+				<p class="setUp">活动内容设置:</p>
+				<div class="groupPurchaseConfig-name"><label for="active-name">拼团活动名称：</label><span>${groupPurchase.getActivityName()}</span> </div>
+				<div class="groupPurchaseConfig-time"><label for="">拼团活动时间：</label><span>${groupPurchase.getStartTime()}</span> 
+				<div class='line'></div>
+				<span>${groupPurchase.getEndTime()}</span> <br />
+				</div>
+				<div class="groupPurchaseConfig-all">
+					<label >拼团价：</label><span>${groupPurchase.getGroupPrice()}</span>元 &nbsp;  &nbsp;  
+					<label >开团人数：</label> <span>${groupPurchase.getOpenPrizeNumber()}</span> 人
+				</div>
+			
+
+				<div class="list-bill">
+					<div class="bill-title">
+						运单信息：<img src="${staticPath}/img/home - add.png" alt=""
+							class='addPic' id="addBill" />
+						<div class="BigSum">
+							<p>
+								总瓶数:<span class="sum" id="sum">${groupPurchase.getOutTotal()}</span>瓶
+							</p>
+						</div>
+
+					</div>
+					<div id="table-outer1">
+						<div class="table-thead">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>发货单号</td>
+									<td>渠道商</td>
+									<td>货品名称</td>
+									<td>度数(°)</td>
+									<td>容量(mL)</td>
+									<td>规格(瓶/箱)</td>
+									<td>箱数(箱)</td>
+									<td>品牌名称</td>
+									<td>发货时间</td>
+								</tr>
+							</table>
+						</div>
+						<div class="table-tbody">
+							<table border="0" cellpadding="0" cellspacing="0">
+							<!--[ loop(sellerInfo:sellInfoList){  ]-->
+									<tr>
+										<td>${sellerInfo.getOutNo()}</td>
+										<td>${sellerInfo.getOutSellerName()}</td>
+										<td>${sellerInfo.getProductName()}</td>
+										<td>${sellerInfo.getDeep()}</td>
+										<td>${sellerInfo.getVolume()}</td>
+										<td>${sellerInfo.getSpec()}</td>
+										<td>${sellerInfo.getBoxSize()}</td>
+										<td>${sellerInfo.getBandName()}</td>
+										<td>${sellerInfo.getOutDate()}</td>
+									</tr>
+								<!--[ }  ]-->
+
+							</table>
+						</div>
+					</div>
+
+				</div>
+				<div>
+					<div class="bill-title">
+						<div class="prizeSetTitle">
+							<span class="prizeSet">奖品设置:</span><img src="${staticPath}/img/home - add.png" alt=""
+								class='addPic' id="otherPic" />
+							<div class="BigSum">
+								<p>
+									奖品总数:<span class="sum" id="awardTotal">${groupPurchase.getTotal()}</span>个
+								</p>
+							</div>
+						</div>
+						<div id="table-outer4">
+							<div class="table-thead">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>产品名称</td>
+										<td>规格(瓶/箱)</td>
+										<td>箱数(箱)</td>
+										<td>度数(°)</td>
+										<td>容量(mL)</td>
+									</tr>
+								</table>
+							</div>
+							<div class="table-tbody">
+								<table border="0" cellpadding="0" cellspacing="0">
+								<!--[ loop(rrpLists:prizeList){  ]-->
+									 <tr>
+										<td>${rrpLists.getPrizeName()}</td>
+										<td>${rrpLists.getSpec()}</td>
+										<td>${rrpLists.getBoxCount()}</td>
+										<td>${rrpLists.getDeep()}</td>
+										<td>${rrpLists.getVolume()}</td>
+									</tr>
+									
+									<!--[ }  ]-->
+								</table>
+							</div>
+							<div class="productInfos">
+					<label for="textarea">活动建议：</label>
+					<textarea id="textarea" maxlength="30" placeholder="字数限制：30字以内"></textarea>
+				</div>
+				<input type="hidden"  value="${groupPurchase.getId()}" id="activityId"/>	
+						</div>
+						
+					</div>
+					
+				</div>
+				
+			</div>
+			
+		</div>
+		
+	</div>
+	<div class="btn">
+			<div class="submitBtn" id="pass">通过</div>
+			<div class="submitBtn" id="reject">驳回</div>
+			<div class="submitBtn" id="back">返回</div>
+	</div>
+</body>
+<script>
+
+/*活动状态：0申请中   1审批通过  2 已驳回  */
+$("#pass").on("click",function(){
+	var remake=$("#textarea").val();
+	var activityId=$("#activityId").val();
+	$("#loadingInfo").show();
+	$.ajax ({
+		 url : "${basePath}/groupPurchaseConfig/handleApproveGroupPurchase",
+		 type : "POST",
+		 dataType : "JSON",
+		 async:"false",
+		 data: {
+		　　　    remake: remake,   
+		　　　    activityId: activityId,        
+		     	state: 1
+		　　},
+		　success : function(data) {
+			$("#loadingInfo").hide();
+			//alert("审核成功！");
+			$("#popup").show();
+			$("#delivery-success-yes").on("click",function(){
+				  $("#popup").hide();
+				  location.href="${basePath}/groupPurchaseConfig/goApproveList";
+			 })
+			
+		　　},
+		}); 
+})
+$("#reject").on("click",function(){
+	var remake=$("#textarea").val();
+	var activityId=$("#activityId").val();
+	$("#loadingInfo").show();
+	$.ajax ({
+		 url : "${basePath}/groupPurchaseConfig/handleApproveGroupPurchase",
+		 type : "POST",
+		 dataType : "JSON",
+		 async:"false",
+		 data: {
+		　　　    remake: remake,   
+		　　　    activityId: activityId,        
+		      	state: 2
+		　　},
+		　success : function(data) {
+			$("#loadingInfo").hide();
+			$("#popup").show();
+			$(".pop-title").html("已成功驳回！");
+			$("#delivery-success-yes").on("click",function(){
+				  $("#popup").hide();
+				  location.href="${basePath}/groupPurchaseConfig/goApproveList";
+			 })
+			
+		　　},
+		}); 
+});
+$("#back").on("click",function(){
+	history.back(-1);
+});
+</script>
+
+</html>

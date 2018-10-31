@@ -1,0 +1,32 @@
+#table-outer2 table tr>td:first-child {
+	width: 5vw;
+}
+
+#table-outer2 table tr>td:nth-child(2) {
+	width: 10vw;
+}
+
+#table-outer2 table tr>td:nth-child(3) {
+	width: 8vw;
+}
+
+#table-outer2 table tr>td:nth-child(4) {
+	width: 5vw;
+}
+
+#table-outer2 table tr>td:nth-child(5) {
+	width: 5vw;
+}
+
+#table-outer2 table tr>td:nth-child(6) {
+	width: 8vw;
+}
+#table-outer2 table tr>td:nth-child(7) {
+	width: 9vw;
+}
+#table-outer2 table tr>td:nth-child(8) {
+	width: 10vw;
+}
+.submitBtn {
+	margin-left: 45vw;
+}

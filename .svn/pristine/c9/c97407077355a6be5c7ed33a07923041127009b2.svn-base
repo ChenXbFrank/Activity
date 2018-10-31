@@ -1,0 +1,169 @@
+<!--[arg basePath,staticPath,openid,sellerPublicNumberId,integalExchangeList,integralWinningInfoList,joinActivityList;]-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>积分查询</title>
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta content="telephone=no" name="format-detection">
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/index/style.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/index/my.integral.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css" />
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.js"></script>
+		<script type="text/javascript" src="${staticPath}/js/common/jquery-ui.min.js"></script>
+		<!-- <script type="text/javascript" src="${staticPath}/js/common/jquery.ui.datepicker-zh-CN.js"></script> -->
+		<!-- <script type="text/javascript" src="${staticPath}/js/integral/my.integral.js"></script> -->
+		<style>
+			.ui-icon,
+			.ui-widget-content .ui-icon {
+				background-image: url("${staticPath}/img/integral/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-widget-header .ui-icon {
+				background-image: url("${staticPath}/img/integral/ui-icons_444444_256x240.png");
+			}
+			
+			.ui-state-hover .ui-icon,
+			.ui-state-focus .ui-icon,
+			.ui-button:hover .ui-icon,
+			.ui-button:focus .ui-icon {
+				background-image: url("${staticPath}/img/integral/ui-icons_555555_256x240.png");
+			}
+			
+			.ui-state-active .ui-icon,
+			.ui-button:active .ui-icon {
+				background-image: url("${staticPath}/img/integral/ui-icons_ffffff_256x240.png");
+			}
+			
+			.ui-state-highlight .ui-icon,
+			.ui-button .ui-state-highlight.ui-icon {
+				background-image: url("${staticPath}/img/integral/ui-icons_777620_256x240.png");
+			}
+			
+			.ui-state-error .ui-icon,
+			.ui-state-error-text .ui-icon {
+				background-image: url("${staticPath}/img/integral/ui-icons_cc0000_256x240.png");
+			}
+			
+			.ui-button .ui-icon {
+				background-image: url("${staticPath}/img/integral/ui-icons_777777_256x240.png");
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="bg" style="background-image: url('${staticPath}/New_img/index/bibjbj.png')">
+			
+			<div class="main" >
+				<div class="Active-name">
+					<label class="time">时间:</label> <input type='date' class="startDate" id="startTime"  />
+					<div class='line'></div>
+					<input type='date' id="endTime" class="endDate"   />
+				</div>
+				<div class="integralType">
+					<span>积分类型:</span> <input type="radio" name="type" value="1" class="get" onclick="getRadio()" checked="checked" /> 获得积分 <input type="radio" name="type" class="notGet" value="2" onclick="getRadio()" /> 积分兑换 <input type="radio" name="type" class="canyuGet" value="3" onclick="getRadio()" /> 积分参与
+				</div>
+				<div class="btn">
+					<button>查询</button>
+				</div>
+			</div>
+			<div class="integralAwards">
+				<!--[loop(integralWinningInfo:integralWinningInfoList){]-->
+				<div class="small getIN">
+					<input type="hidden" value="${integralWinningInfo.getWinningIntegral()}" id="jihe"/>
+					<p class="fraction"><span>${integralWinningInfo.getWinningIntegral()}</span>积分</p>
+					<p class="gainAndLoss"></p>
+					<p class="time2">时间:<span>${integralWinningInfo.getCreateTime()}</span></p>
+					<p class="mode">获得方式:【<span>${integralWinningInfo.getActivityName()}</span>】</p>
+				</div>
+				<!--[}]-->
+
+				<!--[loop(integalExchange:integalExchangeList){]-->
+				<div class="small excganeIn" style="display:none">
+					
+					<p class="fraction"><span>${integalExchange.getExchangeUseIntegral()}</span>分</p>
+					<!--[if(integalExchange.getExchangeType() == '1'){]-->
+					<p class="gainAndLoss">兑换参与活动</p>
+					<!--[}else if(integalExchange.getExchangeType() == '2'){]-->
+					<p class="gainAndLoss">兑换产品</p>
+					<!--[}]-->
+					<p class="time2">时间:<span>${integalExchange.getCreateTime()}</span></p>
+					<!--[if(integalExchange.getExchangeType() == '1'){]-->
+					<p class="mode">参与【<span>${integalExchange.getExchangePrizeName()}</span>】活动</p>
+					<!--[}else if(integalExchange.getExchangeType() == '2'){]-->
+					<p class="mode">兑换【<span>${integalExchange.getExchangePrizeName()}</span>】产品</p>
+					<!--[}]-->
+				</div>
+				<!--[}]-->
+				
+				<!--[loop(integralWinningInfoo:joinActivityList){]-->
+				<div class="small getIN0" style="display:none">
+					
+					<p class="fraction"><span>${integralWinningInfoo.getJoinIntegral()}</span>积分</p>
+					<p class="gainAndLoss"></p>
+					<p class="time2">时间:<span>${integralWinningInfoo.getJoinTime()}</span></p>
+					<p class="mode">参与活动:【<span>${integralWinningInfoo.getActivityName()}</span>】</p>
+				</div>
+				<!--[}]-->
+			</div>
+			<div class="kongbai" style="display:none">
+				<img src="${staticPath}/New_img/index/jifenkongbia.png" alt="" />
+				<p>快去购买酒品参加活动,</p>
+				<p>更多积分等你来赚!</p>
+			</div>
+		</div>
+		<script>
+		var jihe=$("#jihe").val();
+		
+		if(jihe==undefined){
+			$(".main").hide();
+			 $(".bg").css({"background-image":"url()"}) 
+			$(".kongbai").show();
+		}
+			function getRadio(evt) {
+				var evt = evt || window.event;
+				var e = evt.srcElement || evt.target;
+				if(e.value == "1") {
+					$(".getIN").show();
+					$(".excganeIn").hide();
+					$(".getIN0").hide();
+				} else if(e.value == "2") {
+					$(".getIN").hide();
+					$(".excganeIn").show();
+					$(".getIN0").hide();
+				}else if(e.value == "3") {
+					$(".getIN").hide();
+					$(".excganeIn").hide();
+					$(".getIN0").show();
+				}
+			}
+
+			$(".btn").click(function() {
+				var startTime = $("#startTime").val();
+				var endTime = $("#endTime").val();
+				var openid = '${openid}';
+				var sellerPublicNumberId = '${sellerPublicNumberId}';
+				location.href = "${basePath}/personalCenter/myIntegral?oid=" + openid + "&BPN=" + sellerPublicNumberId + "&startTime=" + startTime + "&endTime=" + endTime;
+
+			})
+				/* 华为 */
+			if(screen.height<=640 && screen.width<=360){
+				/* $("..banner .headpic").css({"margin-top":"0.4rem"})
+				$(".footer-main").css({"margin-top":"-0.5rem"}) */
+				$(".integralAwards").css({"height":"10rem"})
+			}
+			/* 苹果x */
+			if(screen.height==812 && screen.width==375){
+				$(".integralAwards").css({"height":"12.5rem"})
+			}
+		</script>
+	</body>
+
+</html>

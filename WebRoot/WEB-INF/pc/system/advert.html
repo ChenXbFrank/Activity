@@ -1,0 +1,338 @@
+<!--[arg _res,basePath,staticPath,advert;]-->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>防伪溯源大数据平台-活动中心</title>
+	<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.css"/>
+	<link rel="stylesheet" type="text/css" href="${staticPath}/css/common/jquery-ui.min.css"/>
+	<script type="text/javascript" src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+	<link rel="stylesheet" href="${staticPath}/css/upload/upload.css">
+	<script src="${staticPath}/js/upload/upload.min.js"></script>
+	<link rel="stylesheet" href="${staticPath}/css/common/nav-head.css" />
+	
+	<link rel="stylesheet" type="text/css" href="${staticPath}/css/syetem/advert.css"/>
+	<style>
+		.code0{
+			position: absolute;
+    left: 11.5%;
+    /* float: right; */
+    margin-top: 2vw;
+		}
+	
+	</style>
+</head>
+<body style="background-image: url('${staticPath}/img/bg0.png')">
+<!--加载提示-->
+		<div id="loadingInfo" style="display:none">
+			<div class="loadingFade"></div>
+			<div class="loadingPicWrap">
+				<img class="loadingPic" src="${staticPath}/image/loadingpc.gif" />
+			</div>
+		</div>
+	<div id="popup" style="display:none">
+		    <div class="fade"></div>
+		    <!--保存成功-->
+		    <div class="delivery-success" >
+		    	<div class="success-outer">
+		    		<div class="pop-title">提交成功！</div>
+		    	    <input type="button" value="确定" id="delivery-success-yes" />
+		    	</div>
+		    </div>
+	</div>
+	 <div class="head clearfloat" style="background-image: url('${staticPath}/img/newVersionImg/home-daohanglan-bg.png');">
+	 	<div class="title-img"><img alt="" src="${staticPath}/img/index/WLY-LOGO.png"></div>
+		<div class="title">防伪溯源大数据平台-活动中心</div>
+			<p class="currentLocation">您的当前位置：<a href="${basePath}/goHomePage">首页></a><a href="javascript:void(0);">广告</a></p>
+			<ul class="title-pic">
+				<li><a href="${basePath}/goHomePage"><img src="${staticPath}/img/newVersionImg/home icon.png" alt="" /></a></li>
+				<li><a href="${basePath}/exit"><img src="${staticPath}/img/newVersionImg/login-out-icon.png" alt="" /></a></li>
+			</ul>
+	</div>
+	<div class='main clearfloat'>
+		
+	
+	
+	
+				<div class="code0 clearfloat">
+					<label>广告图上传:</label>
+					<div class="tutu">
+					<div class="activity-pic" id="divPreview">
+						<!--[if(advert.getAdvertUrl() == ''){]-->
+							<img id="pic2" class="ss" src="/activityUploadPath/upload/bg.png" alt="" />
+						<!--[}else{]-->
+							<img id="pic2" class="ss" src="/activityUploadPath${advert.getAdvertUrl()}" alt="" />
+						<!--[}]-->
+					</div>
+					<p class="picInfo1">上传图片大小不高于500kb,图片格式为jpg,png,gif</p>
+					<p class="picInfo4">建议上传尺寸为248px*413px</p>
+					<div class="upload teo">
+						<input type="button" value="上传图片" />
+					</div>
+				</div>
+				</div>
+			<div class="productInfos" style="display:none">
+				<label for="textarea" class="shenpi">审批建议：</label>
+				<p id="textarea" class="textarea" style="color:red"></p>
+				
+			</div>
+			                    
+			
+		</div>
+		<div class="btns">
+			<div class="btn" id="save">
+				<button>提交审批</button>
+			</div> 
+			<div class="btn" id="back">
+				<button>返回</button>
+			</div>
+		</div>
+
+				
+				<!-- shouji -->
+					<div id="popup-upPic3" style="display: none">
+					<div class="fade"></div>
+					<!--图片上传弹窗-->
+					<div class="delivery-success">
+						<div class="close" id="closePic3">
+							<img src="${staticPath}/img/close-icon.png" alt="" />
+						</div>
+						<div class="upBtn">
+							<div class="upBtn-inner">
+								<input type="hidden" name="filePath" id="callbackPath5">
+								<a id="zwb_upload3"> <input type="file" class="add" multiple>选择图片
+								</a> <input type="button" value="确定上传" id="yulan3" />
+							</div>
+						</div>
+						<hr>
+						<div class="imgsBox">
+							<ul>
+							</ul>
+						</div>
+					</div>
+				</div>
+				 <input type="hidden" value="${advert.getStart()}" id="zhuangtai"  />
+				 <input type="hidden" value="${advert.getComfirmAdvise()}" id="jianyi"  />
+				
+</body>
+<script type="text/javascript">
+var zhuangtai='${advert.getStart()}';
+var jianyi='${advert.getComfirmAdvise()}'
+if(zhuangtai=='2'){
+	$(".productInfos").show();
+	$("#textarea").html(jianyi)
+}else if(zhuangtai=='1'){
+	$(".productInfos").show();
+	$("#textarea").html(jianyi)
+}
+/* 点击图片库中的删除图标 */
+function deleteImg(obj){
+	event.stopPropagation();//阻止冒泡
+	var deleteSrc=$(obj).parent().find("img").attr("src");
+	var srcUrl=deleteSrc.substring(19,deleteSrc.length);
+	$("#loadingInfo").show();
+	$.ajax({
+		url : "${basePath}/upload/deleteImg",
+		type : "POST",
+		dataType : "JSON",
+		async : "false",
+		data : {"srcUrl":srcUrl},
+		success : function(data) {
+			$("#loadingInfo").hide();
+			if(data==true){
+				$(obj).parent().remove();
+			}else{
+				alert("删除图片失败");
+			}
+		},
+		error:function(){
+			$("#loadingInfo").hide();
+			alert("交互失败！");
+		}
+		
+	});
+}
+/* 点击手机登陆图片库中的删除图标 */
+function deleteImg1(obj){
+	event.stopPropagation();//阻止冒泡
+	var deleteSrc1=$(obj).parent().find("img").attr("src");
+	var srcUrl1=deleteSrc1.substring(19,deleteSrc1.length);
+	$("#loadingInfo").show();
+	$.ajax({
+		url : "${basePath}/upload/deleteImg",
+		type : "POST",
+		dataType : "JSON",
+		async : "false",
+		data : {"srcUrl":srcUrl1},
+		success : function(data) {
+			$("#loadingInfo").hide();
+			if(data==true){
+				$(obj).parent().remove();
+			}else{
+				alert("删除图片失败");
+			}
+		},
+		error:function(){
+			$("#loadingInfo").hide();
+			alert("交互失败！");
+		}
+		
+	});
+}
+/* 点击LOGO图片库中的删除图标 */
+function deleteImg2(obj){
+	event.stopPropagation();//阻止冒泡
+	var deleteSrc2=$(obj).parent().find("img").attr("src");
+	var srcUrl2=deleteSrc2.substring(19,deleteSrc2.length);
+	$("#loadingInfo").show();
+	$.ajax({
+		url : "${basePath}/upload/deleteImg",
+		type : "POST",
+		dataType : "JSON",
+		async : "false",
+		data : {"srcUrl":srcUrl2},
+		success : function(data) {
+			$("#loadingInfo").hide();
+			if(data==true){
+				$(obj).parent().remove();
+			}else{
+				alert("删除图片失败");
+			}
+		},
+		error:function(){
+			$("#loadingInfo").hide();
+			alert("交互失败！");
+		}
+		
+	});
+}
+
+
+
+
+		/* 点击图片库中的删除图标 */
+/* 		function deleteImg(obj) {
+			event.stopPropagation(); //阻止冒泡
+			var deleteSrc = $(obj).parent().find("img").attr("src");
+			var srcUrl = deleteSrc.substring(19, deleteSrc.length);
+			$.ajax({
+				url: "${basePath}/upload/deleteImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {
+					"srcUrl": srcUrl
+				},
+				success: function(data) {
+					if(data == true) {
+						$(obj).parent().remove();
+					} else {
+						alert("删除图片失败");
+					}
+				},
+				error: function() {
+					alert("交互失败！");
+				}
+
+			});
+		} */
+		/* 广告 */
+		$(".tutu .teo input").on("click", function() {
+			$("#popup-upPic3").show();
+			$("#loadingInfo").show();
+			$.ajax({
+				url: "${basePath}/upload/getUserAllImg",
+				type: "POST",
+				dataType: "JSON",
+				async: "false",
+				data: {},
+				success: function(data) {
+					$("#loadingInfo").hide();
+					console.log(data);
+					$('#popup-upPic3 .imgsBox ul').html("");
+					for(var i = 0; i < data.length; i++) {
+						var li1 = $("<li></li>");
+						li1.appendTo($('#popup-upPic3 .imgsBox ul'));
+						var img1 = $("<img src=" + '/activityUploadPath' + data[i].IMG_URL + " />");
+						img1.appendTo(li1);
+						var deleteImg1 = $("<div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg2(this)'></div>");
+						deleteImg1.appendTo(li1);
+					}
+				}
+			});
+		});
+		
+		$("#closePic3").on("click", function() {
+			$("#popup-upPic3").hide();
+		});
+		$("#zwb_upload3").bindUpload({
+			url: "${basePath}/upload/loadImg", //上传服务器地址
+			callbackPath: "#callbackPath5", //绑定上传成功后 图片地址的保存容器的id或者class 必须为input或者textarea等可以使用$(..).val()设置之的表单元素
+			// ps:值返回上传成功的 默认id为#callbackPath  保存容器为位置不限制,id需要加上#号,class需要加上.
+			// 返回格式为:
+			// 原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径|原来的文件名,服务端保存的路径....
+			num: 1, //上传数量的限制 默认为空 无限制
+			type: "jpg|png|gif", //上传文件类型 默认为空 无限制
+			size: 0.488, //上传文件大小的限制,默认为5单位默认为mb
+		});
+		$("#zwb_upload3 .add").on("click", function() {
+			$("#callbackPath5").val("");
+		})
+		var address1 = ""; //传给后台的图片数据
+		;
+		$("#popup-upPic3 .imgsBox ul").on("click", "li", function() {
+			
+			var imgSrc1= $(this).find("img").attr("src");
+			
+			$("#pic2").attr("src", imgSrc1);
+		})
+		$("#yulan3").on("click", function() {
+			var imgPic1 = $("#callbackPath5").val();
+			var urlArr1 = imgPic1.split(",");
+			address1 = urlArr1[1];
+			var bb = "/activityUploadPath" + address1;
+			//动态创建li img放在图片库的最前面
+			if(address1 != undefined) {
+				$("#popup-upPic3 .imgsBox ul").prepend(" <li><img src=" + bb + " /><div style='background-image:url(${staticPath}/img/deleteImg.png)' class='deleteDiv' onClick='deleteImg(this)'></div></li>");
+				$("#callbackPath5").val("");
+			}
+		});
+	
+
+
+
+$(function(){
+	$("#back").on("click",function(){
+		history.go(-1);
+	});
+	$("#save").on("click",function(){
+		//alert(SuccessId)
+		$("#loadingInfo").show();
+		$.ajax ({
+			 url : "${basePath}/advert/approveSave",
+			 type : "GET",
+			 dataType : "JSON",
+			 data: {
+					"picture":'',
+					"logo":'',
+					"advert":$("#pic2").attr("src").substring(19,$("#pic2").attr("src").length)
+					},
+			 success : function(data) {
+				 $("#loadingInfo").hide();
+				 if(data){
+					 $("#popup").show();
+					 $("#delivery-success-yes").on("click",function(){
+						  $("#popup").hide();
+						  location.href="${basePath}/goHomePage";
+					 })
+					 
+				 }else{
+					 alert("网络异常");
+				 }
+			}
+		});
+	})
+})
+</script>
+
+</html>

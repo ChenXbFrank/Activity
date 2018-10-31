@@ -1,0 +1,116 @@
+<!--[arg basePath,staticPath;]-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>扫一扫</title>
+		<link rel="stylesheet" href="${staticPath}/css/common/Flexible.css" />
+		<script src="${staticPath}/js/common/Flexible.js"></script>
+		<script src="${staticPath}/js/common/flexible.debug.js"></script>
+		<script src="${staticPath}/js/common/flexible_css.debug.js"></script>
+		<script src="${staticPath}/js/common/jquery-3.1.0.min.js"></script>
+		<link rel="stylesheet" href="${staticPath}/css/breakEgg/breakEgg-homepage.css" />
+	<style type="text/css">
+	@font-face {
+		font-family: 'fonts';
+		src: url("${staticPath}/font1/iconfont.eot");
+		src: url("${staticPath}/font1/iconfont.ttf");
+		src: url("${staticPath}/font1/iconfont.woff");
+	}
+	.big{
+		width: 100%;
+		display: -webkit-flex;
+		display: flex;
+		justify-content: center;
+  		margin-top:3rem;
+	}
+	.dian{
+		width: 7.426666rem;
+		height:6.36rem;
+		background-size: 7.426666rem 6.36rem;
+		background-repeat: no-repeat;
+		display: -webkit-flex;
+		display: flex;
+		justify-content: center ;
+		line-height:6.36rem;
+	}
+	.dian p{
+		font-size:0.42rem;
+	}
+		</style>
+	</head>
+	<body style="background-image: url(${staticPath}/img/breakEgg/img/bg_bg.png);">
+	<div class="big">
+		<div class="dian" style="background-image: url(${staticPath}/img/breakEgg/img/kuang.png);">
+			<p>请点击扫一扫</p>
+		</div>
+	</div>
+		
+	</body>
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$.ajax({
+				type: "GET",
+				url: "${basePath}/scan/scanElement",
+				async: true,
+				dataType: "json",
+				data: {"href":location.href},
+				success: function(dataaddress){
+					wx.config({
+			              debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			              appId : dataaddress.appId, // 必填，公众号的唯一标识
+			              timestamp : dataaddress.timestamp, // 必填，生成签名的时间戳
+			              nonceStr : dataaddress.nonceStr, // 必填，生成签名的随机串
+			              signature : dataaddress.signature,// 必填，签名，见附录1
+			              jsApiList : ['scanQRCode']// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			         });
+				wx.ready(function(){
+						wx.scanQRCode({
+						    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+						    scanType: ["qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
+						    success: function (res) {
+						   
+							}
+						});
+					});
+				},
+				error: function(){
+					
+				}
+			});
+		})
+		$(".dian").click(function(){
+			$.ajax({
+				type: "GET",
+				url: "${basePath}/scan/scanElement",
+				async: true,
+				dataType: "json",
+				data: {"href":location.href},
+				success: function(dataaddress){
+					wx.config({
+			              debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			              appId : dataaddress.appId, // 必填，公众号的唯一标识
+			              timestamp : dataaddress.timestamp, // 必填，生成签名的时间戳
+			              nonceStr : dataaddress.nonceStr, // 必填，生成签名的随机串
+			              signature : dataaddress.signature,// 必填，签名，见附录1
+			              jsApiList : ['scanQRCode']// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			         });
+					wx.ready(function(){
+						wx.scanQRCode({
+						    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+						    scanType: ["qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
+						    success: function (res) {
+						   
+							}
+						});
+					});
+				},
+				error: function(){
+					
+				}
+			});
+		});
+	</script>
+	 
+</html>

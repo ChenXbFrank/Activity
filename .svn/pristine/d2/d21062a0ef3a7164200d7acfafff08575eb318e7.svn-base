@@ -1,0 +1,154 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+html,
+body {
+	width: 100%;
+	height: 100%;
+}
+
+a,  
+button,
+input {
+	outline: none;
+}
+
+ul li {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+img {
+	border: none;
+	  
+}
+
+body {
+	background-color: #fbf4f1;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.activities {
+	width: 100%;
+	margin-top: 1.2vw;
+}
+
+.activities ul li {
+	  width: 9.15vw;
+    height: 12.07vw;
+    background-color: #e87352;
+    float: left;
+    margin-left: 2.92vw;
+    text-align: center;
+    color: white;
+}
+
+.activities ul li .activity-name {
+   margin-top: 3.92vw;
+    font-size: 1vw;
+}
+
+.activities ul li .person {
+	width: 17.2vw;
+	margin-top: 1vw;
+	color: #a5a5a5;
+	font-size: 1vw;
+	margin-left: 1.5vw;
+}
+
+
+/*闂侇剦鍠氶崓锟�*/
+
+.mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(2, 2, 2, 0.6);
+	z-index: 998;
+	left: 0;
+	top: 0;
+}
+
+.popUp-window {
+	position: fixed;
+	width: 36.6vw;
+	height: 21.2vw;
+	margin-left: -18.3vw;
+	margin-top: -10.6vw;
+	background: white;
+	left: 50%;
+	right: 0;
+	top: 40%;
+	bottom: 0;
+	z-index: 1000;
+	box-shadow: 0px 0px 60px rgba(121, 36, 7, 0.5);
+	text-align: center;
+}
+
+.popUp-window .close {
+	position: absolute;
+	top: 1.2vw;
+	right: 1.2vw;
+}
+
+.popUp-window .infos {
+	font-size: 1.6vw;
+	color: #1300000;
+	margin-top: 6.6vw;
+}
+
+.popUp-window input[type="button"] {
+	width: 13.2vw;
+	height: 3.7vw;
+	border: none;
+	color: #ffffff;
+	border-radius: 3px;
+	font-size: 1.8vw;
+}
+
+;
+.popUp-window .btn-left {
+	background: #A7A7A7;
+	margin-top: 4.4vw;
+}
+
+.popUp-window .btn-right {
+	background: #F4A42E;
+	margin-left: 5.1vw;
+	margin-top: 4.4vw;
+}
+.popUp-window .btn-left1 {
+	background: #A7A7A7;
+	margin-top: 4.4vw;
+}
+
+.popUp-window .btn-right1 {
+	background: #F4A42E;
+	margin-left: 5.1vw;
+	margin-top: 4.4vw;
+}
+.img {
+	width: 2.91vw;
+    height: 2.91vw;
+	margin: 2vw auto 1.3vw;
+	position: relative;
+}
+
+.one .img img {
+	width: 2.91vw;
+    height: 2.91vw;
+ 
+   margin-top:2vw;
+}
+.two .img img {
+	width: 2.91vw;
+    height: 2.91vw;
+  
+   margin-top:2vw;
+}
